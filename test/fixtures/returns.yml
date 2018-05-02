@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date_of_return: MyString
+  invoice_number: MyString
+  vendor: one
+  inward_product: one
+  return_quantity: MyString
+  purpose: MyString
+  receipt_no: MyString
+  return_type: MyString
+
+two:
+  date_of_return: MyString
+  invoice_number: MyString
+  vendor: two
+  inward_product: two
+  return_quantity: MyString
+  purpose: MyString
+  receipt_no: MyString
+  return_type: MyString

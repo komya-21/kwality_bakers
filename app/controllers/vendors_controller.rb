@@ -21,6 +21,12 @@ class VendorsController < ApplicationController
   def edit
   end
 
+  # load vendor data from database on ajax call
+  def load_vendor
+    @vendor = Vendor.find_by_id(params[:vendor_id]).present? ? Vendor.find(params[:vendor_id]) : Vendor.unscoped.find_by_id(params[:vendor_id])
+    render :json => [@vendor.contact, @vendor.gst_no, @vendor.comission]
+  end
+
   # POST /vendors
   # POST /vendors.json
   def create

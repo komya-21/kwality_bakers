@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  delivery: one
+  inward: one
+  rate: MyString
+  quantity: MyString
+  rem_quantity: MyString
+  qty: MyString
+  total_amt: MyString
+
+two:
+  delivery: two
+  inward: two
+  rate: MyString
+  quantity: MyString
+  rem_quantity: MyString
+  qty: MyString
+  total_amt: MyString
