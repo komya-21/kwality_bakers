@@ -1,0 +1,76 @@
+<%= nested_form_for @inward, :html => { :class => "form-horizontal inward" } do |f| %>
+
+  <% if @inward.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@inward.errors.count, "error") %> prohibited this inward from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @inward.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :date, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.date_field :date, value: Date.today, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:date) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :inward_no, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :inward_no, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:inward_no) %>
+  </div>
+
+
+<div class="col-sm-12">
+      <div class="table-responsive">
+        <table class= "table">
+          <thead>
+           <tr>
+            <th><h6>Product</h6></th>
+            <th><h6>Quantity</h6></th>
+          </tr>
+        </thead>
+        
+      </table>
+    </div>
+
+   <%= f.fields_for :inward_products do |task_form| %>
+    <div class="table-responsive">
+      <table id="example"  class="table table-bordered table-striped" cellspacing="0" width="100%">
+        <colgroup>
+        <col class="one"/>
+        <col class="two"/>
+      
+      </colgroup>
+      
+      <tr class="fields">
+ <td> <%= task_form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true}, class: 'form-control' %> </td>
+  <td> <%= task_form.text_field :quantity, class: 'form-control' %> </td>
+
+ <td> <%= task_form.link_to_remove "Remove", class: 'btn btn-red' %> </td>
+<% end %>
+<p><%= f.link_to_add "Add Product", :inward_products, class: 'btn btn-primary ' %></p>
+
+
+
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit nil, :class => 'btn btn-success' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                inwards_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>
+

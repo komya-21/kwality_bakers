@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table {
+     width:100%;
+   }
+   p {
+       margin-bottom:0px;
+   }
+   address{
+    display: block;
+    width: 300px;
+    margin:0px;
+    
+   }
+   table, th, td {
+     border: 1px solid black;
+     border-collapse: collapse;
+     font-size: 12px;
+   }
+   th, td {
+     padding: 2px;
+     text-align: left;
+   }
+   table#t01 tr:nth-child(even) {
+     background-color: #eee      }
+   table#t01 tr:nth-child(odd) {
+    background-color:#fff;
+  }
+  table#t01 th {
+   background-color: black;
+   color: white;
+ }
+ h5 {
+   display:inline;
+ }
+.maindiv{
+    width:100%;
+}
+.leftdiv{
+  float:left;
+  width:50%;
+} 
+.rightdiv{
+  float:right;
+  width:30%;
+} 
+.centerdiv{
+  width:100%;
+  margin:0 auto;
+}
+
+.maindiv{
+    width:100%;
+}
+.leftdiv{
+  float:left;
+  width:50%;
+} 
+.rightdiv{
+  float:right;
+  width:30%;
+} 
+.centerdiv{
+  width:100%;
+  margin:0 auto;
+}
+p span{
+  font-weight:700;
+  color:#000;
+}
+
+</style>
+
+<%- model_class = Delivery -%>
+  <div class="maindiv">
+   
+<h4>Kwality Bakers & Confectioners</h4>
+ <div class="rightdiv">
+<h4>Address: 20/3, Hadapsar Industrial Estate, Pune Solapur Road, Hadapsar, Pune, 411013<br>
+Phone: 020 2687 5179</h4></div>
+    <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+
+
+          <div class="leftdiv">
+            <strong><%= model_class.human_attribute_name(:invoice_no) %>:</strong>
+  <%= @delivery.invoice_no %><br>
+  <strong><%= model_class.human_attribute_name(:date) %>:</strong>
+  <%= @delivery.date %><br>
+  <strong><%= model_class.human_attribute_name(:vendor_id) %>:</strong>
+  <%= @delivery.vendor.name %><br>
+   <strong>Comission:</strong>
+  <%= @delivery.vendor.comission %>%<br>
+  <strong><%= model_class.human_attribute_name(:bill_checked_by) %>:</strong>
+  <%= @delivery.bill_checked_by %><br>
+
+</div>
+<table class="table table-condensed table-bordered" style="margin-top: -15px; margin-bottom: 15px;">
+              <thead>
+                <tr>
+                  <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="12"><center>DELIVERY CHALLAN</center></th>
+                </tr>
+      <th>Product Name</th>
+      <th>Price</th>
+      <th>Qunatity</th>
+      <th>Remaning QTY</th>
+      <th>Delivered QTY</th>
+      <th> Total Amout</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <%total=0%>
+    <%substraction=0%>
+    <%comission=0%>
+
+<%@delivery.delivery_inwards.each do |p|%>
+      <tr>
+        <td><%= p.inward_product.product.name %></td>
+        <td><%= p.inward_product.product.price %></td>
+        <td><%= p.quantity %></td>
+         <td><%= p.rem_quantity %></td>
+          <td><%= p.qty %></td>
+           <%total += p.total_amt.to_i %>
+                 <%substraction = p.inward_product.quantity.to_i - p.qty.to_i %>
+                 <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100%>
+          <% if p.qty.present?%>
+          <%p.inward_product.update(quantity: p.rem_quantity)%>
+          <%end%>
+                    <td><%= p.total_amt %></td>
+
+      </tr>
+
+    <% end %>
+
+    <div class="rightdiv">
+                         <font color="green">Total Amount to Pay: <%= total%><br></font> 
+                         <%@delivery.update(total_to_pay: total )%>
+
+
+    <%if @delivery.remaining_price.present?%>
+        Payment Total: <%=@delivery.remaining_price%>
+    <%else%>
+        Payment Total: <%=  total%><br>
+    <%end%>
+    
+    <%if @delivery.remaining_price.present?%>
+        Remaining <%= @delivery.remaining_price%>
+    <%end%>
+    </div>
+
+   <div class="leftdiv">                               
+<%if @delivery.remaining_price == '0'%>
+       <font color="red">Payment of Rs.<%=@delivery.total_to_pay%> Done Successfully</font>
+<%end%>
+</div>
+  </tbody>
+</table>
+
+
+<script type="text/javascript">
+
+
+function refresh (timeoutPeriod){ 
+    refresh = setTimeout(function(){window.location.reload(true);},timeoutPeriod); 
+  } 
+
+  $(document).ready(function(){
+    $("#add_price").keyup(function(){
+      var b = $("#total").val();
+       var a = $("#add_price").val();
+      $("#remaining_price").val(b-a);
+      
+    });
+});
+
+  function myFunction() {
+    var paid_price  = $('#add_price').val();
+    var rem_price = $('#remaining_price').val();
+    document.location.search += '&params1='+ paid_price + '&params2='+ rem_price;
+}
+
+ function button(){
+  alert(par);
+ }
+
+
+
+</script></div>

@@ -1,0 +1,33 @@
+<%- model_class = Return -%>
+<div class="page-header">
+  <h4><%=t '.title', :default => model_class.model_name.human.titleize %></h4>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:date_of_return) %>:</strong></dt>
+  <dd><%= @return.date_of_return %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:invoice_number) %>:</strong></dt>
+  <dd><%= @return.invoice_number %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:vendor_id) %>:</strong></dt>
+  <dd><%= @return.vendor.name%></dd>
+  <dt><strong><%= model_class.human_attribute_name(:inward_product_id) %>:</strong></dt>
+  <dd><%= @return.inward_product.product.name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:return_quantity) %>:</strong></dt>
+  <dd><%= @return.return_quantity %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:purpose) %>:</strong></dt>
+  <dd><%= @return.purpose %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:receipt_no) %>:</strong></dt>
+  <dd><%= @return.receipt_no %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:return_type) %>:</strong></dt>
+  <dd><%= @return.return_type %></dd>
+</dl>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              returns_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_return_path(@return), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              return_path(@return),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

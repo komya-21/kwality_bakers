@@ -1,0 +1,168 @@
+<%= nested_form_for @delivery, :html => { :class => "form-horizontal delivery" } do |f| %>
+
+  <% if @delivery.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@delivery.errors.count, "error") %> prohibited this delivery from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @delivery.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :invoice_no, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :invoice_no, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:invoice_no) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :date, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.date_field :date, value: Date.today, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:date) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :vendor_id, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:vendor_id) %>
+  </div>
+
+  <div class="form-group">
+      <label class="control-label col-lg-2">Vendor Contact</label>
+              <div class="col-lg-10">
+                <%= text_field_tag :phone_no,"", class: 'form-control' %>
+            </div>
+  </div>
+
+
+  <div class="form-group">
+      <label class='control-label col-lg-2' >GST No</label>
+          <div class="col-lg-10">
+          <%= text_field_tag :gst_no, "", class: 'form-control' %>
+        </div>
+  </div>
+
+  <div class="form-group">
+      <label class='control-label col-lg-2' >Comission</label>
+       <div class="col-lg-10">
+      <%= text_field_tag :comission, "", class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :bill_checked_by, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :bill_checked_by, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:bill_checked_by) %>
+  </div>
+
+<%= f.fields_for :delivery_inwards, :wrapper => false do |invoice_item| %>
+    
+    <div class="table-responsive">
+      <table id="example"  class="table table-bordered table-striped" cellspacing="0" width="100%">
+        <colgroup>
+        <col class="one"/>
+        <col class="two"/>
+         <col class="three"/>
+          <col class="four"/>
+           <col class="five"/>
+            <col class="six"/>
+      </colgroup>
+      
+      <tr class="fields">
+        <td> <%=invoice_item.select :inward_product_id ,InwardProduct.all.collect{|i| [i.product.name, i.id]}, {prompt:true},class: "select"%></td>
+        <td><%= text_field_tag :price,"", id: :price, placeholder: 'price' ,class: 'form-control'%></td>
+        <td><%= invoice_item.text_field :quantity, id: :quantity, placeholder: 'quantity' ,class: 'form-control',readonly:true%></td>
+        <td><%= invoice_item.text_field :rem_quantity, id: :rem_quantity, placeholder: 'rem_qty', class: 'form-control',readonly:true%></td>
+        <td><%= invoice_item.text_field :qty, id: :qty,placeholder: 'qty', class: 'form-control'%></td>
+        <td><%= invoice_item.text_field :total_amt, id: :total_amt,placeholder: 'total_amt', class: 'form-control'%></td>
+        <td><%= invoice_item.link_to_remove "Remove", class: 'btn btn-info' %></td>
+      </tr>
+    </table>
+
+  </div>
+  <!--grid_table-->
+  <% end %>
+  <%= f.link_to_add "Add Item", :delivery_inwards , class: 'btn btn-danger' %>
+
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                deliveries_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>
+
+
+  <script type="text/javascript">
+  $(document).on("change", ".select", function () {
+  var product_id = $(this);
+  elem = jQuery(this);
+  $.ajax({
+  url: "/inwards/load_item_data",
+  type: 'GET',
+  dataType: 'json',
+  data: {product_id: $(this).val()},
+  success: function (data) {
+    console.log(data);
+    container = elem.parents("tr.fields");
+    container1 = elem.parents("th.fields");
+    container.find("#price").val(data[0]);
+    container.find("#quantity").val(data[1]);
+  }
+  });
+
+  });
+  </script>
+
+   <script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+  $(document).on("keyup", "#qty", function() {
+  container = elem.parents("tr.fields");
+  var val1 = +container.find("#quantity").val();
+  var val2 = +container.find("#qty").val();
+  var val3 = +container.find("#price").val();
+  var val4 = val1 - val2;
+  var val5 = val3 * val2;
+  +container.find("#rem_quantity").val(val4);
+  +container.find('#total_amt').val(val5);
+  });
+  </script>
+
+
+  <script type="text/javascript">
+  $("#delivery_vendor_id").on("change", function() {
+  var vendor_id;
+  Item = $(this).val();
+  $.ajax({
+  url: "/vendors/load_vendor",
+  type: "GET",
+  data: {vendor_id: Item },
+  dataType: "json"
+  }).done(function (data) {
+  console.log(data);
+  $("#phone_no").val(data[0]);
+  $("#gst_no").val(data[1]);
+  $("#comission").val(data[2]);
+  // $("#uom").val(data[1]);
+  // $("#rate").val(data[2]);
+
+  });
+  });
+  </script>
