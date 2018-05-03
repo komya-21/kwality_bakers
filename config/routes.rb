@@ -1,9 +1,18 @@
 Rails.application.routes.draw do
-  resources :returns
+  resources :returns do
+    collection do 
+      get :return_type_report
+      get :select_return_type
+    end
+  end
   resources :deliveries do
     member do
       get :record_payment
       get :payment
+    end
+     collection do
+      get :new_delivery
+      get :select_vendor
     end
   end
   resources :inwards do
@@ -17,6 +26,7 @@ Rails.application.routes.draw do
     end
   end
   
+  resources :reports
   resources :employees
   resources :products
   resources :companies

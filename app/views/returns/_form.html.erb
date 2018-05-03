@@ -67,7 +67,7 @@
   <div class="form-group">
     <%= f.label :return_type, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :return_type, options_for_select(['OK','NOT OK']),{prompt:true},
+      <%= f.select :return_type, options_for_select(['OK','NOT-OK']),{prompt:true},
        :class => 'form-control' %>
     </div>
     <%=f.error_span(:return_type) %>

@@ -1,0 +1,39 @@
+
+<%= form_for :return, url:{action: 'select_return_type',remote:true} do |form| %>
+ 
+<div class = "center">
+     <div class="form-group">
+        <div class="col-md-4">
+          <label class="col-sm-12 control-label">Select Return Type</label>
+    <%= form.select :return_type, options_for_select(['OK', 'NOT-OK']),{prompt:true}, class: 'form-control' %>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+  <div id="vendor">
+</div>
+
+        
+
+<% end %>
+
+<script type='text/javascript'>
+$('#return_return_type').on('change', function() {
+ var return_type;
+ Item = $(this).val();
+ $.ajax({
+   url: '/returns/select_return_type',
+   type: 'GET',
+   dataType: 'script',
+   data: {return_type: Item},
+   }).success(function(data) {
+   
+ });
+});
+</script>

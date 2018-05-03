@@ -1,0 +1,36 @@
+<%- model_class = Return -%>
+<div class="page-header">
+  <h4><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h4>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:date_of_return) %></th>
+      <th><%= model_class.human_attribute_name(:invoice_number) %></th>
+      <th><%= model_class.human_attribute_name(:vendor_id) %></th>
+      <th><%= model_class.human_attribute_name(:inward_product_id) %></th>
+      <th><%= model_class.human_attribute_name(:return_quantity) %></th>
+      <th><%= model_class.human_attribute_name(:purpose) %></th>
+      <th><%= model_class.human_attribute_name(:receipt_no) %></th>
+      <th><%= model_class.human_attribute_name(:return_type) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @returns.each do |return_product| %>
+      <tr>
+        <td><%= link_to return_product.id, return_path(return_product) %></td>
+        <td><%= return_product.date_of_return %></td>
+        <td><%= return_product.invoice_number %></td>
+        <td><%= return_product.vendor.name %></td>
+        <td><%= return_product.inward_product.product.name %></td>
+        <td><%= return_product.return_quantity %></td>
+        <td><%= return_product.purpose %></td>
+        <td><%= return_product.receipt_no %></td>
+        <td><%= return_product.return_type %></td>
+       
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

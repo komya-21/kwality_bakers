@@ -5,6 +5,11 @@ class InwardsController < ApplicationController
   # GET /inwards.json
   def index
     @inwards = Inward.all
+     respond_to do |format|
+        format.html
+        format.csv { send_data @inwards.to_csv }
+        format.xls { send_data @inwards.to_csv(col_sep: "\t") }
+        end
   end
 
   # GET /inwards/1

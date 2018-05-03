@@ -1,0 +1,38 @@
+<%= form_for :report, url:{action: 'create'} do |f| %>      
+<div class = "center" > 
+     <div class="form-group">
+        <div class="col-md-4">
+          <label class="col-sm-6 control-label">Select Start Date</label>
+          <%= f.date_field :start_date,class: "form-control datepicker" %>
+    </div>
+  </div>
+
+   <div class="form-group">
+        <div class="col-md-4">
+          <label class="col-sm-6 control-label">Select End Date</label>
+          <%= f.date_field :end_date,class: "form-control datepicker" %>
+    </div>
+  </div>
+
+    <div class="form-group">
+        <div class="col-md-4">
+          <label class="col-sm-6 control-label">Report Type</label>
+          <%= f.select :report_type, options_for_select(['Payment Status', 'Return', 'Inward', 'Delivery Items']),{prompt: true},class: "form-control" %>
+    </div>
+  </div>
+
+<br>
+<br>
+<br>
+<br>
+
+  <div id="stage">
+</div>
+
+    <div class="form-group"> 
+     <div class="col-sm-offset-1 col-sm-10">  
+      <%= f.submit "View", class: 'btn btn-success' %>
+     </div>
+    </div>    
+
+<% end %>

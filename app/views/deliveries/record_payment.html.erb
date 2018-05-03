@@ -17,6 +17,14 @@
   <dd><%= @delivery.bill_checked_by %></dd>
 </dl>
 
+<p class="text-info">
+  <strong>Payment Status:</strong>
+  <%if @delivery.remaining_price == "0"%>
+  <%@delivery.update!(payment_status:'true')%>
+  <%end%>
+  <%=@delivery.payment_status%>
+</p> 
+</div>
 
 <table class="table table-striped">
   <thead>
