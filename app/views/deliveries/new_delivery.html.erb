@@ -1,0 +1,39 @@
+
+<%= form_for :vendor, url:{action: 'select_vendor',remote:true} do |form| %>
+ 
+<div class = "center">
+     <div class="form-group">
+        <div class="col-md-4">
+          <label class="col-sm-12 control-label">Select Vendor</label>
+    <%= form.select :vendor, Vendor.all.collect{|c| [c.name,c.id]}, {prompt:true},id: 'vendor_id',class: "form-control selectpicker", "data-live-search" => "true" %>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+  <div id="vendor">
+</div>
+
+        
+
+<% end %>
+
+<script type='text/javascript'>
+$('#vendor_id').on('change', function() {
+ var vendor_id;
+ Item = $(this).val();
+ $.ajax({
+   url: '/deliveries/select_vendor',
+   type: 'GET',
+   dataType: 'script',
+   data: {vendor_id: Item},
+   }).success(function(data) {
+   
+ });
+});
+</script>

@@ -11,6 +11,8 @@
       <th><%= model_class.human_attribute_name(:vendor_id) %></th>
       <th><%= model_class.human_attribute_name(:bill_checked_by) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
+            <th>Payment Status</th>
+
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -23,6 +25,11 @@
         <td><%= delivery.vendor.name %></td>
         <td><%= delivery.bill_checked_by %></td>
         <td><%=l delivery.created_at %></td>
+         <td><%if delivery.payment_status == true%>
+        <font color="green">Paid</font>
+        <%elsif delivery.payment_status == false%>
+        <font color="red">Pending</font>
+        <%end%></td>
         <td>
           <%= link_to t('.show', :default => t("helpers.links.show")),
                       delivery_path(delivery), :class => 'btn btn-default btn-xs' %>

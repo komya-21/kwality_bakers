@@ -8,4 +8,13 @@ class Inward < ApplicationRecord
     self.inward_no = 'IN' + date.to_s + \
                           Inward.last.id.next.to_s unless Inward.first.nil?
   end
+
+    def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |return_module|
+        csv << return_module.attributes.values_at(*column_names)
+      end
+    end
+end
 end

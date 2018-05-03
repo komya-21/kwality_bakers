@@ -5,6 +5,21 @@ class DeliveriesController < ApplicationController
   # GET /deliveries.json
   def index
     @deliveries = Delivery.all
+     respond_to do |format|
+        format.html
+        format.csv { send_data @deliveries.to_csv }
+        format.xls { send_data @deliveries.to_csv(col_sep: "\t") }
+        end
+  end
+
+  def new_delivery
+    
+  end
+
+  def select_vendor
+      @vendor = Vendor.find(params[:vendor_id])
+      @vendors = @vendor.deliveries
+      @total = @vendor.deliveries.count
   end
 
   # GET /deliveries/1

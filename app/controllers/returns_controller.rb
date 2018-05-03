@@ -5,6 +5,11 @@ class ReturnsController < ApplicationController
   # GET /returns.json
   def index
     @returns = Return.all
+     respond_to do |format|
+        format.html
+        format.csv { send_data @returns.to_csv }
+        format.xls { send_data @returns.to_csv(col_sep: "\t") }
+        end
   end
 
   # GET /returns/1
@@ -22,6 +27,20 @@ class ReturnsController < ApplicationController
 
   # GET /returns/1/edit
   def edit
+  end
+
+  def return_type_report
+  end
+
+  def select_return_type
+    @return_type = params[:return_type]
+    if @return_type == 'OK'
+      @returns = Return.list1
+    elsif @return_type == 'NOT-OK'
+      @returns = Return.list2
+    else
+      @returns = Return.all
+    end 
   end
 
   # POST /returns

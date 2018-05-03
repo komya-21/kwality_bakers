@@ -17,6 +17,16 @@
     <li><a href="/deliveries">Record Payment</a></li>
         <li><a href="/returns">Return</a></li>
 
+         <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports. <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a href="/reports/new">Daily Report</a></li>
+         <li><a href="/deliveries/new_delivery">Vendor Deilvery Report</a></li>    
+        <li><a href="/returns/return_type_report">Return Type Report</a></li>                    
+                
+      </ul>
+    </li>
+
 <div class="pull-right">
     <%= link_to "Sign out", destroy_user_session_path, :method => :delete, class: 'btn btn-danger' %>
 </div>

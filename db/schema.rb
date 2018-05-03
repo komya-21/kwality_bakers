@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180502105356) do
+ActiveRecord::Schema.define(version: 20180503061030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20180502105356) do
     t.string "add_price"
     t.string "remaining_price"
     t.string "total_to_pay"
+    t.boolean "payment_status", default: false
     t.index ["vendor_id"], name: "index_deliveries_on_vendor_id"
   end
 
