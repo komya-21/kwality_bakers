@@ -34,6 +34,11 @@
     <% end %>
   </tbody>
 </table>
+ <div class="digg_pagination">
+   
+<%= will_paginate @inwards , :container => false%>
+</div>
+<br><br>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_product_path,

@@ -27,16 +27,16 @@
     </tr>
   </thead>
   <tbody>
-<%@delivery.delivery_inwards.each do |p|%>
+<% @delivery.delivery_inwards.each do |p|%>
       <tr>
-        <td><%= p.inward_product.product.name %></td>
-        <td><%= p.inward_product.product.price %></td>
+        <td><%= p.product.name %></td>
+        <td><%= p.product.price %></td>
         <td><%= p.quantity %></td>
          <td><%= p.rem_quantity %></td>
           <td><%= p.qty %></td>
-          <% if p.qty.present?%>
-          <%p.inward_product.update(quantity: p.rem_quantity)%>
-          <%end%>
+          <%# if p.qty.present?%>
+          <%# p.inward_product.update(quantity: p.rem_quantity)%>
+          <%#end%>
                     <td><%= p.total_amt %></td>
 
       </tr>

@@ -10,19 +10,25 @@ class ReturnsController < ApplicationController
         format.csv { send_data @returns.to_csv }
         format.xls { send_data @returns.to_csv(col_sep: "\t") }
         end
-  end
 
-  # GET /returns/1
+
+        @returns = Return.paginate(:page => params[:page], :per_page => 10)
+end  # GET /returns/1
   # GET /returns/1.json
   def show
-    if @return.return_type == 'OK'
-      @return.inward_product.update!(quantity: @return.inward_product.quantity.to_i + @return.return_quantity.to_i)
-    end
-  end
+    
+   
+   
+end
+
+  
 
   # GET /returns/new
   def new
     @return = Return.new
+
+    @inwards = InwardProduct.all.map{|i| [i.product.name]}.to_a.uniq
+
   end
 
   # GET /returns/1/edit
@@ -50,6 +56,22 @@ class ReturnsController < ApplicationController
 
     respond_to do |format|
       if @return.save
+         @last = Inward.last
+    @products = @last.inward_products.map{|p| p.product_id }
+    @products.each do |pr|
+     if pr == @return.product_id
+    
+    if @return.return_type == 'OK'
+
+      
+      @last.inward_products.where(product_id: pr).update(quantity: @last.inward_products.find_by(product_id: pr).quantity.to_i + @return.return_quantity.to_i)
+    end
+    else
+    
+      InwardProduct.create(quantity: @return.return_quantity , product_id: pr , inward_id: @last.id)
+      break
+end
+end
         format.html { redirect_to @return, notice: 'Return was successfully created.' }
         format.json { render :show, status: :created, location: @return }
       else
@@ -91,6 +113,6 @@ class ReturnsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def return_params
-      params.require(:return).permit(:date_of_return, :invoice_number, :vendor_id, :inward_product_id, :return_quantity, :purpose, :receipt_no, :return_type)
+      params.require(:return).permit(:date_of_return, :invoice_number, :vendor_id, :inward_product_id, :return_quantity, :purpose, :receipt_no, :return_type , :product_id)
     end
 end

@@ -17,4 +17,11 @@ class Inward < ApplicationRecord
       end
     end
 end
+
+ 
 end
+    
+
+  
+
+

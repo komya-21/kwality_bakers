@@ -14,19 +14,103 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      
       <th>Product Name</th>
+      
+      
       <th>Quantity</th>
     </tr>
   </thead>
   <tbody>
-<%@inward.inward_products.each do |p|%>
-      <tr>
-        <td><%= p.product.name %></td>
-        <td><%= p.quantity %></td>
+
+
+
+<tr>
+  <%# InwardProduct.all.map{|k| k.product.name}.to_a.uniq %>
+  
+        
+        
+        
+
+        <%#= i.inward_products.map{|q| q.quantity.to_i}.to_a.inject(0){|sum , 
+        x|sum+x } %><%# end %>
+ <%  @inward.inward_products.each do |i| %> 
+
+
+<td>
+<%= i.product.name %>
+</td>
+
+<td>
+  <%= i.quantity %>
+  </td>
+
+
+
+
+  
+  
+  
+  
+
+
+  <%# end %>
+
+ 
+  <%#= (i.quantity.to_i+ip.quantity.to_i) %>
+  <%# end %>
+  
+
+
+
+
+
+
+
+      
+
+        <%# @products.include? i.product_id %>
+    <%#= @qua.where(product_id: i.product.id).pluck(:quantity).map{|k| k.to_i}.inject(0){|sum , x| sum+x}
+ %><td>
+  <%# @inwards.each do |k| %>
+
+ <%#= @qua.where("product_id = ? " , i.product_id ).pluck(:quantity).map{|k| k.to_i}.inject(0){|sum , x| sum+x} %>
+
+ 
+ </td>
+ 
+ 
+    
+      
+   
+    <td><%#= qua.map{|q| q.quantity.to_i}.to_a.inject(0){|sum , x| sum+x } %></td>
+    <%# end %>   
+
+
+
+
+      
+        
+        <%# if %>
+        <%# p.product_id == 1 %>
+        <%# @inwards.each do |i|%>
+        <%# i.inward_products.each do |pro| %>
+
+        
+        <td><%#= pro.quantity.to_i + p.quantity.to_i %></td>
+        <%# end %>
+        <%# end %>
       </tr>
+    <%# end %>
+
+    
     <% end %>
+    <%#end %>
+
   </tbody>
 </table>
+
+
 
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

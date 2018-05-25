@@ -9,7 +9,7 @@
       <th><%= model_class.human_attribute_name(:date_of_return) %></th>
       <th><%= model_class.human_attribute_name(:invoice_number) %></th>
       <th><%= model_class.human_attribute_name(:vendor_id) %></th>
-      <th><%= model_class.human_attribute_name(:inward_product_id) %></th>
+      <th><%= model_class.human_attribute_name(:product_id) %></th>
       <th><%= model_class.human_attribute_name(:return_quantity) %></th>
       <th><%= model_class.human_attribute_name(:purpose) %></th>
       <th><%= model_class.human_attribute_name(:receipt_no) %></th>
@@ -24,7 +24,7 @@
         <td><%= return_product.date_of_return %></td>
         <td><%= return_product.invoice_number %></td>
         <td><%= return_product.vendor.name %></td>
-        <td><%= return_product.inward_product.product.name %></td>
+        <td><%= return_product.product.name %></td>
         <td><%= return_product.return_quantity %></td>
         <td><%= return_product.purpose %></td>
         <td><%= return_product.receipt_no %></td>
@@ -44,6 +44,11 @@
     <% end %>
   </tbody>
 </table>
+ <div class="digg_pagination">
+   
+<%= will_paginate @inwards , :container => false%>
+</div>
+<br><br>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_return_path,

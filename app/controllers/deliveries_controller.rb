@@ -10,6 +10,7 @@ class DeliveriesController < ApplicationController
         format.csv { send_data @deliveries.to_csv }
         format.xls { send_data @deliveries.to_csv(col_sep: "\t") }
         end
+        @deliveries = Delivery.paginate(:page => params[:page], :per_page => 10)
   end
 
   def new_delivery
@@ -67,6 +68,17 @@ class DeliveriesController < ApplicationController
 
     respond_to do |format|
       if @delivery.save
+
+        
+    @inward_products = InwardProduct.all
+
+    
+     @delivery.delivery_inwards.each do |d|
+
+    
+        @inward_products.where(product_id: d.product_id).update(after_delivery_string: d.rem_quantity)
+      end
+
         format.html { redirect_to @delivery, notice: 'Delivery was successfully created.' }
         format.json { render :show, status: :created, location: @delivery }
       else
@@ -75,6 +87,7 @@ class DeliveriesController < ApplicationController
       end
     end
   end
+
 
   # PATCH/PUT /deliveries/1
   # PATCH/PUT /deliveries/1.json

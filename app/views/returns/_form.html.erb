@@ -39,7 +39,7 @@
   <div class="form-group">
     <%= f.label :inward_product_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :inward_product_id ,InwardProduct.all.collect{|i| [i.product.name, i.id]}, {prompt:true},:class => 'form-control' %>
+      <%= f.select :product_id,Product.all.collect{|i| [i.name , i.id]}, {prompt:true},:class => 'form-control' %>
     </div>
     <%=f.error_span(:inward_product_id) %>
   </div>
