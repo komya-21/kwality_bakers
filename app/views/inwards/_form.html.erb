@@ -55,10 +55,14 @@
       </colgroup>
       
       <tr class="fields">
- <td> <%= task_form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true}, class: 'form-control' %> </td>
+        
+
+ <td><%= task_form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: 'select'%></td>
+
   <td> <%= task_form.text_field :quantity, class: 'form-control' %> </td>
 
  <td> <%= task_form.link_to_remove "Remove", class: 'btn btn-red' %> </td>
+</tr>
 <% end %>
 <p><%= f.link_to_add "Add Product", :inward_products, class: 'btn btn-primary ' %></p>
 
@@ -73,5 +77,27 @@
     </div>
   </div>
 
+
 <% end %>
+</table>
+</div>
+
+      
+        <link href="/assets/select2.css" rel="stylesheet"/>
+        <script src="/assets/select2-full.js"></script>
+        
+
+<script type="text/javascript">
+ $(document).on('nested:fieldAdded', function(event){
+ // this field was just inserted into your form
+ var field = event.field;
+ var selectField = field.find('.select');
+ selectField.select2();
+ // and activate datepicker on it
+//  dateField.datepicker();
+})
+</script>
+
+
+
 

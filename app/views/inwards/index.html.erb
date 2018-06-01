@@ -5,6 +5,9 @@
   <h4><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h4>
 </div>
 <%= link_to "Total Stock" , "/inwards/stock" , class: 'btn btn-primary '%>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_inward_path,
+            :class => 'btn btn-primary' %>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -42,9 +45,7 @@
 <%= will_paginate @inwards , :container => false%>
 </div>
 <br><br>
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_inward_path,
-            :class => 'btn btn-primary' %>
+
 
 
 

@@ -111,6 +111,7 @@
   <script type="text/javascript">
   $(document).on("change", ".select", function () {
   var product_id = $(this);
+  
     
 
   elem = jQuery(this);
@@ -120,6 +121,7 @@
   dataType: 'json',
   data: {product_id: $(this).val()},
   success: function (data) {
+    
     console.log(data);
     container = elem.parents("tr.fields");
     container1 = elem.parents("th.fields");
@@ -171,3 +173,21 @@
   });
   });
   </script>
+      <head>
+        <link href="/assets/select2.css" rel="stylesheet"/>
+        <script src="/assets/select2-full.js"></script>
+        <script>
+            $(document).ready(function() { $("#delivery_vendor_id").select2(); });
+        </script>
+    </head>
+    <script type="text/javascript">
+ $(document).on('nested:fieldAdded', function(event){
+ // this field was just inserted into your form
+ var field = event.field;
+ var selectField = field.find('.select');
+ selectField.select2();
+ // and activate datepicker on it
+//  dateField.datepicker();
+})
+</script>
+    

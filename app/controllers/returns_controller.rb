@@ -9,17 +9,15 @@ class ReturnsController < ApplicationController
         format.html
         format.csv { send_data @returns.to_csv }
         format.xls { send_data @returns.to_csv(col_sep: "\t") }
-        end
-
-
-        @returns = Return.paginate(:page => params[:page], :per_page => 10)
-end  # GET /returns/1
+      end
+      @returns = Return.paginate(:page => params[:page], :per_page => 10)
+  end  # GET /returns/1
   # GET /returns/1.json
   def show
     
+  end 
    
-   
-end
+  
 
   
 
@@ -56,22 +54,11 @@ end
 
     respond_to do |format|
       if @return.save
-         @last = Inward.last
-    @products = @last.inward_products.map{|p| p.product_id }
-    @products.each do |pr|
-     if pr == @return.product_id
-    
-    if @return.return_type == 'OK'
+        if @return.return_type == 'OK'
+          @current = CurrentInventory.find_by(product_id: @return.product_id)
+          @current.update(current_quantity: @current.current_quantity.to_i + @return.return_quantity.to_i)
+        end
 
-      
-      @last.inward_products.where(product_id: pr).update(quantity: @last.inward_products.find_by(product_id: pr).quantity.to_i + @return.return_quantity.to_i)
-    end
-    else
-    
-      InwardProduct.create(quantity: @return.return_quantity , product_id: pr , inward_id: @last.id)
-      break
-end
-end
         format.html { redirect_to @return, notice: 'Return was successfully created.' }
         format.json { render :show, status: :created, location: @return }
       else

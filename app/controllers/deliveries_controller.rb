@@ -64,28 +64,23 @@ class DeliveriesController < ApplicationController
   # POST /deliveries
   # POST /deliveries.json
   def create
+
     @delivery = Delivery.new(delivery_params)
+    @inward_products = InwardProduct.all
 
     respond_to do |format|
       if @delivery.save
-
-        
-    @inward_products = InwardProduct.all
-
-    
-     @delivery.delivery_inwards.each do |d|
-
-    
-        @inward_products.where(product_id: d.product_id).update(after_delivery_string: d.rem_quantity)
-      end
-
+            @delivery.delivery_inwards.each do |d|
+              @current = CurrentInventory.find_by(product_id: d.product_id)
+              @current.update(current_quantity: d.rem_quantity)
+            end
         format.html { redirect_to @delivery, notice: 'Delivery was successfully created.' }
         format.json { render :show, status: :created, location: @delivery }
       else
         format.html { render :new }
         format.json { render json: @delivery.errors, status: :unprocessable_entity }
-      end
     end
+     end
   end
 
 

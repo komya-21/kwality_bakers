@@ -18,30 +18,26 @@ class InwardsController < ApplicationController
   def show
     
   end
-  def stock
-    @inwards = Inward.all
 
-    #@qua = InwardProduct.all
+  def stock
+
+    @inwards = Inward.all
     @inward_products = InwardProduct.all
-    @product_name = InwardProduct.all.map{|n| n.product.name}.to_a.uniq
-    @product = InwardProduct.all.map{|n| n.product_id}.to_a.uniq
     @inwards = Inward.paginate(:page => params[:page], :per_page => 10)
     @qua = InwardProduct.search(params[:search])
+    @current_inventories = CurrentInventory.all
+
   end
 
 
   #load product on ajax call to fetch rate
   def load_item_data
-    
-    @product = InwardProduct.find_by(product_id: params[:product_id]).present? ? InwardProduct.find_by(product_id: params[:product_id]) : InwardProduct.unscoped.find_by_id(params[:product_id])
-    if @product.after_delivery_string.present?
-    render :json => [@product.product.price, @product.after_delivery_string]
-  else
-        render :json => [@product.product.price, @product.after_inward]
-      end
 
-
-
+  
+    @product = CurrentInventory.find_by(product_id: params[:product_id])
+  
+   
+    render :json => [@product.product.price, @product.current_quantity]
   end
 
   # GET /inwards/new
@@ -58,50 +54,25 @@ class InwardsController < ApplicationController
   # POST /inwards
   # POST /inwards.json
   def create
-
-    
-
-  #@inward = Inward.new(inward_params)
-  @inward = Inward.new(inward_params)
-
-  
-        respond_to do |format|
+       @inward = Inward.new(inward_params)
+       @inward_products = InwardProduct.all
+          respond_to do |format|
           if @inward.save
-             format.html { redirect_to @inward, notice: 'Inward was successfully created.' }
-             format.json { render :show, status: :created, location: @inward }
+           @inward.inward_products.each do |ip|
+            @current = CurrentInventory.find_by(product_id: ip.product_id)
+          
+            @current.update(current_quantity: @current.current_quantity.to_i+ip.quantity.to_i)
+          end
+
+            format.html { redirect_to @inward, notice: 'Inward was successfully created.' }
+            format.json { render :show, status: :created, location: @inward }
           else
-             format.html { render :new }
-             format.json { render json: @inward.errors, status: :unprocessable_entity }
+                  format.html { render :new }
+                  format.json { render json: @inward.errors, status: :unprocessable_entity }
           end
-          end
-     
-  
-end
-
-  # same as Business.where(user_id: current_user.id).exists?
-  # ...
-
- 
-  
- 
-# @product = Inward.find_or_initialize_by(id: params[:id])
- # @product = @inward.find_or_initialize_by(product_id: params[:product_id])
- 
+      end
+  end
     
-    
-     
-      
-        
-       
-        
-        
-        
-       
-
-        
-        # quantity = @inward.inward_products.map{|q| q.quantity}
-        # updated_quantity = @inward.inward_products.map{|q| q.update(updated_quantity: quantity)}     
-       
 
   # PATCH/PUT /inwards/1
   # PATCH/PUT /inwards/1.json

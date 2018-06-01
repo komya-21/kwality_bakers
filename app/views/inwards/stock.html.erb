@@ -9,41 +9,28 @@
 
 <table class="table table-striped">
 	<thead>
-	<tr>
+	  <tr>
 		<th>Product</th>
-		<th>After Inward</th>
-		<th>After Delivey</th>
-		
-	</tr>
-</thead>
-<%# if @inward_products.present? %>
-<tbody>
-	 <% @inward_products.map{|i |[i.product.name , i.product_id] }.uniq.each do |q| %>
-   <tr>
-		  <td><%= q[0] %></td>
-		 <% @total =  @inward_products.where(product_id: q[1]).pluck(:quantity).map{|k| k.to_i}.inject(0){|sum , x| sum+x} %>
-		 <%@inward_products.where(product_id: q[1]).update(after_inward: @total) %>
-		  <td><%=@inward_products.find_by(product_id: q[1]).after_inward %></td>
-
-		  	 
-		  <td><% @inward_products.find_by(product_id: q[1]).after_delivery_string %></td>
-		  	  
-     
-
- 
+		<th>Quantity</th>
 	  </tr>
-	 
-	  <% end %>
+    </thead>
+    <tbody>
+	<% @current_inventories.each do |c| %>
+		<tr>
+			<td><%= c.product.name %></td>
+			<td><%= c.current_quantity %></td>
+		</tr>
+	<% end %>
 
-</tbody>
+	</tbody>
 
 </table>
-<%# end %>
 
 
- <div class="digg_pagination">
+<div class="digg_pagination">
    
-<%= will_paginate @inwards , :container => false%>
+	<%= will_paginate @inwards , :container => false%>
+	
 </div>
 <br><br>
 
