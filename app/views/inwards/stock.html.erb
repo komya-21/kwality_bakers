@@ -1,0 +1,74 @@
+<%- model_class = Inward -%>
+
+
+<div class="page-header">
+  <h4><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h4>
+</div>
+
+<p>
+  Download:
+  <%= link_to "Excel", stock_inwards_path(format: "xls"),class: 'btn btn-success' %>
+</p>
+
+<table class="table table-striped">
+	<thead>
+	  <tr>
+		<th>Product</th>
+		<th>Quantity</th>
+	  </tr>
+    </thead>
+    <tbody>
+	<% @current_inventories.each do |c| %>
+		<tr>
+			<td><%= c.product.name %></td>
+			<td><%= c.current_quantity %></td>
+		</tr>
+	<% end %>
+
+	</tbody>
+
+</table>
+
+
+ <div class="digg_pagination">
+   
+<%= will_paginate @current_inventories  , :container => false%>
+</div>
+<br><br>
+
+
+	 
+	
+	 
+	  
+        
+       
+       
+       
+
+  
+     
+
+     
+
+          
+
+
+
+
+
+
+
+	
+	
+	
+		
+
+
+
+
+
+
+
+
+

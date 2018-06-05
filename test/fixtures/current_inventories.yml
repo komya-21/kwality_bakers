@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  current_quantity: MyString
+  inward_product: one
+  delivery_inward: one
+
+two:
+  current_quantity: MyString
+  inward_product: two
+  delivery_inward: two

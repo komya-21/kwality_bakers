@@ -81,7 +81,7 @@
       </colgroup>
       
       <tr class="fields">
-        <td> <%=invoice_item.select :inward_product_id ,InwardProduct.all.collect{|i| [i.product.name, i.id]}, {prompt:true},class: "select"%></td>
+        <td> <%=invoice_item.select :product_id ,Product.all.collect{|i| [i.name, i.id]}, {prompt:true},class: "select"%></td>
         <td><%= text_field_tag :price,"", id: :price, placeholder: 'price' ,class: 'form-control'%></td>
         <td><%= invoice_item.text_field :quantity, id: :quantity, placeholder: 'quantity' ,class: 'form-control',readonly:true%></td>
         <td><%= invoice_item.text_field :rem_quantity, id: :rem_quantity, placeholder: 'rem_qty', class: 'form-control',readonly:true%></td>
@@ -111,6 +111,9 @@
   <script type="text/javascript">
   $(document).on("change", ".select", function () {
   var product_id = $(this);
+  
+    
+
   elem = jQuery(this);
   $.ajax({
   url: "/inwards/load_item_data",
@@ -118,6 +121,7 @@
   dataType: 'json',
   data: {product_id: $(this).val()},
   success: function (data) {
+    
     console.log(data);
     container = elem.parents("tr.fields");
     container1 = elem.parents("th.fields");
@@ -136,8 +140,11 @@
   $(document).on("keyup", "#qty", function() {
   container = elem.parents("tr.fields");
   var val1 = +container.find("#quantity").val();
+  
   var val2 = +container.find("#qty").val();
+
   var val3 = +container.find("#price").val();
+
   var val4 = val1 - val2;
   var val5 = val3 * val2;
   +container.find("#rem_quantity").val(val4);
@@ -166,3 +173,21 @@
   });
   });
   </script>
+      <head>
+        <link href="/assets/select2.css" rel="stylesheet"/>
+        <script src="/assets/select2-full.js"></script>
+        <script>
+            $(document).ready(function() { $("#delivery_vendor_id").select2(); });
+        </script>
+    </head>
+    <script type="text/javascript">
+ $(document).on('nested:fieldAdded', function(event){
+ // this field was just inserted into your form
+ var field = event.field;
+ var selectField = field.find('.select');
+ selectField.select2();
+ // and activate datepicker on it
+//  dateField.datepicker();
+})
+</script>
+    

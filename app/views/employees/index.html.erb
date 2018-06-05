@@ -2,6 +2,9 @@
 <div class="page-header">
 <!--   <h1><%#=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
  --></div>
+ <%= link_to t('.new', :default => t("helpers.links.new")),
+            new_employee_path,
+            :class => 'btn btn-primary' %>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -40,7 +43,11 @@
     <% end %>
   </tbody>
 </table>
+ <div class="digg_pagination">
+   
+<%= will_paginate @inwards , :container => false%>
+</div>
+<br>
+<br>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_employee_path,
-            :class => 'btn btn-primary' %>
+

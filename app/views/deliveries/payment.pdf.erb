@@ -103,8 +103,8 @@ Phone: 020 2687 5179</h4></div>
                 </tr>
       <th>Product Name</th>
       <th>Price</th>
-      <th>Qunatity</th>
-      <th>Remaning QTY</th>
+     <!--  <th>Qunatity</th>
+      <th>Remaning QTY</th> -->
       <th>Delivered QTY</th>
       <th> Total Amout</th>
     </tr>
@@ -117,16 +117,16 @@ Phone: 020 2687 5179</h4></div>
 
 <%@delivery.delivery_inwards.each do |p|%>
       <tr>
-        <td><%= p.inward_product.product.name %></td>
-        <td><%= p.inward_product.product.price %></td>
-        <td><%= p.quantity %></td>
-         <td><%= p.rem_quantity %></td>
+        <td><%= p.product.name %></td>
+        <td><%= p.product.price %></td>
+      <!--   <td><%#= p.quantity %></td>
+         <td><%#= p.rem_quantity %></td> -->
           <td><%= p.qty %></td>
            <%total += p.total_amt.to_i %>
-                 <%substraction = p.inward_product.quantity.to_i - p.qty.to_i %>
+                 <%substraction = p.quantity.to_i - p.qty.to_i %>
                  <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100%>
           <% if p.qty.present?%>
-          <%p.inward_product.update(quantity: p.rem_quantity)%>
+          <%p.update(quantity: p.rem_quantity)%>
           <%end%>
                     <td><%= p.total_amt %></td>
 
