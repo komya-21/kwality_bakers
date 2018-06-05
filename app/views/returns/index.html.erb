@@ -5,6 +5,11 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_return_path,
             :class => 'btn btn-primary' %><br>
+
+<p>
+  Download:
+  <%= link_to "Excel", returns_path(format: "xls"), class: 'btn btn-success' %>
+</p>
 <table class="table table-striped">
   <thead>
     <tr>

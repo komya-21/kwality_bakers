@@ -8,6 +8,10 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_inward_path,
             :class => 'btn btn-primary' %>
+            <p>
+  Download:
+  <%= link_to "Excel", inwards_path(format: "xls"),class: 'btn btn-success' %>
+</p>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -40,6 +44,7 @@
     <% end %>
   </tbody>
 </table>
+
  <div class="digg_pagination">
    
 <%= will_paginate @inwards , :container => false%>
