@@ -29,7 +29,9 @@ Rails.application.routes.draw do
   
   resources :reports
   resources :employees
-  resources :products
+  resources :products do
+    collection { post :import }
+  end
   resources :companies
   get 'home/dashboard'
 

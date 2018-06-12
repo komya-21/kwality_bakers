@@ -21,6 +21,10 @@ class ProductsController < ApplicationController
   # GET /products/1/edit
   def edit
   end
+  def import
+    Product.import(params[:file])
+  redirect_to root_url, notice: "Products imported."
+  end
 
   # POST /products
   # POST /products.json

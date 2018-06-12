@@ -5,6 +5,11 @@
  <%= link_to t('.new', :default => t("helpers.links.new")),
             new_product_path,
             :class => 'btn btn-primary' %>
+            <h4>Import Products</h4>
+        <%= form_tag import_products_path, multipart: true do %>
+          <%= file_field_tag :file %>
+          <%= submit_tag "Import" , class: "btn btn-primary" %>
+        <% end %>
 <table class="table table-striped">
   <thead>
     <tr>
