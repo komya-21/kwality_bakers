@@ -29,7 +29,7 @@
         <td><%= link_to delivery.id, delivery_path(delivery) %></td>
         <td><%= delivery.invoice_no %></td>
         <td><%= delivery.date %></td>
-        <td><%= delivery.vendor.name %></td>
+        <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
         <td><%= delivery.bill_checked_by %></td>
         <td><%=l delivery.created_at %></td>
          <td><%if delivery.payment_status == true%>
