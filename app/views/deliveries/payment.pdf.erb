@@ -89,9 +89,9 @@ Phone: 020 2687 5179</h4></div>
   <strong><%= model_class.human_attribute_name(:date) %>:</strong>
   <%= @delivery.date %><br>
   <strong><%= model_class.human_attribute_name(:vendor_id) %>:</strong>
-  <%= @delivery.vendor.name %><br>
-   <strong>Comission:</strong>
-  <%= @delivery.vendor.comission %>%<br>
+  <%= @delivery.vendor.name if @delivery.vendor.present?%><br>
+ <!--   <strong>Comission:</strong>
+  <%#= @delivery.vendor.comission %>%<br> -->
   <strong><%= model_class.human_attribute_name(:bill_checked_by) %>:</strong>
   <%= @delivery.bill_checked_by %><br>
 
@@ -124,7 +124,7 @@ Phone: 020 2687 5179</h4></div>
           <td><%= p.qty %></td>
            <%total += p.total_amt.to_i %>
                  <%substraction = p.quantity.to_i - p.qty.to_i %>
-                 <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100%>
+                 <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100 if @delivery.vendor.present?%>
           <% if p.qty.present?%>
           <%p.update(quantity: p.rem_quantity)%>
           <%end%>
