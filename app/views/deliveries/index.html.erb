@@ -47,7 +47,12 @@
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
+
+                      <% if delivery.payment_status == true %>
+          <%= link_to "Record Payment",record_payment_delivery_path(delivery),class: 'btn btn-warning btn-xs' , disabled: true%>
+          <% else %>
           <%= link_to "Record Payment",record_payment_delivery_path(delivery),class: 'btn btn-warning btn-xs'%>
+          <% end %>
 
         </td>
       </tr>

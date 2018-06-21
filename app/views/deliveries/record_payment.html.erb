@@ -87,21 +87,34 @@
 
 
 <script type="text/javascript">
-
-
-function refresh (timeoutPeriod){ 
+  
+  function refresh (timeoutPeriod){ 
     refresh = setTimeout(function(){window.location.reload(true);},timeoutPeriod); 
   } 
-
   $(document).ready(function(){
     $("#add_price").keyup(function(){
       var b = $("#total").val();
-       var a = $("#add_price").val();
-      $("#remaining_price").val(b-a);
+      var c = $("#remaining_price").val();
+      var a = $("#add_price").val();
       
-    });
-});
+       
+       $("#remaining_price").val(b-a);
+       if (parseInt(a) > parseInt(b))
+       {
+        alert("Wrong Value");
+        $("#remaining_price").val("NA");
+       }
+        if (a == 0 && c == 0)
+       {
+        alert("welcome");
+        
+        document.getElementById("#add_price").readOnly = true;
+       }
+    
+      
+       });
 
+  });
   function myFunction() {
     var paid_price  = $('#add_price').val();
     var rem_price = $('#remaining_price').val();
@@ -115,3 +128,22 @@ function refresh (timeoutPeriod){
 
 
 </script>
+
+      
+  
+
+
+
+
+  
+       
+
+      
+    
+    
+    
+    
+     
+    
+
+  
