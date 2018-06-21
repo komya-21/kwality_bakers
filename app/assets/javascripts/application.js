@@ -14,5 +14,7 @@
 //= require jquery_ujs
 //= require select2
 //= require select2-full
+//= require bootstrap-modal
+//= require bootstrap-modalmanager
 //= require turbolinks
 //= require_tree .
