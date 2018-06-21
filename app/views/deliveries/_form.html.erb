@@ -33,8 +33,11 @@
     <%= f.label :vendor_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
+      <%= link_to 'Add Vendor', new_vendor_path, {:remote => true, :class => "btn btn-default", 'data-target' => "#exampleModalCenter", 'data-toggle' => "modal"} %>
+
     </div>
     <%=f.error_span(:vendor_id) %>
+    
   </div>
 
   <div class="form-group">
@@ -85,6 +88,7 @@
         <td><%= text_field_tag :price,"", id: :price, placeholder: 'price' ,class: 'form-control'%></td>
         <td><%= invoice_item.text_field :quantity, id: :quantity, placeholder: 'quantity' ,class: 'form-control',readonly:true%></td>
         <td><%= invoice_item.text_field :rem_quantity, id: :rem_quantity, placeholder: 'rem_qty', class: 'form-control',readonly:true%></td>
+
         <td><%= invoice_item.text_field :qty, id: :qty,placeholder: 'qty', class: 'form-control'%></td>
         <td><%= invoice_item.text_field :total_amt, id: :total_amt,placeholder: 'total_amt', class: 'form-control'%></td>
         <td><%= invoice_item.link_to_remove "Remove", class: 'btn btn-info' %></td>
@@ -106,6 +110,15 @@
   </div>
 
 <% end %>
+
+ 
+  
+  <!-- Modal -->
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+</div>
+    
 
 
   <script type="text/javascript">
@@ -190,4 +203,6 @@
 //  dateField.datepicker();
 })
 </script>
+
+
     
