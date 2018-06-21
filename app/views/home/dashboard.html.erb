@@ -1,0 +1,126 @@
+﻿
+
+ 
+<!-- Main content -->
+	<div class="main-content">
+		<h1 class="page-title">DASHBOARD</h1>
+		<div class="row">
+			<div class="col-lg-3 col-md-6">
+				<div class="panel minimal panel-info">
+					<div class="panel-heading clearfix"> 
+						<div class="panel-title">Products</div> 
+						<ul class="panel-tool-options"> 
+							<li class="dropdown">
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
+								</ul>
+							 </li>
+						</ul>
+					</div> 
+					<!-- panel body --> 
+					<div class="panel-body">
+						<div class="stack-order"> 
+							<h1 class="no-margins"><%= Product.count %></h1>
+							<small><%=link_to "Products", products_path%></small>
+						</div>
+						<div class="bar-chart-icon"></div>
+					</div> 
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6">
+				<div class="panel minimal panel-warning">
+					<div class="panel-heading clearfix"> 
+						<div class="panel-title">Returned Products</div> 
+						<ul class="panel-tool-options"> 
+							<li class="dropdown">
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li class="divider"></li>
+									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
+								</ul>
+							 </li>
+						</ul> 
+					</div> 
+					<!-- panel body --> 
+					<div class="panel-body"> 
+						<div class="stack-order">
+							<h1 class="no-margins"><%= Return.count%></h1>
+							<small><%= link_to 'Returned Products', returns_path%></small>
+						</div>
+						<div class="bar-chart-icon"></div>
+					</div> 
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6">
+				<div class="panel minimal panel-success">
+					<div class="panel-heading clearfix"> 
+						<div class="panel-title">Vendors</div> 
+						<ul class="panel-tool-options"> 
+							<li class="dropdown">
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
+								</ul>
+							 </li>
+						</ul>
+					</div> 
+					<!-- panel body --> 
+					<div class="panel-body"> 
+						<div class="stack-order">
+							<h1 class="no-margins"><%= Vendor.count%></h1>
+							<small><%= link_to 'Total Vendors', vendors_path %></small>
+						</div>
+						<div class="bar-chart-icon"></div>
+					</div> 
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6">
+				<div class="panel minimal panel-danger">
+					<div class="panel-heading clearfix"> 
+						<div class="panel-title">Received Payment</div> 
+						<ul class="panel-tool-options"> 
+							<li class="dropdown">
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li class="divider"></li>
+									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
+								</ul>
+							 </li>
+						</ul>
+					</div> 
+					<!-- panel body --> 
+					<div class="panel-body"> 
+						<div class="stack-order">
+							<h1 class="no-margins"><%#=StudentDetail.count%><%= Delivery.where(payment_status: true).count %></h1>
+							<small><%=link_to 'Record Payment', deliveries_path%></small>
+						</div>
+						<div class="bar-chart-icon"></div>
+					</div> 
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6">
+				<div class="panel minimal panel-default">
+					<div class="panel-heading clearfix"> 
+						<div class="panel-title">Pending Payment</div> 
+						<ul class="panel-tool-options"> 
+							<li class="dropdown">
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li class="divider"></li>
+									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
+								</ul>
+							 </li>
+						</ul>
+					</div> 
+					<!-- panel body --> 
+					<div class="panel-body"> 
+						<div class="stack-order">
+							<h1 class="no-margins"><%#=StudentDetail.count%><%= Delivery.where(payment_status: false).count %></h1>
+							<small><%=link_to 'Record Payment',deliveries_path%></small>
+						</div>
+						<div class="bar-chart-icon"></div>
+					</div> 
+				</div>
+			</div>
+		</div>

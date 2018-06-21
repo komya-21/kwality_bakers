@@ -32,6 +32,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'will_paginate', '~> 3.1.0'
 gem "select2-rails"
 gem 'bootstrap-modal-rails'
+#gem "chartkick"
 
 
 # Use Redis adapter to run Action Cable in production
