@@ -111,9 +111,6 @@
   <script type="text/javascript">
   $(document).on("change", ".select", function () {
   var product_id = $(this);
-  
-    
-
   elem = jQuery(this);
   $.ajax({
   url: "/inwards/load_item_data",
@@ -140,15 +137,19 @@
   $(document).on("keyup", "#qty", function() {
   container = elem.parents("tr.fields");
   var val1 = +container.find("#quantity").val();
-  
   var val2 = +container.find("#qty").val();
-
   var val3 = +container.find("#price").val();
-
+   if (val1 != 0 && val2 <= val1) {
   var val4 = val1 - val2;
   var val5 = val3 * val2;
   +container.find("#rem_quantity").val(val4);
-  +container.find('#total_amt').val(val5);
+  +container.find('#total_amt').val(val5); 
+    $('#qty').css('color', 'black');
+   }
+   else{
+    $('#qty').css('color', 'red');
+     prompt('You cannot add this Product. Please add another product');
+   }
   });
   </script>
 
@@ -174,8 +175,7 @@
   });
   </script>
       <head>
-        <link href="/assets/select2.css" rel="stylesheet"/>
-        <script src="/assets/select2-full.js"></script>
+      
         <script>
             $(document).ready(function() { $("#delivery_vendor_id").select2(); });
         </script>

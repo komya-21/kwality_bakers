@@ -1,5 +1,7 @@
 class Delivery < ApplicationRecord
   belongs_to :vendor, optional:true
+  validates :vendor, presence:true
+  validates :delivery_inwards, :presence => true
    has_many :delivery_inwards, inverse_of: :delivery, dependent: :destroy
   accepts_nested_attributes_for :delivery_inwards, reject_if: :all_blank, allow_destroy: true, :update_only => true
 
