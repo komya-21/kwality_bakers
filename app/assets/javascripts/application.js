@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require select2
 //= require select2-full
+//= require dataTables/jquery.dataTables
 //= require bootstrap-modal
 //= require bootstrap-modalmanager
 //= require turbolinks

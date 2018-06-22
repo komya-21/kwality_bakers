@@ -28,4 +28,9 @@ def self.open_spreadsheet(file)
   end
 end
 
+def self.search(search)
+  byebug
+    where("name LIKE ?" , "%#{search}%")
+  end
+
 end

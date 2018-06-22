@@ -32,6 +32,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'will_paginate', '~> 3.1.0'
 gem "select2-rails"
 gem 'bootstrap-modal-rails'
+
+gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
 #gem "chartkick"
 
 

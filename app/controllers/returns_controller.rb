@@ -10,7 +10,7 @@ class ReturnsController < ApplicationController
         format.csv { send_data @returns.to_csv }
         format.xls { send_data @returns.to_csv(col_sep: "\t") }
       end
-      @returns = Return.paginate(:page => params[:page], :per_page => 10)
+     # @returns = Return.paginate(:page => params[:page], :per_page => 10)
   end  # GET /returns/1
   # GET /returns/1.json
   def show

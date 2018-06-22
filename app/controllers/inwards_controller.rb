@@ -10,7 +10,7 @@ class InwardsController < ApplicationController
         format.csv { send_data @inwards.to_csv }
         format.xls { send_data @inwards.to_csv(col_sep: "\t") }
         end
-        @inwards = Inward.paginate(:page => params[:page], :per_page => 10)
+        #@inwards = Inward.paginate(:page => params[:page], :per_page => 10)
   end
 
   # GET /inwards/1

@@ -4,14 +4,19 @@ class VendorsController < ApplicationController
   # GET /vendors
   # GET /vendors.json
   def index
-    @vendors = Vendor.all
-    @vendors = Vendor.paginate(:page => params[:page], :per_page => 10)
+    if params[:search]    
+      @vendors = Vendor.search(params[:search])
+    else
+      @vendors = Vendor.all
+    end
+    #@vendors = Vendor.paginate(:page => params[:page], :per_page => 10)
   end
 
   # GET /vendors/1
   # GET /vendors/1.json
   def show
   end
+  
 
   # GET /vendors/new
   def new
@@ -76,6 +81,6 @@ class VendorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def vendor_params
-      params.require(:vendor).permit(:name, :address, :delivery_area, :gst_no, :pan_no, :contact, :alternate_contact, :comission)
+      params.require(:vendor).permit(:name, :address, :delivery_area, :gst_no, :pan_no, :contact, :alternate_contact, :comission ,:search)
     end
 end

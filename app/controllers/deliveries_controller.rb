@@ -10,7 +10,7 @@ class DeliveriesController < ApplicationController
         format.csv { send_data @deliveries.to_csv }
         format.xls { send_data @deliveries.to_csv(col_sep: "\t") }
         end
-        @deliveries = Delivery.paginate(:page => params[:page], :per_page => 10)
+        #@deliveries = Delivery.paginate(:page => params[:page], :per_page => 10)
   end
 
   def new_delivery
