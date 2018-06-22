@@ -8,11 +8,12 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_inward_path,
             :class => 'btn btn-primary' %>
-            <p>
+<table id="inwards" class="table table-striped">
+
   Download:
   <%= link_to "Excel", inwards_path(format: "xls"),class: 'btn btn-success' %>
 </p>
-<table class="table table-striped">
+
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
@@ -44,12 +45,11 @@
     <% end %>
   </tbody>
 </table>
+ <script type="text/javascript">
+        $('#inwards').dataTable()
+        sPaginationType: "full_numbers"
+</script>
 
- <div class="digg_pagination">
-   
-<%= will_paginate @inwards , :container => false%>
-</div>
-<br><br>
 
 
 

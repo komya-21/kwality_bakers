@@ -5,11 +5,11 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_delivery_path,
             :class => 'btn btn-primary' %>
+<table id="deliveries" class="table table-striped">
             <p>
   Download:
   <%= link_to "Excel", deliveries_path(format: "xls"),class: 'btn btn-success' %>
 </p>
-<table class="table table-striped">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
@@ -59,11 +59,10 @@
     <% end %>
   </tbody>
 </table>
- <div class="digg_pagination">
-   
-<%= will_paginate @inwards , :container => false%>
-</div>
-<br>
-<br>
+ <script type="text/javascript">
+        $('#deliveries').dataTable()
+        sPaginationType: "full_numbers"
+</script>
+
 
 

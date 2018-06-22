@@ -33,6 +33,9 @@ gem 'will_paginate', '~> 3.1.0'
 gem "select2-rails"
 gem 'bootstrap-modal-rails'
 
+gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
+#gem "chartkick"
+
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

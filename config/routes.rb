@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   resources :employees
   resources :products do
     collection { post :import }
+    
   end
   resources :companies
   get 'home/dashboard'

@@ -1,7 +1,9 @@
+
 <%- model_class = Product -%>
 <div class="page-header">
 <!--   <h1><%#=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
  --></div>
+
  <%= link_to t('.new', :default => t("helpers.links.new")),
             new_product_path,
             :class => 'btn btn-primary' %>
@@ -10,7 +12,8 @@
           <%= file_field_tag :file %>
           <%= submit_tag "Import" , class: "btn btn-primary" %>
         <% end %>
-<table class="table table-striped">
+       
+<table id="products" class="table table-striped">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
@@ -21,6 +24,7 @@
     </tr>
   </thead>
   <tbody>
+
     <% @products.each do |product| %>
       <tr>
         <td><%= link_to product.id, product_path(product) %></td>
@@ -42,10 +46,12 @@
     <% end %>
   </tbody>
 </table>
- <div class="digg_pagination">
-   
-<%= will_paginate @inwards , :container => false%>
-</div>
-<br><br>
+<script type="text/javascript">
+        $('#products').dataTable()
+        sPaginationType: "full_numbers"
+</script>
+ 
+
+
 
 

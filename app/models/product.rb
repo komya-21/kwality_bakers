@@ -26,4 +26,9 @@ class Product < ApplicationRecord
     end
   end
 
+def self.search(search)
+  byebug
+    where("name LIKE ?" , "%#{search}%")
+  end
+
 end
