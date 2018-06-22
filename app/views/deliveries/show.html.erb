@@ -3,13 +3,15 @@
   <h4><%=t '.title', :default => model_class.model_name.human.titleize %></h4>
 </div>
 
+ <%= link_to 'Download PDF ',payment_delivery_path(@delivery, format: 'pdf'),target: '_blank', class: "btn btn-primary"%> 
+ 
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:invoice_no) %>:</strong></dt>
   <dd><%= @delivery.invoice_no %></dd>
   <dt><strong><%= model_class.human_attribute_name(:date) %>:</strong></dt>
   <dd><%= @delivery.date %></dd>
   <dt><strong><%= model_class.human_attribute_name(:vendor_id) %>:</strong></dt>
-  <dd><%= @delivery.vendor.name %></dd>
+  <dd><%= @delivery.vendor.name if @delivery.vendor.present?%></dd>
   <dt><strong><%= model_class.human_attribute_name(:bill_checked_by) %>:</strong></dt>
   <dd><%= @delivery.bill_checked_by %></dd>
 </dl>
