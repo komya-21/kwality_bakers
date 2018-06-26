@@ -1,0 +1,30 @@
+
+
+wb = xlsx_package.workbook
+
+
+wb.add_worksheet(name: "Payment") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Invoice\ no Date Vendor Bill\ Checked\ By Payment\ Status,bold)
+  @returns.each_with_index do |r, i|
+         @i = i += 1
+         if r.payment_status == true
+         @paid =  'Paid'
+         else
+         @paid = 'Pending'
+         end
+  sheet.add_row ["#{r.invoice_no}","#{r.date}","#{r.vendor.name}","#{r.bill_checked_by}","#{@paid}"]
+          end
+          end
+
+
+
+
+
+
+
+
+
+
+
+          

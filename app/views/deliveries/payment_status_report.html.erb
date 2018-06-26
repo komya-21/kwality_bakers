@@ -1,0 +1,39 @@
+<%= form_for :delivery, url:{action: 'payment_status_report',remote:true} do |form| %>
+ 
+<div class = "center">
+     <div class="form-group">
+        <div class="col-md-4">
+          <label class="col-sm-12 control-label">Select Payment Status</label>
+    <%= form.select :payment_status, options_for_select(['PAID', 'PENDING','ALL']),{prompt:true}, class: 'form-control' %>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+  <div id="vendor">
+</div>
+
+        
+
+<% end %>
+
+
+<script type='text/javascript'>
+$('#delivery_payment_status').on('change', function() {
+ var vendor_id;
+ Item = $(this).val();
+ $.ajax({
+   url: '/deliveries/payment_status_report',
+   type: 'GET',
+   dataType: 'script',
+   data: {vendor_id: Item},
+   }).success(function(data) {
+   
+ });
+});
+</script>

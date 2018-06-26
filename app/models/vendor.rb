@@ -1,5 +1,5 @@
 class Vendor < ApplicationRecord
-	has_many :deliveries
+	has_many :deliveries , dependent: :destroy
 
 
 def self.search(search)

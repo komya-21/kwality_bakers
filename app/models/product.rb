@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
 	after_create :add_product
+  has_one :current_inventory,dependent: :destroy
 
 
 	def add_product
@@ -28,9 +29,6 @@ def self.open_spreadsheet(file)
   end
 end
 
-def self.search(search)
-  byebug
-    where("name LIKE ?" , "%#{search}%")
-  end
+
 
 end
