@@ -10,9 +10,9 @@
   <dt><strong><%= model_class.human_attribute_name(:date) %>:</strong></dt>
   <dd><%= @delivery.date %></dd>
   <dt><strong><%= model_class.human_attribute_name(:vendor_id) %>:</strong></dt>
-  <dd><%= @delivery.vendor.name %></dd>
-   <dt><strong>Comission:</strong></dt>
-  <dd><%= @delivery.vendor.comission %>%</dd>
+  <dd><%= @delivery.vendor.name if @delivery.vendor.present?%></dd>
+ <!--   <dt><strong>Comission:</strong></dt>
+  <dd><%#= @delivery.vendor.comission %>%</dd> -->
   <dt><strong><%= model_class.human_attribute_name(:bill_checked_by) %>:</strong></dt>
   <dd><%= @delivery.bill_checked_by %></dd>
 </dl>
@@ -52,7 +52,7 @@
           <td><%= p.qty %></td>
            <%total += p.total_amt.to_i %>
                  <%substraction = p.quantity.to_i - p.qty.to_i %>
-                 <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100%>
+                 <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100 if @delivery.vendor.present?%>
           <%# if p.qty.present?%>
           <%#p.inward_product.update(quantity: p.rem_quantity)%>
           <%#end%>
