@@ -1,0 +1,23 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "deliveries") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Date Invoice\ Number Product Quantity Remaining\ Quantity Sold\ Quantity Total)
+  @delivery_items.each_with_index do |r, i|
+         @i = i += 1
+  sheet.add_row ["#{r.delivery.date}","#{r.delivery.invoice_no}","#{r.product.name}","#{r.quantity}","#{r.rem_quantity}","#{r.qty}","#{r.total_amt}"]
+          end
+          end
+
+
+
+
+
+
+
+
+
+
+
+
+           

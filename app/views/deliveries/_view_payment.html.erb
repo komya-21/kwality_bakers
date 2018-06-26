@@ -1,0 +1,42 @@
+         
+
+
+ 
+         <table id="payment_status" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Invoice no</th>
+      <th>Date</th>
+      <th>Vendor</th>
+      <th>Bill checked by</th>
+      <th>Payment Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @returns.each do |delivery| %>
+      <tr>
+        <td><%= link_to delivery.invoice_no, record_payment_delivery_path(delivery)%></td>
+        <td><%= delivery.date %></td>
+        <td><%= delivery.vendor.name %></td>
+        <td><%= delivery.bill_checked_by %></td>
+       <td><%if delivery.payment_status == true%>
+        <font color="green">Paid</font>
+        <%elsif delivery.payment_status == false%>
+        <font color="red">Pending</font>
+        <%end%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Excel", export_payment_deliveries_path(payment_status: @payment_status,format: "xlsx"), class: 'btn btn-success' %>
+
+<script type="text/javascript">
+        $('#payment_status').dataTable()
+        sPaginationType: "full_numbers"
+</script>
+
+<br>
+</div>
+

@@ -11,5 +11,4 @@ class CurrentInventory < ApplicationRecord
       end
     end
 end
-
 end

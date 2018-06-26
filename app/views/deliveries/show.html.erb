@@ -31,8 +31,8 @@
   <tbody>
 <% @delivery.delivery_inwards.each do |p|%>
       <tr>
-        <td><%= p.product.name %></td>
-        <td><%= p.product.price %></td>
+        <td><%= p.product.name if p.product.present? %></td>
+        <td><%= p.product.price if p.product.present?%></td>
         <td><%= p.quantity %></td>
          <td><%= p.rem_quantity %></td>
           <td><%= p.qty %></td>

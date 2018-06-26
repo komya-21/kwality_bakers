@@ -65,8 +65,11 @@ class DeliveriesController < ApplicationController
   # POST /deliveries.json
   def create
 
-    @delivery = Delivery.new(delivery_params)
+
+   @delivery = Delivery.new(delivery_params)
+
     @inward_products = InwardProduct.all
+
 
     respond_to do |format|
       if @delivery.save
@@ -106,6 +109,38 @@ class DeliveriesController < ApplicationController
       format.html { redirect_to deliveries_url, notice: 'Delivery was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  def payment_status_report
+     
+    @payment_status = params[:vendor_id]
+   
+
+    if @payment_status == 'PAID'
+         
+
+      @returns = Delivery.list1
+    elsif @payment_status == 'PENDING'
+      @returns = Delivery.list2
+    else
+      @returns = Delivery.all
+    end 
+  end
+  def export_payment
+
+     
+   @payment_status = params[:payment_status]
+   
+  
+
+    if @payment_status == "PAID"
+         
+
+      @returns = Delivery.list1
+    elsif @payment_status == 'PENDING'
+      @returns = Delivery.list2
+    else
+      @returns = Delivery.all
+    end 
   end
 
   private
