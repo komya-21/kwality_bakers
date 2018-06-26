@@ -90,10 +90,11 @@ Phone: 020 2687 5179</h4></div>
   <%= @delivery.date %><br>
   <strong><%= model_class.human_attribute_name(:vendor_id) %>:</strong>
   <%= @delivery.vendor.name if @delivery.vendor.present?%><br>
- <!--   <strong>Comission:</strong>
-  <%#= @delivery.vendor.comission %>%<br> -->
+<strong>Comission:</strong>
+  <%= @delivery.vendor.comission if @delivery.vendor.comission.present?%>%<br>
   <strong><%= model_class.human_attribute_name(:bill_checked_by) %>:</strong>
   <%= @delivery.bill_checked_by %><br>
+
 
 </div>
 <table class="table table-condensed table-bordered" style="margin-top: -15px; margin-bottom: 15px;">
@@ -129,24 +130,32 @@ Phone: 020 2687 5179</h4></div>
           <%p.update(quantity: p.rem_quantity)%>
           <%end%>
                     <td><%= p.total_amt %></td>
-
+ <%if @delivery.vendor.comission.present?%>
+                    <%@total_pay = total.to_i - comission.to_i%>
+                    <%else%>
+                    <%@total_pay = total.to_i %>
+<% end -%>
       </tr>
 
     <% end %>
 
-    <div class="rightdiv">
-                         <font color="green">Total Amount to Pay: <%= total%><br></font> 
+   
+  </tbody>
+</table>
+ <div class="rightdiv">
+                         <font color="green">Total Amount to Pay: <%=total%><br></font> 
                          <%@delivery.update(total_to_pay: total )%>
 
 
     <%if @delivery.remaining_price.present?%>
-        Payment Total: <%=@delivery.remaining_price%>
+        Payment Total: <%=@delivery.remaining_price%>Rs<br>
+        Paid Amt.<%=@delivery.add_price if @delivery.total_to_pay.nil?%>Rs<br>
     <%else%>
-        Payment Total: <%=  total%><br>
+        Payment Total: <%=@total_pay%>Rs<br>
     <%end%>
     
     <%if @delivery.remaining_price.present?%>
-        Remaining <%= @delivery.remaining_price%>
+        Remaining <%= @delivery.remaining_price%>Rs<br>
     <%end%>
     </div>
 
@@ -154,10 +163,8 @@ Phone: 020 2687 5179</h4></div>
 <%if @delivery.remaining_price == '0'%>
        <font color="red">Payment of Rs.<%=@delivery.total_to_pay%> Done Successfully</font>
 <%end%>
-</div>
-  </tbody>
-</table>
 
+</div>
 
 <script type="text/javascript">
 
