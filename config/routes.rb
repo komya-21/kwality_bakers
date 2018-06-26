@@ -13,6 +13,8 @@ Rails.application.routes.draw do
      collection do
       get :new_delivery
       get :select_vendor
+      get :payment_status_report
+      get :export_payment
     end
   end
   resources :inwards do
@@ -27,7 +29,13 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :reports
+  resources :reports do 
+    collection do
+      get :export
+      get :export_return
+      get :export_delivery
+    end
+  end
   resources :employees
   resources :products do
     collection { post :import }

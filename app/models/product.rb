@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
 	after_create :add_product
-  validates :product, presence:true
+  has_one :current_inventory,dependent: :destroy
 
 	def add_product
 		CurrentInventory.create(product_id: self.id , current_quantity: 0)
@@ -26,9 +26,6 @@ class Product < ApplicationRecord
     end
   end
 
-def self.search(search)
-  byebug
-    where("name LIKE ?" , "%#{search}%")
-  end
+
 
 end
