@@ -2,13 +2,13 @@ wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "deliveries") do |sheet|
   # this is the head row of your spreadsheet
-  sheet.add_row %w(Date Invoice\ Number Product Quantity Remaining\ Quantity Sold\ Quantity Total)
+   sheet.add_row %w(Vendor\ Name Date Invoice\ no	Bill\ cheked\ by Product\ Name Product\ Quantity Total\ amount(AfterCommissionPrice) Total\ Amount\ received Total\ Amount\ pending)
+
   @delivery_items.each_with_index do |r, i|
          @i = i += 1
-  sheet.add_row ["#{r.delivery.date}","#{r.delivery.invoice_no}","#{r.product.name}","#{r.quantity}","#{r.rem_quantity}","#{r.qty}","#{r.total_amt}"]
-          end
-          end
-
+sheet.add_row ["#{r.delivery.vendor.name}","#{r.delivery.date}","#{r.delivery.invoice_no}","#{r.delivery.bill_checked_by}","#{r.product.name}","#{r.qty}","#{r.delivery.total_to_pay}","#{r.total_amt}","#{r.delivery.remaining_price}"]
+  end        
+   end
 
 
 

@@ -1,9 +1,5 @@
-
-                          <%= link_to 'Back', new_report_path, class: 'btn btn-info'%>
-
+<%= link_to 'Back', new_report_path, class: 'btn btn-info'%>
 <%if @type == 'Payment Status'%>
-
-
 <font color="green"> <b>Total Deliveries</b></font
   > <%=@deliveries.count%> 
     <%#= link_to "Excel", deliveries_path(format: "xls"), class: 'btn btn-success' %>
