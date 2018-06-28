@@ -1,9 +1,5 @@
-
-                          <%= link_to 'Back', new_report_path, class: 'btn btn-info'%>
-
+<%= link_to 'Back', new_report_path, class: 'btn btn-info'%>
 <%if @type == 'Payment Status'%>
-
-
 <font color="green"> <b>Total Deliveries</b></font
   > <%=@deliveries.count%> 
     <%#= link_to "Excel", deliveries_path(format: "xls"), class: 'btn btn-success' %>
@@ -25,7 +21,7 @@
       <tr>
         <td><%= link_to delivery.invoice_no, record_payment_delivery_path(delivery)%></td>
         <td><%= delivery.date %></td>
-        <td><%= delivery.vendor.name %></td>
+        <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
         <td><%= delivery.bill_checked_by %></td>
        <td><%if delivery.payment_status == true%>
         <font color="green">Paid</font>
@@ -75,8 +71,8 @@
       <tr>
         <td><%= return_module.date_of_return %></td>
         <td><%= return_module.invoice_number %></td>
-        <td><%= return_module.vendor.name %></td>
-        <td><%= return_module.product.name %></td>
+        <td><%= return_module.vendor.name if return_module.vendor.present?%></td>
+        <td><%= return_module.product.name if return_module.product.present? %></td>
         <td><%= return_module.return_quantity %></td>
         <td><%= return_module.purpose %></td>
         <td><%= return_module.receipt_no %></td>
@@ -155,7 +151,6 @@
     <tr>
       <th>Date</th>
       <th>Invoice number</th>
-      
       <th>Product</th>
       <th>Quantity</th>
       <th>Remaining Quantity</th>
