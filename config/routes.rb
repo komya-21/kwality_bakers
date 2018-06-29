@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     collection do
       get :load_item_data
       get :stock
+      get :export_inward
     end
   end
   resources :vendors do

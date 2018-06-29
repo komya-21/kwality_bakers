@@ -87,7 +87,9 @@ class InwardsController < ApplicationController
       end
     end
   end
-
+def export_inward
+  @total_inwards = InwardProduct.all
+end
   # DELETE /inwards/1
   # DELETE /inwards/1.json
   def destroy

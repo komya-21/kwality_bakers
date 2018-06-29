@@ -1,0 +1,10 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "InwardsProducts") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Date Inward\ Number Product Quantity)
+  @total_inwards.each_with_index do |r, i|
+         @i = i += 1
+  sheet.add_row ["#{r.inward.date}","#{r.inward.inward_no}","#{r.product.name}","#{r.quantity}"]
+          end
+          end
