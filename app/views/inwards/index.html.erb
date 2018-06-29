@@ -1,6 +1,5 @@
 <%- model_class = Inward -%>
 
-<%= link_to "Excel", export_inward_inwards_path(format: "xlsx"), class: 'btn btn-success' %>
 
 
 
@@ -14,7 +13,7 @@
 <table id="inwards" class="table table-striped">
 
   Download:
-  <%= link_to "Excel", inwards_path(format: "xls"),class: 'btn btn-success' %>
+<%= link_to "Excel", export_inward_inwards_path(format: "xlsx"), class: 'btn btn-success' %>
 </p>
 
   <thead>
