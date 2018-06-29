@@ -1,14 +1,95 @@
 wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "deliveries") do |sheet|
-  # this is the head row of your spreadsheet
-   sheet.add_row %w(Vendor\ Name Date Invoice\ no	Bill\ cheked\ by Product\ Name Product\ Quantity Total\ amount(AfterCommissionPrice) Total\ Amount\ received Total\ Amount\ pending)
+# this is the head row of your spreadsheet
+sheet.add_row %w(Vendor\ Name Spl.Bread\ 400gms
+Junior\ Bread\ 200\ gms
+Bread\ B.P.3000\ gms
+Bun\ Pav\ 90\ gms
+Bun\ 6\ Pieces\ pkt.250\ gms
+Fruity\ Bread\ 200\ gms
+Ladi\ Pav\ 240\ gms
+Bread\ 1000gms
+Bread\ 800gms
+Bread\ Blue\ 600\ gms
+Bread\ White\ 600\ gms
+Bread\ 300\ gms
+AnyTime\ Bread\ 400\ gms
+Brown\ Bread\ 400\ gms
+Brown\ Bread\ 200\ gms
+Super\ Fine\ Bread\ 400\ gms
+Sandwich\ Bread\ 400\ gms
+Milk\ Bread\ 300\ gms
+Sweet\ Bread\ Roll\ 100\ gms
+Pizza\ Base\ 200\ gms
+Pattice\ Per\ Piece
+Milk\ Toast\ New\ 200\ gms
+Kaju\ Toast\ 200\ gms
+AnyTime\ Toast\ 500\ gms
+Sweet\ Toast\ 160\ gms
+Milk\ Rusk\ Toast\ 450\ gms
+Suzi\ Toast\ 80\ gms
+Suzi\ Toast\ 500\ gms
+Suzi\ Toast\ 250\ gms
+Premium\ Toast\ 500\ gms
+Fruit\ Toast\ 4000\ gms
+Fruit\ Toast\ 200\ gms
+Jeera\ Toast\ 200\ gms
+Wheat\ Toast\ 200\ gms
+Rich\ Milk\ Toast\ 300\ gms
+Jeera\ Butter\ 500\ gms
+Jeera\ Butter\ 140\ gms
+Jeera\ Butter\ 75\ gms
+Maska\ Butter\ 3000\ gms
+Cream\ Rolls\ 12\ pcs
+Cream\ Rolls\ 24\ pcs
+Spl.Khari\ 200\ gms
+Maska\ Khari\ 2500\ gms
+Maska\ Khari\ 175\ gms
+Phool\ Khari\ 4000\ gms
+Pech\ Khari\ 3000\ gms
+Rich\ Khari\ 200\ gms
+W.W.Khari\ 200\ gms
+Khari\ 6\ pcs.\ 100\ gms
+Khari\ 6\ pcs./PKT80\ gms
+Jeera\ Khari\ 150\ gms
+Sweet\ Khari\ 150\ gms
+Jeera\ Bisc.250\ gms
+Butter\ Bisc.250\ gms
+Phool\ Bisc.\ 250\ gms
+Coconut\ Bisc.250\ gms
+Chocolate\ Bisc.\ 250\ gms
+Jam\ Bisc.250\ gms
+Milk\ Bisc.250\ gms
+Butter\ Bisc.500\ gms
+Chocolate\ Bisc.500\ gms
+Jam\ Bisc.500\ gms
+Milk\ Bisc.200\ gms
+Chocolate\ Bisc.200\ gms
+  Date Invoice\ no	Bill\ cheked\ by  Product\ Quantity Total\ amount(AfterCommissionPrice) Total\ Amount\ received Total\ Amount\ pending)
 
-  @delivery_items.each_with_index do |r, i|
-         @i = i += 1
-sheet.add_row ["#{r.delivery.vendor.name}","#{r.delivery.date}","#{r.delivery.invoice_no}","#{r.delivery.bill_checked_by}","#{r.product.name}","#{r.qty}","#{r.delivery.total_to_pay}","#{r.total_amt}","#{r.delivery.remaining_price}"]
-  end        
-   end
+    @delivery_items.each do |r|
+
+    if r.product.name == 'Spl.Bread 400gms'
+      @prod1 = r.qty
+    end
+
+    if r.product.name == 'Junior Bread 200 gms'
+      @prod2 = r.qty
+    end
+
+    if r.product.name == 'Bread B.P.3000 gms'
+      @prod3 = r.qty
+    end
+
+    if r.delivery.vendor.name.present?
+    	@vendor = r.delivery.vendor.name.uniq
+    end
+
+	sheet.add_row ["#{@vendor}","#{@prod1}","#{@prod2}","#{@prod3}"]
+	end   
+
+end
 
 
 
