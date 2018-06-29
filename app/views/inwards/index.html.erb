@@ -1,5 +1,8 @@
 <%- model_class = Inward -%>
 
+<%= link_to "Excel", export_inward_inwards_path(format: "xlsx"), class: 'btn btn-success' %>
+
+
 
 <div class="page-header">
   <h4><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h4>
