@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
 	after_create :add_product
-  has_one :current_inventory,dependent: :destroy
+  has_one :current_inventory
 
 
 	def add_product

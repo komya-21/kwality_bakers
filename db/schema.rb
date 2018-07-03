@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180601092008) do
+ActiveRecord::Schema.define(version: 20180703113508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20180601092008) do
     t.string "remaining_price"
     t.string "total_to_pay"
     t.boolean "payment_status", default: false
+    t.string "comission"
     t.index ["vendor_id"], name: "index_deliveries_on_vendor_id"
   end
 
@@ -105,6 +106,7 @@ ActiveRecord::Schema.define(version: 20180601092008) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "inward_id"
+    t.string "delivery_quantity"
     t.index ["inward_id"], name: "index_products_on_inward_id"
   end
 
@@ -156,9 +158,6 @@ ActiveRecord::Schema.define(version: 20180601092008) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "current_inventories", "delivery_inwards"
-  add_foreign_key "current_inventories", "inward_products"
-  add_foreign_key "current_inventories", "products"
   add_foreign_key "deliveries", "vendors"
   add_foreign_key "delivery_inwards", "deliveries"
   add_foreign_key "delivery_inwards", "inward_products"
