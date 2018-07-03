@@ -31,7 +31,7 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/new
   def new
     @delivery = Delivery.new
-    @delivery.invoice_no
+    @delivery.invoice_no = Delivery.invoice_no
   end
 
   # GET /deliveries/1/edit

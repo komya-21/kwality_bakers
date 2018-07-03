@@ -6,11 +6,15 @@ class Delivery < ApplicationRecord
   accepts_nested_attributes_for :delivery_inwards, reject_if: :all_blank, allow_destroy: true, :update_only => true
   scope :list1, -> {where(payment_status: true)}
   scope :list2, -> {where(payment_status: false)}
-	def invoice_no
+
+  def self.invoice_no
     date = Date.today.strftime('%Y%m%d')
-    self.invoice_no = 'INV' + date.to_s + '1' if Inward.first.nil?
-    self.invoice_no = 'INV' + date.to_s + \
-                          Inward.last.id.next.to_s unless Inward.first.nil?
+    if Delivery.first.nil?
+      'D' + date.to_s + '1'
+    else
+      last_id = Delivery.last.id.next
+      'D' + date.to_s + last_id.to_s
+    end
   end
 
 
