@@ -25,17 +25,11 @@ class ReportsController < ApplicationController
 		@return_modules = Return.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
 
 		@inward_modules = InwardProduct.all
+		@deliveries1 = Delivery.where('created_at BETWEEN ? AND ?', @start_date,@end_date)
 
-		@delivery_items = DeliveryInward.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
-		@delivery_items.each do |d| 
-		 @date = d.created_at.between?(@start_date , @end_date)
-		 
-		end 
 		
-		@delivery_ids = @delivery_items.all.map{|i| i.delivery_id}.to_a
-		@uniq_delivery_items = @delivery_items.all.map{|i| [i.product.name,i.product_id , i.product.price , i.delivery.vendor.comission]}.to_a.uniq
-
-		@delivery_qty = @delivery_items.all
+		@delivery_items = DeliveryInward.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+		
 	
 		
 	    @total_inwards = InwardProduct.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
@@ -68,11 +62,19 @@ end
 def export_delivery
 @start_date = params[:start_date].to_date
 @end_date = params[:end_date].to_date
-@delivery_items = DeliveryInward.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
-@delivery_vendors = Vendor.all.map{|i| i.name}.to_a
-@product = Product.all
-@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+@delivery_inwards = DeliveryInward.all
+@deliveries = Delivery.all
 
+
+
+
+@delivery_items = DeliveryInward.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+
+
+@delivery_vendors = Vendor.all.map{|i| i.name}.to_a
+@products = Product.all.order(:id)
+@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+@delivery_inwards = DeliveryInward.all
 end
 	 
 

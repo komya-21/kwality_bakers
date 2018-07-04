@@ -152,44 +152,67 @@
           <table class="table table-striped table-bordered table-hover dataTables-example" >
 
   <thead>
-     <tr >
+    <tr>
+      <th>Date</th>
+      <th>Invoice number</th>
       <th>Product</th>
       <th>Quantity</th>
-      <th>Amount </th>
-      
-      
+      <th>Remaining Quantity</th>
+       <th>Sold Quantity</th>
+       <th>Total</th>
+  
+    </tr>
+  </thead>
+  <tbody>
+  <% i = 0 %>
+    <% @delivery_items.each do |delivery_item| %>
+ 
+       <td><%= delivery_item.delivery.date %></td>
+       
+        <td><%= delivery_item.delivery.invoice_no %></td>
+        <td><%= delivery_item.product.name %></td>
+        <td><%= delivery_item.quantity %></td>
+        <td><%= delivery_item.rem_quantity %></td>
+        <td><%= delivery_item.qty %></td>
+        <td><%= delivery_item.total_amt %></td>
+
       </tr>
-     </thead>
-     <%Product.all.each do |p|%>
-     <tr>
-    <th><%= p.name%></th>
-  </tr>
-    <%end%>
-    
-    
-     <tbody>
-      <%@deliveries.each do |d|%>
+    <% end %>
+  </tbody>
+</table>
+<br>
+</div>
 
-      <%d.delivery_inwards.each do |di|%>
 
-      <%if d.date.between?(@start_date, @end_date)%>
 
-     <td><%= di.qty%></td>
-     <td><%= di.qty.to_i * di.product.price.to_i %> </td>
-    
-      <%end%>
+<%end%>
 
-       </tr>
       
-      <% end %>
-  <%end%>
+     
+      
+     
+     
+     
+
+     
+
+
+     
+     
+
+       
+      
+     
+ 
       
     
      
    
     
 
-  </tbody>
+  
+    
+   
       
       
       
@@ -222,10 +245,6 @@
      
     
  
-</table>
-<br>
-</div>
-<% end %>
 
 
 

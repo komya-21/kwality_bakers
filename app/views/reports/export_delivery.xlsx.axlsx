@@ -2,93 +2,57 @@ wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "deliveries") do |sheet|
 # this is the head row of your spreadsheet
-sheet.add_row %w(Vendor\ Name Spl.Bread\ 400gms
-Junior\ Bread\ 200\ gms
-Bread\ B.P.3000\ gms
-Bun\ Pav\ 90\ gms
-Bun\ 6\ Pieces\ pkt.250\ gms
-Fruity\ Bread\ 200\ gms
-Ladi\ Pav\ 240\ gms
-Bread\ 1000gms
-Bread\ 800gms
-Bread\ Blue\ 600\ gms
-Bread\ White\ 600\ gms
-Bread\ 300\ gms
-AnyTime\ Bread\ 400\ gms
-Brown\ Bread\ 400\ gms
-Brown\ Bread\ 200\ gms
-Super\ Fine\ Bread\ 400\ gms
-Sandwich\ Bread\ 400\ gms
-Milk\ Bread\ 300\ gms
-Sweet\ Bread\ Roll\ 100\ gms
-Pizza\ Base\ 200\ gms
-Pattice\ Per\ Piece
-Milk\ Toast\ New\ 200\ gms
-Kaju\ Toast\ 200\ gms
-AnyTime\ Toast\ 500\ gms
-Sweet\ Toast\ 160\ gms
-Milk\ Rusk\ Toast\ 450\ gms
-Suzi\ Toast\ 80\ gms
-Suzi\ Toast\ 500\ gms
-Suzi\ Toast\ 250\ gms
-Premium\ Toast\ 500\ gms
-Fruit\ Toast\ 4000\ gms
-Fruit\ Toast\ 200\ gms
-Jeera\ Toast\ 200\ gms
-Wheat\ Toast\ 200\ gms
-Rich\ Milk\ Toast\ 300\ gms
-Jeera\ Butter\ 500\ gms
-Jeera\ Butter\ 140\ gms
-Jeera\ Butter\ 75\ gms
-Maska\ Butter\ 3000\ gms
-Cream\ Rolls\ 12\ pcs
-Cream\ Rolls\ 24\ pcs
-Spl.Khari\ 200\ gms
-Maska\ Khari\ 2500\ gms
-Maska\ Khari\ 175\ gms
-Phool\ Khari\ 4000\ gms
-Pech\ Khari\ 3000\ gms
-Rich\ Khari\ 200\ gms
-W.W.Khari\ 200\ gms
-Khari\ 6\ pcs.\ 100\ gms
-Khari\ 6\ pcs./PKT80\ gms
-Jeera\ Khari\ 150\ gms
-Sweet\ Khari\ 150\ gms
-Jeera\ Bisc.250\ gms
-Butter\ Bisc.250\ gms
-Phool\ Bisc.\ 250\ gms
-Coconut\ Bisc.250\ gms
-Chocolate\ Bisc.\ 250\ gms
-Jam\ Bisc.250\ gms
-Milk\ Bisc.250\ gms
-Butter\ Bisc.500\ gms
-Chocolate\ Bisc.500\ gms
-Jam\ Bisc.500\ gms
-Milk\ Bisc.200\ gms
-Chocolate\ Bisc.200\ gms
-  Date Invoice\ no	Bill\ cheked\ by  Product\ Quantity Total\ amount(AfterCommissionPrice) Total\ Amount\ received Total\ Amount\ pending)
+sheet.add_row %w( Sr.\ no Product Quantity Amount)
+
+@products.each_with_index do |p, i|
+ @i = i+1
+
+
+
+
+sheet.add_row ["#{@i}","#{p.name}" ," " ," "]
+end
+@qty1 = 0
+@amt1 = 0
+@s = 0
+@uniq = @delivery_items.all.map{|k| k.product.name}.uniq.to_a
+@count = @uniq.count
+
+
+@delivery_items.each do |d|
+@s +=1
+
+
+if(@s <= @count)
+
+@index = d.product_id
+ 
+
+@prod = @delivery_items.where(product_id: d.product_id).all.map{|k| k.qty.to_i}.to_a
+
+
+@qty = @prod.inject(0){|sum,x| sum+x}
+@amt = @qty * d.product.price.to_i
+
+@qty1 += @qty
+@amt1 += @amt
+
+
+sheet.rows[@index].cells[2].value = @qty
+sheet.rows[@index].cells[3].value = @amt
+end
+end
+
+
+
+
+sheet.add_row [" "," " ,"Total: #{@qty1}","Total: #{@amt1}"]
+
+
   	
     
-    @deliveries.each do |d|
-    d.delivery_inwards.each do |r|
-    @products = []
     
-    @products.push([r.product.name,r.qty])
-    end
-
-    @intr = @product & @products.to_h.keys
-    if d.vendor.name.present?
-      @vendor = d.vendor.name
-    end
-    sheet.add_row ["#{@vendor}"]
-
-    @index = @intr.map{|i| @products.to_h.keys.find_index(i) }
-    @index.each do |j|
-    p = @products.to_h.values[j]
-    sheet.add_cell(value = '', options = {}) 
-    end
-    end
-
+    
      
     
      
