@@ -12,6 +12,11 @@
             new_inward_path,
             :class => 'btn btn-primary' %>
 <table id="inwards" class="table table-striped">
+
+  Download:
+  <%= link_to "Excel", inwards_path(format: "xls"),class: 'btn btn-success' %>
+</p>
+
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
@@ -47,6 +52,8 @@
         $('#inwards').dataTable()
         sPaginationType: "full_numbers"
 </script>
+
+
 
 
 

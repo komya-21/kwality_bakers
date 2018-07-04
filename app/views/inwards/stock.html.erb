@@ -5,7 +5,10 @@
   <h4><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h4>
 </div>
 
-
+<p>
+  Download:
+  <%= link_to "Excel", stock_inwards_path(format: "xls"),class: 'btn btn-success' %>
+</p>
 
 <table id="stocks" class="table table-striped">
 	<thead>
@@ -42,9 +45,6 @@
         $('#stocks').dataTable()
         sPaginationType: "full_numbers"
 </script>
-
-	
-	 
 	  
         
        

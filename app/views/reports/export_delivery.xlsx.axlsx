@@ -1,15 +1,12 @@
 wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "deliveries") do |sheet|
+
 # this is the head row of your spreadsheet
 sheet.add_row %w( Sr.\ no Product Quantity Amount)
 
 @products.each_with_index do |p, i|
  @i = i+1
-
-
-
-
 sheet.add_row ["#{@i}","#{p.name}" ," " ," "]
 end
 @qty1 = 0
@@ -43,30 +40,5 @@ sheet.rows[@index].cells[3].value = @amt
 end
 end
 
-
-
-
 sheet.add_row [" "," " ,"Total: #{@qty1}","Total: #{@amt1}"]
-
-
-  	
-    
-    
-    
-     
-    
-     
-
-
-
-
-
-    
-    
-
-		
-    
-
-	
-
 end

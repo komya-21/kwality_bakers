@@ -2,6 +2,7 @@ class Return < ApplicationRecord
   belongs_to :vendor
   belongs_to :inward_product , optional: true
   belongs_to :product
+  validates :product, presence:true
   scope :list1, -> {where(return_type: 'OK')}
   scope :list2, -> {where(return_type: 'NOT-OK')}
 

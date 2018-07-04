@@ -164,7 +164,6 @@ ActiveRecord::Schema.define(version: 20180703113508) do
   add_foreign_key "delivery_inwards", "products"
   add_foreign_key "inward_products", "inwards"
   add_foreign_key "inward_products", "products"
-  add_foreign_key "products", "inwards"
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"

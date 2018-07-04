@@ -89,11 +89,12 @@ Phone: 020 2687 5179</h4></div>
   <strong><%= model_class.human_attribute_name(:date) %>:</strong>
   <%= @delivery.date %><br>
   <strong><%= model_class.human_attribute_name(:vendor_id) %>:</strong>
-  <%= @delivery.vendor.name %><br>
-   <strong>Comission:</strong>
-  <%= @delivery.vendor.comission %>%<br>
+  <%= @delivery.vendor.name if @delivery.vendor.present?%><br>
+<strong>Comission:</strong>
+  <%= @delivery.vendor.comission if @delivery.vendor.comission.present?%>%<br>
   <strong><%= model_class.human_attribute_name(:bill_checked_by) %>:</strong>
   <%= @delivery.bill_checked_by %><br>
+
 
 </div>
 <table class="table table-condensed table-bordered" style="margin-top: -15px; margin-bottom: 15px;">
@@ -103,8 +104,8 @@ Phone: 020 2687 5179</h4></div>
                 </tr>
       <th>Product Name</th>
       <th>Price</th>
-      <th>Qunatity</th>
-      <th>Remaning QTY</th>
+     <!--  <th>Qunatity</th>
+      <th>Remaning QTY</th> -->
       <th>Delivered QTY</th>
       <th> Total Amout</th>
     </tr>
@@ -117,36 +118,44 @@ Phone: 020 2687 5179</h4></div>
 
 <%@delivery.delivery_inwards.each do |p|%>
       <tr>
-        <td><%= p.inward_product.product.name %></td>
-        <td><%= p.inward_product.product.price %></td>
-        <td><%= p.quantity %></td>
-         <td><%= p.rem_quantity %></td>
+        <td><%= p.product.name %></td>
+        <td><%= p.product.price %></td>
+      <!--   <td><%#= p.quantity %></td>
+         <td><%#= p.rem_quantity %></td> -->
           <td><%= p.qty %></td>
            <%total += p.total_amt.to_i %>
-                 <%substraction = p.inward_product.quantity.to_i - p.qty.to_i %>
-                 <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100%>
+                 <%substraction = p.quantity.to_i - p.qty.to_i %>
+                 <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100 if @delivery.vendor.present?%>
           <% if p.qty.present?%>
-          <%p.inward_product.update(quantity: p.rem_quantity)%>
+          <%p.update(quantity: p.rem_quantity)%>
           <%end%>
                     <td><%= p.total_amt %></td>
-
+ <%if @delivery.vendor.comission.present?%>
+                    <%@total_pay = total.to_i - comission.to_i%>
+                    <%else%>
+                    <%@total_pay = total.to_i %>
+<% end -%>
       </tr>
 
     <% end %>
 
-    <div class="rightdiv">
-                         <font color="green">Total Amount to Pay: <%= total%><br></font> 
+   
+  </tbody>
+</table>
+ <div class="rightdiv">
+                         <font color="green">Amount:<%=total%><br></font> 
                          <%@delivery.update(total_to_pay: total )%>
 
 
     <%if @delivery.remaining_price.present?%>
-        Payment Total: <%=@delivery.remaining_price%>
+        Payment Total: <%=@delivery.remaining_price%>Rs<br>
+        Paid Amt.<%=@delivery.add_price if @delivery.total_to_pay.nil?%>Rs<br>
     <%else%>
-        Payment Total: <%=  total%><br>
+        To Pay: <%=@total_pay%>Rs<br>
     <%end%>
     
     <%if @delivery.remaining_price.present?%>
-        Remaining <%= @delivery.remaining_price%>
+        Remaining <%= @delivery.remaining_price%>Rs<br>
     <%end%>
     </div>
 
@@ -154,10 +163,8 @@ Phone: 020 2687 5179</h4></div>
 <%if @delivery.remaining_price == '0'%>
        <font color="red">Payment of Rs.<%=@delivery.total_to_pay%> Done Successfully</font>
 <%end%>
-</div>
-  </tbody>
-</table>
 
+</div>
 
 <script type="text/javascript">
 
