@@ -73,6 +73,7 @@ class DeliveriesController < ApplicationController
 
     respond_to do |format|
       if @delivery.save
+       
             @delivery.delivery_inwards.each do |d|
               @current = CurrentInventory.find_by(product_id: d.product_id)
               @current.update(current_quantity: d.rem_quantity)

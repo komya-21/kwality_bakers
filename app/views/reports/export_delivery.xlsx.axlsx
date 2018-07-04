@@ -1,23 +1,44 @@
 wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "deliveries") do |sheet|
-  # this is the head row of your spreadsheet
-   sheet.add_row %w(Vendor\ Name Date Invoice\ no	Bill\ cheked\ by Product\ Name Product\ Quantity Total\ amount(AfterCommissionPrice) Total\ Amount\ received Total\ Amount\ pending)
 
-  @delivery_items.each_with_index do |r, i|
-         @i = i += 1
-sheet.add_row ["#{r.delivery.vendor.name}","#{r.delivery.date}","#{r.delivery.invoice_no}","#{r.delivery.bill_checked_by}","#{r.product.name}","#{r.qty}","#{r.delivery.total_to_pay}","#{r.total_amt}","#{r.delivery.remaining_price}"]
-  end        
-   end
+# this is the head row of your spreadsheet
+sheet.add_row %w( Sr.\ no Product Quantity Amount)
 
-
-
-
-
-
-
+@products.each_with_index do |p, i|
+ @i = i+1
+sheet.add_row ["#{@i}","#{p.name}" ," " ," "]
+end
+@qty1 = 0
+@amt1 = 0
+@s = 0
+@uniq = @delivery_items.all.map{|k| k.product.name}.uniq.to_a
+@count = @uniq.count
 
 
+@delivery_items.each do |d|
+@s +=1
 
 
-           
+if(@s <= @count)
+
+@index = d.product_id
+ 
+
+@prod = @delivery_items.where(product_id: d.product_id).all.map{|k| k.qty.to_i}.to_a
+
+
+@qty = @prod.inject(0){|sum,x| sum+x}
+@amt = @qty * d.product.price.to_i
+
+@qty1 += @qty
+@amt1 += @amt
+
+
+sheet.rows[@index].cells[2].value = @qty
+sheet.rows[@index].cells[3].value = @amt
+end
+end
+
+sheet.add_row [" "," " ,"Total: #{@qty1}","Total: #{@amt1}"]
+end

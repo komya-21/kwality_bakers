@@ -1,0 +1,28 @@
+<%= form_for @current_inventory, url: {action: 'update', controller: 'current_inventories'},:html => { :class => "form-horizontal product" } do |f| %>
+
+  
+
+  <div class="form-group">
+    <%= f.label :product, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :product,value: @current_inventory.product.name, :class => 'form-control' %>
+    </div>
+    
+  </div>
+  <div class="form-group">
+    <%= f.label :quantity, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :current_quantity, :class => 'form-control' %>
+    </div>
+    
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                stock_inwards_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>

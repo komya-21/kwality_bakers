@@ -29,6 +29,7 @@
     </tr>
   </thead>
   <tbody>
+    <% total=0 %>
 <% @delivery.delivery_inwards.each do |p|%>
       <tr>
         <td><%= p.product.name if p.product.present? %></td>
@@ -40,9 +41,20 @@
           <%#.update(after_delivery_string: p.rem_quantity)%>
           <%#end%>
                     <td><%= p.total_amt %></td>
+                    <% total += p.total_amt.to_i %>
+                    
+                    <% @comission = (total.to_i * @delivery.vendor.comission.to_i)/100 if @delivery.vendor.present? %>
+                    
+
 
       </tr>
     <% end %>
+    <% if @delivery.vendor.comission.present? %>
+                    <td><%= @total_pay = total.to_i - @comission.to_i %></td>
+                    
+                    <% @delivery.update(comission: @total_pay) %>
+                    
+                    <% end %>
   </tbody>
 </table>
 
