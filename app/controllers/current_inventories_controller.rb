@@ -35,6 +35,21 @@ class CurrentInventoriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  def reset
+  	@current_inventory = CurrentInventory.find(params[:id])
+  	 if @current_inventory.update(current_quantity: 0)
+  	 	redirect_to "/inwards/stock"
+        
+      end
+
+  end
+  def reset_all
+  	@current_inventories = CurrentInventory.all
+
+  	if @current_inventories.update(current_quantity: 0)
+  	redirect_to "/inwards/stock"
+  end
+  end
 
 	def current_inventory_params
 		params.require(:current_inventory).permit(:product_id , :current_quantity)

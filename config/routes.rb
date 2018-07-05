@@ -32,9 +32,11 @@ Rails.application.routes.draw do
   resources :current_inventories do
     collection do
       get :export_stock
+      get :reset_all
     end
     member do
       get :new1
+      get :reset
     end
   end
   

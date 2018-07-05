@@ -21,7 +21,7 @@ class InwardsController < ApplicationController
 
   def stock
 
-    @inwards = Inward.all
+   
     @inward_products = InwardProduct.all
     @inwards = Inward.paginate(:page => params[:page], :per_page => 10)
     @qua = InwardProduct.search(params[:search])
@@ -60,6 +60,7 @@ class InwardsController < ApplicationController
           if @inward.save
            @inward.inward_products.each do |ip|
             @current = CurrentInventory.find_by(product_id: ip.product_id)
+            
           
             @current.update(current_quantity: @current.current_quantity.to_i+ip.quantity.to_i)
           end
