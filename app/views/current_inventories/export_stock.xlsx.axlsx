@@ -4,7 +4,9 @@ wb.add_worksheet(name: "Inwards") do |sheet|
   # this is the head row of your spreadsheet
   sheet.add_row %w(Product Quantity)
   @current_inventories.each do |r|
-      
-  sheet.add_row ["#{r.product.name}","#{r.current_quantity}"]
+      if r.product.present? 
+      @prod = r.product.name
+      end
+  sheet.add_row ["#{@prod}","#{r.current_quantity}"]
           end
           end
