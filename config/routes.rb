@@ -29,6 +29,14 @@ Rails.application.routes.draw do
       get :load_vendor
     end
   end
+  resources :current_inventories do
+    collection do
+      get :export_stock
+    end
+    member do
+      get :new1
+    end
+  end
   
   resources :reports do 
     collection do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180601092008) do
+ActiveRecord::Schema.define(version: 20180703113508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20180601092008) do
     t.string "remaining_price"
     t.string "total_to_pay"
     t.boolean "payment_status", default: false
+    t.string "comission"
     t.index ["vendor_id"], name: "index_deliveries_on_vendor_id"
   end
 
@@ -104,6 +105,7 @@ ActiveRecord::Schema.define(version: 20180601092008) do
     t.string "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "delivery_quantity"
   end
 
   create_table "returns", force: :cascade do |t|
