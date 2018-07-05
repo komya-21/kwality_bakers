@@ -22,7 +22,7 @@
     <tbody>
 	<% @current_inventories.each do |c| %>
 		<tr>
-			<td><%= c.product.name %></td>
+			<td><%= c.product.name if c.product.present?%></td>
 			<td><%= c.current_quantity %></td>
 			<td><%= link_to "Show" ,current_inventory_path(c),class: "btn btn-default btn-xs"  %></td>
 			<td><%= link_to "Edit" ,edit_current_inventory_path(c),class: "btn btn-default btn-xs" %></td>
