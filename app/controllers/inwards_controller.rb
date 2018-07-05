@@ -20,13 +20,15 @@ class InwardsController < ApplicationController
   end
 
   def stock
-
-   
+    @inwards = Inward.all
     @inward_products = InwardProduct.all
-    @inwards = Inward.paginate(:page => params[:page], :per_page => 10)
     @qua = InwardProduct.search(params[:search])
     @current_inventories = CurrentInventory.all
-
+    respond_to do |format|
+        format.html
+        format.csv { send_data @current_inventories.to_csv }
+        format.xls { send_data @current_inventories.to_csv(col_sep: "\t") }
+    end
   end
 
 

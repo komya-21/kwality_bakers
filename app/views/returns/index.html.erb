@@ -6,6 +6,12 @@
             new_return_path,
             :class => 'btn btn-primary' %><br>
 <table id="returns" class="table table-striped">
+
+<p>
+  Download:
+  <%= link_to "Excel", returns_path(format: "xls"), class: 'btn btn-success' %>
+</p>
+
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
