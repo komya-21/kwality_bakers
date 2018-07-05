@@ -2,11 +2,15 @@ class Inward < ApplicationRecord
 	has_many :inward_products, inverse_of: :inward, dependent: :destroy
   accepts_nested_attributes_for :inward_products, reject_if: :all_blank, allow_destroy: true, :update_only => true
   validates :inward_products, presence:true
-	def inward_no
+  
+  def self.inward_no
     date = Date.today.strftime('%Y%m%d')
-    self.inward_no = 'IN' + date.to_s + '1' if Inward.first.nil?
-    self.inward_no = 'IN' + date.to_s + \
-                          Inward.last.id.next.to_s unless Inward.first.nil?
+    if Inward.first.nil?
+      'INV' + date.to_s + '1'
+    else
+      last_id = Inward.last.id.next
+      'INV' + date.to_s + last_id.to_s
+    end
   end
 
     def self.to_csv(options = {})
@@ -17,12 +21,4 @@ class Inward < ApplicationRecord
       end
     end
 end
-
-
- 
 end
-    
-
-  
-
-
