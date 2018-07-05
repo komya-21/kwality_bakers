@@ -8,5 +8,5 @@ wb.add_worksheet(name: "Inwards") do |sheet|
       @prod = r.product.name
       end
   sheet.add_row ["#{@prod}","#{r.current_quantity}"]
-          end
-          end
+ end
+end

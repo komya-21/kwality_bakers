@@ -61,6 +61,7 @@ class InwardsController < ApplicationController
           if @inward.save
            @inward.inward_products.each do |ip|
             @current = CurrentInventory.find_by(product_id: ip.product_id)
+            
           
             @current.update(current_quantity: @current.current_quantity.to_i+ip.quantity.to_i)
           end
