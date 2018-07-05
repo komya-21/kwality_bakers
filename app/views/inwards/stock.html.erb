@@ -5,7 +5,7 @@
   <h4><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h4>
 </div>
 
-<%= link_to "Reset All" , reset_all_current_inventories_path,class: "btn btn-warning btn-xs" %></td>
+
 
 <table id="stocks" class="table table-striped">
 	<thead>
@@ -15,7 +15,7 @@
 		<th></th>
 		<th></th>
 		<th></th>
-		<th></th>
+		<th><%= link_to "Reset All" , reset_all_current_inventories_path,class: "btn btn-warning btn-xs" %><br></th>
 	  </tr>
     </thead>
     <tbody>

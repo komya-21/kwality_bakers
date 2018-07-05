@@ -45,8 +45,10 @@ class CurrentInventoriesController < ApplicationController
   end
   def reset_all
   	@current_inventories = CurrentInventory.all
+  	@reset_entries = @current_inventories.where(["current_quantity > ?","0"])
+  	
 
-  	if @current_inventories.update(current_quantity: 0)
+  	if @reset_entries.update(current_quantity: 0)
   	redirect_to "/inwards/stock"
   end
   end
