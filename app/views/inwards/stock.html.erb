@@ -18,6 +18,7 @@
 		<th></th>
 		<th></th>
 		<th></th>
+		<th><%= link_to "Reset All" , reset_all_current_inventories_path,class: "btn btn-warning btn-xs" %><br></th>
 	  </tr>
     </thead>
     <tbody>
@@ -27,6 +28,7 @@
 			<td><%= c.current_quantity %></td>
 			<td><%= link_to "Show" ,current_inventory_path(c),class: "btn btn-default btn-xs"  %></td>
 			<td><%= link_to "Edit" ,edit_current_inventory_path(c),class: "btn btn-default btn-xs" %></td>
+			<td><%= link_to "Reset" , reset_current_inventory_path(c),class: "btn btn-default btn-xs" %></td>
 			
 			<td><%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       current_inventory_path(c),

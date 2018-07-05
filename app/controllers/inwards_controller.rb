@@ -22,7 +22,6 @@ class InwardsController < ApplicationController
   def stock
     @inwards = Inward.all
     @inward_products = InwardProduct.all
-    @inwards = Inward.paginate(:page => params[:page], :per_page => 10)
     @qua = InwardProduct.search(params[:search])
     @current_inventories = CurrentInventory.all
     respond_to do |format|
@@ -30,7 +29,6 @@ class InwardsController < ApplicationController
         format.csv { send_data @current_inventories.to_csv }
         format.xls { send_data @current_inventories.to_csv(col_sep: "\t") }
     end
-            @current_inventories = CurrentInventory.paginate(:page => params[:page], :per_page => 10)
   end
 
 
@@ -64,6 +62,7 @@ class InwardsController < ApplicationController
           if @inward.save
            @inward.inward_products.each do |ip|
             @current = CurrentInventory.find_by(product_id: ip.product_id)
+            
           
             @current.update(current_quantity: @current.current_quantity.to_i+ip.quantity.to_i)
           end
