@@ -7,6 +7,7 @@ class ReportsController < ApplicationController
 		
 		@payment_status = params[:report][:return_type]
     @deliveries = Delivery.all
+    @vendors = Vendor.all
 
     if @payment_status == 'PAID'
       @returns = Delivery.list1
@@ -27,7 +28,7 @@ class ReportsController < ApplicationController
 		@inward_modules = InwardProduct.all
 		@deliveries1 = Delivery.where('created_at BETWEEN ? AND ?', @start_date,@end_date)
 
-		
+		 
 		@delivery_items = DeliveryInward.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
 		
 	
