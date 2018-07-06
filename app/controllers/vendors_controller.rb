@@ -49,6 +49,20 @@ class VendorsController < ApplicationController
     end
   end
 
+  def create_vendor
+    @vendor = Vendor.new(vendor_params)
+
+    respond_to do |format|
+      if @vendor.save
+        format.html { redirect_to new_delivery_path, notice: 'Vendor was successfully created.' }
+        format.json { render :show, status: :created, location: @vendor }
+      else
+        format.html { render :new }
+        format.json { render json: @vendor.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PATCH/PUT /vendors/1
   # PATCH/PUT /vendors/1.json
   def update

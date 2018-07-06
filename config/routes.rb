@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :vendors do
     collection do
       get :load_vendor
+      post :create_vendor
     end
   end
   resources :current_inventories do

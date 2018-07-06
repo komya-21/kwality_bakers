@@ -12,7 +12,7 @@
         <div class="modal-body">
 
 
-<%= form_for @vendor, :html => { :class => "form-horizontal vendor" } do |f| %>
+<%= form_for @vendor, url: {action: "create_vendor", controller: 'vendors'} ,:html => { :class => "form-horizontal vendor" } do |f| %>
 
   <% if @vendor.errors.any? %>
     <div id="error_expl" class="panel panel-danger">
