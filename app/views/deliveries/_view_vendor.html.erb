@@ -13,6 +13,9 @@
       <th>Date</th>
       <th>Vendor Name</th>
       <th>Bill checked by</th>
+      <th>Total Amount</th>
+      <th>Amount Paid</th>
+      <th>Pending Amount</th>
     </tr>
   </thead>
 
@@ -21,8 +24,11 @@
       <tr>
         <td><%= link_to delivery.invoice_no, delivery_path(delivery) %></td>
         <td><%= delivery.date %></td>
-        <td><%= delivery.vendor.name %></td>
+        <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
         <td><%= delivery.bill_checked_by %></td>
+        <td><%= delivery.total_to_pay%></td>
+        <td><%= delivery.add_price%></td>
+        <td><%= delivery.remaining_price%></td>
       </tr>
     <% end %>
   </tbody>
