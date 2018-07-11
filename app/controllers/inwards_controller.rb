@@ -45,8 +45,7 @@ class InwardsController < ApplicationController
   # GET /inwards/new
   def new
     @inward = Inward.new
-    @inward.inward_no
-
+    @inward.inward_no = Inward.inward_no
   end
 
   # GET /inwards/1/edit

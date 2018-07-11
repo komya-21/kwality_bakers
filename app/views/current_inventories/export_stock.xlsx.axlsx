@@ -2,9 +2,11 @@ wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "Inwards") do |sheet|
   # this is the head row of your spreadsheet
-  sheet.add_row %w(Sr.\ No Product Quantity)
-  @current_inventories.each_with_index do |r, i|
-         @i = i += 1
-  sheet.add_row ["#{@i}","#{r.product.name}","#{r.current_quantity}"]
-          end
-          end
+  sheet.add_row %w(Product Quantity)
+  @current_inventories.each do |r|
+      if r.product.present? 
+      @prod = r.product.name
+      end
+  sheet.add_row ["#{@prod}","#{r.current_quantity}"]
+ end
+end

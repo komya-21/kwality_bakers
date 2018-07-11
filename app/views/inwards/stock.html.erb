@@ -1,5 +1,4 @@
 <%- model_class = Inward -%>
-<%= link_to "Excel", export_stock_current_inventories_path(format: "xlsx"), class: 'btn btn-success' %>
 
 <div class="page-header">
   <h4><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h4>
@@ -7,7 +6,7 @@
 
 <p>
   Download:
-  <%= link_to "Excel", stock_inwards_path(format: "xls"),class: 'btn btn-success' %>
+ <%= link_to "Excel", export_stock_current_inventories_path(format: "xlsx"), class: 'btn btn-success' %>
 </p>
 
 <table id="stocks" class="table table-striped">
@@ -24,7 +23,7 @@
     <tbody>
 	<% @current_inventories.each do |c| %>
 		<tr>
-			<td><%= c.product.name %></td>
+			<td><%= c.product.name if c.product.present?%></td>
 			<td><%= c.current_quantity %></td>
 			<td><%= link_to "Show" ,current_inventory_path(c),class: "btn btn-default btn-xs"  %></td>
 			<td><%= link_to "Edit" ,edit_current_inventory_path(c),class: "btn btn-default btn-xs" %></td>

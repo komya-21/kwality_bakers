@@ -30,7 +30,7 @@ class VendorsController < ApplicationController
   # load vendor data from database on ajax call
   def load_vendor
     @vendor = Vendor.find_by_id(params[:vendor_id]).present? ? Vendor.find(params[:vendor_id]) : Vendor.unscoped.find_by_id(params[:vendor_id])
-    render :json => [@vendor.contact, @vendor.gst_no, @vendor.comission]
+    render :json => [@vendor.contact, @vendor.gst_no, @vendor.comission ,@vendor.vendor_type]
   end
 
   # POST /vendors
@@ -41,6 +41,20 @@ class VendorsController < ApplicationController
     respond_to do |format|
       if @vendor.save
         format.html { redirect_to @vendor, notice: 'Vendor was successfully created.' }
+        format.json { render :show, status: :created, location: @vendor }
+      else
+        format.html { render :new }
+        format.json { render json: @vendor.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def create_vendor
+    @vendor = Vendor.new(vendor_params)
+
+    respond_to do |format|
+      if @vendor.save
+        format.html { redirect_to new_delivery_path, notice: 'Vendor was successfully created.' }
         format.json { render :show, status: :created, location: @vendor }
       else
         format.html { render :new }
@@ -81,6 +95,6 @@ class VendorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def vendor_params
-      params.require(:vendor).permit(:name, :address, :delivery_area, :gst_no, :pan_no, :contact, :alternate_contact, :comission ,:search)
+      params.require(:vendor).permit(:name, :address, :delivery_area, :gst_no, :pan_no, :contact, :alternate_contact, :comission ,:search , :vendor_type)
     end
 end

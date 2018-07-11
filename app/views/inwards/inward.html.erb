@@ -1,0 +1,10 @@
+
+<%= form_for :inward_products , :html => {:class => "form-horizontal inward"} do |f| %>
+<% @products.each do |p| %>
+<%= f.check_box :select_values %>
+<%= f.text_field :product_id , value: p.name %><br>
+<%= text_field_tag :quantity %>
+
+<% end %>
+<%= f.submit "Submit" %>
+<% end %>

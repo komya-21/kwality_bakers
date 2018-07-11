@@ -151,6 +151,7 @@
     <tr>
       <th>Date</th>
       <th>Invoice number</th>
+      <th>Vendor</th>
       <th>Product</th>
       <th>Quantity</th>
       <th>Remaining Quantity</th>
@@ -164,8 +165,8 @@
     <% @delivery_items.each do |delivery_item| %>
  
        <td><%= delivery_item.delivery.date %></td>
-       
         <td><%= delivery_item.delivery.invoice_no %></td>
+        <td><%= delivery_item.delivery.vendor.name %></td>
         <td><%= delivery_item.product.name %></td>
         <td><%= delivery_item.quantity %></td>
         <td><%= delivery_item.rem_quantity %></td>
@@ -185,94 +186,45 @@
 
       
      
-      
-     
-     
-     
 
-     
+     <%if @type == 'All Vendors'%>
 
+<p id="notice"><%= notice %></p>
 
-     
-     
-
-       
-      
-     
- 
-      
-    
-     
-   
-    
-
-  
-    
-   
-      
-      
-      
-     
-     
-      
-      
-  
-    
-  
- 
-    
-
-   
- 
- 
-    
-
-    
-  
-  
-    
-    
-       
-       
-
-       
-        
-
-     
-    
- 
+<font color="green">Total Count : <%=@total%> </font>
 
 
+ <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover dataTables-example" >
+  <thead>
+    <tr>
+      <th>Invoice no</th>
+      <th>Date</th>
+      <th>Vendor Name</th>
+      <th>Bill checked by</th>
+      <th>Total Amount</th>
+      <th>Amount Paid</th>
+      <th>Pending Amount</th>
+    </tr>
+  </thead>
 
+  <tbody>
+    <% @vendors.each do |delivery| %>
+    <% delivery.deliveries.each do |p|%>
+      <tr>
+        <td><%= p.invoice_no%></td>
+        <td><%= p.date %></td>
+        <td><%= p.vendor.name%></td>
+        <td><%= p.bill_checked_by %></td>
+        <td><%= p.total_to_pay%></td>
+        <td><%= p.add_price%></td>
+        <td><%= p.remaining_price%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
+<br>
 
-
-
-<script>
-  $(document).ready(function () {
-    $('.dataTables-example').DataTable({
-      dom: '<"html5buttons" B>lTfgitp',
-      buttons: [
-      {
-        extend: 'copyHtml5',
-        exportOptions: {
-          columns: [ 0, ':visible' ]
-        }
-      },
-      {
-        extend: 'excelHtml5',
-        exportOptions: {
-          columns: ':visible'
-        }
-      },
-      {
-        extend: 'pdfHtml5',
-        exportOptions: {
-          columns: [ 0, 1, 2, 3, 4 ]
-        }
-      },
-      'colvis'
-      ]
-    });
-  });
-</script>
+<%end%>
+<%end%>
