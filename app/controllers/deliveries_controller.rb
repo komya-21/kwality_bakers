@@ -68,11 +68,15 @@ class DeliveriesController < ApplicationController
 
    @delivery = Delivery.new(delivery_params)
 
+
     @inward_products = InwardProduct.all
 
 
     respond_to do |format|
       if @delivery.save
+        @delivery.delivery_inwards.each do |di|
+          di.update(vendor_id: di.delivery.vendor_id)
+        end
        
             @delivery.delivery_inwards.each do |d|
               @current = CurrentInventory.find_by(product_id: d.product_id)
@@ -152,6 +156,6 @@ class DeliveriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def delivery_params
-      params.require(:delivery).permit(:invoice_no, :date, :vendor_id, :bill_checked_by, delivery_inwards_attributes:[:id , :inward_product_id, :product_id, :delivery_id, :quantity, :qty, :total_amt ,:rem_quantity, :_destroy])
+      params.require(:delivery).permit(:invoice_no, :date, :vendor_id, :bill_checked_by, delivery_inwards_attributes:[:id , :inward_product_id, :product_id, :delivery_id, :quantity, :qty, :total_amt ,:rem_quantity, :_destroy , :price ,:gst ,:total])
     end
 end

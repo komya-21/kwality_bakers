@@ -26,6 +26,7 @@
       <th>Remaning QTY</th>
       <th>Delivered QTY</th>
       <th> Total Amout</th>
+      <th> Total(after gst)</th>
     </tr>
   </thead>
   <tbody>
@@ -33,7 +34,7 @@
 <% @delivery.delivery_inwards.each do |p|%>
       <tr>
         <td><%= p.product.name if p.product.present? %></td>
-        <td><%= p.product.price if p.product.present?%></td>
+        <td><%= p.price%></td>
         <td><%= p.quantity %></td>
          <td><%= p.rem_quantity %></td>
           <td><%= p.qty %></td>
@@ -41,6 +42,7 @@
           <%#.update(after_delivery_string: p.rem_quantity)%>
           <%#end%>
                     <td><%= p.total_amt %></td>
+                    <td><%= p.total %></td>
                     <% total += p.total_amt.to_i %>
                     
                     <% @comission = (total.to_i * @delivery.vendor.comission.to_i)/100 if @delivery.vendor.present? %>

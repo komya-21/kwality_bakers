@@ -67,6 +67,7 @@ def export_delivery
 @end_date = params[:end_date].to_date
 @delivery_inwards = DeliveryInward.all
 @deliveries = Delivery.all
+@vendors = Vendor.all
 
 
 
