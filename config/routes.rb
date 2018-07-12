@@ -46,6 +46,8 @@ Rails.application.routes.draw do
       get :export
       get :export_return
       get :export_delivery
+      get :export_custom
+      get :export_regular
     end
   end
   resources :employees

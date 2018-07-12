@@ -110,7 +110,9 @@ ActiveRecord::Schema.define(version: 20180711134431) do
     t.string "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "inward_id"
     t.string "delivery_quantity"
+    t.index ["inward_id"], name: "index_products_on_inward_id"
   end
 
   create_table "returns", force: :cascade do |t|
@@ -162,9 +164,6 @@ ActiveRecord::Schema.define(version: 20180711134431) do
     t.string "vendor_type"
   end
 
-  add_foreign_key "current_inventories", "delivery_inwards"
-  add_foreign_key "current_inventories", "inward_products"
-  add_foreign_key "current_inventories", "products"
   add_foreign_key "deliveries", "vendors"
   add_foreign_key "delivery_inwards", "deliveries"
   add_foreign_key "delivery_inwards", "inward_products"
@@ -172,6 +171,7 @@ ActiveRecord::Schema.define(version: 20180711134431) do
   add_foreign_key "delivery_inwards", "vendors"
   add_foreign_key "inward_products", "inwards"
   add_foreign_key "inward_products", "products"
+  add_foreign_key "products", "inwards"
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"

@@ -1,0 +1,33 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Returns") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Invoice\ no Date Vendor\ Name Total\ Amount Amount\ Paid Pending\ Amount)
+  @total_amt =0
+  @amt_paid =0
+  @pending_amt =0
+  @deliveries.each_with_index do |r, i|
+  if r.vendor.vendor_type != "Custom"
+  @paid = r.total_to_pay.to_i - r.remaining_price.to_i
+         @i = i += 1
+         @total_amt += r.total_to_pay.to_i
+  @amt_paid += @paid
+  @pending_amt += r.remaining_price.to_i
+  sheet.add_row ["#{r.invoice_no}","#{r.date}","#{r.vendor.name}","#{r.total_to_pay}","#{@paid}","#{r.remaining_price}"]
+          end
+          end
+            sheet.add_row [" "," "," ","Total:#{@total_amt}","Total:#{@amt_paid}","Total:#{@pending_amt}"]
+
+          end
+          
+
+
+
+
+
+
+
+
+
+
+        
