@@ -98,9 +98,12 @@
 
         <td><%= invoice_item.text_field :qty, id: :qty,placeholder: 'qty', class: 'form-control'%></td>
         <td><%= invoice_item.text_field :total_amt, id: :total_amt,placeholder: 'total_amt', class: 'form-control'%></td>
+        
         <td><%= invoice_item.text_field :gst, id: :gst,placeholder: 'gst', class: 'form-control'%></td>
-
+      
+      
         <td><%= invoice_item.text_field :total, id: :total,placeholder: 'total', class: 'form-control'%></td>
+      
         <td><%= invoice_item.link_to_remove "Remove", class: 'btn btn-info' %></td>
       </tr>
     </table>
@@ -108,8 +111,9 @@
   </div>
   <!--grid_table-->
   <% end %>
+  <div class="add_item">
   <%= f.link_to_add "Add Item", :delivery_inwards , class: 'btn btn-danger' %>
-
+</div>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
@@ -201,6 +205,7 @@
   <script type="text/javascript">
   $("#delivery_vendor_id").on("change", function() {
   var vendor_id;
+
   Item = $(this).val();
   $.ajax({
   url: "/vendors/load_vendor",
@@ -213,12 +218,25 @@
   $("#gst_no").val(data[1]);
   $("#comission").val(data[2]);
   $("#vendor_type").val(data[3]);
+   
+   
   // $("#uom").val(data[1]);
   // $("#rate").val(data[2]);
 
   });
-  });
+ 
+  
+  
+    });
   </script>
+  
+
+
+    
+ 
+
+    
+ 
       <head>
       
         <script>
@@ -231,10 +249,22 @@
  var field = event.field;
  var selectField = field.find('.select');
  selectField.select2();
+
+  var selectField1 = field.find('.add_item');
+
+
+ var vendor_type = $("#vendor_type").val();
+
+       if(vendor_type != "Custom"){
+          var selectField2 = field.find('#gst');
+          var selectField3 = field.find('#total');
+          selectField2.hide();
+          selectField3.hide();
+     }
+   
  // and activate datepicker on it
 //  dateField.datepicker();
 })
+
 </script>
 
-
-    

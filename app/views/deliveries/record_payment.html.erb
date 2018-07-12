@@ -15,6 +15,8 @@
   <dd><%= @delivery.vendor.comission %>%</dd> 
   <dt><strong><%= model_class.human_attribute_name(:bill_checked_by) %>:</strong></dt>
   <dd><%= @delivery.bill_checked_by %></dd>
+   <dt><strong><%= model_class.human_attribute_name(:vendor_type) %>:</strong></dt>
+  <dd><%= @delivery.vendor.vendor_type %></dd>
 </dl>
 
 <p class="text-info">
@@ -35,36 +37,79 @@
       <th>Remaning QTY</th>
       <th>Delivered QTY</th>
       <th> Total Amout</th>
+      
+
+      <% if @delivery.vendor.vendor_type.present? && @delivery.vendor.vendor_type == "Custom" %>
+      <th> Total(after gst)</th>
+      <% end %>
+      
+     
+      
     </tr>
   </thead>
   <tbody>
-
-    <%total=0%>
-    <%substraction=0%>
-    <%comission=0%>
-
-<%@delivery.delivery_inwards.each do |p|%>
+    <% total1=0 %>
+    <% total2=0 %>
+<% @delivery.delivery_inwards.each do |p|%>
       <tr>
-        <td><%= p.product.name %></td>
-        <td><%= p.product.price %></td>
+        <td><%= p.product.name if p.product.present? %></td>
+        <td><%= p.price%></td>
         <td><%= p.quantity %></td>
          <td><%= p.rem_quantity %></td>
           <td><%= p.qty %></td>
-           <%total += p.total_amt.to_i %>
-                 <%substraction = p.quantity.to_i - p.qty.to_i %>
-                 <%comission = (total.to_i*@delivery.vendor.comission.to_i)/100 if @delivery.vendor.present?%>
           <%# if p.qty.present?%>
-          <%#p.inward_product.update(quantity: p.rem_quantity)%>
-          <%#end%>
+          <%#.update(after_delivery_string: p.rem_quantity)%>
+          <%#end%>  <% @total_gst = p.total.to_f.ceil %>
                     <td><%= p.total_amt %></td>
-                    <%if @delivery.vendor.comission.present?%>
-                    <%@total_pay = total.to_i - comission.to_i%>
-                    <%else%>
-                    <%@total_pay = total.to_i %>
-<% end -%>
-      </tr>
+                    <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
+                    <% total2 += @total_gst %>
+                    <td><%= @total_gst %></td>
+                    <% end %>
+                    <% total1 += p.total_amt.to_i %>
+                    
+                    <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
+                    
+                    <% @comission = (total2 * @delivery.vendor.comission.to_i)/100 if @delivery.vendor.present? %>
+                    <% else %>
+                    <% @comission = (total1.to_i * @delivery.vendor.comission.to_i)/100 if @delivery.vendor.present? %>
+                    <% end %>
+                              
 
-    <% end %>
+                    
+
+
+      </tr>
+      <% end %>  
+      <% if@delivery.vendor.comission.present? %>
+                      
+                      <% if@delivery.vendor.vendor_type.present? &&@delivery.vendor.vendor_type == "Custom" %>
+                      
+                       <td><strong>Amount To Pay:</strong><b><%= @total_pay = total2 - @comission.to_i %></b></td>
+                         <% else %>
+                       <td><strong>Amount To Pay:</strong><b><%= @total_pay = total1.to_i - @comission.to_i %></b></td>
+                      <% end %>
+      <% elsif @delivery.vendor.vendor_type.present? && @delivery.vendor.vendor_type == "Custom" %>
+     <td><strong>Amount To Pay:</strong><b><%= @total_pay = total2 %></b></td>
+     <% else %>
+     <td><strong>Amount To Pay:</strong><b><%= @total_pay = total1 %></b></td>
+
+    
+
+                    </p>
+
+    
+            <% @delivery.update(comission: @total_pay) %>
+                    
+           <% end %> 
+           <% if @delivery.remaining_price.present? %>
+                      <td><strong>Pending Payment:</strong><font color="red"><%=@delivery.remaining_price %></font></td>
+                      <% end %>                 
+
+    
+   
+  </tbody>
+</table>
+
                          <font color="green">Total Amount to Pay: <%=@total_pay%><br></font> 
                          <%@delivery.update(total_to_pay:@total_pay )%>
 
