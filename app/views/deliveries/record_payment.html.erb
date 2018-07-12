@@ -86,6 +86,13 @@
                          <% else %>
                        <td><strong>Amount To Pay:</strong><b><%= @total_pay = total1.to_i - @comission.to_i %></b></td>
                       <% end %>
+      <% elsif @delivery.vendor.vendor_type.present? && @delivery.vendor.vendor_type == "Custom" %>
+     <td><strong>Amount To Pay:</strong><b><%= @total_pay = total2 %></b></td>
+     <% else %>
+     <td><strong>Amount To Pay:</strong><b><%= @total_pay = total1 %></b></td>
+
+    
+
                     </p>
 
     
@@ -100,7 +107,6 @@
    
   </tbody>
 </table>
-
 
                          <font color="green">Total Amount to Pay: <%=@total_pay%><br></font> 
                          <%@delivery.update(total_to_pay:@total_pay )%>

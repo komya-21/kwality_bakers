@@ -13,7 +13,7 @@
   <dt><strong><%= model_class.human_attribute_name(:vendor_id) %>:</strong></dt>
   <dd><%= @delivery.vendor.name if @delivery.vendor.present?%></dd>
   <dt><strong><%= model_class.human_attribute_name(:comission) %>:</strong></dt>
-  <dd><%= @delivery.vendor.comission if @delivery.vendor.present?%></dd>
+  <dd><%= @delivery.vendor.comission if @delivery.vendor.comission.present?%></dd>
   <dt><strong><%= model_class.human_attribute_name(:bill_checked_by) %>:</strong></dt>
   <dd><%= @delivery.bill_checked_by %></dd>
 </dl>
@@ -79,6 +79,13 @@
                          <% else %>
                        <td><strong>Amount To Pay:</strong><b><%= @total_pay = total1.to_i - @comission.to_i %></b></td>
                       <% end %>
+      <% elsif @delivery.vendor.vendor_type.present? && @delivery.vendor.vendor_type == "Custom" %>
+     <td><strong>Amount To Pay:</strong><b><%= total2 %></b></td>
+     <% else %>
+     <td><strong>Amount To Pay:</strong><b><%= total1 %></b></td>
+
+    
+
                     </p>
 
     
