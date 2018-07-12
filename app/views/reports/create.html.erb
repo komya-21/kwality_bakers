@@ -1,4 +1,4 @@
-<%= link_to 'Back', new_report_path, class: 'btn btn-info'%>
+
 <%if @type == 'Payment Status'%>
 <font color="green"> <b>Total Deliveries</b></font
   > <%=@deliveries.count%> 
@@ -76,7 +76,7 @@
         <td><%= return_module.return_quantity %></td>
         <td><%= return_module.purpose %></td>
         <td><%= return_module.receipt_no %></td>
-                <td><%= return_module.return_type %></td>
+        <td><%= return_module.return_type %></td>
 
       </tr>
     <% end %>
@@ -220,11 +220,111 @@
         <td><%= p.add_price%></td>
         <td><%= p.remaining_price%></td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
+    
+ 
+<% end %>
 <br>
 
 <%end%>
+</tbody>
+</table>
 <%end%>
+ <%if @type == 'Custom Deliveries'%>
+
+<p id="notice"><%= notice %></p>
+
+<!-- <font color="green">Total Count : <%= @deliveries.count%> </font>
+ -->
+<% @total=0 %>
+<%= link_to "Excel", export_custom_reports_path(start_date: @start_date,end_date: @end_date ,format: "xlsx"), class: 'btn btn-success' %>
+
+  <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover dataTables-example" >
+  <thead>
+    <tr>
+      <th>Invoice no</th>
+      <th>Date</th>
+      <th>Vendor Name</th>
+      <th>Total Amount</th>
+      <th>Amount Paid</th>
+      
+      <th>Pending Amount</th>
+    </tr>
+  </thead>
+  <% @total = 0 %>
+
+  <tbody>
+    <% @deliveries1.each do |p| %>
+    <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
+      <tr>
+        <td><%= p.invoice_no%></td>
+        <td><%= p.date %></td>
+        <td><%= p.vendor.name%></td>
+         
+      <td><%= p.total_to_pay %></td>
+      <td><%= p.total_to_pay.to_i - p.remaining_price.to_i %></td>
+      
+      <td><%= p.remaining_price %></td>
+        
+        
+      </tr>
+    
+ 
+<% end %>
+<% end %>
+<br>
+
+</tbody>
+</table>
+<%end%>
+
+ <%if @type == 'Regular Deliveries'%>
+
+<p id="notice"><%= notice %></p>
+
+<!-- <font color="green">Total Count : <%=@total%> </font>
+ -->
+<%= link_to "Excel", export_regular_reports_path(start_date: @start_date,end_date: @end_date ,format: "xlsx"), class: 'btn btn-success' %>
+
+  <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover dataTables-example" >
+  <thead>
+    <tr>
+      <th>Invoice no</th>
+      <th>Date</th>
+      <th>Vendor Name</th>
+      <th>Total Amount</th>
+      <th>Amount Paid</th>
+      
+      <th>Pending Amount</th>
+    </tr>
+  </thead>
+  <% @total = 0 %>
+
+  <tbody>
+    <% @deliveries1.each do |p| %>
+    <% if p.vendor.vendor_type != "Custom" %>
+      <tr>
+        <td><%= p.invoice_no%></td>
+        <td><%= p.date %></td>
+        <td><%= p.vendor.name%></td>
+         
+      <td><%= p.total_to_pay %></td>
+      <td><%= p.total_to_pay.to_i - p.remaining_price.to_i %></td>
+      
+      
+      <td><%= p.remaining_price %></td>
+        
+        
+      </tr>
+    
+ 
+<% end %>
+<% end %>
+<br>
+
+</tbody>
+</table>
+<%end%>
+
+<%= link_to 'Back', new_report_path, class: 'btn btn-info'%>

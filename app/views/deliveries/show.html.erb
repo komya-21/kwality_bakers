@@ -44,7 +44,12 @@
 <% @delivery.delivery_inwards.each do |p|%>
       <tr>
         <td><%= p.product.name if p.product.present? %></td>
+        <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
         <td><%= p.price%></td>
+        <% else %>
+        <td><%= p.product.price%></td>
+        <% end %>
+
         <td><%= p.quantity %></td>
          <td><%= p.rem_quantity %></td>
           <td><%= p.qty %></td>

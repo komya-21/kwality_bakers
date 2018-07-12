@@ -80,6 +80,18 @@ def export_delivery
 @deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
 @delivery_inwards = DeliveryInward.all
 end
+def export_custom
+	@start_date = params[:start_date].to_date
+	@end_date = params[:end_date].to_date
+	@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+
+end
+	def export_regular
+		@start_date = params[:start_date].to_date
+		@end_date = params[:end_date].to_date
+		@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+
+	end
 	 
 
 end
