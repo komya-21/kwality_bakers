@@ -138,9 +138,9 @@ Phone: 020 2687 5179</h4></div>
                     
                     <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
                     
-                    <% @comission = (total2 * @delivery.vendor.comission.to_i)/100 if @delivery.vendor.present? %>
+                    <% @comission = (total2 * @delivery.vendor.comission.to_f)/100 if @delivery.vendor.present? %>
                     <% else %>
-                    <% @comission = (total1.to_i * @delivery.vendor.comission.to_i)/100 if @delivery.vendor.present? %>
+                    <% @comission = (total1.to_i * @delivery.vendor.comission.to_f)/100 if @delivery.vendor.present? %>
                     <% end %>
                               
 
@@ -153,9 +153,9 @@ Phone: 020 2687 5179</h4></div>
                       
                       <% if@delivery.vendor.vendor_type.present? &&@delivery.vendor.vendor_type == "Custom" %>
                       
-                      <% @total_pay = total2 - @comission.to_i %></b>
+                      <% @total_pay = (total2 - @comission.to_f).ceil %></b>
                          <% else %>
-                       <% @total_pay = total1.to_i - @comission.to_i %></b>
+                       <% @total_pay = (total1.to_i - @comission.to_f).ceil %></b>
                       <% end %>
       <% elsif @delivery.vendor.vendor_type.present? && @delivery.vendor.vendor_type == "Custom" %>
    <%@total_pay = total2 %></b>
