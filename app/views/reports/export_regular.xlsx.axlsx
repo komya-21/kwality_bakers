@@ -8,15 +8,20 @@ wb.add_worksheet(name: "Returns") do |sheet|
   @pending_amt =0
   @deliveries.each_with_index do |r, i|
   if r.vendor.vendor_type != "Custom"
+  if r.remaining_price == nil
+  @paid = 0
+  else
   @paid = r.total_to_pay.to_i - r.remaining_price.to_i
+  end
+  @remaining_price = r.total_to_pay.to_i - @paid
          @i = i += 1
          @total_amt += r.total_to_pay.to_i
   @amt_paid += @paid
-  @pending_amt += r.remaining_price.to_i
-  sheet.add_row ["#{r.invoice_no}","#{r.date}","#{r.vendor.name}","#{r.total_to_pay}","#{@paid}","#{r.remaining_price}"]
+  @pending_amt += @remaining_price
+  sheet.add_row ["#{r.invoice_no}","#{r.date}","#{r.vendor.name}","#{r.total_to_pay}","#{@paid}","#{@remaining_price}"]
           end
           end
-            sheet.add_row [" "," "," ","Total:#{@total_amt}","Total:#{@amt_paid}","Total:#{@pending_amt}"]
+            sheet.add_row [" "," "," ","Total Amt:#{@total_amt}","Total Paid:#{@amt_paid}","Total Pending:#{@pending_amt}"]
 
           end
           

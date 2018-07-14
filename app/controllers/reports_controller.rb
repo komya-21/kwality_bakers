@@ -51,15 +51,23 @@ def export
 	@end_date = params[:end_date].to_date
 
 	    @total_inwards = InwardProduct.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
-
+respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= Inwards\"#{Date.today}\".xlsx"
+}
+end
 end
 
 def export_return
 
 	@start_date = params[:start_date].to_date
 	@end_date = params[:end_date].to_date
-
-	    @return_modules= Return.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+	@return_modules= Return.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+	respond_to do |format|
+		format.xlsx {
+  		response.headers['Content-Disposition'] = 'attachment;' "filename= Returns\"#{Date.today}\".xlsx"
+}
+end
 end
 
 def export_delivery
@@ -79,18 +87,33 @@ def export_delivery
 @products = Product.all.order(:id)
 @deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
 @delivery_inwards = DeliveryInward.all
+respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= Delivery\"#{Date.today}\".xlsx"
+}
+end
+
+
 end
 def export_custom
 	@start_date = params[:start_date].to_date
 	@end_date = params[:end_date].to_date
 	@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
-
+	respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= Custom_Delivery\"#{Date.today}\".xlsx"
+}
+end
 end
 	def export_regular
 		@start_date = params[:start_date].to_date
 		@end_date = params[:end_date].to_date
 		@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
-
+		respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= Regular_Delivery\"#{Date.today}\".xlsx"
+}
+end
 	end
 	 
 

@@ -32,6 +32,7 @@
         <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
         <td><%= delivery.bill_checked_by %></td>
         <td><%=l delivery.created_at %></td>
+        <td><%= delivery.total_to_pay %></td>
          <td><%if delivery.payment_status == true%>
         <font color="green">Paid</font>
         <%elsif delivery.payment_status == false%>

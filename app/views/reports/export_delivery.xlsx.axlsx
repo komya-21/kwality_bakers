@@ -3,18 +3,26 @@ wb = xlsx_package.workbook
 wb.add_worksheet(name: "deliveries") do |sheet|
 
 # this is the head row of your spreadsheet
-sheet.add_row %w( Sr.\ no Product Quantity Amount )
+sheet.add_row %w( Sr.\ no Product)
 
 
 @products.each_with_index do |p, i|
  @i = i+1
-sheet.add_row ["#{@i}","#{p.name}" ," " ," "," "," "," "," "," "," "," "," "]
+sheet.add_row ["#{@i}","#{p.name}"]
 end
 
 @vendors.each do |v|
 
 sheet.rows[0].add_cell (v.name)
+@products.each do |p|
+@p = p.id
+sheet.rows[@p].add_cell ()
+sheet.rows[@p].add_cell ()
 end
+
+end
+sheet.rows[0].add_cell "Quantity"
+
 @qty1 = 0
 @amt1 = 0
 @s = 0
@@ -23,6 +31,7 @@ end
 
 
 @uniq.each do |u|
+
 
 
 
@@ -45,26 +54,59 @@ end
 @qty1 += @qty
 @amt1 += @amt
 
-
-sheet.rows[@index].cells[2].value = @qty
-sheet.rows[@index].cells[3].value = @amt
+@no = @vendors.count+2
+@no1 = @no+1
+sheet.rows[@index].cells[@no].value = @qty
 
 
 end
 
+@last_id = @products.last.id+1
 
-
-
-sheet.add_row [" "," " ,"Total: #{@qty1}","Total: #{@amt1}"]
-
+sheet.add_row []
 @vendors.each do |v|
-@v_deliveries = @deliveries.where(vendor_id: v.id).all.map{|i| i.id}.to_a
- @dels = @delivery_items.where(delivery_id: @v_deliveries[0]) + @delivery_items.where(delivery_id: @v_deliveries[1])
- @pds = @dels.map{|p| p.product.name}.to_a
- 
-
- 
+sheet.rows[@last_id].add_cell ()
+sheet.rows[@last_id].add_cell ()
 end
+sheet.rows[@last_id].cells[@no].value =  "Total Qty: #{@qty1}"
+
+@i=0
+@vendors.each do |v|
+@i+=1
+
+@vendor_items = @delivery_items.where(vendor_id: v.id)
+@uniq_vendor_items = @vendor_items.all.map{|p| [p.product.name,p.product_id]}
+@uniq_vendor_items.to_h.each do |u|
+
+@tot_pro = @vendor_items.where(product_id: u[1]).all.map{|q| q.qty.to_i}.to_a
+@quantity = @tot_pro.inject(0){|sum,x| sum+x}
+
+@row = u[1]
+@col = @i+1
+sheet.rows[@row].cells[@col].value = @quantity
+end
+end
+@ind =0
+@vendors.each do |v|
+@ind +=1
+@pay = 0
+v.deliveries.each do |d|
+@pay += d.total_to_pay.to_i
+sheet.rows[@last_id].cells[@ind+1].value = "Total Amt: #{@pay}"
+end
+end
+sheet.add_row []
+sheet.add_row []
+sheet.rows[@last_id+2].add_cell ()
+sheet.rows[@last_id+2].add_cell ()
+
+@final_total = 0
+@deliveries.each do |dl|
+@final_total += dl.total_to_pay.to_i
+sheet.rows[@last_id+2].cells[1].value =  "Total: #{@final_total}"
+end
+
+
 
 end
 

@@ -94,9 +94,11 @@
                     </p>
 
     
-            <% @delivery.update(comission: @total_pay) %>
+            <%# @delivery.update(comission: @total_pay) %>
+            
                     
            <% end %> 
+           <% @delivery.update(total_to_pay: @total_pay) %>
            <% if @delivery.remaining_price.present? %>
                       <td><strong>Pending Payment:</strong><font color="red"><%=@delivery.remaining_price %></font></td>
                       <% end %>                 
