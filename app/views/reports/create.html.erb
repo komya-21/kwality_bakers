@@ -262,9 +262,13 @@
         <td><%= p.vendor.name%></td>
          
       <td><%= p.total_to_pay %></td>
-      <td><%= p.total_to_pay.to_i - p.remaining_price.to_i %></td>
+      <% if p.remaining_price == nil %>
+      <td><%= @paid = p.total_to_pay.to_i - p.total_to_pay.to_i %></td>
+      <% else %>
+      <td><%= @paid = p.total_to_pay.to_i - p.remaining_price.to_i %></td>
+      <% end %>
       
-      <td><%= p.remaining_price %></td>
+      <td><%= p.total_to_pay.to_i - @paid %></td>
         
         
       </tr>
@@ -310,11 +314,13 @@
         <td><%= p.vendor.name%></td>
          
       <td><%= p.total_to_pay %></td>
-      <td><%= p.total_to_pay.to_i - p.remaining_price.to_i %></td>
+      <% if p.remaining_price == nil %>
+      <td><%= @paid = p.total_to_pay.to_i - p.total_to_pay.to_i %></td>
+      <% else %>
+      <td><%= @paid = p.total_to_pay.to_i - p.remaining_price.to_i %></td>
+      <% end %>
       
-      
-      <td><%= p.remaining_price %></td>
-        
+      <td><%= p.total_to_pay.to_i - @paid %></td>
         
       </tr>
     

@@ -10,6 +10,9 @@
       <th>Vendor</th>
       <th>Bill checked by</th>
       <th>Payment Status</th>
+      <% if @payment_status == "PENDING"%>
+      <th>Pending Amount</th>
+      <% end %>
     </tr>
   </thead>
 
@@ -25,6 +28,13 @@
         <%elsif delivery.payment_status == false%>
         <font color="red">Pending</font>
         <%end%></td>
+        <% if @payment_status == "PENDING" %>
+        <% if delivery.remaining_price == nil %>
+        <td><%= delivery.total_to_pay %></td>
+        <% else%>
+        <td><%= delivery.remaining_price %></td>
+        <% end %>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

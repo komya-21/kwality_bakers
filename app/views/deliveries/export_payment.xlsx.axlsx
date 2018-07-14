@@ -13,11 +13,15 @@ wb.add_worksheet(name: "Payment") do |sheet|
          @price = r.add_price
          elsif r.payment_status == false
          @paid = 'Pending'
+
+         if r.remaining_price == nil
+         @price = r.total_to_pay
+         else
          @price = r.remaining_price
          end
-         if r.remaining_price == nil
-         @price = r.comission
+
          end
+         
   sheet.add_row ["#{r.invoice_no}","#{r.date}","#{r.vendor.name}","#{r.bill_checked_by}","#{@paid}","#{@price}"]
           end
           end

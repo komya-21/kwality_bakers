@@ -74,6 +74,7 @@ class DeliveriesController < ApplicationController
 
     respond_to do |format|
       if @delivery.save
+        @delivery.delivery_inwards.update(vendor_id: @delivery.vendor_id)
         @delivery.delivery_inwards.each do |di|
           di.update(vendor_id: di.delivery.vendor_id)
         end
@@ -146,6 +147,11 @@ class DeliveriesController < ApplicationController
     else
       @returns = Delivery.all
     end 
+    respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= \"#{@payment_status}\"(payment_report)\"#{Date.today}\".xlsx"
+}
+end
   end
 
   private

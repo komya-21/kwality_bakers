@@ -99,7 +99,7 @@
         <td><%= invoice_item.text_field :qty, id: :qty,placeholder: 'qty', class: 'form-control'%></td>
         <td><%= invoice_item.text_field :total_amt, id: :total_amt,placeholder: 'total_amt', class: 'form-control'%></td>
         
-        <td><%= invoice_item.text_field :gst, id: :gst,placeholder: 'gst', class: 'form-control'%></td>
+        <td><%= invoice_item.text_field :gst, id: :gst,placeholder: 'gst', value: 0 ,class: 'form-control'%></td>
       
       
         <td><%= invoice_item.text_field :total, id: :total,placeholder: 'total', class: 'form-control'%></td>
@@ -162,6 +162,8 @@
     //   $("#")
     // })
   $(document).on("keyup", "#qty", function() {
+    var gst = $('#gst').val();
+
   container = elem.parents("tr.fields");
   var val1 = +container.find("#quantity").val();
   var val2 = +container.find("#qty").val();
@@ -173,12 +175,16 @@
 
   +container.find("#rem_quantity").val(val4);
  var total_amt = +container.find('#total_amt').val(val5); 
- 
+     
     $('#qty').css('color', 'black');
    }
    else{
     $('#qty').css('color', 'red');
      prompt('You cannot add this Product. Please add another product');
+   }
+   if(gst == 0){
+    
+    +container.find("#total").val(val5);
    }
   });
   </script>
