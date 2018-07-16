@@ -91,8 +91,10 @@ end
 @ind +=1
 @pay = 0
 v.deliveries.each do |d|
+if d.date.between?(@start_date,@end_date)
 @pay += d.total_to_pay.to_i
 sheet.rows[@last_id].cells[@ind+1].value = "Total Amt: #{@pay}"
+end
 end
 end
 sheet.add_row []
