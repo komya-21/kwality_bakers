@@ -85,9 +85,9 @@
                        <td><strong>Amount To Pay:</strong><b><%= @total_pay = (total1.to_i - @comission.to_f).ceil %></b></td>
                       <% end %>
       <% elsif @delivery.vendor.vendor_type.present? && @delivery.vendor.vendor_type == "Custom" %>
-     <td><strong>Amount To Pay:</strong><b><%= total2 %></b></td>
+     <td><strong>Amount To Pay:</strong><b><%= @total_pay=total2 %></b></td>
      <% else %>
-     <td><strong>Amount To Pay:</strong><b><%= total1 %></b></td>
+     <td><strong>Amount To Pay:</strong><b><%= @total_pay=total1 %></b></td>
 
     
 
