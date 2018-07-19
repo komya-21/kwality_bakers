@@ -27,8 +27,13 @@
         <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
         <td><%= delivery.bill_checked_by %></td>
         <td><%= delivery.total_to_pay%></td>
-        <td><%= delivery.add_price%></td>
-        <td><%= delivery.remaining_price%></td>
+        <% if delivery.remaining_price == nil %>
+        <% @paid = 0 %>
+        <% else %>
+        <% @paid = delivery.total_to_pay.to_i-delivery.remaining_price.to_i %>
+        <% end %>
+        <td><%= @paid %></td>
+        <td><%= delivery.total_to_pay.to_i - @paid%></td>
       </tr>
     <% end %>
   </tbody>

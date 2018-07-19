@@ -187,48 +187,7 @@
       
      
 
-     <%if @type == 'All Vendors'%>
-
-<p id="notice"><%= notice %></p>
-
-<font color="green">Total Count : <%=@total%> </font>
-
-
- <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover dataTables-example" >
-  <thead>
-    <tr>
-      <th>Invoice no</th>
-      <th>Date</th>
-      <th>Vendor Name</th>
-      <th>Bill checked by</th>
-      <th>Total Amount</th>
-      <th>Amount Paid</th>
-      <th>Pending Amount</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @vendors.each do |delivery| %>
-    <% delivery.deliveries.each do |p|%>
-      <tr>
-        <td><%= p.invoice_no%></td>
-        <td><%= p.date %></td>
-        <td><%= p.vendor.name%></td>
-        <td><%= p.bill_checked_by %></td>
-        <td><%= p.total_to_pay%></td>
-        <td><%= p.add_price%></td>
-        <td><%= p.remaining_price%></td>
-      </tr>
-    
- 
-<% end %>
-<br>
-
-<%end%>
-</tbody>
-</table>
-<%end%>
+     
  <%if @type == 'Custom Deliveries'%>
 
 <p id="notice"><%= notice %></p>
@@ -254,7 +213,7 @@
   <% @total = 0 %>
 
   <tbody>
-    <% @deliveries1.each do |p| %>
+    <% @deliveries.each do |p| %>
     <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
       <tr>
         <td><%= p.invoice_no%></td>
@@ -306,7 +265,7 @@
   <% @total = 0 %>
 
   <tbody>
-    <% @deliveries1.each do |p| %>
+    <% @deliveries.each do |p| %>
     <% if p.vendor.vendor_type != "Custom" %>
       <tr>
         <td><%= p.invoice_no%></td>
@@ -332,5 +291,55 @@
 </tbody>
 </table>
 <%end%>
+<%if @type == 'All Vendors'%>
+
+<p id="notice"><%= notice %></p>
+
+<!-- <font color="green">Total Count : <%=@total%> </font>
+ -->
+<%= link_to "Excel", export_regular_reports_path(start_date: @start_date,end_date: @end_date ,format: "xlsx"), class: 'btn btn-success' %>
+
+  <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover dataTables-example" >
+  <thead>
+    <tr>
+      <th>Invoice no</th>
+      <th>Date</th>
+      <th>Vendor Name</th>
+      <th>Total Amount</th>
+      <th>Amount Paid</th>
+      
+      <th>Pending Amount</th>
+    </tr>
+  </thead>
+  <% @total = 0 %>
+
+  <tbody>
+    <% @deliveries.each do |p| %>
+    
+      <tr>
+        <td><%= p.invoice_no%></td>
+        <td><%= p.date %></td>
+        <td><%= p.vendor.name%></td>
+         
+      <td><%= p.total_to_pay %></td>
+      <% if p.remaining_price == nil %>
+      <td><%= @paid = p.total_to_pay.to_i - p.total_to_pay.to_i %></td>
+      <% else %>
+      <td><%= @paid = p.total_to_pay.to_i - p.remaining_price.to_i %></td>
+      <% end %>
+      
+      <td><%= p.total_to_pay.to_i - @paid %></td>
+        
+      </tr>
+    
+ 
+<% end %>
+<% end %>
+<br>
+
+</tbody>
+</table>
+
 
 <%= link_to 'Back', new_report_path, class: 'btn btn-info'%>

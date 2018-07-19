@@ -5,10 +5,9 @@ class ReportsController < ApplicationController
 
 	def create
 		
-		@payment_status = params[:report][:return_type]
-    @deliveries = Delivery.all
+	@payment_status = params[:report][:return_type]
+    
     @vendors = Vendor.all
-
     if @payment_status == 'PAID'
       @returns = Delivery.list1
     elsif @payment_status == 'PENDING'
@@ -16,25 +15,24 @@ class ReportsController < ApplicationController
     else
       @returns = Delivery.all
     end 
+
+    @inward_modules = InwardProduct.all
 		@type = params[:report][:report_type]
 		@products = Product.all
 		@start_date = params[:report][:start_date].to_date
 	    @end_date = params[:report][:end_date].to_date
-		# @deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
-		@dates = @deliveries.all.map{|d| d.date}.to_a.uniq
+		
+		@return_modules = Return.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 
-		@return_modules = Return.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
-
-		@inward_modules = InwardProduct.all
-		@deliveries1 = Delivery.where('created_at BETWEEN ? AND ?', @start_date,@end_date)
-
+		
+		@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 		 
-		@delivery_items = DeliveryInward.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+		@delivery_items = DeliveryInward.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 		
+		
+		
+	    @total_inwards = InwardProduct.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 	
-		
-	    @total_inwards = InwardProduct.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
-
 	    if @start_date.nil? || @end_date.nil?
          flash[:alert] = 'Done'
          render 'new'
@@ -49,8 +47,9 @@ def export
 	
 	@start_date = params[:start_date].to_date
 	@end_date = params[:end_date].to_date
-
-	    @total_inwards = InwardProduct.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+		
+	@total_inwards = InwardProduct.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+		
 respond_to do |format|
 format.xlsx {
   response.headers['Content-Disposition'] = 'attachment;' "filename= Inwards\"#{Date.today}\".xlsx"
@@ -62,7 +61,9 @@ def export_return
 
 	@start_date = params[:start_date].to_date
 	@end_date = params[:end_date].to_date
-	@return_modules= Return.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+	
+		@return_modules= Return.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+	
 	respond_to do |format|
 		format.xlsx {
   		response.headers['Content-Disposition'] = 'attachment;' "filename= Returns\"#{Date.today}\".xlsx"
@@ -80,12 +81,12 @@ def export_delivery
 
 
 
-@delivery_items = DeliveryInward.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+	@delivery_items = DeliveryInward.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+	@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 
 
 @delivery_vendors = Vendor.all.map{|i| i.name}.to_a
 @products = Product.all.order(:id)
-@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
 @delivery_inwards = DeliveryInward.all
 respond_to do |format|
 format.xlsx {
@@ -98,7 +99,10 @@ end
 def export_custom
 	@start_date = params[:start_date].to_date
 	@end_date = params[:end_date].to_date
-	@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+	
+		@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+	
+	
 	respond_to do |format|
 format.xlsx {
   response.headers['Content-Disposition'] = 'attachment;' "filename= Custom_Delivery\"#{Date.today}\".xlsx"
@@ -108,7 +112,9 @@ end
 	def export_regular
 		@start_date = params[:start_date].to_date
 		@end_date = params[:end_date].to_date
-		@deliveries = Delivery.where(["created_at >= ? and created_at <= ?", @start_date, @end_date])
+		
+		@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+	
 		respond_to do |format|
 format.xlsx {
   response.headers['Content-Disposition'] = 'attachment;' "filename= Regular_Delivery\"#{Date.today}\".xlsx"
