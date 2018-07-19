@@ -3,22 +3,22 @@
   
   <h3>Menu</h3>
   <ul class="nav nav-tabs">
-    <li class="active"><a href="/home/dashboard">Home</a></li>
-    <li class="dropdown">
+    <li class="snavitem <%= active_class("/home/dashboard") %>"><a href="/home/dashboard">Home</a></li>
+    <li class="dropdown" >
       <a class="dropdown-toggle" data-toggle="dropdown" href="#">Misc. <span class="caret"></span></a>
       <ul class="dropdown-menu">
-        <li><a href="/companies">Company</a></li>
+        <li class="snavitem <%= active_class("/companies") %>"><a href="/companies">Company</a></li>
         <%if current_user.role == 'SuperAdmin'%>
-        <li><a href="/employees">Employees</a></li>
+        <li class="snavitem <%= active_class("/employees") %>"><a href="/employees">Employees</a></li>
         <%end%>
-        <li><a href="/products">Products</a></li>
-        <li><a href="/vendors">Vendors</a></li>                        
+        <li class="snavitem <%= active_class("/products") %>"><a href="/products">Products</a></li>
+        <li class="snavitem <%= active_class("/vendors") %>"><a href="/vendors">Vendors</a></li>                        
       </ul>
     </li>
-    <li><a href="/inwards">Inward</a></li>
-    <li><a href="/deliveries">Delivery</a></li>
-    <li><a href="/deliveries">Record Payment</a></li>
-        <li><a href="/returns">Return</a></li>
+    <li class="snavitem <%= active_class("/inwards") %>"><a href="/inwards">Inward</a></li>
+    <li class="snavitem <%= active_class("/deliveries") %>"><a href="/deliveries">Delivery</a></li>
+    <li class="snavitem <%= active_class("/deliveries/record_payment_all") %>"><a href="/deliveries/record_payment_all">Record Payment</a></li>
+        <li class="snavitem <%= active_class("/returns") %>"><a href="/returns">Return</a></li>
 <%if current_user.role == 'SuperAdmin'%>
       <li class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports. <span class="caret"></span></a>
@@ -36,3 +36,10 @@
 </div>
   </ul>
 </div>
+
+
+
+
+
+
+

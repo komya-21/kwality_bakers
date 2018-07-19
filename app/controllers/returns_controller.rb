@@ -18,7 +18,14 @@ class ReturnsController < ApplicationController
   end 
    
   
-
+def export_return
+  @returns = Return.all
+   respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= Returns\"#{Date.today}\".xlsx"
+}
+end
+end
   
 
   # GET /returns/new

@@ -37,7 +37,17 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/1/edit
   def edit
   end
-
+  def todays_delivery
+    @deliveries = Delivery.where(created_at: Date.today.midnight..Date.today.end_of_day)
+  end
+  def export_delivery_index
+    @deliveries = Delivery.all
+    respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= All_Deliveries\"#{Date.today}\".xlsx"
+}
+end
+  end
   #record payment
   def record_payment
     if params[:params1].present?
@@ -50,6 +60,9 @@ class DeliveriesController < ApplicationController
         orientation: 'Landscape'   # Excluding ".pdf" extension.
       end
     end
+  end
+  def record_payment_all
+    @deliveries = Delivery.all
   end
 
   def payment

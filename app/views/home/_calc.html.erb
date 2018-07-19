@@ -1,0 +1,33 @@
+
+<% @total = 0 %>
+<% @rem_amt = 0 %>
+<% @paid = 0 %>
+<% @count = 0 %>
+<% @deliveries = Delivery.where(created_at: Date.today.midnight..Date.today.end_of_day) %> 
+<% @delivery_inwards = DeliveryInward.where(created_at: Date.today.midnight..Date.today.end_of_day) %> 
+<% @products = @delivery_inwards.all.map{|i| i.product_id}.uniq.to_a %>
+<% @qty = 0 %>
+<% @products.each do |p| %>
+<% @quantity =  @delivery_inwards.where(product_id: p).all.map{|q| q.qty.to_i}.to_a %>
+<% @tot_quantity = @quantity.inject(0){|sum,x| sum+x} %>
+<% @qty += @tot_quantity %>
+
+<% end %>
+
+<% @deliveries.each do |d| %>
+<% @count += d.delivery_inwards.count %>
+
+
+
+<% @total += d.total_to_pay.to_i %>
+<% if d.remaining_price == nil %>
+<% @paid1 = 0 %>
+<% @rem_amt1 = d.total_to_pay.to_i %>
+<% else %>
+<% @paid1 = d.total_to_pay.to_i - d.remaining_price.to_i %>
+<% @rem_amt1 = d.total_to_pay.to_i - @paid1 %>
+<% end %>
+<% @paid += @paid1 %>
+<% @rem_amt += @rem_amt1 %>
+
+<% end %>

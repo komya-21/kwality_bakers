@@ -1,0 +1,26 @@
+
+<table>
+	<tr>
+		<th>Product</th>
+		<th>Quantity</th>
+		<th>Vendor</th>
+	</tr>
+
+
+
+
+
+
+
+
+<% @deliveries.each do |d| %>
+<% d.delivery_inwards.each do |di| %>
+<tr>
+	<td><%= di.product.name %></td>
+	<td><%= di.qty %></td>
+	<td><%= di.delivery.vendor.name %>
+	</td>
+</tr>
+<% end %>
+<% end %>
+</table>

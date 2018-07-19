@@ -110,7 +110,9 @@
   </thead>
   <tbody>
   <% i = 0 %>
-    <% @total_inwards.each do |inward_module| %>
+    <%# @total_inwards.each do |inward_module| %>
+    <% @inwards.each do |i| %>
+    <% i.inward_products.each do |inward_module| %>
 
     <%# if inward_module.created_at >= @start_date && inward_module.created_at<= @end_date %>
        <td><%= inward_module.inward.date %></td>
@@ -121,7 +123,7 @@
    
   
  <% end %>
-<%# end %>
+<% end %>
 </tbody>
 </table>
 <script type="text/javascript">
@@ -162,7 +164,9 @@
   </thead>
   <tbody>
   <% i = 0 %>
-    <% @delivery_items.each do |delivery_item| %>
+    <%# @delivery_items.each do |delivery_item| %>
+    <% @deliveries.each do |d| %>
+    <% d.delivery_inwards.each do |delivery_item| %>
  
        <td><%= delivery_item.delivery.date %></td>
         <td><%= delivery_item.delivery.invoice_no %></td>
@@ -174,6 +178,7 @@
         <td><%= delivery_item.total_amt %></td>
 
       </tr>
+    <% end %>
     <% end %>
   </tbody>
 </table>

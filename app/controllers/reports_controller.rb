@@ -22,14 +22,14 @@ class ReportsController < ApplicationController
 		@start_date = params[:report][:start_date].to_date
 	    @end_date = params[:report][:end_date].to_date
 		
-		@return_modules = Return.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+		@return_modules = Return.where(date_of_return: @start_date.to_date..@end_date.to_date)
 
 		
-		@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+		@deliveries = Delivery.where(date: @start_date.to_date..@end_date.to_date)
 		 
 		@delivery_items = DeliveryInward.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 		
-		
+		@inwards = Inward.where(date: @start_date.to_date..@end_date.to_date)
 		
 	    @total_inwards = InwardProduct.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 	
@@ -47,8 +47,8 @@ def export
 	
 	@start_date = params[:start_date].to_date
 	@end_date = params[:end_date].to_date
-		
-	@total_inwards = InwardProduct.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+	@inwards = Inward.where(date: @start_date.to_date..@end_date.to_date)
+	#@total_inwards = InwardProduct.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 		
 respond_to do |format|
 format.xlsx {
@@ -62,7 +62,7 @@ def export_return
 	@start_date = params[:start_date].to_date
 	@end_date = params[:end_date].to_date
 	
-		@return_modules= Return.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+		@return_modules= Return.where(date_of_return: @start_date.to_date..@end_date.to_date)
 	
 	respond_to do |format|
 		format.xlsx {
@@ -75,7 +75,7 @@ def export_delivery
 @start_date = params[:start_date].to_date
 @end_date = params[:end_date].to_date
 @delivery_inwards = DeliveryInward.all
-@deliveries = Delivery.all
+#@deliveries = Delivery.all
 @vendors = Vendor.all
 
 
@@ -85,7 +85,7 @@ def export_delivery
 	@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
 
 
-@delivery_vendors = Vendor.all.map{|i| i.name}.to_a
+#@delivery_vendors = Vendor.all.map{|i| i.name}.to_a
 @products = Product.all.order(:id)
 @delivery_inwards = DeliveryInward.all
 respond_to do |format|
@@ -100,7 +100,7 @@ def export_custom
 	@start_date = params[:start_date].to_date
 	@end_date = params[:end_date].to_date
 	
-		@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+		@deliveries = Delivery.where(date: @start_date.to_date..@end_date.to_date)
 	
 	
 	respond_to do |format|
@@ -113,8 +113,7 @@ end
 		@start_date = params[:start_date].to_date
 		@end_date = params[:end_date].to_date
 		
-		@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
-	
+		@deliveries = Delivery.where(date: @start_date.to_date..@end_date.to_date)	
 		respond_to do |format|
 format.xlsx {
   response.headers['Content-Disposition'] = 'attachment;' "filename= Regular_Delivery\"#{Date.today}\".xlsx"
