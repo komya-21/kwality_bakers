@@ -75,17 +75,17 @@ def export_delivery
 @start_date = params[:start_date].to_date
 @end_date = params[:end_date].to_date
 @delivery_inwards = DeliveryInward.all
-#@deliveries = Delivery.all
+@deliveries = Delivery.all
 @vendors = Vendor.all
 
 
 
 
-	@delivery_items = DeliveryInward.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
-	@deliveries = Delivery.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
+	@delivery_items = DeliveryInward.all
+	@deliveries = Delivery.where(date: @start_date.to_date..@end_date.to_date)
 
 
-#@delivery_vendors = Vendor.all.map{|i| i.name}.to_a
+@delivery_vendors = Vendor.all.map{|i| i.name}.to_a
 @products = Product.all.order(:id)
 @delivery_inwards = DeliveryInward.all
 respond_to do |format|
