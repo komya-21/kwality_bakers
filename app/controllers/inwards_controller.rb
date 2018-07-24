@@ -91,6 +91,11 @@ class InwardsController < ApplicationController
   end
 def export_inward
   @total_inwards = InwardProduct.all
+   respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= Inward\"#{Date.today}\".xlsx"
+}
+end
 end
   # DELETE /inwards/1
   # DELETE /inwards/1.json

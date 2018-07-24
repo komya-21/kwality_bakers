@@ -1,0 +1,39 @@
+
+
+wb = xlsx_package.workbook
+
+
+wb.add_worksheet(name: "Deliveries") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Invoice\ no Date Vendor Bill\ Checked\ By Payment\ Status Amount)
+  @deliveries.each_with_index do |r, i|
+         @i = i += 1
+         if r.payment_status == true
+         @paid =  'Paid'
+         @price = r.add_price
+         elsif r.payment_status == false
+         @paid = 'Pending'
+
+         if r.remaining_price == nil
+         @price = r.total_to_pay
+         else
+         @price = r.remaining_price
+         end
+
+         end
+         
+  sheet.add_row ["#{r.invoice_no}","#{r.date}","#{r.vendor.name}","#{r.bill_checked_by}","#{@paid}","#{@price}"]
+          end
+          end
+
+
+
+
+
+
+
+
+
+
+
+          

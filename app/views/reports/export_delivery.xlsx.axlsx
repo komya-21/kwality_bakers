@@ -26,8 +26,17 @@ sheet.rows[0].add_cell "Quantity"
 @qty1 = 0
 @amt1 = 0
 @s = 0
-@uniq = @delivery_items.all.map{|k| [ k.product_id , k.product.price]}.uniq.to_a
+width = 0
+height = 0
+@array = Array.new(height){Array.new(width)}
 
+@deliveries.each do |d|
+d.delivery_inwards.each do |di|
+@array.push([di.product_id, di.product.price])
+
+end
+end
+@uniq = @array.uniq
 
 
 @uniq.each do |u|
@@ -37,11 +46,19 @@ sheet.rows[0].add_cell "Quantity"
 
 
 @index = u[0]
+@j = 0
 
+
+@ids = []
+@deliveries.each do |d|
+@ids << d.id
+end
+@delivery_items1 = @delivery_items.where(delivery_id: @ids)
 
  
 
-@prod = @delivery_items.where(product_id: u[0]).all.map{|k| k.qty.to_i}.to_a
+@prod = @delivery_items1.where(product_id: u[0]).all.map{|k| k.qty.to_i}.to_a
+
 
 
 
@@ -74,7 +91,7 @@ sheet.rows[@last_id].cells[@no].value =  "Total Qty: #{@qty1}"
 @vendors.each do |v|
 @i+=1
 
-@vendor_items = @delivery_items.where(vendor_id: v.id)
+@vendor_items = @delivery_items1.where(vendor_id: v.id)
 @uniq_vendor_items = @vendor_items.all.map{|p| [p.product.name,p.product_id]}
 @uniq_vendor_items.to_h.each do |u|
 
@@ -110,7 +127,12 @@ end
 
 
 
+
 end
+
+
+
+
 
 
 

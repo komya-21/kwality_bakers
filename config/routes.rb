@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     collection do 
       get :return_type_report
       get :select_return_type
+      get :export_return
     end
   end
   resources :deliveries do
@@ -15,6 +16,9 @@ Rails.application.routes.draw do
       get :select_vendor
       get :payment_status_report
       get :export_payment
+      get :todays_delivery
+      get :export_delivery_index
+      get :record_payment_all
     end
   end
   resources :inwards do

@@ -58,5 +58,11 @@ class CurrentInventoriesController < ApplicationController
 	end
 	def export_stock
 		@current_inventories = CurrentInventory.all
+    respond_to do |format|
+    format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= Total_Stock\"#{Date.today}\".xlsx"
+}
 	end
 end
+end
+

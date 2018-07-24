@@ -9,14 +9,7 @@
 				<div class="panel minimal panel-info">
 					<div class="panel-heading clearfix"> 
 						<div class="panel-title">Products</div> 
-						<ul class="panel-tool-options"> 
-							<li class="dropdown">
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
-								</ul>
-							 </li>
-						</ul>
+						
 					</div> 
 					<!-- panel body --> 
 					<div class="panel-body">
@@ -32,15 +25,7 @@
 				<div class="panel minimal panel-warning">
 					<div class="panel-heading clearfix"> 
 						<div class="panel-title">Returned Products</div> 
-						<ul class="panel-tool-options"> 
-							<li class="dropdown">
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li class="divider"></li>
-									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
-								</ul>
-							 </li>
-						</ul> 
+						 
 					</div> 
 					<!-- panel body --> 
 					<div class="panel-body"> 
@@ -56,14 +41,7 @@
 				<div class="panel minimal panel-success">
 					<div class="panel-heading clearfix"> 
 						<div class="panel-title">Vendors</div> 
-						<ul class="panel-tool-options"> 
-							<li class="dropdown">
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
-								</ul>
-							 </li>
-						</ul>
+						
 					</div> 
 					<!-- panel body --> 
 					<div class="panel-body"> 
@@ -79,15 +57,7 @@
 				<div class="panel minimal panel-danger">
 					<div class="panel-heading clearfix"> 
 						<div class="panel-title">Received Payment</div> 
-						<ul class="panel-tool-options"> 
-							<li class="dropdown">
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li class="divider"></li>
-									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
-								</ul>
-							 </li>
-						</ul>
+						
 					</div> 
 					<!-- panel body --> 
 					<div class="panel-body"> 
@@ -103,15 +73,7 @@
 				<div class="panel minimal panel-default">
 					<div class="panel-heading clearfix"> 
 						<div class="panel-title">Pending Payment</div> 
-						<ul class="panel-tool-options"> 
-							<li class="dropdown">
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false"><i class="icon-cog"></i></a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li class="divider"></li>
-									<li><a href="#"><i class="icon-cancel"></i> Clear list</a></li>
-								</ul>
-							 </li>
-						</ul>
+						
 					</div> 
 					<!-- panel body --> 
 					<div class="panel-body"> 
@@ -123,4 +85,27 @@
 					</div> 
 				</div>
 			</div>
+		
+		<div class="col-lg-3 col-md-6">
+				<div class="panel minimal panel-info">
+					<div class="panel-heading clearfix"> 
+						<div class="panel-title">Today's Delivery Report</div> 
+						
+					</div> 
+					<% render "/home/calc" %>
+					<div class="panel-body"> 
+						<div class="stack-order">
+							<h6 class="no-margins"><b>Total Sales: Rs.</b>  <%= @total %></h6>
+							<h6 class="no-margins"><b>Received Payment: Rs.</b>  <%= @paid %></h6>
+							<h6 class="no-margins"><b>Pending Payment: Rs.</b>  <%= @rem_amt %></h6>
+							<h6 class="no-margins"><b>Delivered Items :</b>   <%= @products.count%></h6>
+							<h6 class="no-margins"><b>Delivered Quantity:</b>  <%= @qty%></h6>
+							<small><%=link_to 'Delivery Details',deliveries_path%></small>
+						</div>
+						<div class="bar-chart-icon"></div>
+					</div> 
+				</div>
+			</div>
 		</div>
+
+ 
