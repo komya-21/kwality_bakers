@@ -120,6 +120,18 @@ format.xlsx {
 }
 end
 	end
+
+	def export_all_vendor
+		@start_date = params[:start_date].to_date
+		@end_date = params[:end_date].to_date
+		
+		@deliveries = Delivery.where(date: @start_date.to_date..@end_date.to_date)	
+		respond_to do |format|
+format.xlsx {
+  response.headers['Content-Disposition'] = 'attachment;' "filename= All_Delivery\"#{Date.today}\".xlsx"
+}
+end
+	end
 	 
 
 end
