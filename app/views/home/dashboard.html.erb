@@ -96,8 +96,8 @@
 					<div class="panel-body"> 
 						<div class="stack-order">
 							<h6 class="no-margins"><b>Total Sales: Rs.</b>  <%= @total %></h6>
-							<h6 class="no-margins"><b>Received Payment: Rs.</b>  <%= @paid %></h6>
-							<h6 class="no-margins"><b>Pending Payment: Rs.</b>  <%= @rem_amt %></h6>
+							<h6 class="no-margins"><b>Received Payment: Rs.</b> <font color="green"> <%= @paid %></font></h6>
+							<h6 class="no-margins"><b>Pending Payment: Rs.</b><font color="red"><%= @rem_amt %></font></h6>
 							<h6 class="no-margins"><b>Delivered Items :</b>   <%= @products.count%></h6>
 							<h6 class="no-margins"><b>Delivered Quantity:</b>  <%= @qty%></h6>
 							<small><%=link_to 'Delivery Details',deliveries_path%></small>

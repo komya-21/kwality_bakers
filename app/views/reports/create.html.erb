@@ -47,8 +47,8 @@
 
 
     <%if @type == 'Return'%>
-<font color="green"> <b>Total Returns</b></font
-  > <%=@return_modules.count%> 
+<font color="green"> <b>Total Returns</b></font > 
+<%=@return_modules.count%> 
       <%= link_to "Excel", export_return_reports_path(start_date: @start_date,end_date: @end_date ,format: "xlsx"), class: 'btn btn-success' %>
 
  <div class="table-responsive">

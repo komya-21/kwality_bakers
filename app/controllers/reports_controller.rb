@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
 		
 		@return_modules = Return.where(date_of_return: @start_date.to_date..@end_date.to_date)
 
-		
+		@delivery_inwards = DeliveryInward.all
 		@deliveries = Delivery.where(date: @start_date.to_date..@end_date.to_date)
 		 
 		@delivery_items = DeliveryInward.where(created_at: @start_date.to_date.midnight..@end_date.to_date.end_of_day)
