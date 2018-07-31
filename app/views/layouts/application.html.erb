@@ -16,7 +16,8 @@
     <!-- Global styles -->
     <%= stylesheet_link_tag 'base' %>
     <!-- Page level styles -->
-    <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %> 
+   <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %> 
+
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= csrf_meta_tags %>
 </head>
