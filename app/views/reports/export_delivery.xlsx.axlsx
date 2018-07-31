@@ -7,8 +7,8 @@ sheet.add_row %w( Sr.\ no Product)
 
 
 @products.each_with_index do |p, i|
- @i = i+1
-sheet.add_row ["#{@i}","#{p.name}"]
+i+= 1
+sheet.add_row ["#{i}","#{p.name}"]
 end
 
 @vendors.each do |v|
@@ -55,7 +55,7 @@ end
 end
 @delivery_items1 = @delivery_items.where(delivery_id: @ids)
 
- 
+
 
 @prod = @delivery_items1.where(product_id: u[0]).all.map{|k| k.qty.to_i}.to_a
 
@@ -139,7 +139,7 @@ end
 
 
 
- 
+
 
 
 

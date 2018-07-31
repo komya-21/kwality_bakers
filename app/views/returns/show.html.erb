@@ -1,7 +1,11 @@
 <%- model_class = Return -%>
-<div class="page-header">
-  <h4><%=t '.title', :default => model_class.model_name.human.titleize %></h4>
-</div>
+ <section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+
+
 
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:date_of_return) %>:</strong></dt>
@@ -31,3 +35,8 @@
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
+</div>
+</div>
+</div>
+</div>
+</section>

@@ -1,11 +1,26 @@
 <%- model_class = Return -%>
-<div class="page-header">
-  <h4><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h4>
-</div>
-<%= link_to t('.new', :default => t("helpers.links.new")),
+
+
+            <section id="main-content" class="animated fadeInUp">
+                      <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Return Details</h3>
+                            <div class="actions pull-right">
+                             <i class="fa fa-expand"></i>
+                                <i class="fa fa-chevron-down"></i>
+                                <i class="fa fa-times"></i>
+                            </div>
+                          </div>
+                          <div class="panel-body">
+
+
+       <%= link_to t('.new', :default => t("helpers.links.new")),
             new_return_path,
             :class => 'btn btn-primary' %><br>
-<table id="returns" class="table table-striped">
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
 
 <p>
   Download:
@@ -53,10 +68,21 @@
     <% end %>
   </tbody>
 </table>
- <script type="text/javascript">
-        $('#returns').dataTable()
-        sPaginationType: "full_numbers"
-</script>
+ </div>
+</div>
+</div>
+</div>
+</section>
+<% content_for :javascript do %>
+                   <!--Load these page level functions-->
+                    <script>
+                    $(document).ready(function() {
+                         $('#example').dataTable();
+                    });
+                    </script>
+            <% end %>
+
+ 
 
 
 

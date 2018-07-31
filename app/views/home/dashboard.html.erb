@@ -1,111 +1,122 @@
 ﻿
+        
+        <section class="main-content-wrapper">
+            
+            <section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-solid-success widget-mini">
+                                    <div class="panel-body">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="total text-center"><%= Product.count %></span>
+                                        <span class="title text-center"><%=link_to "Products", products_path%></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel widget-mini">
+                                    <div class="panel-body">
+                                        <i class="icon-support"></i>
+                                        <span class="total text-center"><%= Return.count%></span>
+                                        <span class="title text-center"><%= link_to 'Returned Products', returns_path%></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel widget-mini">
+                                    <div class="panel-body">
+                                        <i class="icon-envelope-open"></i>
+                                        <span class="total text-center"><%= Vendor.count%></span>
+                                        <span class="title text-center"><%= link_to 'Total Vendors', vendors_path %></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-solid-info widget-mini">
+                                    <div class="panel-body">
+                                        <i class="icon-user"></i>
+                                        <span class="total text-center"><%= Delivery.where(payment_status: true).count %></span>
+                                        <span class="title text-center"><%=link_to 'Record Payment', deliveries_path%></span>
+                                    </div>
+                                </div>
+                            </div>
+                       
+                    <div class="col-md-6">
+                                <div class="panel panel-solid-success widget-mini">
+                                    <div class="panel-body">
+                                        <i class="icon-bar-chart"></i>
+                                        <span class="total text-center"><%= Delivery.where(payment_status: false).count %></span>
+                                        <span class="title text-center"><%=link_to 'Pending Payment',deliveries_path%></span>
+                                    </div>
+                                </div>
+                            </div>
+                             </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                        <div class="panel panel-default browser-chart">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Today's Delivery report</h3>
+                            </div>
+                            <% render "/home/calc" %>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <ul>
+                                            </i>Total Sales: Rs.<sm><%= @total %></sm>
+                                            Received Payment: Rs.
+                                            <sm><%= @paid %></sm>
+                                            Pending Payment: Rs.</li>
+                                            <sm><%= @rem_amt %></sm>
+                                            </i>Delivered Items :</li>
+                                            <sm><%= @products.count%></sm>
+                                            </i>Delivered Quantity:</li>
+                                            <sm><%= @qty%></sm>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div id="doughnut-canvas-holder">
+                                            <canvas id="doughnut-chart-area" width="137" height="137"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Monthly Goal</h3>
+                                <div class="actions pull-right">
+                                    <i class="fa fa-expand"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body widget-gauge">
+                                <canvas width="160" height="100" id="gauge" class=""></canvas>
+                                <div class="goal-wrapper">
+                                    <span class="gauge-value pull-left">$</span>
+                                    <span id="gauge-text" class="gauge-value pull-left">3,200</span>
+                                    <span id="goal-text" class="goal-value pull-right">$5,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                
+               
 
- 
-<!-- Main content -->
-	<div class="main-content">
-		<h1 class="page-title">DASHBOARD</h1>
-		<div class="row">
-			<div class="col-lg-3 col-md-6">
-				<div class="panel minimal panel-info">
-					<div class="panel-heading clearfix"> 
-						<div class="panel-title">Products</div> 
-						
-					</div> 
-					<!-- panel body --> 
-					<div class="panel-body">
-						<div class="stack-order"> 
-							<h1 class="no-margins"><%= Product.count %></h1>
-							<small><%=link_to "Products", products_path%></small>
-						</div>
-						<div class="bar-chart-icon"></div>
-					</div> 
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6">
-				<div class="panel minimal panel-warning">
-					<div class="panel-heading clearfix"> 
-						<div class="panel-title">Returned Products</div> 
-						 
-					</div> 
-					<!-- panel body --> 
-					<div class="panel-body"> 
-						<div class="stack-order">
-							<h1 class="no-margins"><%= Return.count%></h1>
-							<small><%= link_to 'Returned Products', returns_path%></small>
-						</div>
-						<div class="bar-chart-icon"></div>
-					</div> 
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6">
-				<div class="panel minimal panel-success">
-					<div class="panel-heading clearfix"> 
-						<div class="panel-title">Vendors</div> 
-						
-					</div> 
-					<!-- panel body --> 
-					<div class="panel-body"> 
-						<div class="stack-order">
-							<h1 class="no-margins"><%= Vendor.count%></h1>
-							<small><%= link_to 'Total Vendors', vendors_path %></small>
-						</div>
-						<div class="bar-chart-icon"></div>
-					</div> 
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6">
-				<div class="panel minimal panel-danger">
-					<div class="panel-heading clearfix"> 
-						<div class="panel-title">Received Payment</div> 
-						
-					</div> 
-					<!-- panel body --> 
-					<div class="panel-body"> 
-						<div class="stack-order">
-							<h1 class="no-margins"><%#=StudentDetail.count%><%= Delivery.where(payment_status: true).count %></h1>
-							<small><%=link_to 'Record Payment', deliveries_path%></small>
-						</div>
-						<div class="bar-chart-icon"></div>
-					</div> 
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6">
-				<div class="panel minimal panel-default">
-					<div class="panel-heading clearfix"> 
-						<div class="panel-title">Pending Payment</div> 
-						
-					</div> 
-					<!-- panel body --> 
-					<div class="panel-body"> 
-						<div class="stack-order">
-							<h1 class="no-margins"><%#=StudentDetail.count%><%= Delivery.where(payment_status: false).count %></h1>
-							<small><%=link_to 'Record Payment',deliveries_path%></small>
-						</div>
-						<div class="bar-chart-icon"></div>
-					</div> 
-				</div>
-			</div>
-		
-		<div class="col-lg-3 col-md-6">
-				<div class="panel minimal panel-info">
-					<div class="panel-heading clearfix"> 
-						<div class="panel-title">Today's Delivery Report</div> 
-						
-					</div> 
-					<% render "/home/calc" %>
-					<div class="panel-body"> 
-						<div class="stack-order">
-							<h6 class="no-margins"><b>Total Sales: Rs.</b>  <%= @total %></h6>
-							<h6 class="no-margins"><b>Received Payment: Rs.</b> <font color="green"> <%= @paid %></font></h6>
-							<h6 class="no-margins"><b>Pending Payment: Rs.</b><font color="red"><%= @rem_amt %></font></h6>
-							<h6 class="no-margins"><b>Delivered Items :</b>   <%= @products.count%></h6>
-							<h6 class="no-margins"><b>Delivered Quantity:</b>  <%= @qty%></h6>
-							<small><%=link_to 'Delivery Details',deliveries_path%></small>
-						</div>
-						<div class="bar-chart-icon"></div>
-					</div> 
-				</div>
-			</div>
-		</div>
-
- 
+                                
+                </div>
+            </section>
+        </section>
+   
+        <!--main content end-->
+   
+    <!--sidebar right start-->
+    
+    <!--/sidebar right end-->
+    <!--Config demo-->
+    
+    <!--Global JS-->
+   
