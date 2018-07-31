@@ -12,12 +12,9 @@
     <title>NeuBoard</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-    <!-- Global styles -->
-    <%= stylesheet_link_tag 'base' %>
-    <!-- Page level styles -->
 
-<%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %> 
+    <%= stylesheet_link_tag 'base' %>
+<%= stylesheet_link_tag params[:controller] ::Rails.application.assets.find_asset("#{params[:controller]}.css").present? %> 
 
 
     <%= stylesheet_link_tag 'application', media: 'all' %>
@@ -25,16 +22,13 @@
 </head>
 <body>
 
-<body>
     <!-- Page Wrapper-->
     <section id="main-wrapper" class="theme-default">
        <!-- Page wrapper -->
-       <% if user_signed_in? %>
         <header id="header"> <%= render partial: "layouts/header" if user_signed_in? %> </header>
         <!-- Left Sidebar Navigation -->
         <aside class="sidebar sidebar-left"> <%= render partial: "layouts/sidebar"  if user_signed_in?%> </aside>
         <!-- Content wraper -->
-        <% end %>
          <section class="main-content-wrapper">
             <!-- Main content view  -->
                 <%= yield %>
@@ -54,7 +48,7 @@
       <!-- Global scripts -->
      <%= javascript_include_tag 'base' %>
      <!-- Page level plugin scripts -->
-     <%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
+<%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
      <%= javascript_include_tag 'application' %>
      <%= yield :javascript %>
 
