@@ -1,3 +1,16 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">New Inward</h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
 
 
 <%= nested_form_for @inward, :html => { :class => "form-horizontal inward" } do |f| %>
@@ -59,7 +72,7 @@
       <tr class="fields">
         
 
- <td><%= task_form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: 'select'%></td>
+ <td><%= task_form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control selectpicker", "data-live-search" => "true"%></td>
 
   <td> <%= task_form.text_field :quantity, class: 'form-control' %> </td>
 
@@ -83,6 +96,12 @@
 <% end %>
 </table>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
      
 

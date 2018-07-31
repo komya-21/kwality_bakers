@@ -1,3 +1,18 @@
+
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">New Delivery</h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+
 <%= nested_form_for @delivery, :html => { :class => "form-horizontal delivery" } do |f| %>
 
   <% if @delivery.errors.any? %>
@@ -91,7 +106,8 @@
       </colgroup>
       
       <tr class="fields">
-        <td> <%=invoice_item.select :product_id ,Product.all.collect{|i| [i.name, i.id]}, {prompt:true},class: "select"%></td>
+        <td>
+          <%=invoice_item.select :product_id ,Product.all.collect{|i| [i.name, i.id]}, {prompt:true},class: "select"%></td>
         <td><%= invoice_item.text_field :price, id: :price, placeholder: 'price' ,class: 'form-control'%></td>
         <td><%= invoice_item.text_field :quantity, id: :quantity, placeholder: 'quantity' ,class: 'form-control',readonly:true%></td>
         <td><%= invoice_item.text_field :rem_quantity, id: :rem_quantity, placeholder: 'rem_qty', class: 'form-control',readonly:true%></td>
@@ -124,6 +140,12 @@
   </div>
 
 <% end %>
+</div>
+</div>
+</div>
+</div>
+</section>
+
 
  
   
@@ -132,8 +154,10 @@
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 </div>
+
     
 
+<% content_for :javascript do %>
 
   <script type="text/javascript">
   $(document).on("change", ".select", function () {
@@ -273,4 +297,5 @@
 })
 
 </script>
+<% end %>
 

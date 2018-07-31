@@ -1,3 +1,16 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">New Delivery</h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
 <%= form_for :delivery, url:{action: 'payment_status_report',remote:true} do |form| %>
  
 <div class = "center">
@@ -21,7 +34,13 @@
         
 
 <% end %>
+</div>
+</div>
+</div>
+</div>
+</section>
 
+<% content_for :javascript do %>
 
 <script type='text/javascript'>
 $('#delivery_payment_status').on('change', function() {
@@ -37,3 +56,4 @@ $('#delivery_payment_status').on('change', function() {
  });
 });
 </script>
+<% end %>

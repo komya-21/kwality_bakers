@@ -1,7 +1,10 @@
 <%- model_class = CurrentInventory -%>
-<div class="page-header">
-<!--   <h1><%#=t '.title', :default => model_class.model_name.human.titleize %></h1>
- --></div>
+ <section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+
 
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:Product) %>:</strong></dt>
@@ -14,6 +17,12 @@
               stock_inwards_path, :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_current_inventory_path(@current_inventory), :class => 'btn btn-default' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
 <%#= link_to t('.destroy', :default => t("helpers.links.destroy")),
               product_path(@product),
               :method => 'delete',
