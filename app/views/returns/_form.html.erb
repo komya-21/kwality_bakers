@@ -1,4 +1,3 @@
-
 <section id="main-content" class="animated fadeInUp">
                 <div class="row">
                     <div class="col-md-12">
@@ -35,49 +34,42 @@
     <div class="col-lg-10">
       <%= f.date_field :date_of_return, value: Date.today ,:class => 'form-control' %>
     </div>
-    <%=f.error_span(:date_of_return) %>
   </div>
   <div class="form-group">
     <%= f.label :invoice_number, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :invoice_number, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:invoice_number) %>
   </div>
   <div class="form-group">
     <%= f.label :vendor_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.select :vendor_id, Vendor.all.collect{|v| [v.name, v.id]},{prompt:true}, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:vendor_id) %>
   </div>
   <div class="form-group">
     <%= f.label :inward_product_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.select :product_id,Product.all.collect{|i| [i.name , i.id]}, {prompt:true},:class => 'form-control' %>
     </div>
-    <%=f.error_span(:inward_product_id) %>
   </div>
   <div class="form-group">
     <%= f.label :return_quantity, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :return_quantity, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:return_quantity) %>
   </div>
   <div class="form-group">
     <%= f.label :purpose, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :purpose, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:purpose) %>
   </div>
   <div class="form-group">
     <%= f.label :receipt_no, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :receipt_no, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:receipt_no) %>
   </div>
   <div class="form-group">
     <%= f.label :return_type, :class => 'control-label col-lg-2' %>
@@ -85,7 +77,6 @@
       <%= f.select :return_type, options_for_select(['OK','NOT-OK']),{prompt:true},
        :class => 'form-control' %>
     </div>
-    <%=f.error_span(:return_type) %>
   </div>
 
   <div class="form-group">

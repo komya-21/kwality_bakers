@@ -35,14 +35,12 @@
     <div class="col-lg-10">
       <%= f.text_field :invoice_no, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:invoice_no) %>
   </div>
   <div class="form-group">
     <%= f.label :date, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.date_field :date, value: Date.today, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:date) %>
   </div>
   <div class="form-group">
     <%= f.label :vendor_id, :class => 'control-label col-lg-2' %>
@@ -51,7 +49,6 @@
       <%= link_to 'Add Vendor', new_vendor_path, {:remote => true, :class => "btn btn-default", 'data-target' => "#exampleModalCenter", 'data-toggle' => "modal"} %>
 
     </div>
-    <%=f.error_span(:vendor_id) %>
     
   </div>
 
@@ -82,7 +79,6 @@
     <div class="col-lg-10">
       <%= f.text_field :bill_checked_by, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:bill_checked_by) %>
   </div>
   <div class="form-group">
       <label class='control-label col-lg-2' >Vendor Type</label>
