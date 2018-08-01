@@ -28,10 +28,6 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-
-
-
-
 gem 'will_paginate', '~> 3.1.0'
 gem "select2-rails"
 gem 'bootstrap-modal-rails'
@@ -41,22 +37,19 @@ gem 'axlsx_rails'
 
 gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
 #gem "chartkick"
-
-
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # authentication
 gem 'devise'
-
 gem 'roo'
 gem 'roo-xls'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
-gem "twitter-bootstrap-rails"
+# gem "twitter-bootstrap-rails"
 
 group :production do 
   gem 'rails_12factor'
