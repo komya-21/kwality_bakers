@@ -1,4 +1,3 @@
-
 <% modal ||= false %>
 <% remote = modal ? true : false %>
 <div class="modal-dialog">    
@@ -35,70 +34,60 @@
     <div class="col-lg-8">
       <%= f.text_field :name, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:name) %>
   </div>
   <div class="form-group">
     <%= f.label :address, :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.text_field :address, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:address) %>
   </div>
   <div class="form-group">
     <%= f.label :delivery_area, :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.text_field :delivery_area, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:delivery_area) %>
   </div>
   <div class="form-group">
     <%= f.label :gst_no, :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.text_field :gst_no, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:gst_no) %>
   </div>
   <div class="form-group">
     <%= f.label :pan_no, :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.text_field :pan_no, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:pan_no) %>
   </div>
   <div class="form-group">
     <%= f.label :contact, :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.text_field :contact, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:contact) %>
   </div>
   <div class="form-group">
     <%= f.label :alternate_contact, :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.text_field :alternate_contact, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:alternate_contact) %>
   </div>
   <div class="form-group">
     <%= f.label :vendor_type, 'Regular', :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.radio_button :vendor_type, 'Regular' %>
     </div>
-    <%=f.error_span(:vendor_type) %>
   </div>
   <div class="form-group">
     <%= f.label :vendor_type,'Custom', :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.radio_button :vendor_type, 'Custom' %>
     </div>
-    <%=f.error_span(:vendor_type) %>
   </div>
   <div class="form-group">
     <%= f.label :comission, :class => 'control-label col-lg-2' %>
     <div class="col-lg-8">
       <%= f.text_field :comission, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:comission) %>
   </div>
 
   <div class="form-group">

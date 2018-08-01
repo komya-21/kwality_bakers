@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :work_orders
+  resources :colors
   resources :returns do
     collection do 
       get :return_type_report

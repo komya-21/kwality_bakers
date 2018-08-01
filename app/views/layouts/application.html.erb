@@ -15,7 +15,7 @@
 
     <%= stylesheet_link_tag 'base' %>
     <% if user_signed_in? %>
-    <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets_manifest.find("#{params[:controller]}.css") %>  
+    <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %>  
 
 <% end %>
        <%= stylesheet_link_tag 'application', media: 'all' %>
@@ -50,7 +50,7 @@
      <%= javascript_include_tag 'base' %>
      <!-- Page level plugin scripts -->
 <% if user_signed_in? %>
-<%= javascript_include_tag params[:controller] if ::Rails.application.assets_manifest.find("#{params[:controller]}.js") %>
+<%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
 <% end %>
      <%= javascript_include_tag 'application' %>
      <%= yield :javascript %>

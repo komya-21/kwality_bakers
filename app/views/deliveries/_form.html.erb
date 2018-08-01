@@ -35,14 +35,12 @@
     <div class="col-lg-10">
       <%= f.text_field :invoice_no, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:invoice_no) %>
   </div>
   <div class="form-group">
     <%= f.label :date, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.date_field :date, value: Date.today, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:date) %>
   </div>
   <div class="form-group">
     <%= f.label :vendor_id, :class => 'control-label col-lg-2' %>
@@ -51,7 +49,6 @@
       <%= link_to 'Add Vendor', new_vendor_path, {:remote => true, :class => "btn btn-default", 'data-target' => "#exampleModalCenter", 'data-toggle' => "modal"} %>
 
     </div>
-    <%=f.error_span(:vendor_id) %>
     
   </div>
 
@@ -82,7 +79,6 @@
     <div class="col-lg-10">
       <%= f.text_field :bill_checked_by, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:bill_checked_by) %>
   </div>
   <div class="form-group">
       <label class='control-label col-lg-2' >Vendor Type</label>
@@ -267,12 +263,10 @@
 
     
  
-      <head>
-      
         <script>
             $(document).ready(function() { $("#delivery_vendor_id").select2(); });
         </script>
-    </head>
+  
     <script type="text/javascript">
  $(document).on('nested:fieldAdded', function(event){
  // this field was just inserted into your form
@@ -286,6 +280,7 @@
  var vendor_type = $("#vendor_type").val();
 
        if(vendor_type != "Custom"){
+
           var selectField2 = field.find('#gst');
           var selectField3 = field.find('#total');
           selectField2.hide();

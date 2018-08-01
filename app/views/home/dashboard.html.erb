@@ -1,5 +1,5 @@
 ﻿
-        
+        <% if current_user.role == "SuperAdmin" %>
         <section class="main-content-wrapper">
             
             <section id="main-content" class="animated fadeInUp">
@@ -64,14 +64,13 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <ul>
-                                            </i>Total Sales: Rs.<sm><%= @total %></sm>
-                                            Received Payment: Rs.
-                                            <sm><%= @paid %></sm>
-                                            Pending Payment: Rs.</li>
-                                            <sm><%= @rem_amt %></sm>
-                                            </i>Delivered Items :</li>
-                                            <sm><%= @products.count%></sm>
-                                            </i>Delivered Quantity:</li>
+                                            </i>Total Sales: Rs.<sm><%= @total %><br>Received Payment: Rs.
+                                            <sm><%= @paid %></sm><br>
+                                            Pending Payment: Rs.
+                                            <sm><%= @rem_amt %></sm><br>
+                                            </i>Delivered Items :
+                                            <sm><%= @products.count%></sm><br>
+                                            </i>Delivered Quantity:
                                             <sm><%= @qty%></sm>
                                         </ul>
                                     </div>
@@ -110,7 +109,7 @@
                 </div>
             </section>
         </section>
-   
+   <% end %>
         <!--main content end-->
    
     <!--sidebar right start-->
