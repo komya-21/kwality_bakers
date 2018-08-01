@@ -1,0 +1,57 @@
+
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">New Color</h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+
+<%= form_with(model: color, local: true) do |form| %>
+  <% if color.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(color.errors.count, "error") %> prohibited this color from being saved:</h2>
+
+      <ul>
+      <% color.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name , :class => 'control-label col-lg-2' %>
+     <div class="col-lg-10">
+    <%= form.text_field :name, id: :color_name, :class => 'form-control'  %>
+  </div>
+</div><br>
+
+ <div class="form-group">
+    <%= form.label :code , :class => 'control-label col-lg-2' %>
+     <div class="col-lg-10">
+    <%= form.text_field :code, id: :color_code, :class => 'form-control'  %>
+  </div>
+</div><br>
+
+   <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+    <%= form.submit  "Create Color" ,class: "btn btn-primary" %>
+    <%= link_to 'Cancel', colors_path ,class: "btn btn-default"%>
+
+  </div>
+  </div>
+<% end %>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+

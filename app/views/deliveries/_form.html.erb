@@ -263,12 +263,10 @@
 
     
  
-      <head>
-      
         <script>
             $(document).ready(function() { $("#delivery_vendor_id").select2(); });
         </script>
-    </head>
+  
     <script type="text/javascript">
  $(document).on('nested:fieldAdded', function(event){
  // this field was just inserted into your form
@@ -282,6 +280,7 @@
  var vendor_type = $("#vendor_type").val();
 
        if(vendor_type != "Custom"){
+
           var selectField2 = field.find('#gst');
           var selectField3 = field.find('#total');
           selectField2.hide();

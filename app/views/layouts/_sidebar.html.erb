@@ -37,6 +37,7 @@
             <nav>
                 <h5 class="sidebar-header"></h5>
                 <ul class="nav nav-pills nav-stacked">
+                    <% if current_user.role == "SuperAdmin" %>
                     <li>
                         <a href="/home/dashboard" title="Dashboard">
                             <i class="fa  fa-fw fa-tachometer"></i> Dashboard
@@ -47,22 +48,22 @@
                             <i class="fa  fa-fw fa-cogs"></i>Misc.
                         <ul class="nav-sub">
                             <li>
-                                <a href="/companies" title="Buttons">
+                                <a href="/companies" title="Companies">
                                      Companies
                                 </a>
                             </li>
                             <li>
-                                <a href="/employees" title="Sliders &amp; Progress">
+                                <a href="/employees" title="Employees">
                                     Employees
                                      </a>
                             </li>
                             <li>
-                                <a href="/products" title="Modals &amp; Popups">
+                                <a href="/products" title="Products">
                                      Products
                                 </a>
                             </li>
                             <li>
-                                <a href="/vendors" title="Tabs &amp; Accordions">
+                                <a href="/vendors" title="Vendors">
                                     Vendors
                                 </a>
                             </li>
@@ -71,17 +72,17 @@
                         </ul>
                     </li>
                     <li class="nav-dropdown">
-                        <a href="#" title="Forms">
+                        <a href="#" title="Reports">
                             <i class="fa  fa-fw fa-edit"></i>Reports
                         </a>
                         <ul class="nav-sub">
-                            <li><a href="/reports/new" title="Components">Daily Report</a>
+                            <li><a href="/reports/new" title="Daily Report">Daily Report</a>
                             </li>
-                            <li><a href="/deliveries/new_delivery" title="Validation">Vendor Delivery Report</a>
+                            <li><a href="/deliveries/new_delivery" title="Vendor Delivery Report">Vendor Delivery Report</a>
                             </li>
-                            <li><a href="/returns/return_type_report" title="Mask">Return Type Report</a>
+                            <li><a href="/returns/return_type_report" title="Return Type Report">Return Type Report</a>
                             </li>
-                            <li><a href="/deliveries/payment_status_report" title="Wizard">Payment Status vise report</a>
+                            <li><a href="/deliveries/payment_status_report" title="Payment Status Vise Report">Payment Status vise report</a>
                             </li>
                             
                         </ul>
@@ -92,20 +93,26 @@
                    
                    
                     <li>
-                        <a href="/inwards" title="Frontend">
+                        <a href="/inwards" title="Inwards">
                             <i class="fa  fa-fw fa-desktop"></i>Inwards
                             
                         </a>
                     </li>
                      <li>
-                        <a href="/deliveries" title="Frontend">
+                        <a href="/deliveries" title="Deliveries">
                             <i class="fa  fa-fw fa-desktop"></i>Deliveries
                             
                         </a>
                     </li>
                      <li>
-                        <a href="/returns" title="Frontend">
+                        <a href="/returns" title="Returns">
                             <i class="fa  fa-fw fa-desktop"></i>Returns
+                            
+                        </a>
+                    </li>
+                     <li>
+                        <a href="/colors/new" title="Returns">
+                            <i class="fa  fa-fw fa-tachometer"></i>Add Color
                             
                         </a>
                     </li>
@@ -113,4 +120,19 @@
                     
                         
                     </li>
+                    <% elsif current_user.role == "Vendor" %>
+
+                    <li>
+                        <a href="#" title="My Orders">
+                            <i class="fa  fa-fw fa-desktop"></i>My Orders
+                            
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" title="New Order">
+                            <i class="fa  fa-fw fa-edit"></i>New Order
+                            
+                        </a>
+                    </li>
+                    <% end %>
             </nav>

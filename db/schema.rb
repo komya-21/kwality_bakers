@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180711134431) do
+ActiveRecord::Schema.define(version: 20180801110621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "colors", force: :cascade do |t|
+    t.string "name"
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
@@ -162,6 +169,25 @@ ActiveRecord::Schema.define(version: 20180711134431) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "vendor_type"
+    t.string "email"
+    t.string "password"
+  end
+
+  create_table "work_orders", force: :cascade do |t|
+    t.float "width"
+    t.float "depth"
+    t.float "height"
+    t.bigint "quantity"
+    t.bigint "color_id"
+    t.string "side"
+    t.float "skirting"
+    t.integer "horizontal"
+    t.integer "vertical"
+    t.integer "center"
+    t.string "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["color_id"], name: "index_work_orders_on_color_id"
   end
 
   add_foreign_key "deliveries", "vendors"
@@ -175,4 +201,5 @@ ActiveRecord::Schema.define(version: 20180711134431) do
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
+  add_foreign_key "work_orders", "colors"
 end

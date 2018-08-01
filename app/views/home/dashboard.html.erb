@@ -1,5 +1,5 @@
 ﻿
-        
+        <% if current_user.role == "SuperAdmin" %>
         <section class="main-content-wrapper">
             
             <section id="main-content" class="animated fadeInUp">
@@ -109,7 +109,7 @@
                 </div>
             </section>
         </section>
-   
+   <% end %>
         <!--main content end-->
    
     <!--sidebar right start-->
