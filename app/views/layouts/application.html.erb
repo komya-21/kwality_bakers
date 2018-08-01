@@ -14,7 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <%= stylesheet_link_tag 'base' %>
-    <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %>     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <% if user_signed_in? %>
+    <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets_manifest.find("#{params[:controller]}.css") %>  
+
+<% end %>
+       <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= csrf_meta_tags %>
 </head>
 <body>
@@ -45,8 +49,9 @@
       <!-- Global scripts -->
      <%= javascript_include_tag 'base' %>
      <!-- Page level plugin scripts -->
-
-<%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
+<% if user_signed_in? %>
+<%= javascript_include_tag params[:controller] if ::Rails.application.assets_manifest.find("#{params[:controller]}.js") %>
+<% end %>
      <%= javascript_include_tag 'application' %>
      <%= yield :javascript %>
 

@@ -31,6 +31,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'rails_12factor'
 
 
+
 gem 'will_paginate', '~> 3.1.0'
 gem "select2-rails"
 gem 'bootstrap-modal-rails'
