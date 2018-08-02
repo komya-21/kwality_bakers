@@ -183,10 +183,10 @@
 
 
     /*var total1 = {(((width * depth )/92903)*2)*quantity}+{(((height * depth )/92903)*2)*quantity}+{((width * height )/92903)*quantity};*/
-    var final_total = Math.ceil(total);
+   
+    var twoPlacedFloat = parseFloat(total).toFixed(2);
 
-
-    $('#work_order_total').val(final_total);
+    $('#work_order_total').val(twoPlacedFloat);
 
   });
 
