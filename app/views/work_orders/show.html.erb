@@ -27,7 +27,7 @@
 
 <p>
   <strong>Color:</strong>
-  <%= @work_order.color %>
+  <%= @work_order.color.code if @work_order.color.present? %>
 </p>
 
 <p>
@@ -61,7 +61,7 @@
 </p>
 
 <%= link_to 'Edit', edit_work_order_path(@work_order) , class: "btn btn-link" %> |
-<%= link_to 'Back', work_orders_path) , class: "btn btn-link"  %>
+<%= link_to 'Back', work_orders_path , class: "btn btn-link"  %>
 </div>
 </div>
 </div>

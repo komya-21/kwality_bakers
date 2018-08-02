@@ -30,7 +30,9 @@
       <th>Vertical</th>
       <th>Center</th>
       <th>Total</th>
-      <th colspan="3"></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -41,7 +43,7 @@
         <td><%= work_order.depth %></td>
         <td><%= work_order.height %></td>
         <td><%= work_order.quantity %></td>
-        <td><%= work_order.color %></td>
+        <td><%= work_order.color.code if work_order.color.present? %></td>
         <td><%= work_order.side %></td>
         <td><%= work_order.skirting %></td>
         <td><%= work_order.horizontal %></td>
@@ -66,7 +68,9 @@
                    <!--Load these page level functions-->
                     <script>
                     $(document).ready(function() {
+
                          $('#example').dataTable();
+                         
                     });
                     </script>
             <% end %>

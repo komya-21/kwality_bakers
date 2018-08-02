@@ -1,4 +1,4 @@
-/*!
+"col-md-1/*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -1970,7 +1970,7 @@ pre code {
     width: 16.66666667%;
   }
   .col-md-1 {
-    width: 8.33333333%;
+    width: 10%;
   }
   .col-md-pull-12 {
     right: 100%;

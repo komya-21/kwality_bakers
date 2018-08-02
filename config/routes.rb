@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :work_orders
+  resources :work_orders do 
+    collection do
+      get :new_page
+    end
+  end
   resources :colors
   resources :returns do
     collection do 
