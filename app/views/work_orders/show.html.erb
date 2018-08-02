@@ -27,7 +27,7 @@
 
 <p>
   <strong>Color:</strong>
-  <%= @work_order.color.code %>
+  <%= @work_order.color.code if @work_order.color.present? %>
 </p>
 
 <p>

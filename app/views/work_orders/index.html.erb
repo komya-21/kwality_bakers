@@ -41,7 +41,7 @@
         <td><%= work_order.depth %></td>
         <td><%= work_order.height %></td>
         <td><%= work_order.quantity %></td>
-        <td><%= work_order.color.code %></td>
+        <td><%= work_order.color.code if work_order.color.present? %></td>
         <td><%= work_order.side %></td>
         <td><%= work_order.skirting %></td>
         <td><%= work_order.horizontal %></td>
