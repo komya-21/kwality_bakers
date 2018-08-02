@@ -28,7 +28,7 @@
 
 
           <div class="form-group">
-            <div class="col-sm-6">
+            <div class="col-sm-3">
               <label class="col-sm-10 control-label">Width</label> 
               <%= form.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)"%>
             </div>
@@ -37,7 +37,7 @@
 
 
           <div class="form-group">
-            <div class="col-sm-6">
+            <div class="col-sm-3">
               <label class="col-sm-10 control-label">Depth</label> 
               <%= form.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %>
 
@@ -46,7 +46,7 @@
 
 
           <div class="form-group">
-            <div class="col-sm-6">
+            <div class="col-sm-3">
              <label class="col-sm-10 control-label">Height</label> 
 
              <%= form.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%>
@@ -56,7 +56,7 @@
 
 
          <div class="form-group">
-          <div class="col-sm-6">
+          <div class="col-sm-3">
            <label class="col-sm-10 control-label">Quantity</label> 
            <%= form.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Quantity" %>
          </div>
@@ -64,7 +64,7 @@
 
 
        <div class="form-group">
-        <div class="col-sm-6">
+        <div class="col-sm-3">
          <label class="col-sm-10 control-label">Select Color</label> 
          <%= form.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},class: "form-control" %>
          <%#= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
@@ -73,7 +73,7 @@
 
 
      <div class="form-group">
-      <div class="col-sm-6">
+      <div class="col-sm-3">
         <label class="col-sm-10 control-label">Select Side</label> 
         <%= form.select :side,options_for_select(['R', 'L','ALL']),{prompt:true},class: "form-control" %>
         <%#= form.select :payment_status, options_for_select(['PAID', 'PENDING','ALL']),{prompt:true}, class: 'form-control' %>
@@ -83,7 +83,7 @@
 
 
     <div class="form-group">
-      <div class="col-sm-6">
+      <div class="col-sm-3">
        <label class="col-sm-10 control-label">Skirting</label> 
        <%= form.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%>
      </div>
@@ -91,51 +91,47 @@
 
 </div>
  
-<div class="row">
-<div class="col-md-12">
+ 
 
  <span><b><u>White BSL Shelf Quantity:</u></b></span>
-</div>
-</div>
+
+ <div class="form-group">
+    <div class="col-sm-3">
+      </div>
+    </div>
 
 
 
-
- <div class="row">
-    <div class="col-md-12">
+ 
 
   <div class="form-group">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
       
       <%= form.number_field :horizontal, id: :work_order_horizontal ,class: "form-control",placeholder: "Horizontal"%>
     </div>
 </div>
-</div>
-</div>
 
 
- <div class="row">
-    <div class="col-md-12">
+
+
 <div class="form-group">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
       <!-- <label class="col-sm-10 control-label">Vertical</label>  -->
       <%= form.number_field :vertical, id: :work_order_vertical,class: "form-control" ,placeholder: "Vertical" %>
     </div>
   </div>
-</div>
-</div>
 
 
- <div class="row">
-    <div class="col-md-12">
+
+ 
 <div class="form-group">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
      <!-- <label class="col-sm-10 control-label">Center</label>  -->
      <%= form.number_field :center, id: :work_order_center,class: "form-control",placeholder: "Center" %>
    </div>
  </div>
-</div>
-</div>
+ 
+
 
 
 
@@ -144,7 +140,7 @@
     <div class="col-md-12">
 
   <div class="form-group">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
       <label class="col-sm-10 control-label">Total</label> 
       <%= form.text_field :total, id: :work_order_total,class: "form-control" ,placeholder: "Total"%>
     </div>
