@@ -30,7 +30,7 @@
       <tr>
         <td><%= color.name %></td>
         <td><%= color.code %></td>
-        <td><%= color.price %></td>
+        <td><%= color.price if color.price.present? %></td>
         <td><%= link_to 'Show', color %></td>
         <td><%= link_to 'Edit', edit_color_path(color) %></td>
         <td><%= link_to 'Destroy', color, method: :delete, data: { confirm: 'Are you sure?' } %></td>
