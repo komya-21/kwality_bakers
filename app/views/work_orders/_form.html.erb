@@ -13,42 +13,60 @@
        </div>
        <div class="panel-body">
 <div class="form-horizontal form-border">
-        <%= form_with(model: work_order, local: true) do |form| %>
-        <% if work_order.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(work_order.errors.count, "error") %> prohibited this work_order from being saved:</h2>
-
-          <ul>
-            <% work_order.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-        <% end %>
+        <%= form_with(model: @work_order, local: true) do |form| %>
+       
 
    
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Enter Measurements:</label>
+                                      
 
-
-                                         <div class="col-md-2">
+                                         <div class="col-md-1">
+                                          <label class="col-sm-3 control-label">Width</label>
                 
-              <%= form.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)"%>
-              
+              <%= form.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "mm"%>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
+               <label class="col-sm-3 control-label">Depth</label>
              
-              <%= form.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %>
-              
+              <%= form.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "mm" %>
 
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
              
-
-             <%= form.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%>
-             
+               <label class="col-sm-3 control-label">Height</label>
+             <%= form.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "mm"%>
 
            </div>
+
+     
+       
+        <div class="col-md-1">
+          <label class="col-sm-3 control-label">Skirting</label>
+       <%= form.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "mm"%>
+     </div>
+     <div class="col-md-2">
+           <label class="col-sm-6 control-label">Color:</label> 
+         
+         <%= form.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %>
+         <%#= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
+       </div>
+       <div class="col-md-2">
+           <label class="col-sm-3 control-label"> Side:</label> 
+        <%= form.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %>
+        <%#= form.select :payment_status, options_for_select(['PAID', 'PENDING','ALL']),{prompt:true}, class: 'form-control' %>
+      </div>
+   
+          
+          
+           <div class="col-md-1">
+            <label class="col-sm-3 control-label">Quantity</label>
+           <%= form.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %>
+         </div>
+
+
+        
+      
+
                                     </div>
                                 
                                    
@@ -58,43 +76,15 @@
 
 
 
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Select Color:</label> 
-        <div class="col-md-6">
-         
-         <%= form.select :color_id,Color.all.collect {|v| [v.code, v.id,v.price]}, {prompt:true},id: :color_id ,class: "form-control" %>
-         <%#= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
-       </div>
-     </div>
-
-       <div class="form-group">
-     
-        <label class="col-sm-3 control-label">Select Side:</label> 
-         <div class="col-md-6">
-        <%= form.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %>
-        <%#= form.select :payment_status, options_for_select(['PAID', 'PENDING','ALL']),{prompt:true}, class: 'form-control' %>
-      </div>
-
-    </div>
-
-     <div class="form-group">
-     
-       <label class="col-sm-3 control-label">Skirting:</label> 
-        <div class="col-md-6">
-       <%= form.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "mm"%>
-     </div>
-   </div>
-
-
-
-         <div class="form-group">
           
-           <label class="col-sm-3 control-label">Quantity:</label> 
-           <div class="col-md-6">
-           <%= form.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %>
-         </div>
-       </div>
 
+       
+     
+       
+         
+
+
+     
       
 
 
@@ -104,19 +94,13 @@
    
 
  
- <div align="center">
-
- <span><b><u>White BSL Shelf Quantity:</u></b></span>
-
  
-</div>
-<li class="divider"></li>
 
 
  
 
   <div class="form-group">
-    <label class="col-sm-3 control-label">Enter Quantity:</label> 
+    <label class="col-sm-3 control-label">White BSL Shelf Quantity:</label> 
     <div class="col-sm-2">
       
       <%= form.number_field :horizontal, id: :work_order_horizontal ,class: "form-control",placeholder: "Horizontal"%>
@@ -207,7 +191,7 @@
 
       var top_bottom = (width * depth)/92903;
     }
-    if(side == "LRtrtr"){
+    if(side == "RL"){
       var rl = (depth * height)/92903;
     }
     if(side == "TB"){
@@ -222,10 +206,10 @@
     var bk = (width*height)/92903;
     var skirting = (sk_ht * sk_wd)/92903;
 
-    var total = [(bt*2)+(sd*2)+bk+skirting+(right*price)+(top_bottom*price)+(rl*2*price)+(tb*2*price)]*quantity;
+    var total = [(bt*2)+(sd*2)+bk+skirting+(right*50)+(top_bottom*50)+(rl*2*50)+(tb*2*50)]*quantity;
 
 
-    
+    /*var total1 = {(((width * depth )/92903)*2)*quantity}+{(((height * depth )/92903)*2)*quantity}+{((width * height )/92903)*quantity};*/
    
     var twoPlacedFloat = parseFloat(total).toFixed(2);
     

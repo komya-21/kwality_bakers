@@ -1,0 +1,94 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+
+
+                            	<% @furniture.work_orders.each_with_index do |w ,i| %>
+                            	<% i+=1 %>
+                            	<p>
+                            		<strong><%= i %></strong>
+                            	</p>
+                            	<p>
+                            	<strong>Furniture Product:</strong>
+                            	<%= w.furniture_product %>
+                            </p>
+                            <p>
+                            	<strong>Furniture Type:</strong>
+                            	<%= w.furniture_type %>
+                            </p>
+                           <p>
+  <strong>Width:</strong>
+  <%= w.width %>
+</p>
+
+<p>
+  <strong>Depth:</strong>
+  <%= w.depth %>
+</p>
+
+<p>
+  <strong>Height:</strong>
+  <%= w.height %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= w.quantity %>
+</p>
+
+<p>
+  <strong>Color:</strong>
+  <%= w.color.code if w.color.present? %>
+</p>
+
+<p>
+  <strong>Side:</strong>
+  <%= w.side %>
+</p>
+
+<p>
+  <strong>Skirting:</strong>
+  <%= w.skirting %>
+</p>
+
+<p>
+  <strong>Horizontal:</strong>
+  <%= w.horizontal %>
+</p>
+
+<p>
+  <strong>Vertical:</strong>
+  <%= w.vertical %>
+</p>
+
+<p>
+  <strong>Center:</strong>
+  <%= w.center %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= w.total %>
+</p>
+----------------------------------------------------------------------------
+<% end %>
+
+
+
+
+
+
+
+
+<br>
+
+
+<%= link_to 'Edit', edit_furniture_path(@furniture) %> |
+<%= link_to 'Back', furnitures_path %>
+</div>
+</div>
+</div>
+</div>
+</section>

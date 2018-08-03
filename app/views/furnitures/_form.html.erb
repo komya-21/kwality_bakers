@@ -1,0 +1,106 @@
+
+<section id="main-content" class="animated fadeInUp">
+  <div class="row">
+    <div class="col-md-12">
+      <div class=" panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">New Work Order</h3>
+          <div class="actions pull-right">
+           <i class="fa fa-expand"></i>
+           <i class="fa fa-chevron-down"></i>
+           <i class="fa fa-times"></i>
+         </div>
+       </div>
+       <div class="panel-body">
+        <%#= form_with(model: furniture, local: true) do |form| %>
+        <%= nested_form_for @furniture, :html => { :class => "form-horizontal inward" } do |form| %>
+        <div class="form-inline form-bordered">
+         <%= form.fields_for :work_orders  do |w| %>
+
+         <div class="form-group">
+          <div class="col-md-1">
+            <label class="col-sm-3 control-label">Product</label>
+            <%= w.select :furniture_product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true},class: "form-control" %>
+          </div>
+
+
+          <div class="col-md-1">
+            <label class="col-sm-3 control-label">Type</label>
+            <%= w.select :furniture_type, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control" %>
+          </div>
+
+
+          <div class="col-md-1">
+            <label class="col-sm-3 control-label">Width</label>
+
+            <%= w.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "mm"%>
+
+          </div>
+          <div class="col-md-1">
+            <label class="col-sm-3 control-label">Depth</label>
+
+            <%= w.text_field :depth, id: :work_order_depth ,class: "form-control" , placeholder: "mm"%>
+
+          </div>
+          <div class="col-md-1">
+            <label class="col-sm-3 control-label">Height</label>
+
+            <%= w.text_field :height, id: :work_order_height ,class: "form-control" , placeholder: "mm"%>
+
+          </div>
+          <div class="col-md-1">
+            <label class="col-sm-3 control-label">Skirting</label>
+
+            <%= w.text_field :skirting, id: :work_order_skirting ,class: "form-control" , placeholder: "mm"%>
+
+          </div>
+          <div class="col-md-1">
+           <label class="col-sm-3 control-label">Color</label> 
+
+           <%= w.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %>
+
+         </div>
+         <div class="col-md-1">
+           <label class="col-sm-3 control-label"> Side</label> 
+           <%= w.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %>
+           <%#= form.select :payment_status, options_for_select(['PAID', 'PENDING','ALL']),{prompt:true}, class: 'form-control' %>
+         </div>
+         <div class="col-md-1">
+          <label class="col-md-1 control-label">Quantity</label>
+          <%= w.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %>
+          <%#= w.link_to_remove "Remove", class: 'btn btn-danger btn-xs' %>
+
+        </div>
+
+         <div class="col-md-1">
+            <br>
+            <br>
+            <%= w.link_to_remove "Remove", class: 'btn btn-danger btn-xs' %>
+          </div>
+
+
+
+        <% end %>
+      </div>
+        <%= form.link_to_add "Click to Add Order", :work_orders, class: 'btn btn-danger ' %>
+
+
+
+
+        <%= form.submit "Submit" , class: "btn btn-primary" %>
+        <%= link_to 'Back', furnitures_path ,class: "btn btn-default"%>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+
+
+
+
+

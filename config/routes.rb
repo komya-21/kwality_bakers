@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
+  resources :furnitures
   resources :work_orders do 
     collection do
       get :new_page
+      get :furniture_dropdown
     end
   end
   resources :colors

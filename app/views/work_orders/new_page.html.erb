@@ -47,7 +47,7 @@
      <div class="col-md-2">
            <label class="col-sm-6 control-label">Color:</label> 
          
-         <%= form.select :color_id,Color.all.collect {|v| [v.code, v.id,v.price]}, {prompt:true},id: :color_id ,class: "form-control" %>
+         <%= form.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %>
          <%#= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
        </div>
        <div class="col-md-2">
@@ -206,7 +206,7 @@
     var bk = (width*height)/92903;
     var skirting = (sk_ht * sk_wd)/92903;
 
-    var total = [(bt*2)+(sd*2)+bk+skirting+(right*price)+(top_bottom*price)+(rl*2*price)+(tb*2*price)]*quantity;
+    var total = [(bt*2)+(sd*2)+bk+skirting+(right*50)+(top_bottom*50)+(rl*2*50)+(tb*2*50)]*quantity;
 
 
     /*var total1 = {(((width * depth )/92903)*2)*quantity}+{(((height * depth )/92903)*2)*quantity}+{((width * height )/92903)*quantity};*/
