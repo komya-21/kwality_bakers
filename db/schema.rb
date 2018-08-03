@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180801133526) do
+ActiveRecord::Schema.define(version: 20180803102800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,11 @@ ActiveRecord::Schema.define(version: 20180801133526) do
     t.string "email"
     t.string "address"
     t.string "employee_no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "furnitures", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -188,7 +193,11 @@ ActiveRecord::Schema.define(version: 20180801133526) do
     t.string "total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "furniture_product"
+    t.string "furniture_type"
+    t.bigint "furniture_id"
     t.index ["color_id"], name: "index_work_orders_on_color_id"
+    t.index ["furniture_id"], name: "index_work_orders_on_furniture_id"
   end
 
   add_foreign_key "deliveries", "vendors"
@@ -202,4 +211,5 @@ ActiveRecord::Schema.define(version: 20180801133526) do
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
+  add_foreign_key "work_orders", "furnitures"
 end

@@ -1,0 +1,187 @@
+
+
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"></h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+<div class="form-inline form-border">
+<div class="form-group">
+	 <div class="col-md-3">
+<%= select_tag "whatever", options_for_select([ "Platform", "Crockery","Loft","Tall Unit","Wardrobe"]),class: "form-control" %>
+</div>
+</div>
+<div class="form-group">
+   <div class="col-md-3">
+<%= select_tag "type", options_for_select([ "Carcass Box", "Shutters","Hinges Patti","White BSL Shelf"]),class: "form-control" %>
+
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+  <div id="vendor">
+</div>
+
+
+
+<% content_for :javascript do %>
+<script type="text/javascript">
+$('#type').hide();
+
+  $(document).on("change", "#whatever", function(){
+  	var content = $('#whatever').val();
+
+  	$('#type').show();
+  });
+</script>
+
+<script type="text/javascript">
+
+
+  $(document).on("change", "#type", function(){
+    var vendor_id;
+    Item = $(this).val();
+    $.ajax({
+   url: '/work_orders/new',
+   type: 'GET',
+   dataType: 'script',
+   data: {vendor_id: Item},
+   }).success(function(data) {
+   
+ });
+
+    
+  });
+</script>
+
+
+<script type="text/javascript">
+
+
+  $(document).on("keyup", "#work_order_quantity", function(){
+
+    var right = 0;
+    var top_bottom = 0;
+    var rl = 0;
+    var tb = 0;
+
+    var width =  $('#work_order_width').val();
+    
+    var depth = $('#work_order_depth').val();
+    var height = $('#work_order_height').val();
+    var quantity = $('#work_order_quantity').val();
+    var sk_ht = $('#work_order_skirting').val();
+    var price = $('#color_id').val();
+    var side = $('#side_id').val();
+    if(side == "Right" || side == "Left"){
+
+      var right = (depth * height)/92903;
+
+
+
+
+
+    }
+    if(side == "Top" || side == "Bottom"){
+
+
+
+
+      var top_bottom = (width * depth)/92903;
+    }
+    if(side == "RL"){
+      var rl = (depth * height)/92903;
+    }
+    if(side == "TB"){
+
+      var tb = (width * depth)/92903;
+    }
+
+
+    var sk_wd = width - 36 ;
+    var bt = (width*depth)/92903;
+    var sd = (height*depth)/92903;
+    var bk = (width*height)/92903;
+    var skirting = (sk_ht * sk_wd)/92903;
+
+    var total = [(bt*2)+(sd*2)+bk+skirting+(right*50)+(top_bottom*50)+(rl*2*50)+(tb*2*50)]*quantity;
+
+
+    /*var total1 = {(((width * depth )/92903)*2)*quantity}+{(((height * depth )/92903)*2)*quantity}+{((width * height )/92903)*quantity};*/
+   
+    var twoPlacedFloat = parseFloat(total).toFixed(2);
+    
+
+
+    $('#work_order_total').val(twoPlacedFloat);
+
+  });
+
+
+
+
+</script>
+
+<!-- <script type="text/javascript">
+   $(document).on("keyup", "#work_order_skirting", function(){
+
+
+
+    var total = $('#work_order_total').val();
+
+    
+    
+     var width =  $('#work_order_width').val();
+    
+    var depth = $('#work_order_depth').val();
+    var height = $('#work_order_height').val();
+    var quantity = $('#work_order_quantity').val();
+     var sk_ht = $('#work_order_skirting').val();
+      var sk_wd = width - 36 ;
+    var bt = (width*depth)/92903;
+    var sd = (height*depth)/92903;
+    var bk = (width*height)/92903;
+    var skirting = (sk_ht * sk_wd)/92903;
+    
+
+    var total1 = parseFloat(total) + (skirting * quantity);
+
+     var twoPlacedFloat = parseFloat(total1).toFixed(2);
+
+    $('#work_order_total').val(twoPlacedFloat);
+
+     
+
+    
+
+
+
+  });
+
+
+
+
+</script> -->
+
+<% end %>
+
+
+
+

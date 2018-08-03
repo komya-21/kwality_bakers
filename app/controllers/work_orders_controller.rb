@@ -23,6 +23,10 @@ end
   def edit
   end
 
+  def furniture_dropdown
+
+  end
+
   # POST /work_orders
   # POST /work_orders.json
   def create
