@@ -25,15 +25,18 @@
 <body>
 
     <!-- Page Wrapper-->
+    <% if user_signed_in? %>
     <section id="main-wrapper" class="theme-default sidebar-mini">
        <!-- Page wrapper -->
         <header id="header"> <%= render partial: "layouts/header" if user_signed_in? %> </header>
         <!-- Left Sidebar Navigation -->
-        <aside class="sidebar sidebar-left"> <%= render partial: "layouts/sidebar"  if user_signed_in?%> </aside>
+        <aside class="sidebar sidebar-left"> <%= render partial: "layouts/sidebar"  if user_signed_in? %> </aside>
+        <% end %>
         <!-- Content wraper -->
          <section class="main-content-wrapper">
             <!-- Main content view  -->
                 <%= yield %>
+
             <!-- Footer -->
            
         </section>
