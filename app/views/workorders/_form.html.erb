@@ -1,7 +1,7 @@
 <section id="main-content" class="animated fadeInUp">
   <div class="row">
     <div class="col-md-12">
-      <div class=" panel panel-info">
+      <div class=" panel panel-warning">
         <div class="panel-heading">
           <h3 class="panel-title">New Work Order</h3>
           <div class="actions pull-right">
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <%= w.link_to_remove "Remove Order",class: "btn btn-default" %>
+      <%= w.link_to_remove "Remove Order",class: "btn btn-warning" %>
 
       <%= w.fields_for :measurements, @workorder.fproducts.build.measurements.build do |m| %>
       <div class="form-group">
@@ -83,12 +83,12 @@
 </div>
 
 
-<p><%= w.link_to_add "Add Measurements", :measurements,class: "btn btn-success btn-sm" %></p>
+<p><%= w.link_to_add "Add Measurements", :measurements,class: "btn btn-warning btn-sm" %></p>
 <% end %>
-<p><%= form.link_to_add "Add Work Orders", :fproducts ,class: "btn btn-danger"%></p>
+<p><%= form.link_to_add "Add Work Orders", :fproducts ,class: "btn btn-warning"%></p>
 <div align="center">
-  <%= form.submit "Submit" , class: "btn btn-primary" %>
-  <%= link_to 'Back', workorders_path,class: "btn btn-default" %>
+  <%= form.submit "Submit" , class: "btn btn-warning" %>
+  <%= link_to 'Back', workorders_path,class: "btn btn-warning" %>
 
 </div>
 
