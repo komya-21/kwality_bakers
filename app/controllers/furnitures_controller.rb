@@ -27,7 +27,7 @@ class FurnituresController < ApplicationController
   # POST /furnitures.json
   def create
     @furniture = Furniture.new(furniture_params)
-
+    byebug
     respond_to do |format|
       if @furniture.save
         format.html { redirect_to @furniture, notice: 'Furniture was successfully created.' }
@@ -71,7 +71,7 @@ class FurnituresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def furniture_params
-            params.require(:furniture).permit(work_orders_attributes: [:id,:width,:depth,:height,:quantity,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:furniture_product,:furniture_type,:furniture_id ,:_destroy])
+            params.require(:furniture).permit(furniture_types_attributes: [:id,:furniture_type ,:furniture_id, work_orders_attributes: [:id,:furniture_type,:width,:depth,:height,:quantity,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:work_order_id ,:_destroy]])
 
     end
 end

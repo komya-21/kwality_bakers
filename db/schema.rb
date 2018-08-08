@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180803102800) do
+ActiveRecord::Schema.define(version: 20180807101519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,16 @@ ActiveRecord::Schema.define(version: 20180803102800) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fproducts", force: :cascade do |t|
+    t.string "product"
+    t.bigint "workorder_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "product_id"
+    t.index ["product_id"], name: "index_fproducts_on_product_id"
+    t.index ["workorder_id"], name: "index_fproducts_on_workorder_id"
+  end
+
   create_table "furnitures", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -118,14 +128,32 @@ ActiveRecord::Schema.define(version: 20180803102800) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "measurements", force: :cascade do |t|
+    t.string "ftype"
+    t.float "width"
+    t.float "depth"
+    t.float "height"
+    t.bigint "color_id"
+    t.string "side"
+    t.float "skirting"
+    t.integer "quantity"
+    t.integer "horizontal"
+    t.integer "vertical"
+    t.integer "center"
+    t.string "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "fproduct_id"
+    t.index ["color_id"], name: "index_measurements_on_color_id"
+    t.index ["fproduct_id"], name: "index_measurements_on_fproduct_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "inward_id"
     t.string "delivery_quantity"
-    t.index ["inward_id"], name: "index_products_on_inward_id"
   end
 
   create_table "returns", force: :cascade do |t|
@@ -195,21 +223,31 @@ ActiveRecord::Schema.define(version: 20180803102800) do
     t.datetime "updated_at", null: false
     t.string "furniture_product"
     t.string "furniture_type"
-    t.bigint "furniture_id"
     t.index ["color_id"], name: "index_work_orders_on_color_id"
-    t.index ["furniture_id"], name: "index_work_orders_on_furniture_id"
   end
 
+  create_table "workorders", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "date"
+  end
+
+  add_foreign_key "current_inventories", "delivery_inwards"
+  add_foreign_key "current_inventories", "inward_products"
+  add_foreign_key "current_inventories", "products"
   add_foreign_key "deliveries", "vendors"
   add_foreign_key "delivery_inwards", "deliveries"
   add_foreign_key "delivery_inwards", "inward_products"
   add_foreign_key "delivery_inwards", "products"
   add_foreign_key "delivery_inwards", "vendors"
+  add_foreign_key "fproducts", "products"
+  add_foreign_key "fproducts", "workorders"
   add_foreign_key "inward_products", "inwards"
   add_foreign_key "inward_products", "products"
-  add_foreign_key "products", "inwards"
+  add_foreign_key "measurements", "colors"
+  add_foreign_key "measurements", "fproducts"
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
-  add_foreign_key "work_orders", "furnitures"
+  add_foreign_key "work_orders", "colors"
 end
