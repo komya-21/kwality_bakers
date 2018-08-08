@@ -1,0 +1,107 @@
+<section id="main-content" class="animated fadeInUp">
+  <div class="row">
+    <div class="col-md-12">
+      <div class=" panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">New Work Order</h3>
+          <div class="actions pull-right">
+           <i class="fa fa-expand"></i>
+           <i class="fa fa-chevron-down"></i>
+           <i class="fa fa-times"></i>
+         </div>
+       </div>
+       <div class="panel-body">
+        <%= nested_form_for @workorder do |form| %>
+
+
+        <%= form.fields_for :fproducts , @workorder.fproducts.build do |w| %>
+        <div class="form-group">
+         <label class="col-sm-1 control-label">Product</label> 
+         <div class="col-lg-6">
+          <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
+          <%= w.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control"%>
+
+        </div>
+      </div>
+
+      <%= w.link_to_remove "Remove Order",class: "btn btn-default" %>
+
+      <%= w.fields_for :measurements, @workorder.fproducts.build.measurements.build do |m| %>
+      <div class="form-group">
+        <div class="col-md-1">
+         <label class="col-sm-3 control-label">Types</label> 
+
+         <%= m.select :ftype, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
+       </div>
+
+
+       <div class="col-md-1">
+        <label class="col-sm-3 control-label">Width</label>
+
+        <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "mm"%>
+      </div>
+
+      <div class="col-md-1">
+       <label class="col-sm-3 control-label">Depth</label>
+
+       <%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "mm" %>
+
+     </div>
+
+     <div class="col-md-1">
+
+       <label class="col-sm-3 control-label">Height</label>
+       <%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "mm"%>
+
+     </div>
+
+     <div class="col-md-1">
+      <label class="col-sm-3 control-label">Skirting</label>
+      <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "mm"%>
+    </div>
+
+    <div class="col-md-2">
+     <label class="col-sm-6 control-label">Color:</label> 
+
+     <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %>
+     <%#= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
+   </div>
+
+   <div class="col-md-2">
+     <label class="col-sm-3 control-label"> Side:</label> 
+     <%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %>
+     <%#= m.select :payment_status, options_for_select(['PAID', 'PENDING','ALL']),{prompt:true}, class: 'form-control' %>
+   </div>
+
+   <div class="col-md-1">
+    <label class="col-sm-3 control-label">Quantity</label>
+    <%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %>
+  </div>
+
+  <%= m.link_to_remove "Remove Measurement",class: "btn btn-link" %>
+  <% end %>
+</div>
+
+
+<p><%= w.link_to_add "Add Measurements", :measurements,class: "btn btn-success btn-sm" %></p>
+<% end %>
+<p><%= form.link_to_add "Add Work Orders", :fproducts ,class: "btn btn-danger"%></p>
+<div align="center">
+  <%= form.submit "Submit" , class: "btn btn-primary" %>
+  <%= link_to 'Back', workorders_path,class: "btn btn-default" %>
+
+</div>
+
+<% end %>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+
+
+
+
+

@@ -1,0 +1,52 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+
+  <% @workorder.fproducts.each do |f| %>
+  <b><u><%= f.product.name %></u></b>
+
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+	<thead>
+    <tr>
+    	
+		
+		<th>Type</th>
+		<th>Width</th>
+		<th>Height</th>
+		<th>Depth</th>
+	</tr>
+	</thead>
+  <tbody>
+<%# @workorder.fproducts.each_with_index do |f,i| %>
+<% f.measurements.each do |m| %>
+<tr>
+
+
+<td><%= m.ftype %></td>
+<td><%= m.width %></td>
+<td><%= m.height %></td>
+<td><%= m.depth %></td>
+</tr>
+<% end %>
+
+ </tbody>
+</table>
+<% end %>
+<%= link_to 'Edit', edit_workorder_path(@workorder) %> |
+<%= link_to 'Back', workorders_path %>
+</div>
+</div>
+</div>
+</div>
+</section>
+<%# content_for :javascript do %>
+                   <!--Load these page level functions-->
+                    <!-- <script>
+                    $(document).ready(function() {
+                         $('#example').dataTable();
+                    });
+                    </script> -->
+            <%# end %>
+

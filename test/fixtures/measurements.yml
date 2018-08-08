@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ftype: MyString
+  width: 1.5
+  depth: 1.5
+  height: 1.5
+  color: one
+  side: MyString
+  skirting: 1.5
+  quantity: 1
+  horizontal: 1
+  vertical: 1
+  center: 1
+  total: MyString
+
+two:
+  ftype: MyString
+  width: 1.5
+  depth: 1.5
+  height: 1.5
+  color: two
+  side: MyString
+  skirting: 1.5
+  quantity: 1
+  horizontal: 1
+  vertical: 1
+  center: 1
+  total: MyString

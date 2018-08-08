@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :workorders
   resources :furnitures
   resources :work_orders do 
     collection do
