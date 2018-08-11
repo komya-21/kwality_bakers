@@ -1,7 +1,7 @@
 <section id="main-content" class="animated fadeInUp">
   <div class="row">
     <div class="col-md-12">
-      <div class=" panel panel-info">
+      <div class=" panel panel-warning">
         <div class="panel-heading">
           <h3 class="panel-title">New Work Order</h3>
           <div class="actions pull-right">
@@ -11,88 +11,145 @@
          </div>
        </div>
        <div class="panel-body">
+        <div class="form-horizontal form-border">
         <%= nested_form_for @workorder do |form| %>
+       <div class="form-group">
+          
+          <div class="col-md-2">
+    <%= form.text_field :order_no, id: :workorder_order_no,readonly: true,:value=> @workorder.order_no, class: "form-control" %>
+  
+     
+    </div>
+     <div class="col-md-2">
+    <%= form.date_field :date, :value=> Date.today, class: "form-control" %>
+  
+     
+    </div>
+  </div>
+    <%#= form.date_field :date, value: Date.today, :class => 'form-control' %>
+         
+        <%= form.fields_for :fproducts  do |w| %>
 
-
-        <%= form.fields_for :fproducts , @workorder.fproducts.build do |w| %>
         <div class="form-group">
+        
+          
+        
          <label class="col-sm-1 control-label">Product</label> 
-         <div class="col-lg-6">
+         <div class="col-md-3">
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
           <%= w.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control"%>
+          <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
+        </div>
+        <% if current_user.role == "SuperAdmin" %>
+         <label class="col-sm-1 control-label">Vendor</label> 
+         <div class="col-md-2">
+          
+          <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
+          <%= form.select :vendor_id, Vendor.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control"%>
 
         </div>
+        <% end %>
+      
+
+      <%= w.link_to_remove "Remove Order",class: "btn btn-warning" %>
       </div>
+      
 
-      <%= w.link_to_remove "Remove Order",class: "btn btn-default" %>
+      <%= w.fields_for :measurements do |m| %>
 
-      <%= w.fields_for :measurements, @workorder.fproducts.build.measurements.build do |m| %>
-      <div class="form-group">
-        <div class="col-md-1">
-         <label class="col-sm-3 control-label">Types</label> 
+      
+         <div class="table-responsive">
+      <table id="example"  class="table table-bordered table-striped" cellspacing="0" width="100%">
+          <colgroup>
+        <col class="one"/>
+        <col class="two"/>
+      
+      </colgroup>
+      
+      <tr class="fields">
+      
+       <td>  <%= m.select :ftype, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "select" %></td>
+      
+     
+      
+    
 
-         <%= m.select :ftype, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
-       </div>
+      <td>  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)"%></td>
+       <td><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
+       <td><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%></td>
+       <td> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%></td>
+       <td> <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td>
+        <td><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
+        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %></td>
+        <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
+    </tr>
+  </table>
+      
 
+    
 
-       <div class="col-md-1">
-        <label class="col-sm-3 control-label">Width</label>
-
-        <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "mm"%>
-      </div>
-
-      <div class="col-md-1">
-       <label class="col-sm-3 control-label">Depth</label>
-
-       <%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "mm" %>
-
-     </div>
-
-     <div class="col-md-1">
-
-       <label class="col-sm-3 control-label">Height</label>
-       <%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "mm"%>
-
-     </div>
-
-     <div class="col-md-1">
-      <label class="col-sm-3 control-label">Skirting</label>
-      <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "mm"%>
-    </div>
-
-    <div class="col-md-2">
-     <label class="col-sm-6 control-label">Color:</label> 
-
-     <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %>
-     <%#= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
-   </div>
-
-   <div class="col-md-2">
-     <label class="col-sm-3 control-label"> Side:</label> 
-     <%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %>
-     <%#= m.select :payment_status, options_for_select(['PAID', 'PENDING','ALL']),{prompt:true}, class: 'form-control' %>
-   </div>
-
-   <div class="col-md-1">
-    <label class="col-sm-3 control-label">Quantity</label>
-    <%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %>
-  </div>
-
-  <%= m.link_to_remove "Remove Measurement",class: "btn btn-link" %>
+  
   <% end %>
 </div>
 
-
-<p><%= w.link_to_add "Add Measurements", :measurements,class: "btn btn-success btn-sm" %></p>
+<div class="add_m">
+<p><%= w.link_to_add "Add Measurements", :measurements,class: "btn btn-warning btn-sm" %></p>
+</div>
 <% end %>
-<p><%= form.link_to_add "Add Work Orders", :fproducts ,class: "btn btn-danger"%></p>
+<p><%= form.link_to_add "Add Work Orders", :fproducts ,class: "btn btn-warning"%></p>
+<!-- <button name="subject" type="submit" value="HTML" class="btn btn-danger" id="imagesAdd">Upload Images</button> -->
+
+<%#= form.label :name1 %>
+<%#= "Upload Images",id: :imagesAdd ,class: "btn btn-danger" %>
+
+<a id="imagesAdd" class="btn btn-danger">Upload Images</a>
+<a id="imagesRm" class="btn btn-primary">Cancel</a>
+<div class="form-inline">
+<div class="form-group">
+         
+ <div class="col-md-2">
+<%= form.text_field :name1,placeholder: "Name" , class: "form-control" %>
+<%= form.file_field :photo1 %>
+</div>
+</div>
+<div class="form-group">
+
+<div class="col-md-2">
+<%= form.text_field :name2,placeholder: "Name" , class: "form-control" %>
+<%#= form.label :photo1 %>
+<%= form.file_field :photo2 %>
+</div>
+
+
+<div class="col-md-2">
+<%= form.text_field :name3,placeholder: "Name" , class: "form-control" %>
+<%#= form.label :photo1 %>
+<%= form.file_field :photo3 %>
+</div>
+
+
+<div class="col-md-2">
+<%= form.text_field :name4,placeholder: "Name" , class: "form-control" %>
+<%#= form.label :photo1 %>
+<%= form.file_field :photo4%>
+</div>
+
+
+<div class="col-md-2">
+<%= form.text_field :name5,placeholder: "Name" , class: "form-control" %>
+<%#= form.label :photo1 %>
+<%= form.file_field :photo5 %>
+</div>
+</div>
+</div>
 <div align="center">
-  <%= form.submit "Submit" , class: "btn btn-primary" %>
-  <%= link_to 'Back', workorders_path,class: "btn btn-default" %>
+  <%= form.submit "Submit" , class: "btn btn-warning" %>
+  <%= link_to 'Back', workorders_path,class: "btn btn-warning" %>
 
 </div>
 
 <% end %>
+</div>
 </div>
 </div>
 </div>
@@ -100,6 +157,140 @@
 </section>
 
 
+
+<% content_for :javascript do %>
+
+ <!--  <script type="text/javascript">
+  $(document).on("change", ".select", function () {
+
+   var ftype = $(this).val();
+   
+  $('#work_order_width').focus();
+  if(ftype == "Shutters"){
+   $('#work_order_depth').hide();
+   $('#work_order_skirting').hide();
+   /*$('#work_order_height').focus();*/
+  }
+
+  });
+  </script> -->
+   <script type="text/javascript">
+  $(document).on("change", ".select", function () {
+  /*var product_id = $(this);*/
+  elem = jQuery(this);
+  var type = $(this).val();
+
+    container = elem.parents("tr.fields");
+    container1 = elem.parents("th.fields");
+    container.find("#work_order_width").focus();
+    if(type == "Shutters" || type == "White BSL Shelf" || type == "Hinges Patti"){
+      container.find('#work_order_depth').hide();
+      container.find('#work_order_skirting').hide();
+
+    }
+    
+
+    
+  
+  });
+
+  
+  </script>
+
+<script type="text/javascript">
+ 
+$(document).on('nested:fieldAdded', function(event){
+  // this field was just inserted into your form
+  var field = event.field; 
+  // it's a jQuery object already! Now you can find date input
+  alert(vbvbvb);
+
+  var selectField1 = field.find('#work_order_width');
+  selectField1.focus();;
+}); 
+</script>
+ 
+ 
+ <script type="text/javascript">
+  
+  $('#workorder_name1').hide();
+
+  $('#workorder_name2').hide();
+
+  $('#workorder_name3').hide();
+
+  $('#workorder_name4').hide();
+
+  $('#workorder_name5').hide();
+
+  $('#workorder_photo1').hide();
+
+  $('#workorder_photo2').hide();
+
+  $('#workorder_photo3').hide();
+
+  $('#workorder_photo4').hide();
+
+  $('#workorder_photo5').hide();
+  $('#imagesRm').hide();
+
+  $(document).on("click", "#imagesAdd", function() {
+
+     $('#workorder_name1').show();
+
+  $('#workorder_name2').show();
+
+  $('#workorder_name3').show();
+
+  $('#workorder_name4').show();
+
+  $('#workorder_name5').show();
+
+  $('#workorder_photo1').show();
+
+  $('#workorder_photo2').show();
+
+  $('#workorder_photo3').show();
+
+  $('#workorder_photo4').show();
+
+  $('#workorder_photo5').show();
+  $('#imagesRm').show();
+
+
+  });
+
+
+</script>
+
+<script type="text/javascript">
+  $(document).on("click", "#imagesRm", function() {
+   
+$('#workorder_name1').hide();
+
+  $('#workorder_name2').hide();
+
+  $('#workorder_name3').hide();
+
+  $('#workorder_name4').hide();
+
+  $('#workorder_name5').hide();
+
+  $('#workorder_photo1').hide();
+
+  $('#workorder_photo2').hide();
+
+  $('#workorder_photo3').hide();
+
+  $('#workorder_photo4').hide();
+
+  $('#workorder_photo5').hide();
+  $('#imagesRm').hide();
+
+  });
+</script>
+ 
+<% end %>
 
 
 

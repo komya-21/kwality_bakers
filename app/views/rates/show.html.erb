@@ -1,0 +1,31 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+<p>
+  <strong>Product:</strong>
+  <%= @rate.product.name %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <% if @rate.ptype == "Carcass Box" %>
+  <%= @rate.ptype+"\(#{@rate.ctype}\)" %>
+  <% else %>
+  <%= @rate.ptype %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @rate.price %>
+</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<%= link_to 'Edit', edit_rate_path(@rate) %> |
+<%= link_to 'Back', rates_path %>

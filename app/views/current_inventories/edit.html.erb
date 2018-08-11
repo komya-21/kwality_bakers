@@ -2,7 +2,7 @@
 <section id="main-content" class="animated fadeInUp">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class=" panel panel-info">
+                        <div class=" panel panel-warning">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Edit Stock</h3>
                                 <div class="actions pull-right">
@@ -32,9 +32,9 @@
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= f.submit nil, :class => 'btn btn-warning' %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                stock_inwards_path, :class => 'btn btn-default' %>
+                stock_inwards_path, :class => 'btn btn-warning' %>
     </div>
   </div>
 

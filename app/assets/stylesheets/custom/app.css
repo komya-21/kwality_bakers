@@ -1432,7 +1432,7 @@ fieldset[disabled] .btn-success.active {
 }
 
 .btn-warning {
-  color: #ffffff;
+  color: black;
   background-color: #EDCE8C;
 }
 
@@ -3902,7 +3902,7 @@ label.valid {
 }
 
 .theme-default #header {
-  background: #fff;
+  background: burlywood;
 }
 
 .theme-default #header .logo, .theme-default #header button.sidebar-toggle, .theme-default #header button#toggle-profile, .theme-default #header button#toggle-fullscreen, .theme-default #header .nav li.profile > a {
@@ -3947,7 +3947,7 @@ label.valid {
 
 .theme-default.sidebar-mini .sidebar-left .nav > li.nav-dropdown-open > a, .theme-default.sidebar-mini .sidebar-left .nav > li:hover > a {
   color: #1d2939;
-  background-color: #fff;
+  background-color: burlywood;
 }
 
 .theme-dark #header {

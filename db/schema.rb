@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180807101519) do
+ActiveRecord::Schema.define(version: 20180811104543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,6 +156,16 @@ ActiveRecord::Schema.define(version: 20180807101519) do
     t.string "delivery_quantity"
   end
 
+  create_table "rates", force: :cascade do |t|
+    t.bigint "product_id"
+    t.string "ptype"
+    t.float "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "ctype"
+    t.index ["product_id"], name: "index_rates_on_product_id"
+  end
+
   create_table "returns", force: :cascade do |t|
     t.string "date_of_return"
     t.string "invoice_number"
@@ -187,8 +197,10 @@ ActiveRecord::Schema.define(version: 20180807101519) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "vendor_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["vendor_id"], name: "index_users_on_vendor_id"
   end
 
   create_table "vendors", force: :cascade do |t|
@@ -229,7 +241,36 @@ ActiveRecord::Schema.define(version: 20180807101519) do
   create_table "workorders", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name1"
+    t.string "name2"
+    t.string "name3"
+    t.string "name4"
+    t.string "name5"
+    t.string "photo1_file_name"
+    t.string "photo1_content_type"
+    t.integer "photo1_file_size"
+    t.datetime "photo1_updated_at"
+    t.string "photo2_file_name"
+    t.string "photo2_content_type"
+    t.integer "photo2_file_size"
+    t.datetime "photo2_updated_at"
+    t.string "photo3_file_name"
+    t.string "photo3_content_type"
+    t.integer "photo3_file_size"
+    t.datetime "photo3_updated_at"
+    t.string "photo4_file_name"
+    t.string "photo4_content_type"
+    t.integer "photo4_file_size"
+    t.datetime "photo4_updated_at"
+    t.string "photo5_file_name"
+    t.string "photo5_content_type"
+    t.integer "photo5_file_size"
+    t.datetime "photo5_updated_at"
+    t.string "order_no"
+    t.bigint "vendor_id"
+    t.boolean "approve"
     t.date "date"
+    t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
 
   add_foreign_key "current_inventories", "delivery_inwards"
@@ -246,8 +287,11 @@ ActiveRecord::Schema.define(version: 20180807101519) do
   add_foreign_key "inward_products", "products"
   add_foreign_key "measurements", "colors"
   add_foreign_key "measurements", "fproducts"
+  add_foreign_key "rates", "products"
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
+  add_foreign_key "users", "vendors"
   add_foreign_key "work_orders", "colors"
+  add_foreign_key "workorders", "vendors"
 end

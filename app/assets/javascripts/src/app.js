@@ -94,6 +94,7 @@ var app = function() {
         $('#toggle-left').on('click', function() {
             var bodyEl = $('#main-wrapper');
             ($(window).width() > 767) ? $(bodyEl).toggleClass('sidebar-mini'): $(bodyEl).toggleClass('sidebar-opened');
+           
         });
     };
 

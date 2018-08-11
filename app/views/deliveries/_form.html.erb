@@ -2,7 +2,7 @@
 <section id="main-content" class="animated fadeInUp">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class=" panel panel-info">
+                        <div class=" panel panel-warning">
                             <div class="panel-heading">
                                 <h3 class="panel-title">New Delivery</h3>
                                 <div class="actions pull-right">
@@ -46,7 +46,7 @@
     <%= f.label :vendor_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.select :vendor_id, Vendor.all.collect {|v| [v.name, v.id]}, {prompt:true} , :class => 'form-control' %>
-      <%= link_to 'Add Vendor', new_vendor_path, {:remote => true, :class => "btn btn-default", 'data-target' => "#exampleModalCenter", 'data-toggle' => "modal"} %>
+      <%= link_to 'Add Vendor', new_vendor_path, {:remote => true, :class => "btn btn-warning", 'data-target' => "#exampleModalCenter", 'data-toggle' => "modal"} %>
 
     </div>
     
@@ -116,7 +116,7 @@
       
         <td><%= invoice_item.text_field :total, id: :total,placeholder: 'total', class: 'form-control'%></td>
       
-        <td><%= invoice_item.link_to_remove "Remove", class: 'btn btn-info' %></td>
+        <td><%= invoice_item.link_to_remove "Remove", class: 'btn btn-warning' %></td>
       </tr>
     </table>
 
@@ -124,14 +124,14 @@
   <!--grid_table-->
   <% end %>
   <div class="add_item">
-  <%= f.link_to_add "Add Item", :delivery_inwards , class: 'btn btn-danger' %>
+  <%= f.link_to_add "Add Item", :delivery_inwards , class: 'btn btn-warning' %>
 </div>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= f.submit nil, :class => 'btn btn-warning' %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                deliveries_path, :class => 'btn btn-default' %>
+                deliveries_path, :class => 'btn btn-warning' %>
     </div>
   </div>
 

@@ -1,0 +1,112 @@
+<section id="main-content" class="animated fadeInUp">
+  <div class="row">
+    <div class="col-md-12">
+      <div class=" panel panel-warning">
+        <div class="panel-heading">
+          <h3 class="panel-title">Add Rates</h3>
+          <div class="actions pull-right">
+           <i class="fa fa-expand"></i>
+           <i class="fa fa-chevron-down"></i>
+           <i class="fa fa-times"></i>
+         </div>
+       </div>
+       <div class="panel-body">
+        <div class="form-horizontal form-border">
+
+<%= form_with(model: rate, local: true) do |form| %>
+  <% if rate.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(rate.errors.count, "error") %> prohibited this rate from being saved:</h2>
+
+      <ul>
+      <% rate.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="form-group">
+
+<label class="col-sm-1 control-label">Product</label> 
+
+         <div class="col-md-2">
+  <%= form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control"%>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-1 control-label">Type</label> 
+         <div class="col-md-2">
+  <%= form.select :ptype, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control",id: :type %>
+</div>
+</div>
+
+<div class="form-group">
+<div id="ctype">
+<label class="col-sm-1 control-label">Carcass</label> 
+<div class="col-md-2">
+<%= form.select :ctype, options_for_select(['TB/LR','Back']),{prompt:true},class: "form-control" %>
+</div>
+</div>
+</div>
+
+  
+<div class="form-group">
+  <label class="col-sm-1 control-label">Price</label> 
+         <div class="col-md-2">
+    <%= form.text_field :price, id: :rate_price,class: "form-control" ,Placeholder: "Price" %>
+  </div>
+
+</div>
+
+ <br>
+ <br>
+ <br>
+
+  <div align="center">
+    <%= form.submit "Submit" , class: "btn btn-warning" %>
+    <%= link_to 'Back', rates_path, class: "btn btn-warning" %>
+  </div>
+
+
+  
+<% end %>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<% content_for :javascript do %>
+
+ <!--  <script type="text/javascript">
+  $(document).on("change", ".select", function () {
+
+   var ftype = $(this).val();
+   
+  $('#work_order_width').focus();
+  if(ftype == "Shutters"){
+   $('#work_order_depth').hide();
+   $('#work_order_skirting').hide();
+   /*$('#work_order_height').focus();*/
+  }
+
+  });
+  </script> -->
+   <script type="text/javascript">
+    $('#ctype').hide();
+  $(document).on("change", "#type", function () {
+    var ctype = $(this).val();
+    if (ctype == "Carcass Box"){
+    $('#ctype').show();
+  }
+
+
+  /*var product_id = $(this);*/
+  
+  });
+
+  
+  </script>
+  <% end %>
