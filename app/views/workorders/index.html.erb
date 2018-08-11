@@ -22,9 +22,13 @@
   <thead>
     <tr>
       <th>Sr.No</th>
+      <th>Order No</th>
      <th></th>
      <th></th>
      <th></th>
+    
+     <th></th>
+    
      
     </tr>
   </thead>
@@ -34,9 +38,24 @@
     <% i+= 1 %>
       <tr>
         <td><%= i %></td>
+        <td><%= workorder.order_no if workorder.order_no.present? %></td>
         <td><%= link_to 'Show', workorder %></td>
         <td><%= link_to 'Edit', edit_workorder_path(workorder) %></td>
         <td><%= link_to 'Destroy', workorder, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user.role == "SuperAdmin" %>
+        <td><% if workorder.approve == false%>
+            <%= link_to 'Approve' , workorders_path(:param1 => false , :id => workorder.id),style: 'color: red' %>
+            <% elsif workorder.approve == true %>
+            <%= link_to 'Reject' , workorders_path(:param1 => true , :id => workorder.id),style: 'color: green' %>
+            <% end %></td>
+            <% end %>
+            <% if current_user.role == "Vendor" %>
+            <% if workorder.approve == false %>
+            <td><font color="red">Not Approved</font></td>
+            <% else %>
+            <td><font color="green">Approved</font> </td>
+            <% end %>
+            <% end %>
       </tr>
     <% end %>
   </tbody>

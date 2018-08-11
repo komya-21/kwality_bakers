@@ -5,6 +5,6 @@ class Vendor < ApplicationRecord
 	after_create :create_user
 
 	def create_user
-		User.create(email: self.email , password: self.password , role: "Vendor")
+		User.create(email: self.email , password: self.password ,vendor_id: self.id, role: "Vendor")
 	end
 end

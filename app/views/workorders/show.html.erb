@@ -3,7 +3,20 @@
                     <div class="col-md-12">
                         <div class=" panel panel-info">
                             <div class="panel-body">
+                              <div align="right">
+                              <%= link_to 'Download PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%> 
+                            </div>
+<br>
+<p>
+  <strong>Order No.:</strong>
+  <%= @workorder.order_no if @workorder.order_no.present? %><br>
+  <strong>Date:</strong>
+  <%= @workorder.date if @workorder.date.present? %>
 
+
+  
+
+</p>
   <% @workorder.fproducts.each do |f| %>
   <b><u><%= f.product.name %></u></b>
 
@@ -16,6 +29,7 @@
 		<th>Width</th>
 		<th>Height</th>
 		<th>Depth</th>
+    <th>Quantity</th>
 	</tr>
 	</thead>
   <tbody>
@@ -28,14 +42,22 @@
 <td><%= m.width %></td>
 <td><%= m.height %></td>
 <td><%= m.depth %></td>
+<td><%= m.quantity %></td>
 </tr>
 <% end %>
 
  </tbody>
 </table>
 <% end %>
-<%= link_to 'Edit', edit_workorder_path(@workorder) %> |
-<%= link_to 'Back', workorders_path %>
+
+<%= image_tag  @workorder.photo1.url ,width: "160",height: "160" if @workorder.photo1.present? %>
+<%= image_tag  @workorder.photo2.url ,width: "160",height: "160" if @workorder.photo2.present?%>
+<%= image_tag  @workorder.photo3.url ,width: "160",height: "160" if @workorder.photo3.present?%>
+<%= image_tag  @workorder.photo4.url ,width: "160",height: "160" if @workorder.photo4.present?%>
+<%= image_tag  @workorder.photo5.url ,width: "160",height: "160" if @workorder.photo5.present?%>
+<br>
+<%= link_to 'Edit', edit_workorder_path(@workorder),class: "btn btn-warning " %>| 
+<%= link_to 'Back', workorders_path,class: "btn btn-warning " %>
 </div>
 </div>
 </div>

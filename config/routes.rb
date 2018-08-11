@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :workorders
+  resources :rates
+  resources :workorders do 
+    member do
+      get :workorder_pdf
+    end
+  end
   resources :furnitures
   resources :work_orders do 
     collection do

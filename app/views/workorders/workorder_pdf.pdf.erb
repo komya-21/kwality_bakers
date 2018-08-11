@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table {
+     width:100%;
+   }
+   p {
+       margin-bottom:0px;
+   }
+   address{
+    display: block;
+    width: 300px;
+    margin:0px;
+    
+   }
+   table, th, td {
+     border: 1px solid black;
+     border-collapse: collapse;
+     font-size: 12px;
+   }
+   th, td {
+     padding: 2px;
+     text-align: left;
+   }
+   table#t01 tr:nth-child(even) {
+     background-color: #eee      }
+   table#t01 tr:nth-child(odd) {
+    background-color:#fff;
+  }
+  table#t01 th {
+   background-color: black;
+   color: white;
+ }
+ h5 {
+   display:inline;
+ }
+.maindiv{
+    width:100%;
+}
+.leftdiv{
+  float:left;
+  width:50%;
+} 
+.rightdiv{
+  float:right;
+  width:30%;
+} 
+.centerdiv{
+  width:100%;
+  margin:0 auto;
+}
+
+.maindiv{
+    width:100%;
+}
+.leftdiv{
+  float:left;
+  width:50%;
+} 
+.rightdiv{
+  float:right;
+  width:30%;
+} 
+.centerdiv{
+  width:100%;
+  margin:0 auto;
+}
+p span{
+  font-weight:700;
+  color:#000;
+}
+
+</style>
+
+  <div class="maindiv">
+   
+
+
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+</style>
+</head>
+<body>
+<% k = 0 %>
+<% @workorder.fproducts.each do |f| %>
+<% k += 1 %>
+
+<table style="width:100%">
+  <% if k == 1 %>
+  <tr>
+    <th style="width: 85px;" colspan="10"><center>ADD:- SR.NO.28/31,NEAR PARI COMPANY,NARHE DHAYARI ROAD,DHAYARI,PUNE.411041.</center></th>
+     
+    
+  </tr>
+  <tr>
+
+    <td colspan="5"><b>To:</b><%= @workorder.vendor.name %><br><br>
+      <b>Gst No:</b><%= @workorder.vendor.gst_no %>
+
+
+    </td>
+    <td colspan="5"><b>GST no:</b><br>
+     <b> Date&Time:</b><br>
+      <b>Order no:</b><%= @workorder.order_no %>
+    </td>
+    
+  </tr>
+ 
+  
+  <tr>
+  <td colspan="5">MO NO:-7350799350 </td>
+  <td colspan="5">MAIL ID:-vikasmulik57@gmail.com</td>
+  </tr>
+  <% end %>
+
+  <% @letters = ('A'..'Z').to_a %>
+
+  <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
+  <% @m = 0 %>
+  <% @uniq_ftypes.each do |u| %>
+  <% @m += 1 %>
+  <tr>
+    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="10"><center><% if @m == 1 %><%= f.product.name %><br><% end %>(<%= @letters.shift %>)<%= u %></center></th>
+  </tr>
+  <% @i = 0 %>
+   <% if u == "Carcass Box" %>
+   <tr>
+    <th>No</th>
+    <th>W</th>
+    <th>D</th>
+    <th>H</th>
+    <th>Nos</th>
+    <th>Sq.ft 18mm</th>
+    <th>rate</th>
+    <th>Sq.ft8mm(back)</th>
+    <th>rate</th>
+    <th>AMT</th>
+  </tr>
+   <% @carcass_measurements = f.measurements.where(ftype: u) %>
+    <% @total_no = 0 %>
+    <% @total_sqft = 0 %>
+    <% @total_sqft_back = 0 %>
+    <% @total_amount = 0 %>
+    <% @carcass_rate1 = @rates.find_by(["product_id = ? and ptype=? and ctype = ?",f.product_id,u,"TB/LR"]) %>
+<% @carcass_rate2 = @rates.find_by(["product_id = ? and ptype=? and ctype = ?",f.product_id,u,"Back"]) %>
+<% @c1 = @carcass_rate1.price %>
+<% @c2 = @carcass_rate2.price %>
+   <% @carcass_measurements.each do |c| %>
+   <% @i += 1 %>
+   <% @total_no += c.quantity %>
+   <tr>
+   <td><%= @i %></td>
+   <td><%= c.width %></td>
+   <td><%= c.depth %></td>
+   <td><%= c.height %></td>
+   <td><%= c.quantity %></td>
+   <% @sqft = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
+   <% @total_sqft += @sqft %>
+   <td><%= @sqft.round(2) %></td>
+   <td><%= @c1 %></td>
+   <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
+   <% @total_sqft_back += @sqft_back %>
+   <td><%= @sqft_back.round(2) %></td>
+   <td><%= @c2 %></td>
+   <% @tot_amt = (@sqft.round(2)*@c1)+(@sqft_back.round(2)*@c2) %>
+   <% @total_amount += @tot_amt %>
+   <td><%= @tot_amt %></td>
+ </tr>
+
+
+
+
+  
+  <% end %>
+  <tr>
+  <th colspan="4">Total:</th>
+  <td><b><%= @total_no %></b></td>
+  <td><b><%= @total_sqft.round(2) %></b></td>
+  
+  <td><b>-</b></td>
+  <td><b><%= @total_sqft_back.round(2) %></b></td>
+  <td><b>-</b></td>
+  <td><b>-</b></td>
+  </tr>
+  <tr>
+  <th colspan="9">Total Quantity(SQ.FEET):</th>
+  <td><b><%= (@total_sqft + @total_sqft_back).round(2) %></b></td>
+  
+  </tr>
+  <tr>
+  <th colspan="9">Total AMOUNT:</th>
+  <td><b><%= @total_amount.round(2) %></b></td>
+  
+  </tr>
+  <% end %>
+
+   <% if u == "Shutters" || u == "White BSL Shelf" || u =="Hinges Patti" %>
+   <tr>
+    <th colspan="2">No</th>
+    <th colspan="2">W</th>
+    <th colspan="2">H</th>
+    <th>Nos</th>
+    <th>Sq.ft</th>
+    <th>rate</th>
+    <th>AMT</th>
+    
+  </tr>
+  <!-- Calculations of rates -->
+  <% if u == "Shutters" %>
+  <% @shutter_rate = @rates.find_by(["product_id = ? and ptype=? ",f.product_id,u])%>
+  <% @sr = @shutter_rate.price %>
+  <% elsif u == "White BSL Shelf" %>
+  <% @wbs_rate = @rates.find_by(["product_id = ? and ptype=? ",f.product_id,u])%>
+  <% @sr = @wbs_rate.price %>
+  <% elsif u == "Hinges Patti" %>
+  <% @hp_rate = @rates.find_by(["product_id = ? and ptype=? ",f.product_id,u])%>
+  <% @sr = @hp_rate.price %>
+  <% end %>
+  <!-- End of calculation -->
+
+  <% @shutter_measurements = f.measurements.where(ftype: u ) %>
+  <% @tot_sqrft = 0 %>
+  <% @tot_num = 0 %>
+  <% @full_amt = 0 %>
+   <% @shutter_measurements.each do |c| %>
+  
+   <% @i += 1 %>
+   <tr>
+   <td colspan="2"><%= @i %></td>
+   <td colspan="2"><%= c.width %></td>
+   <td colspan="2"><%= c.height %></td>
+   <td><%= c.quantity %></td>
+   <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
+   <td><%= @sqrft.round(2) %></td>
+   <% @tot_sqrft += @sqrft %>
+   
+   <td><%= @sr %></td>
+   <% @t_amt = @sqrft.round(2)*@sr.round(2) %>
+
+   <% @full_amt += @t_amt %>
+
+   <td><%= @t_amt %></td>
+   
+   
+  
+
+  </tr>
+  <% @tot_num += c.quantity %>
+  <% end %>
+  <tr>
+  <th colspan="6">Total:</th>
+
+  <td><b><%= @tot_num %></b> </td>
+  <td><b><%= @tot_sqrft.round(2) %></b></td>
+  <td>-</td>
+  <td>-</td>
+  
+
+  </tr>
+  <tr>
+  <th colspan="9">Total Quantity(SQ.FEET):</th>
+  <td><b><%= @tot_sqrft.round(2) %></b></td>
+ 
+
+  </tr>
+  <tr>
+  <th colspan="9">Total AMOUNT:</th>
+  <td><b><%= @full_amt.round(2) %></b></td>
+ 
+
+  </tr>
+  <% end %>
+  <% end %>
+ 
+  
+ 
+  
+  
+  
+
+  
+
+
+ 
+  
+
+
+
+   
+</table>
+<% end %>
+</body>
+</div>
+</head>
+</html>
