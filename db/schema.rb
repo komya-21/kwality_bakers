@@ -268,8 +268,8 @@ ActiveRecord::Schema.define(version: 20180811104543) do
     t.datetime "photo5_updated_at"
     t.string "order_no"
     t.bigint "vendor_id"
-    t.boolean "approve"
     t.date "date"
+    t.boolean "approve"
     t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
 
