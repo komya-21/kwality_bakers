@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180811104543) do
+ActiveRecord::Schema.define(version: 20180813104256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -270,6 +270,11 @@ ActiveRecord::Schema.define(version: 20180811104543) do
     t.bigint "vendor_id"
     t.date "date"
     t.boolean "approve"
+    t.boolean "remove_photo1"
+    t.boolean "remove_photo2"
+    t.boolean "remove_photo3"
+    t.boolean "remove_photo4"
+    t.boolean "remove_photo5"
     t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
 

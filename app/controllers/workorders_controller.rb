@@ -71,8 +71,9 @@ class WorkordersController < ApplicationController
   # PATCH/PUT /workorders/1
   # PATCH/PUT /workorders/1.json
   def update
+   
     respond_to do |format|
-      if @workorder.update_attributes(workorder_params)
+      if @workorder.update(workorder_params)
 
 
         format.html { redirect_to @workorder, notice: 'Workorder was successfully updated.' }
@@ -112,7 +113,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:order_no ,:date,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product_id,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:_destroy]])
+     params.require(:workorder).permit(:order_no ,:date,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product_id,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:_destroy]])
 
     end
 end

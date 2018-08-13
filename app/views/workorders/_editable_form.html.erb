@@ -118,23 +118,29 @@
 
 <a id="imagesAdd" class="btn btn-danger">Upload Images</a>
 <a id="imagesRm" class="btn btn-primary">Cancel</a>
+
 <div class="form-group">
-         
+         <% if !form.object.photo1? %>
+
  <div class="col-md-2">
   <%= form.file_field :photo1 %>
 <%= form.text_field :name1,placeholder: "Name" , class: "form-control" %>
 
 </div>
+<% end %>
 
-<div class="form-group">
 
+
+<% if !form.object.photo2? %>
 <div class="col-md-2">
   <%= form.file_field :photo2 %>
 <%= form.text_field :name2,placeholder: "Name" , class: "form-control" %>
 <%#= form.label :photo1 %>
 
 </div>
+<% end %>
 
+<% if !form.object.photo3? %>
 
 <div class="col-md-2">
   <%= form.file_field :photo3 %>
@@ -142,7 +148,9 @@
 <%= form.text_field :name3,placeholder: "Name" , class: "form-control" %>
 <%#= form.label :photo1 %>
 </div>
+<% end %>
 
+<% if !form.object.photo4? %>
 
 <div class="col-md-2">
   <%= form.file_field :photo4%>
@@ -150,7 +158,9 @@
 <%#= form.label :photo1 %>
 
 </div>
+<% end %>
 
+<% if !form.object.photo5? %>
 
 <div class="col-md-2">
   <%= form.file_field :photo5 %>
@@ -158,8 +168,56 @@
 <%= form.text_field :name5,placeholder: "Name" , class: "form-control" %>
 <%#= form.label :photo1 %>
 </div>
+<% end %>
 
 </div>
+
+
+
+  <% if form.object.photo1? %>
+<%#= image_tag form.object.photo1.url(:small) %>
+<%= image_tag  form.object.photo1.url ,width: "160",height: "160"%>
+ <%= form.label :remove_photo1 %>
+      <%= form.check_box :remove_photo1 %>
+      
+<% end %>
+
+
+
+
+<% if form.object.photo2? %>
+<%#= image_tag form.object.photo1.url(:small) %>
+<%= image_tag  form.object.photo2.url ,width: "160",height: "160"%>
+ <%= form.label :remove_photo2 %>
+      <%= form.check_box :remove_photo2 %>
+      
+<% end %>
+
+
+<% if form.object.photo3? %>
+<%#= image_tag form.object.photo1.url(:small) %>
+<%= image_tag  form.object.photo3.url ,width: "160",height: "160"%>
+ <%= form.label :remove_photo3 %>
+      <%= form.check_box :remove_photo3 %>
+      
+<% end %>
+<% if form.object.photo4? %>
+<%#= image_tag form.object.photo1.url(:small) %>
+<%= image_tag  form.object.photo4.url ,width: "160",height: "160"%>
+ <%= form.label :remove_photo4 %>
+      <%= form.check_box :remove_photo4 %>
+      
+<% end %>
+<% if form.object.photo5? %>
+<%#= image_tag form.object.photo1.url(:small) %>
+<%= image_tag  form.object.photo5.url ,width: "160",height: "160"%>
+ <%= form.label :remove_photo5 %>
+      <%= form.check_box :remove_photo5 %>
+      
+<% end %>
+</div>
+
+
 <div align="center">
   <%= form.submit "Submit" , class: "btn btn-warning" %>
   <%= link_to 'Back', workorders_path,class: "btn btn-warning" %>

@@ -28,7 +28,7 @@
     <% if current_user.role == "SuperAdmin" %>
     <label class="col-sm-1 control-label">Vendor</label> 
     <div class="col-md-2">
-    <%= form.select :vendor_id, Vendor.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control"%>
+    <%= form.select :vendor_id, Vendor.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control",required: true%>
 
   </div>
 </div>
@@ -74,19 +74,19 @@
       
       <tr class="fields">
       
-       <td>  <%= m.select :ftype, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "select" %></td>
+       <td>  <%= m.select :ftype, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "select" ,required: true%></td>
       
      
       
     
 
-      <td>  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)"%></td>
+      <td>  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)" , required: true%></td>
        <td><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
-       <td><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%></td>
+       <td><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td>
        <td> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%></td>
        <td> <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td>
         <td><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
-        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %></td>
+        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" ,required: true%></td>
         <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
     </tr>
   </table>
@@ -117,7 +117,15 @@
   <%= form.file_field :photo1 %>
 <%= form.text_field :name1,placeholder: "Name" , class: "form-control" %>
 
+<% if @workorder.photo1? %>
+<%#= image_tag form.object.photo1.url(:small) %>
+<%= image_tag  @workorder.photo1.url ,width: "160",height: "160"%>
+ <%= form.label :remove_photo1 %>
+      <%= form.check_box :remove_photo1 %>
+      
+<% end %>
 </div>
+
 
 <div class="form-group">
 

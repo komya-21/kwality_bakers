@@ -1,4 +1,17 @@
 class Workorder < ApplicationRecord
+	attr_accessor :remove_photo1
+	attr_accessor :remove_photo2
+	attr_accessor :remove_photo3
+	attr_accessor :remove_photo4
+	attr_accessor :remove_photo5
+
+	before_save :delete_photo1, if: ->{ remove_photo1 == '1' && !photo1_updated_at_changed? }
+
+	before_save :delete_photo2, if: ->{ remove_photo2 == '1' && !photo2_updated_at_changed? }
+	before_save :delete_photo3, if: ->{ remove_photo3 == '1' && !photo3_updated_at_changed? }
+	before_save :delete_photo4, if: ->{ remove_photo4 == '1' && !photo4_updated_at_changed? }
+	before_save :delete_photo5, if: ->{ remove_photo5 == '1' && !photo5_updated_at_changed? }
+ 
 	belongs_to :vendor , optional: :true
 	has_many :fproducts ,inverse_of: :workorder,dependent: :destroy
 	accepts_nested_attributes_for :fproducts
@@ -26,7 +39,7 @@ class Workorder < ApplicationRecord
 	validates_attachment_content_type :photo4, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
 	validates_attachment_content_type :photo5, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
 
-	before_save :destroy_image?
+	
 
   
 
@@ -41,6 +54,31 @@ else
   end
 
   scope :list, ->(id) { where(id: id).take }
- 
+
+  
+  
+  private
+
+  def delete_photo1
+  
+    self.photo1 = nil
+  end
+  def delete_photo2
+  	
+    self.photo2 = nil
+  end
+  def delete_photo3
+  	
+    self.photo3 = nil
+  end
+  def delete_photo4
+  	
+    self.photo4 = nil
+  end
+  def delete_photo5
+  	
+    self.photo5 = nil
+  end
+
 	# reject_if: proc{ |attributes| attributes[:answer].blank? }, allow_destroy: true
 end
