@@ -100,7 +100,7 @@ table, th, td {
   <tr>
 
     <td colspan="5"><b>To:</b><%= @workorder.vendor.name if @workorder.vendor.present? %><br><br>
-      <b>Gst No:</b><%= @workorder.vendor.gst_no %>
+      <b>Gst No:</b><%= @workorder.vendor.gst_no if @workorder.vendor.present? %>
 
 
     </td>
