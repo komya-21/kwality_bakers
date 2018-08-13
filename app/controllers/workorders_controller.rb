@@ -42,7 +42,8 @@ class WorkordersController < ApplicationController
 
   # GET /workorders/1/edit
   def edit
-    @workorder = Workorder.find(params[:id])
+    #@workorder = Workorder.find(params[:id])
+    #@workorder = Workorder.includes({ fproducts: :measurements }).find(params[:id])
   end
 
   # POST /workorders
@@ -71,7 +72,9 @@ class WorkordersController < ApplicationController
   # PATCH/PUT /workorders/1.json
   def update
     respond_to do |format|
-      if @workorder.update(workorder_params)
+      if @workorder.update_attributes(workorder_params)
+
+
         format.html { redirect_to @workorder, notice: 'Workorder was successfully updated.' }
         format.json { render :show, status: :ok, location: @workorder }
       else

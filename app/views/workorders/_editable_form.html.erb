@@ -44,7 +44,7 @@
          <label class="col-sm-1 control-label">Product</label> 
          <div class="col-md-3">
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
-          <%= w.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control"%>
+          <%= w.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control" %>
           <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
         </div>
         
