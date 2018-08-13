@@ -41,7 +41,12 @@
 <td><%= m.ftype %></td>
 <td><%= m.width %></td>
 <td><%= m.height %></td>
+<% if m.ftype == "Carcass Box" %>
 <td><%= m.depth %></td>
+<% else %>
+<td>NA</td>
+<% end %>
+
 <td><%= m.quantity %></td>
 </tr>
 <% end %>

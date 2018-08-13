@@ -26,8 +26,9 @@ class Workorder < ApplicationRecord
 	validates_attachment_content_type :photo4, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
 	validates_attachment_content_type :photo5, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
 
-	
+	before_save :destroy_image?
 
+  
 
 	 def order_num
     date = Date.today.strftime('%Y%m%d')
@@ -40,5 +41,6 @@ else
   end
 
   scope :list, ->(id) { where(id: id).take }
+ 
 	# reject_if: proc{ |attributes| attributes[:answer].blank? }, allow_destroy: true
 end
