@@ -53,6 +53,7 @@ class WorkordersController < ApplicationController
     respond_to do |format|
 
       if @workorder.save
+
         @workorder.update(approve: false)
         if current_user.role == "Vendor"
           @workorder.update(vendor_id: current_user.vendor_id)

@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class=" panel panel-warning">
         <div class="panel-heading">
-          <h3 class="panel-title">New Work Order</h3>
+          <h3 class="panel-title">Editing Work Order</h3>
           <div class="actions pull-right">
            <i class="fa fa-expand"></i>
            <i class="fa fa-chevron-down"></i>
@@ -35,7 +35,7 @@
 <% end %>
     <%#= form.date_field :date, value: Date.today, :class => 'form-control' %>
          
-        <%= form.fields_for :fproducts,@workorder.fproducts.build do |w| %>
+        <%= form.fields_for :fproducts do |w| %>
 
         <div class="form-group">
         
@@ -61,7 +61,7 @@
       </div>
       
 
-      <%= w.fields_for :measurements,@workorder.fproducts.build.measurements.build do |m| %>
+      <%= w.fields_for :measurements do |m| %>
 
       
          <div class="table-responsive">
