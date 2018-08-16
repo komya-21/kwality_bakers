@@ -78,7 +78,8 @@
   
     <td class="width" style="width: 8em;"><%= task_form.text_field :height, class: 'form-control',placeholder: "Height"%></td>
   <td> <%= task_form.text_field :quantity, class: 'form-control quantity',placeholder: "Quanity" %> </td>
-  <td style="width: 8em;"> <%= task_form.text_field :unit, class: 'form-control unit',placeholder: "Unit",hidden: true %> </td>
+
+  <td style="width: 8em;" class="unity" hidden="true"> <%= task_form.text_field :unit, class: 'form-control unit',placeholder: "Unit" %> </td>
 
   <td class="category"> <%= task_form.select :category,options_for_select(['A or B','Gold or Silver']),{prompt: "Select Category"},class: "form-control" %> </td>
 
@@ -154,8 +155,10 @@
     container.find(".width").hide();
     container.find(".category").hide();
      container.find(".quantity").focus();
+      container.find(".unity").show();
      
      if(x == "Fevicol"){
+
      container.find(".unit").val("Kgs"); 
      } 
      if(x == "SR"){
