@@ -44,10 +44,10 @@
 } 
 .rightdiv{
   float:right;
-  width:30%;
+  width:40%;
 } 
 .centerdiv{
-  width:100%;
+  width:50%;
   margin:0 auto;
 }
 
@@ -60,10 +60,10 @@
 } 
 .rightdiv{
   float:right;
-  width:30%;
+  width:40%;
 } 
 .centerdiv{
-  width:100%;
+  width:50%;
   margin:0 auto;
 }
 p span{
@@ -97,6 +97,21 @@ table.qr-code td.white { background-color: #fff; }
 
 </style>
 
+<div class="rightdiv">
+ADD:- SR.NO.28/31,NEAR PARI COMPANY,NARHE DHAYARI ROAD,DHAYARI,PUNE.411041.
+
+ <br>
+      <b>GST no:</b><br>
+     <b> Date&Time:</b><br>
+     <b>MO NO:-</b>7350799350<br> 
+  <b>MAIL ID:-</b>vikasmulik57@gmail.com
+      
+    </div>
+    <div class="centerdiv">
+       <b>To:</b><%= @workorder.vendor.name if @workorder.vendor.present? %><br>
+      <b>Gst No:</b><%= @workorder.vendor.gst_no if @workorder.vendor.present? %>
+    </div>
+
   
     <table class="qr-code">
 <% @qr.modules.each_index do |x| %>
@@ -112,7 +127,9 @@ table.qr-code td.white { background-color: #fff; }
   </tr>
 <% end %>
 </table>
+
 <br>
+<%= @workorder.order_no %>
 <br>
    
 
@@ -131,32 +148,7 @@ table, th, td {
 <% k += 1 %>
 
 <table style="width:100%">
-  <% if k == 1 %>
-  <tr>
-    <th style="width: 85px;" colspan="10"><center>ADD:- SR.NO.28/31,NEAR PARI COMPANY,NARHE DHAYARI ROAD,DHAYARI,PUNE.411041.</center></th>
-     
-    
-  </tr>
-  <tr>
-
-    <td colspan="5"><b>To:</b><%= @workorder.vendor.name if @workorder.vendor.present? %><br><br>
-      <b>Gst No:</b><%= @workorder.vendor.gst_no if @workorder.vendor.present? %>
-
-
-    </td>
-    <td colspan="5"><b>GST no:</b><br>
-     <b> Date&Time:</b><br>
-      <b>Order no:</b><%= @workorder.order_no %>
-    </td>
-    
-  </tr>
- 
   
-  <tr>
-  <td colspan="5">MO NO:-7350799350 </td>
-  <td colspan="5">MAIL ID:-vikasmulik57@gmail.com</td>
-  </tr>
-  <% end %>
 
   <% @letters = ('A'..'Z').to_a %>
 

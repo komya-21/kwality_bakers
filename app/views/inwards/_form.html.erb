@@ -73,10 +73,10 @@
 
  <td><%= task_form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control select", "data-live-search" => "true",onchange: "myFunction(this)" %></td>
 
-  <td class="width" style="width: 8em;"> <%= task_form.text_field :width, class: 'form-control',placeholder: "Width" %> 
+  <td class="width" style="width: 8em;"> <%= task_form.text_field :width, class: 'form-control',placeholder: "Width(mm)" %> 
     </td>
   
-    <td class="width" style="width: 8em;"><%= task_form.text_field :height, class: 'form-control',placeholder: "Height"%></td>
+    <td class="width" style="width: 8em;"><%= task_form.text_field :height, class: 'form-control',placeholder: "Height(mm)"%></td>
   <td> <%= task_form.text_field :quantity, class: 'form-control quantity',placeholder: "Quanity" %> </td>
 
   <td style="width: 8em;" class="unity" hidden="true"> <%= task_form.text_field :unit, class: 'form-control unit',placeholder: "Unit" %> </td>
