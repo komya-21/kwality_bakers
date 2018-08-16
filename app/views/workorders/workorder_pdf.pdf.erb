@@ -98,18 +98,19 @@ table.qr-code td.white { background-color: #fff; }
 </style>
 
 <div class="rightdiv">
-ADD:- SR.NO.28/31,NEAR PARI COMPANY,NARHE DHAYARI ROAD,DHAYARI,PUNE.411041.
+<h6>ADD:- SR.NO.28/31,NEAR PARI COMPANY,NARHE DHAYARI ROAD,DHAYARI,PUNE.411041.
 
  <br>
       <b>GST no:</b><br>
      <b> Date&Time:</b><br>
      <b>MO NO:-</b>7350799350<br> 
-  <b>MAIL ID:-</b>vikasmulik57@gmail.com
+  <b>MAIL ID:-</b>vikasmulik57@gmail.com</h6>
       
-    </div>
-    <div class="centerdiv">
-       <b>To:</b><%= @workorder.vendor.name if @workorder.vendor.present? %><br>
+    
+    
+      <h5> <b>To:</b><%= @workorder.vendor.name if @workorder.vendor.present? %>
       <b>Gst No:</b><%= @workorder.vendor.gst_no if @workorder.vendor.present? %>
+    </h5>
     </div>
 
   
