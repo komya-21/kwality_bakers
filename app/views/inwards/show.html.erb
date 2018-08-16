@@ -18,9 +18,13 @@
     <tr>
       
       <th>Product Name</th>
-      
+      <th>Size</th>
+      <th>Category</th>
       
       <th>Quantity</th>
+     
+      <th>Color</th>
+     
     </tr>
   </thead>
   <tbody>
@@ -42,10 +46,34 @@
 <td>
 <%= i.product.name %>
 </td>
-
+<% if i.width.present? %>
 <td>
-  <%= i.quantity %>
+
+<%= i.width%>x<%= i.height %>
+</td>
+<% else %>
+<td>NA</td>
+<% end %>
+<% if i.category.present? %>
+<td>
+  <%= i.category %>
   </td>
+  <% else %>
+  <td>NA</td>
+  <% end %>
+<td>
+  <%= i.quantity %><%= i.unit if i.unit.present? %>
+  </td>
+  <% if i.product.name == "Laminate" %>
+  <td>
+    <%= i.color.code %>
+  </td>
+  <% else %>
+  <td>
+    NA
+  </td>
+
+  <% end %>
 
 
 

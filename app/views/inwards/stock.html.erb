@@ -13,7 +13,7 @@
                             </div>
                           </div>
                           <div class="panel-body">
-                            <%= link_to "Total Stock" , "/inwards/stock" , class: 'btn btn-primary '%>
+                           
 
 <p>
   Download:
@@ -39,7 +39,7 @@
 	<% @current_inventories.each do |c| %>
 		<tr>
 			<td><%= c.product.name if c.product.present?%></td>
-			<td><%= c.current_quantity %></td>
+			<td><%= c.current_quantity %><%= c.product.unit if c.product.unit.present? %></td>
 			<td><%= link_to "Show" ,current_inventory_path(c),class: "btn btn-default btn-xs"  %></td>
 			<td><%= link_to "Edit" ,edit_current_inventory_path(c),class: "btn btn-default btn-xs" %></td>
 			<td><%= link_to "Reset" , reset_current_inventory_path(c),class: "btn btn-default btn-xs" %></td>

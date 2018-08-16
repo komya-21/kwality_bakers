@@ -38,8 +38,8 @@ class InwardsController < ApplicationController
   
     @product = CurrentInventory.find_by(product_id: params[:product_id])
   
-   
-    render :json => [@product.product.price, @product.current_quantity]
+  
+    render :json => [@product.product.price, @product.current_quantity,@product.product.unit]
   end
 
   # GET /inwards/new
@@ -115,6 +115,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def inward_params
-      params.require(:inward).permit(:date, :inward_no ,inward_products_attributes: [:id, :updated_quantity ,:product_id, :quantity, :inward_id,:total_quantity , :_destroy])
+      params.require(:inward).permit(:date, :inward_no ,inward_products_attributes: [:id, :updated_quantity ,:product_id, :quantity, :inward_id,:total_quantity ,:width,:height,:category,:color_id,:unit, :_destroy])
     end
 end

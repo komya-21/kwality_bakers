@@ -56,9 +56,18 @@
   <div class="form-group">
     <%= f.label :employee_no, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :employee_no, :class => 'form-control' %>
+      <%= f.text_field :employee_no,class: "form-control" %>
     </div>
+    
   </div>
+  <div class="form-group">
+    <%= f.label :employee_type, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.select :employee_type, options_for_select(['Pasting' , 'Cutting','Edge Binding','Packing & Quality']),{prompt:true},class: "form-control" %>
+    </div>
+    
+  </div>
+  
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">

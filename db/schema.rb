@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180813104256) do
+ActiveRecord::Schema.define(version: 20180816060111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 20180813104256) do
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "address"
-    t.string "fssai_lic_no"
     t.string "contact_no"
     t.string "email"
     t.string "gst_no"
@@ -90,6 +89,7 @@ ActiveRecord::Schema.define(version: 20180813104256) do
     t.string "employee_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "employee_type"
   end
 
   create_table "fproducts", force: :cascade do |t|
@@ -97,8 +97,6 @@ ActiveRecord::Schema.define(version: 20180813104256) do
     t.bigint "workorder_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "product_id"
-    t.index ["product_id"], name: "index_fproducts_on_product_id"
     t.index ["workorder_id"], name: "index_fproducts_on_workorder_id"
   end
 
@@ -117,6 +115,12 @@ ActiveRecord::Schema.define(version: 20180813104256) do
     t.integer "total_quantity"
     t.string "after_inward"
     t.string "after_delivery_string"
+    t.float "width"
+    t.float "height"
+    t.string "category"
+    t.bigint "color_id"
+    t.string "unit"
+    t.index ["color_id"], name: "index_inward_products_on_color_id"
     t.index ["inward_id"], name: "index_inward_products_on_inward_id"
     t.index ["product_id"], name: "index_inward_products_on_product_id"
   end
@@ -154,16 +158,16 @@ ActiveRecord::Schema.define(version: 20180813104256) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "delivery_quantity"
+    t.string "unit"
   end
 
   create_table "rates", force: :cascade do |t|
-    t.bigint "product_id"
+    t.string "product"
     t.string "ptype"
     t.float "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ctype"
-    t.index ["product_id"], name: "index_rates_on_product_id"
   end
 
   create_table "returns", force: :cascade do |t|
@@ -286,13 +290,12 @@ ActiveRecord::Schema.define(version: 20180813104256) do
   add_foreign_key "delivery_inwards", "inward_products"
   add_foreign_key "delivery_inwards", "products"
   add_foreign_key "delivery_inwards", "vendors"
-  add_foreign_key "fproducts", "products"
   add_foreign_key "fproducts", "workorders"
+  add_foreign_key "inward_products", "colors"
   add_foreign_key "inward_products", "inwards"
   add_foreign_key "inward_products", "products"
   add_foreign_key "measurements", "colors"
   add_foreign_key "measurements", "fproducts"
-  add_foreign_key "rates", "products"
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"

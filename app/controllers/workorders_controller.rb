@@ -26,6 +26,7 @@ class WorkordersController < ApplicationController
   # GET /workorders/1
   # GET /workorders/1.json
   def show
+    #@qr = RQRCode::QRCode.new(@workorder.order_no, size: 4)
      respond_to do |format|
       format.html
       format.pdf do
@@ -50,10 +51,13 @@ class WorkordersController < ApplicationController
   # POST /workorders.json
   def create
     @workorder = Workorder.new(workorder_params)
-  
+   
+   
     respond_to do |format|
 
       if @workorder.save
+
+       
 
         @workorder.update(approve: false)
         if current_user.role == "Vendor"
@@ -96,6 +100,7 @@ class WorkordersController < ApplicationController
   end
 def workorder_pdf
   @workorder = Workorder.find(params[:id])
+   @qr = RQRCode::QRCode.new(@workorder.order_no, size: 4)
   @rates = Rate.all
    respond_to do |format|
       format.html
@@ -113,7 +118,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:order_no ,:date,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product_id,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:_destroy]])
+     params.require(:workorder).permit(:order_no ,:date,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:_destroy]])
 
     end
 end
