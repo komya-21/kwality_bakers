@@ -1,5 +1,8 @@
 
-<%= render 'form', workorder: @workorder %>
+
+
+<% @workorder = Workorder.includes({ fproducts: :measurements }).find(params[:id]) %>
+<%= render 'editable_form', workorder: @workorder %>
 
 
 

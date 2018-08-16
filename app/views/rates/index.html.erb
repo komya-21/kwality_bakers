@@ -31,7 +31,7 @@
   <tbody>
     <% @rates.each do |rate| %>
       <tr>
-        <td><%= rate.product.name %></td>
+        <td><%= rate.product %></td>
 
         <% if rate.ptype == "Carcass Box" %>
         <td><%= rate.ptype+"\(#{rate.ctype}\)" %></td>

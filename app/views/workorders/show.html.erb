@@ -5,6 +5,8 @@
                             <div class="panel-body">
                               <div align="right">
                               <%= link_to 'Download PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%> 
+
+                              
                             </div>
 <br>
 <p>
@@ -18,7 +20,7 @@
 
 </p>
   <% @workorder.fproducts.each do |f| %>
-  <b><u><%= f.product.name %></u></b>
+  <b><u><%= f.product %></u></b>
 
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 	<thead>
@@ -41,7 +43,12 @@
 <td><%= m.ftype %></td>
 <td><%= m.width %></td>
 <td><%= m.height %></td>
+<% if m.ftype == "Carcass Box" %>
 <td><%= m.depth %></td>
+<% else %>
+<td>NA</td>
+<% end %>
+
 <td><%= m.quantity %></td>
 </tr>
 <% end %>
@@ -49,8 +56,8 @@
  </tbody>
 </table>
 <% end %>
-
 <%= image_tag  @workorder.photo1.url ,width: "160",height: "160" if @workorder.photo1.present? %>
+
 <%= image_tag  @workorder.photo2.url ,width: "160",height: "160" if @workorder.photo2.present?%>
 <%= image_tag  @workorder.photo3.url ,width: "160",height: "160" if @workorder.photo3.present?%>
 <%= image_tag  @workorder.photo4.url ,width: "160",height: "160" if @workorder.photo4.present?%>
@@ -58,11 +65,17 @@
 <br>
 <%= link_to 'Edit', edit_workorder_path(@workorder),class: "btn btn-warning " %>| 
 <%= link_to 'Back', workorders_path,class: "btn btn-warning " %>
+
+
+
+
 </div>
 </div>
 </div>
 </div>
 </section>
+
+
 <%# content_for :javascript do %>
                    <!--Load these page level functions-->
                     <!-- <script>

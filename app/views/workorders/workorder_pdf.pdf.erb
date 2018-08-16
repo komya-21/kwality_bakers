@@ -70,13 +70,53 @@ p span{
   font-weight:700;
   color:#000;
 }
+</style>
+
+
+<style>
+table.qr-code {
+  width: 100px;
+  height: 100px;
+  border-width: 0;
+  border-style: none;
+  border-color: #0000ff;
+  border-collapse: collapse;
+}
+table.qr-code td {
+  border-width: 0;
+  border-style: none;
+  border-color: #0000ff;
+  border-collapse: collapse;
+  padding: 0;
+  margin: 0;
+  width: 2px;
+  height: 2px;
+}
+table.qr-code td.black { background-color: #000; }
+table.qr-code td.white { background-color: #fff; }
 
 </style>
 
-  <div class="maindiv">
+  
+    <table class="qr-code">
+<% @qr.modules.each_index do |x| %>
+
+  <tr>
+  <% @qr.modules.each_index do |y| %>
+   <% if @qr.dark?(x,y) %>
+    <td class="black"/>
+   <% else %>
+    <td class="white"/>
+   <% end %>
+  <% end %>
+  </tr>
+<% end %>
+</table>
+<br>
+<br>
    
 
-
+<div class="maindiv">
 
 <style>
 table, th, td {
@@ -99,8 +139,8 @@ table, th, td {
   </tr>
   <tr>
 
-    <td colspan="5"><b>To:</b><%= @workorder.vendor.name %><br><br>
-      <b>Gst No:</b><%= @workorder.vendor.gst_no %>
+    <td colspan="5"><b>To:</b><%= @workorder.vendor.name if @workorder.vendor.present? %><br><br>
+      <b>Gst No:</b><%= @workorder.vendor.gst_no if @workorder.vendor.present? %>
 
 
     </td>
@@ -125,7 +165,7 @@ table, th, td {
   <% @uniq_ftypes.each do |u| %>
   <% @m += 1 %>
   <tr>
-    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="10"><center><% if @m == 1 %><%= f.product.name %><br><% end %>(<%= @letters.shift %>)<%= u %></center></th>
+    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="10"><center><% if @m == 1 %><%= f.product %><br><% end %>(<%= @letters.shift %>)<%= u %></center></th>
   </tr>
   <% @i = 0 %>
    <% if u == "Carcass Box" %>
@@ -146,8 +186,8 @@ table, th, td {
     <% @total_sqft = 0 %>
     <% @total_sqft_back = 0 %>
     <% @total_amount = 0 %>
-    <% @carcass_rate1 = @rates.find_by(["product_id = ? and ptype=? and ctype = ?",f.product_id,u,"TB/LR"]) %>
-<% @carcass_rate2 = @rates.find_by(["product_id = ? and ptype=? and ctype = ?",f.product_id,u,"Back"]) %>
+    <% @carcass_rate1 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"TB/LR"]) %>
+<% @carcass_rate2 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"Back"]) %>
 <% @c1 = @carcass_rate1.price %>
 <% @c2 = @carcass_rate2.price %>
    <% @carcass_measurements.each do |c| %>
@@ -212,13 +252,13 @@ table, th, td {
   </tr>
   <!-- Calculations of rates -->
   <% if u == "Shutters" %>
-  <% @shutter_rate = @rates.find_by(["product_id = ? and ptype=? ",f.product_id,u])%>
+  <% @shutter_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
   <% @sr = @shutter_rate.price %>
   <% elsif u == "White BSL Shelf" %>
-  <% @wbs_rate = @rates.find_by(["product_id = ? and ptype=? ",f.product_id,u])%>
+  <% @wbs_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
   <% @sr = @wbs_rate.price %>
   <% elsif u == "Hinges Patti" %>
-  <% @hp_rate = @rates.find_by(["product_id = ? and ptype=? ",f.product_id,u])%>
+  <% @hp_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
   <% @sr = @hp_rate.price %>
   <% end %>
   <!-- End of calculation -->

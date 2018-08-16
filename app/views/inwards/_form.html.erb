@@ -1,7 +1,7 @@
 <section id="main-content" class="animated fadeInUp">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class=" panel panel-info">
+                        <div class=" panel panel-warning">
                             <div class="panel-heading">
                                 <h3 class="panel-title">New Inward</h3>
                                 <div class="actions pull-right">
@@ -49,8 +49,9 @@
         <table class= "table">
           <thead>
            <tr>
-            <th><h6>Product</h6></th>
-            <th><h6>Quantity</h6></th>
+            <th><h4>Product</h4></th>
+            
+          
           </tr>
         </thead>
         
@@ -62,22 +63,33 @@
     <div class="table-responsive">
       <table id="example"  class="table table-bordered table-striped" cellspacing="0" width="100%">
         <colgroup>
-        <col class="one"/>
-        <col class="two"/>
+       
+       
       
       </colgroup>
       
       <tr class="fields">
         
 
- <td><%= task_form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control selectpicker", "data-live-search" => "true"%></td>
+ <td><%= task_form.select :product_id, Product.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control select", "data-live-search" => "true",onchange: "myFunction(this)" %></td>
 
-  <td> <%= task_form.text_field :quantity, class: 'form-control' %> </td>
+  <td class="width" style="width: 8em;"> <%= task_form.text_field :width, class: 'form-control',placeholder: "Width" %> 
+    </td>
+  
+    <td class="width" style="width: 8em;"><%= task_form.text_field :height, class: 'form-control',placeholder: "Height"%></td>
+  <td> <%= task_form.text_field :quantity, class: 'form-control quantity',placeholder: "Quanity" %> </td>
+  <td style="width: 8em;"> <%= task_form.text_field :unit, class: 'form-control unit',placeholder: "Unit",hidden: true %> </td>
+
+  <td class="category"> <%= task_form.select :category,options_for_select(['A or B','Gold or Silver']),{prompt: "Select Category"},class: "form-control" %> </td>
+
+  <td class="color" hidden="true"><%= task_form.select :color_id,Color.all.collect{|c|[c.code,c.id]},{prompt: "Select Color"},class: "form-control" %></td>
+
+
 
  <td> <%= task_form.link_to_remove "Remove", class: 'btn btn-red' %> </td>
 </tr>
 <% end %>
-<p><%= f.link_to_add "Add Product", :inward_products, class: 'btn btn-primary ' %></p>
+<p><%= f.link_to_add "Add Product", :inward_products, class: 'btn btn-warning ' %></p>
 
 
 
@@ -86,7 +98,7 @@
     <div class="col-lg-offset-2 col-lg-10">
       <%= f.submit nil, :class => 'btn btn-success' %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                inwards_path, :class => 'btn btn-default' %>
+                inwards_path, :class => 'btn btn-warning' %>
     </div>
   </div>
 
@@ -101,7 +113,75 @@
 </div>
 </section>
 
+
+
+
      
+
+
+<% content_for :javascript do %>
+
+
+  <script type="text/javascript">
+
+
+  function myFunction(selTag) {
+
+    elem = jQuery(selTag);
+
+  
+   
+
+    
+    var x = selTag.options[selTag.selectedIndex].text;
+    
+ 
+
+ 
+  
+  
+    container = elem.parents("tr.fields");
+    container1 = elem.parents("th.fields");
+    
+  if(x == "Laminate"){
+
+    
+    /*container.find(".color").addClass("form-control");*/
+    container.find(".color").show();
+  }
+  if(x == "Fevicol" || x == "SR" || x == "Hydrolic Pump" || x == "Jsection Handle" || x == "PVC Edge Binding Roll" ){
+
+    container.find(".width").hide();
+    container.find(".category").hide();
+     container.find(".quantity").focus();
+     
+     if(x == "Fevicol"){
+     container.find(".unit").val("Kgs"); 
+     } 
+     if(x == "SR"){
+     container.find(".unit").val("gms"); 
+     } 
+     if(x == "Hydrolic Pump"){
+     container.find(".unit").val("Pairs"); 
+     } 
+     if(x == "Jsection Handle"){
+     container.find(".unit").val("MM"); 
+     } 
+     if(x == "PVC Edge Binding Roll"){
+     container.find(".unit").val("Meters"); 
+     } 
+
+
+
+  }
+
+   
+  
+
+  };
+  </script>
+
+
 
 <script type="text/javascript">
  $(document).on('nested:fieldAdded', function(event){
@@ -113,6 +193,7 @@
 //  dateField.datepicker();
 })
 </script>
+<% end %>
 
 
 

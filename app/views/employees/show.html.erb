@@ -16,6 +16,8 @@
   <dd><%= @employee.address %></dd>
   <dt><strong><%= model_class.human_attribute_name(:employee_no) %>:</strong></dt>
   <dd><%= @employee.employee_no %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:employee_type) %>:</strong></dt>
+  <dd><%= @employee.employee_type %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

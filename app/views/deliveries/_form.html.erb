@@ -106,6 +106,7 @@
           <%=invoice_item.select :product_id ,Product.all.collect{|i| [i.name, i.id]}, {prompt:true},class: "select"%></td>
         <td><%= invoice_item.text_field :price, id: :price, placeholder: 'price' ,class: 'form-control'%></td>
         <td><%= invoice_item.text_field :quantity, id: :quantity, placeholder: 'quantity' ,class: 'form-control',readonly:true%></td>
+        
         <td><%= invoice_item.text_field :rem_quantity, id: :rem_quantity, placeholder: 'rem_qty', class: 'form-control',readonly:true%></td>
 
         <td><%= invoice_item.text_field :qty, id: :qty,placeholder: 'qty', class: 'form-control'%></td>
