@@ -1,5 +1,6 @@
 class Employee < ApplicationRecord
 	after_save :create_user_account
+  has_and_belongs_to_many :workorders
 
 	def emp_no
     date = Date.today.strftime('%Y%m%d')
@@ -11,7 +12,7 @@ class Employee < ApplicationRecord
    private
 
   def create_user_account
-      User.create!(email: self.email, password: self.employee_no, role: 'Employee')
+      User.create!(email: self.email, password: self.employee_no, role: 'Employee',employee_id: self.id)
   end
 
 end

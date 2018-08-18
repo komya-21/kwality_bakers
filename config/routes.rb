@@ -3,6 +3,15 @@ Rails.application.routes.draw do
   resources :workorders do 
     member do
       get :workorder_pdf
+      get :workorder_status
+      get :workorder_invoice
+
+    end
+    collection do
+      post :order_report
+      get :order_status
+      post :end_time
+      post :status_update
     end
   end
   resources :furnitures

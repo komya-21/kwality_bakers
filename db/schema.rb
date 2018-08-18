@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180816083218) do
+ActiveRecord::Schema.define(version: 20180818045608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,18 @@ ActiveRecord::Schema.define(version: 20180816083218) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "employee_type"
+  end
+
+  create_table "employees_workorders", force: :cascade do |t|
+    t.string "starttime"
+    t.string "endtime"
+    t.bigint "employee_id"
+    t.bigint "workorder_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status"
+    t.index ["employee_id"], name: "index_employees_workorders_on_employee_id"
+    t.index ["workorder_id"], name: "index_employees_workorders_on_workorder_id"
   end
 
   create_table "fproducts", force: :cascade do |t|
@@ -202,7 +214,9 @@ ActiveRecord::Schema.define(version: 20180816083218) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "vendor_id"
+    t.bigint "employee_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["employee_id"], name: "index_users_on_employee_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["vendor_id"], name: "index_users_on_vendor_id"
   end
@@ -279,6 +293,8 @@ ActiveRecord::Schema.define(version: 20180816083218) do
     t.boolean "remove_photo3"
     t.boolean "remove_photo4"
     t.boolean "remove_photo5"
+    t.bigint "employee_id"
+    t.index ["employee_id"], name: "index_workorders_on_employee_id"
     t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
 
@@ -290,6 +306,8 @@ ActiveRecord::Schema.define(version: 20180816083218) do
   add_foreign_key "delivery_inwards", "inward_products"
   add_foreign_key "delivery_inwards", "products"
   add_foreign_key "delivery_inwards", "vendors"
+  add_foreign_key "employees_workorders", "employees"
+  add_foreign_key "employees_workorders", "workorders"
   add_foreign_key "fproducts", "workorders"
   add_foreign_key "inward_products", "colors"
   add_foreign_key "inward_products", "inwards"
@@ -299,7 +317,9 @@ ActiveRecord::Schema.define(version: 20180816083218) do
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
+  add_foreign_key "users", "employees"
   add_foreign_key "users", "vendors"
   add_foreign_key "work_orders", "colors"
+  add_foreign_key "workorders", "employees"
   add_foreign_key "workorders", "vendors"
 end
