@@ -1,0 +1,73 @@
+
+           
+              <ul>
+                <br><br>
+                <h3>Order No:
+               <b> <%= @employee_workorder.workorder.order_no %></b></h3>
+                <br>
+                <h3>Vendor Name:
+               <b> <%= @employee_workorder.workorder.vendor.name %></b></h3>
+               <br>
+               <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <tr>
+                  <th>Work</th>
+                  <th>Status</th>
+                  <th>Employee</th>
+                </tr>
+<% @emp_workorders = EmployeesWorkorder.where(workorder_id: @workorder.id) %>
+     <% @emp_workorders.each do |e| %>           
+          <% if e.employee.employee_type == "Pasting" %>
+                    <tr>
+                        <% if e.status == "Completed" %>
+                      <td><li><strong><font color="green">Pasting</font></strong>&nbsp;&nbsp;<i class="fa fa-check"></i></li>
+                    </td>
+                    <% else %>
+                    <td><li><strong><font color="green">Pasting</font></strong></li>
+                    </td>
+                    <% end %>
+                    <td><%= e.status %></td>
+                    <th><%= e.employee.name %></th>
+                  </tr>
+                  <% elsif e.employee.employee_type == "Cutting" %>
+                       <tr>
+                        <% if e.status == "Completed" %>
+                      <td><li><strong><font color="green">Cutting</font></strong>&nbsp;&nbsp;<i class="fa fa-check"></i></li>
+                    </td>
+                    <% else %>
+                    <td><li><strong><font color="red">Cutting</font></strong></li>
+                    </td>
+                    <% end %>
+                    <td><%= e.status %></td>
+                    <th><%= e.employee.name %></th>
+                  </tr>
+                  <% elsif e.employee.employee_type == "Edge Binding" %>
+                       <tr>
+                        <% if e.status == "Completed" %>
+                      <td><li><strong><font color="green">Edge Binding</font></strong>&nbsp;&nbsp;<i class="fa fa-check"></i></li>
+                    </td>
+                    <% else %>
+                    <td><li><strong><font color="red">Edge Binding</font></strong></li>
+                    </td>
+                    <% end %>
+                    <td><%= e.status %></td>
+                    <th><%= e.employee.name %></th>
+                  </tr>
+                  <% elsif e.employee.employee_type == "Packing & Quality" %>
+                       <tr>
+                        <% if e.status == "Completed" %>
+                      <td><li><strong><font color="green">Packing & Quality</font></strong>&nbsp;&nbsp;<i class="fa fa-check"></i></li>
+                    </td>
+                    <% else %>
+                    <td><li><strong><font color="red">Packing & Quality</font></strong></li>
+                    </td>
+                    <% end %>
+                    <td><%= e.status %></td>
+                    <th><%= e.employee.name %></th>
+                  </tr>
+                  <% end %>
+                   
+              </ul>
+
+
+              <% end %>
+           </table>

@@ -4,7 +4,8 @@ class Workorder < ApplicationRecord
 	attr_accessor :remove_photo3
 	attr_accessor :remove_photo4
 	attr_accessor :remove_photo5
-
+	
+	
 	before_save :delete_photo1, if: ->{ remove_photo1 == '1' && !photo1_updated_at_changed? }
 
 	before_save :delete_photo2, if: ->{ remove_photo2 == '1' && !photo2_updated_at_changed? }
@@ -13,6 +14,7 @@ class Workorder < ApplicationRecord
 	before_save :delete_photo5, if: ->{ remove_photo5 == '1' && !photo5_updated_at_changed? }
  
 	belongs_to :vendor , optional: :true
+	has_and_belongs_to_many :employees
 	has_many :fproducts ,inverse_of: :workorder,dependent: :destroy
 	accepts_nested_attributes_for :fproducts
 
@@ -40,7 +42,6 @@ class Workorder < ApplicationRecord
 	validates_attachment_content_type :photo5, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
 
 	
-
   
 
 	 def order_num

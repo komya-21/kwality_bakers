@@ -1,74 +1,119 @@
 <section id="main-content" class="animated fadeInUp">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class=" panel panel-info">
-                            <div class="panel-body">
-                              <div align="right">
-                              <%= link_to 'Download PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%> 
-
-                              
-                            </div>
-<br>
-<p>
-  <strong>Order No.:</strong>
-  <%= @workorder.order_no if @workorder.order_no.present? %><br>
-  <strong>Date:</strong>
-  <%= @workorder.date if @workorder.date.present? %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class=" panel panel-info">
+        <div class="panel-body">
+          <div align="right">
+            <%= link_to 'Download PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%> |
+            <%#= link_to 'Generate Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%> 
 
 
-  
-
-</p>
-  <% @workorder.fproducts.each do |f| %>
-  <b><u><%= f.product %></u></b>
-
-<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-	<thead>
-    <tr>
-    	
-		
-		<th>Type</th>
-		<th>Width</th>
-		<th>Height</th>
-		<th>Depth</th>
-    <th>Quantity</th>
-	</tr>
-	</thead>
-  <tbody>
-<%# @workorder.fproducts.each_with_index do |f,i| %>
-<% f.measurements.each do |m| %>
-<tr>
+          </div>
+          <br>
+          <p>
+            <strong>Order No.:</strong>
+            <%= @workorder.order_no if @workorder.order_no.present? %><br>
+            <strong>Date:</strong>
+            <%= @workorder.date if @workorder.date.present? %>
 
 
-<td><%= m.ftype %></td>
-<td><%= m.width %></td>
-<td><%= m.height %></td>
-<% if m.ftype == "Carcass Box" %>
-<td><%= m.depth %></td>
-<% else %>
-<td>NA</td>
+
+
+          </p>
+          <% @workorder.fproducts.each do |f| %>
+          <b><u><%= f.product %></u></b>
+
+          <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+           <thead>
+            <tr>
+
+
+              <th>Type</th>
+              <th>Width</th>
+              <th>Height</th>
+              <th>Depth</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%# @workorder.fproducts.each_with_index do |f,i| %>
+            <% f.measurements.each do |m| %>
+            <tr>
+
+
+              <td><%= m.ftype %></td>
+              <td><%= m.width %></td>
+              <td><%= m.height %></td>
+              <% if m.ftype == "Carcass Box" %>
+              <td><%= m.depth %></td>
+              <% else %>
+              <td>NA</td>
+              <% end %>
+
+              <td><%= m.quantity %></td>
+            </tr>
+            <% end %>
+
+          </tbody>
+        </table>
+        <% end %>
+        <%= image_tag  @workorder.photo1.url ,width: "160",height: "160" if @workorder.photo1.present? %>
+        <%#= link_to "Download", @workorder.photo1.url(:original, false) %>
+
+
+        <%= image_tag  @workorder.photo2.url ,width: "160",height: "160" if @workorder.photo2.present?%>
+        <%= image_tag  @workorder.photo3.url ,width: "160",height: "160" if @workorder.photo3.present?%>
+        <%= image_tag  @workorder.photo4.url ,width: "160",height: "160" if @workorder.photo4.present?%>
+        <%= image_tag  @workorder.photo5.url ,width: "160",height: "160" if @workorder.photo5.present?%>
+        <br>
+
+
+
+        <% if current_user.role == "Employee" %>
+
+        <div id="chronoExample">
+         <!--  <div class="values" style="font-size: 150%"><b>00:00:00</b></div> -->
+         <div>
+          <% if @employee1.present? || @employee2.present? || @employee3.present? || @employee4.present? %>
+          <% if @employee1.present? %>
+          <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
+          <% elsif @employee2.present? %>
+
+          <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
+          <% elsif @employee3.present? %>
+          <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
+          <% elsif @employee4.present? %>
+          <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
+          <% end %>
+          <% end %>
+
+
+          
+          <button class="startButton" style="color: green;">Start Work</button>
+         
+          
+          <button class="holdButton"  style="color: orange;">Hold Work</button>
+          <!-- <button class="pauseButton" style="color: orange;">Pause</button> -->
+          <button class="stopButton"  style="color: red;">Stop Work</button>
+          
+
+
+
+
+
+          <%#= link_to "Stop" , student_detail_path(:param1 => timer.getTimeValues().toString , :id => @student_detail.id) %>
+
+          <%#=link_to 'Deactivate', centers_path(:param1 => false, :id => center.id),style: 'color: red'%>
+<!--         <button class="stopButton">Stop</button>
+-->        <!-- <button class="resetButton" style="color: blue;">Reset</button> -->
+</div> 
+</div>
 <% end %>
-
-<td><%= m.quantity %></td>
-</tr>
-<% end %>
-
- </tbody>
-</table>
-<% end %>
-<%= image_tag  @workorder.photo1.url ,width: "160",height: "160" if @workorder.photo1.present? %>
-
-<%= image_tag  @workorder.photo2.url ,width: "160",height: "160" if @workorder.photo2.present?%>
-<%= image_tag  @workorder.photo3.url ,width: "160",height: "160" if @workorder.photo3.present?%>
-<%= image_tag  @workorder.photo4.url ,width: "160",height: "160" if @workorder.photo4.present?%>
-<%= image_tag  @workorder.photo5.url ,width: "160",height: "160" if @workorder.photo5.present?%>
-<br>
+<br><br>
+<% if current_user.role == "SuperAdmin" || current_user.role == "Vendor" %>
 <%= link_to 'Edit', edit_workorder_path(@workorder),class: "btn btn-warning " %>| 
+<% end %>
 <%= link_to 'Back', workorders_path,class: "btn btn-warning " %>
-
-
-
-
 </div>
 </div>
 </div>
@@ -76,12 +121,204 @@
 </section>
 
 
-<%# content_for :javascript do %>
-                   <!--Load these page level functions-->
-                    <!-- <script>
-                    $(document).ready(function() {
-                         $('#example').dataTable();
-                    });
-                    </script> -->
-            <%# end %>
+<% content_for :javascript do %>
+<!-- <script src="/assets/easytimer.js"></script> -->
+
+<script type="text/javascript">
+
+  /*var timer = new Timer();*/
+
+  $('#chronoExample .startButton').click(function () {
+
+    /*timer.start();*/
+    var currentdate = new Date(); 
+    var datetime = "Started Working: " + currentdate.getDate() + "/"
+    + (currentdate.getMonth()+1)  + "/" 
+    + currentdate.getFullYear() + " @ "  
+    + currentdate.getHours() + ":"  
+    + currentdate.getMinutes() + ":" 
+    + currentdate.getSeconds();
+    alert(datetime);
+    var workorder_id = <%= @workorder.id%>;
+    <%if @employee1.present? %>
+    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
+    <% if @work.status == "Pending" || @work.status == "Hold" %>
+    
+    var employee_id = <%= @employee1.id%>;
+    <% end %>
+    <% end %>
+
+    <%if @employee2.present? %>
+    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
+    <% if @work.status == "Pending" || @work.status == "Hold" %>
+    
+    var employee_id = <%= @employee2.id%>;
+    <% end %>
+    <% end %>
+    <%if @employee3.present? %>
+
+    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
+    <% if @work.status == "Pending" || @work.status == "Hold" %>
+    
+    var employee_id = <%= @employee3.id%>;
+    <% end %>
+    <% end %>
+    <%if @employee4.present? %>
+    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
+    <% if @work.status == "Pending" || @work.status == "Hold" %>
+    
+    var employee_id = <%= @employee4.id%>;
+    <% end %>
+    <% end %>
+
+
+    
+
+    $.ajax({
+     url: "/workorders/order_report",
+     type: 'post',
+     dataType: 'json',
+
+     data: { starttime: datetime ,employee_id: employee_id,workorder_id: workorder_id}
+
+     
+
+   });
+
+    $('#chronoExample .startButton').hide();
+
+    
+  });
+</script>
+
+
+<script type="text/javascript">
+
+  $('#chronoExample .stopButton').on("click" ,function () {
+
+
+    var currentdate = new Date(); 
+
+    var datetime = "Completed Working: " + currentdate.getDate() + "/"
+    + (currentdate.getMonth()+1)  + "/" 
+    + currentdate.getFullYear() + " @ "  
+    + currentdate.getHours() + ":"  
+    + currentdate.getMinutes() + ":" 
+    + currentdate.getSeconds();
+    alert(datetime);
+    var workorder_id = <%= @workorder.id%>;
+
+    <%if @employee1.present? %>
+    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
+    <% if @work.status == "Working" %>
+    
+    var employee_id = <%= @employee1.id%>;
+    <% end %>
+    <% end %>
+
+    <%if @employee2.present? %>
+    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
+    <% if @work.status == "Working" %>
+    
+    var employee_id = <%= @employee2.id%>;
+    <% end %>
+    <% end %>
+    <%if @employee3.present? %>
+    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
+    <% if @work.status == "Working" %>
+    
+    var employee_id = <%= @employee3.id%>;
+    <% end %>
+    <% end %>
+    <%if @employee4.present? %>
+    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
+    <% if @work.status == "Working" %>
+    
+    var employee_id = <%= @employee4.id%>;
+    <% end %>
+    <% end %>
+
+    $.ajax({
+     url: "/workorders/end_time",
+     type: 'post',
+     dataType: 'json',
+
+     data: { endtime: datetime ,employee_id: employee_id,workorder_id: workorder_id}
+
+     
+
+   });
+
+    
+  });
+
+
+
+
+
+
+
+</script>
+
+<script type="text/javascript">
+
+  $('#chronoExample .holdButton').on("click" ,function () {
+
+
+
+   var workorder_id = <%= @workorder.id%>;
+
+   <%if @employee1.present? %>
+   <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
+   <% if @work.status == "Working" %>
+
+   var employee_id = <%= @employee1.id%>;
+   <% end %>
+   <% end %>
+
+   <%if @employee2.present? %>
+   <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
+   <% if @work.status == "Working" %>
+
+   var employee_id = <%= @employee2.id%>;
+   <% end %>
+   <% end %>
+   <%if @employee3.present? %>
+   <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
+   <% if @work.status == "Working" %>
+
+   var employee_id = <%= @employee3.id%>;
+   <% end %>
+   <% end %>
+   <%if @employee4.present? %>
+   <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
+   <% if @work.status == "Working" %>
+
+   var employee_id = <%= @employee4.id%>;
+   <% end %>
+   <% end %>
+
+   $.ajax({
+     url: "/workorders/status_update",
+     type: 'post',
+     dataType: 'json',
+
+     data: { status: "Hold" ,employee_id: employee_id,workorder_id: workorder_id}
+
+     
+
+   });
+
+
+ });
+
+
+
+
+
+
+
+</script>
+
+<% end %>
 

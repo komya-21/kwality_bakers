@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  starttime: MyString
+  endtime: MyString
+  employee: one
+  workorder: one
+
+two:
+  starttime: MyString
+  endtime: MyString
+  employee: two
+  workorder: two

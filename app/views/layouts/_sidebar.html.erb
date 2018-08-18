@@ -129,6 +129,12 @@
                             
                         </a>
                     </li>
+                     <li>
+                        <a href="/workorders/order_status" title="All Orders">
+                            <i class="fa  fa-fw fa-cogs"></i>Order Status
+                            
+                        </a>
+                    </li>
                         
                     
                     <% elsif current_user.role == "Vendor" %>
@@ -140,11 +146,21 @@
                         </a>
                     </li>
                      <% end %>
+                     <% if current_user.role == "SuperAdmin" || current_user.role == "Vendor" %>
                     <li>
                         <a href="/workorders/new" title="New Order">
                             <i class="fa  fa-fw fa-edit"></i>New Order
                             
                         </a>
                     </li>
+                    <% end %>
+                    <% if current_user.role == "Employee" %>
+                    <li>
+                        <a href="/workorders" title="My Orders">
+                            <i class="fa  fa-fw fa-desktop"></i>My Orders
+                            
+                        </a>
+                    </li>
+                    <% end %> 
                    
             </nav>
