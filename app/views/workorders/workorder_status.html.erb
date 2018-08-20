@@ -1,4 +1,30 @@
-
+<section id="main-content" class="animated fadeInUp">
+                      <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-warning">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Work Order Status</h3>
+                            <div class="actions pull-right">
+                             <i class="fa fa-expand"></i>
+                                <i class="fa fa-chevron-down"></i>
+                                <i class="fa fa-times"></i>
+                            </div>
+                          </div>
+                          <div class="panel-body">
+                            <% if @workorder.approve == false %>
+                           <h3>Order No:
+               <b> <%= @workorder.order_no %></b></h3>
+                <br>
+                <h3>Vendor Name:
+               <b> <%= @workorder.vendor.name %></b></h3>
+               <br>
+               <p>
+                <h2><font color="red"><marquee behavior="alternate" scrollamount="10">This Workorder is not approved yet!!!</font></marquee></h2>
+                <% if current_user.role == "SuperAdmin" %>
+                <%= link_to "Approve Now" ,workorders_path,class: "btn btn-link" %>
+                <% end %>
+              </p>
+               <% else %> 
            
               <ul>
                 <br><br>
@@ -15,7 +41,9 @@
                   <th>Employee</th>
                 </tr>
 <% @emp_workorders = EmployeesWorkorder.where(workorder_id: @workorder.id) %>
-     <% @emp_workorders.each do |e| %>           
+
+     <% @emp_workorders.each do |e| %> 
+
           <% if e.employee.employee_type == "Pasting" %>
                     <tr>
                         <% if e.status == "Completed" %>
@@ -71,3 +99,10 @@
 
               <% end %>
            </table>
+           <% end %>
+         <%= link_to "Back" , order_status_workorders_path , class: "btn btn-success" %>
+       </div>
+     </div>
+     </div>
+   </div>
+ </section>

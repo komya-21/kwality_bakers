@@ -135,16 +135,18 @@ table, th, td {
 <% k += 1 %>
 
 <table style="width:100%">
-  
-
-  <% @letters = ('A'..'Z').to_a %>
+   <% @letters = ('A'..'Z').to_a %>
 
   <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
   <% @m = 0 %>
+
   <% @uniq_ftypes.each do |u| %>
   <% @m += 1 %>
   <tr>
-    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="10"><% if @m == 1 %><%= f.product %><% end %></th>
+    <% if @m == 1 %>
+    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="10"><%= f.product %></th>
+
+    <% end %>
   </tr>
   <% @i = 0 %>
    <% if u == "Carcass Box" %>
@@ -232,12 +234,12 @@ table, th, td {
    <% end %>
    <tr>
    <td>(<%= @letters.shift %>)<%= u %></td>
-   <td colspan="2 "><%= @tot_num %></td>
+   <td><%= @tot_num %></td>
    
    
   
    <td><%= @tot_sqrft.round(2) %></td>
-   <td colspan="2"><%= @sr %></td>
+   <td colspan="3"><%= @sr %></td>
    
 
    <td><%= @full_amt.round(2) %></td>
