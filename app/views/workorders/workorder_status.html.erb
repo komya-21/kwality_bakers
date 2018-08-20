@@ -54,7 +54,7 @@
                     </td>
                     <% end %>
                     <td><%= e.status %></td>
-                    <th><%= e.employee.name %></th>
+                    <th><%= link_to e.employee.name ,employee_path(e.employee.id) %></th>
                   </tr>
                   <% elsif e.employee.employee_type == "Cutting" %>
                        <tr>
@@ -66,7 +66,7 @@
                     </td>
                     <% end %>
                     <td><%= e.status %></td>
-                    <th><%= e.employee.name %></th>
+                    <th><%= link_to e.employee.name ,employee_path(e.employee.id) %></th>
                   </tr>
                   <% elsif e.employee.employee_type == "Edge Binding" %>
                        <tr>
@@ -78,7 +78,7 @@
                     </td>
                     <% end %>
                     <td><%= e.status %></td>
-                    <th><%= e.employee.name %></th>
+                    <th><%= link_to e.employee.name ,employee_path(e.employee.id) %></th>
                   </tr>
                   <% elsif e.employee.employee_type == "Packing & Quality" %>
                        <tr>
@@ -90,7 +90,7 @@
                     </td>
                     <% end %>
                     <td><%= e.status %></td>
-                    <th><%= e.employee.name %></th>
+                    <th><%= link_to e.employee.name ,employee_path(e.employee.id) %></th>
                   </tr>
                   <% end %>
                    
