@@ -1,7 +1,7 @@
 class Vendor < ApplicationRecord
 	has_many :deliveries , dependent: :destroy
 	validates :name, presence:true
-
+	belongs_to :location,optional: true
 	after_create :create_user
 
 	def create_user

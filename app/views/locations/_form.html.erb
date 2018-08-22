@@ -1,0 +1,84 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">New Location</h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+<div class="form-horizontal">
+<%= form_with(model: location, local: true) do |form| %>
+  <% if location.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(location.errors.count, "error") %> prohibited this location from being saved:</h2>
+
+      <ul>
+      <% location.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <div class="form-group">
+    <%= form.label :name, :class => 'control-label col-lg-2'  %>
+    <div class="col-lg-10">
+    <%= form.text_field :name, id: :location_name, :class => 'form-control' %>
+  </div>
+</div>
+  
+ 
+<div class="form-group">
+    <%= form.label :address, :class => 'control-label col-lg-2'  %>
+    <div class="col-lg-10">
+    <%= form.text_field :address, id: :location_address, :class => 'form-control' %>
+  </div>
+  </div>
+  <div class="form-group">
+    <%= form.label :email, :class => 'control-label col-lg-2'  %>
+    <div class="col-lg-10">
+    <%= form.text_field :email, id: :location_email, :class => 'form-control' %>
+  </div>
+</div>
+  <div class="form-group">
+    <%= form.label :code, :class => 'control-label col-lg-2'  %>
+    <div class="col-lg-10">
+    <%= form.text_field :code, id: :location_code,value: @location.code,readonly:true, :class => 'form-control' %>
+  </div>
+</div>
+
+   <div class="form-group">
+    <%= form.label :city, :class => 'control-label col-lg-2'  %>
+    <div class="col-lg-10">
+    <%= form.text_field :city, id: :location_city, :class => 'form-control' %>
+  </div>
+</div>
+
+  <div class="form-group">
+    <%= form.label :contact, :class => 'control-label col-lg-2'  %>
+    <div class="col-lg-10">
+    <%= form.text_field :contact, id: :location_contact, :class => 'form-control' %>
+  </div>
+</div>
+
+  
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= form.submit "Submit", :class => 'btn btn-warning' %>
+      <%= link_to "Back" , locations_path ,class: "btn btn-warning" %>
+    </div>
+  </div>
+
+  
+<% end %>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>

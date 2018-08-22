@@ -13,6 +13,8 @@
        <div class="panel-body">
         <div class="form-horizontal form-border">
         <%= nested_form_for @workorder do |form| %>
+        
+
        <div class="form-group">
           
           <div class="col-md-2">
@@ -26,13 +28,31 @@
      
     </div>
     <% if current_user.role == "SuperAdmin" %>
-    <label class="col-sm-1 control-label">Vendor</label> 
+    <label class="col-sm-1 control-label">Location</label> 
     <div class="col-md-2">
-    <%= form.select :vendor_id, Vendor.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control",required: true%>
+    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true},required: true%>
 
   </div>
-</div>
+    <label class="col-sm-1 control-label">Vendor</label> 
+    <div class="col-md-2">
+    <%= form.grouped_collection_select :vendor_id, Location.order(:name),:vendors,:name,:id,:name,include_blank: true,class: "form-control",required: true%>
+
+  </div>
+
+<% elsif current_user.role == "Center" %>
+
+  <label class="col-sm-1 control-label">Vendor</label> 
+    <div class="col-md-2">
+      
+    <%= form.select :vendor_id, @vendors.all.collect{|v| [v.name,v.id]},
+    {prompt:true},class: "form-control",required: true,id: :diff_id %>
+
+  </div>
+
+
+ 
 <% end %>
+</div>
     <%#= form.date_field :date, value: Date.today, :class => 'form-control' %>
          
         <%= form.fields_for :fproducts,@workorder.fproducts.build do |w| %>
@@ -44,7 +64,7 @@
          <label class="col-sm-1 control-label">Product</label> 
          <div class="col-md-3">
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
-          <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "form-control" ,required: true%>
+          <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "product" ,required: true %>
           <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
         </div>
         
@@ -74,7 +94,7 @@
       
       <tr class="fields">
       
-       <td>  <%= m.select :ftype, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control select" ,required: true%></td>
+       <td>  <%= m.select :ftype, options_for_select(['Carcass Box' ,'Drawer', 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control select" ,required: true%></td>
       
      
       
@@ -84,6 +104,8 @@
        <td><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
        <td><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td>
        <td> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%></td>
+       <td class="vert" hidden="true"> <%= m.text_field :vertical, id: :work_order_vertical ,placeholder: "V(qty)" %></td>
+       <td class="hor" hidden="true"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)" %></td>
        <td> <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td>
         <td><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
         <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" ,required: true%></td>
@@ -177,26 +199,53 @@
 
 
 <% content_for :javascript do %>
+<script type="text/javascript">
+  $('.product').addClass("form-control");
+ $(document).on('nested:fieldAdded', function(event){
+ // this field was just inserted into your form
+ var field = event.field;
+ var selectField = field.find('.product');
 
- <!--  <script type="text/javascript">
-  $(document).on("change", ".select", function () {
+ selectField.addClass("form-control");
+ 
 
-   var ftype = $(this).val();
+ // and activate datepicker on it
+//  dateField.datepicker();
+});
+</script>
+
+   <script type="text/javascript">
+    var ftype;
+  $(document).on("change", ".product", function () {
+
+
+   ftype = $(this).val();
    
-  $('#work_order_width').focus();
-  if(ftype == "Shutters"){
-   $('#work_order_depth').hide();
-   $('#work_order_skirting').hide();
-   /*$('#work_order_height').focus();*/
-  }
+   
+   
+  
+  
+
 
   });
-  </script> -->
-   <script type="text/javascript">
+  
+
   $(document).on("change", ".select", function () {
+    
+    
+    
+
+    
+   
+   
   /*var product_id = $(this);*/
   elem = jQuery(this);
   var type = $(this).val();
+
+  
+
+
+  
 
     container = elem.parents("tr.fields");
     container1 = elem.parents("th.fields");
@@ -205,6 +254,13 @@
       container.find('#work_order_depth').hide();
       container.find('#work_order_skirting').hide();
 
+    }
+if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box") || (ftype == "Loft" && type == "Carcass Box") ){
+     container.find('.vert').show();
+      container.find('.hor').show();
+      container.find('#work_order_vertical').addClass('form-control');
+      container.find('#work_order_horizontal').addClass('form-control');
+     
     }
     
 
@@ -306,6 +362,36 @@ $('#workorder_name1').hide();
   $('#imagesRm').hide();
 
   });
+</script>
+
+<script type="text/javascript">
+  $("#workorder_location_id").addClass('form-control');
+  $("#workorder_vendor_id").addClass('form-control');
+  jQuery(function() {
+  var states;
+  $('#workorder_vendor_id').parent().hide();
+  states = $('#workorder_vendor_id').html();
+  console.log(states);
+
+  return $('#workorder_location_id').change(function() {
+    var id;
+  id = $('#workorder_location_id').val();
+  
+    var country, escaped_country, options;
+    country = $('#workorder_location_id :selected').text();
+    escaped_country = country.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1');
+    options = $(states).filter("optgroup[label=" + escaped_country + "]").html();
+    console.log(options);
+    
+    if (options) {
+      $('#workorder_vendor_id').html(options);
+      return $('#workorder_vendor_id').parent().show();
+    } else {
+      $('#workorder_vendor_id').empty();
+      return $('#workorder_vendor_id').parent().hide();
+    }
+  });
+});
 </script>
  
 <% end %>

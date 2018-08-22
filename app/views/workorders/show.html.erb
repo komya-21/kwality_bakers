@@ -32,6 +32,9 @@
               <th>Width</th>
               <th>Height</th>
               <th>Depth</th>
+              <th>Skirting</th>
+              <th>Horizontal</th>
+              <th>Vertical</th>
               <th>Quantity</th>
             </tr>
           </thead>
@@ -44,11 +47,10 @@
               <td><%= m.ftype %></td>
               <td><%= m.width %></td>
               <td><%= m.height %></td>
-              <% if m.ftype == "Carcass Box" %>
               <td><%= m.depth %></td>
-              <% else %>
-              <td>NA</td>
-              <% end %>
+             <td><%= m.skirting %></td>
+              <td><%= m.horizontal %></td>
+              <td><%= m.vertical %></td>
 
               <td><%= m.quantity %></td>
             </tr>
@@ -140,6 +142,7 @@
     + currentdate.getSeconds();
     alert(datetime);
     var workorder_id = <%= @workorder.id%>;
+
     <%if @employee1.present? %>
     <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
     <% if @work.status == "Pending" || @work.status == "Hold" %>

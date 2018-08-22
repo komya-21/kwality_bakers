@@ -4,7 +4,11 @@ class EmployeesController < ApplicationController
   # GET /employees
   # GET /employees.json
   def index
+    if current_user.role == "SuperAdmin"
     @employees = Employee.all
+  elsif current_user.role == "Center"
+    @employees = Employee.where(location_id: current_user.location_id)
+  end
     #@employees = Employee.paginate(:page => params[:page], :per_page => 10)
   end
 
@@ -30,6 +34,10 @@ class EmployeesController < ApplicationController
 
     respond_to do |format|
       if @employee.save
+        if current_user.role == "Center"
+         
+          @employee.update!(location_id: current_user.location_id)
+        end
         format.html { redirect_to @employee, notice: 'Employee was successfully created.' }
         format.json { render :show, status: :created, location: @employee }
       else
@@ -71,6 +79,6 @@ class EmployeesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
-      params.require(:employee).permit(:name, :contact_no, :email, :address, :employee_no,:employee_type)
+      params.require(:employee).permit(:name, :contact_no, :email, :address, :employee_no,:employee_type,:location_id)
     end
 end
