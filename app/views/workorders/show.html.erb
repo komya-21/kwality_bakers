@@ -5,8 +5,9 @@
         <div class="panel-body">
           <div align="right">
             <%= link_to 'Download PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%> |
-            <%= link_to 'Generate Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%> 
-
+            <%= link_to 'Generate Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>
+           
+            <%#= link_to 'View Invoice',invoice_workorder_path(@workorder),class: "btn btn-danger" %>
 
           </div>
           <br>

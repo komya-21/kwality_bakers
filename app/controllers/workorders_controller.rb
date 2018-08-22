@@ -47,7 +47,7 @@ class WorkordersController < ApplicationController
     end
 
   elsif current_user.role == "Vendor"
-    byebug
+   
 
     @workorders = Workorder.where(["vendor_id = ? and location_id = ?", current_user.vendor_id,current_user.vendor.location_id])
   elsif current_user.role == "Center"
@@ -60,10 +60,23 @@ class WorkordersController < ApplicationController
 
 
 end
+def invoice
+  @workorder = Workorder.find(params[:id])
+    @rates = Rate.all
+  end
 def location_report
   
  @report_type = params[:report_type]
  @location = params[:location]
+ if (@report_type == "Workorders")
+  @workorders = Workorder.where(location_id: @location)
+elsif @report_type == "Employees"
+  @employees = Employee.where(location_id: @location)
+elsif @report_type == "Vendors"
+  @vendors = Vendor.where(location_id: @location)
+end
+    
+    
 
 end
 
@@ -139,6 +152,8 @@ end
         format.json { render json: @workorder.errors, status: :unprocessable_entity }
       end
     end
+  end
+  def edit_rate
   end
 
   # PATCH/PUT /workorders/1
@@ -244,7 +259,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:order_no ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:_destroy]])
+     params.require(:workorder).permit(:order_no ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:rate,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
 
    end
  end
