@@ -372,6 +372,7 @@ table, th, td {
   <% @tot_num = 0 %>
   <% @full_amt = 0 %>
    <% @shutter_measurements.each do |c| %>
+   <% if u == "Shutters" %>
    <% if c.glass_shutter == "Yes" %>
    <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
    <% end %> 
@@ -384,6 +385,7 @@ table, th, td {
    <% if c.glass_shutter == "Yes" %>
    <% @hf_rate = c.quantity * 20 %>
    <% end %> 
+   <% end %>
   
    <% @i += 1 %>
    <tr>
@@ -403,7 +405,7 @@ table, th, td {
 
    
    <td><%= @sr %></td>
-   <% @t_amt = ((@sqrft.round(2)+@g_area.round(2))*@sr.round(2))+@h_rate+@hg_rate+@hf_rate %>
+   <% @t_amt = (((@sqrft.round(2)+@g_area.round(2))*@sr.round(2)))+@h_rate+@hg_rate+@hf_rate %>
 
    <% @full_amt += @t_amt %>
 
