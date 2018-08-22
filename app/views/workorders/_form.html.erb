@@ -108,9 +108,26 @@
        <td class="hor" hidden="true"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)" %></td>
        <td> <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td>
         <td><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
+
+
+
         <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" ,required: true%></td>
         <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
     </tr>
+    <tr >
+      <th>Glass Shutter</th>
+      <th>Handle</th>
+      <th>Handle Groove</th>
+      <th>Handle Fitting</th>
+    </tr>
+    <tr>
+      <td class="data"><%= m.select :glass_shutter,options_for_select(['Yes','No']),{prompt: "Glass Shutter"},id: :glass_shutter,class: "form-control" %></td>
+        <td class="data"><%= m.select :handle,options_for_select(['Yes','No']),{prompt:true},id: :handle,class: "form-control" %></td>
+        
+        <td class="data"><%= m.select :handle_groove,options_for_select(['Yes','No']),{prompt:true},id: :handle_groove,class: "form-control" %></td>
+        
+        <td class="data"><%= m.select :handle_fitting,options_for_select(['Yes','No']),{prompt:true},id: :handle_fitting,class: "form-control" %></td>
+</tr>
   </table>
       
 
@@ -251,6 +268,13 @@
     container1 = elem.parents("th.fields");
     container.find("#work_order_width").focus();
     if(type == "Shutters" || type == "White BSL Shelf" || type == "Hinges Patti"){
+      if(type == "Shutter")
+    {
+      container1.find('.data').show();
+      
+            
+
+    }
       container.find('#work_order_depth').hide();
       container.find('#work_order_skirting').hide();
 
@@ -262,6 +286,7 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('#work_order_horizontal').addClass('form-control');
      
     }
+    
     
 
     

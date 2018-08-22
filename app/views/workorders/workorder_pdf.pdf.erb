@@ -161,7 +161,7 @@ table, th, td {
   <% @uniq_ftypes.each do |u| %>
   <% @m += 1 %>
   <tr>
-    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="13"><center><% if @m == 1 %><%= f.product %><br><% end %>(<%= @letters.shift %>)<%= u %></center></th>
+    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="14"><center><% if @m == 1 %><%= f.product %><br><% end %>(<%= @letters.shift %>)<%= u %></center></th>
   </tr>
   <% @i = 0 %>
    <% if u == "Carcass Box" %>
@@ -325,6 +325,21 @@ table, th, td {
   <% end %>
 
    <% if u == "Shutters" || u == "White BSL Shelf" || u =="Hinges Patti" %>
+   <% if u == "Shutters" %>
+   <tr>
+    <th colspan="2">No</th>
+    <th colspan="2">W</th>
+    <th colspan="2">H</th>
+    <th>Nos</th>
+    <th>Sq.ft</th>
+    <th>Glass Shutter</th>
+    <th>Handle</th>
+    <th>Handle Groove</th>
+    <th>Handle Fitting</th>
+    <th>rate</th>
+    <th>AMT</th>
+   </tr>
+  <% else %>
    <tr>
     <th colspan="2">No</th>
     <th colspan="2">W</th>
@@ -335,6 +350,7 @@ table, th, td {
     <th>AMT</th>
     
   </tr>
+   <% end %>
   <!-- Calculations of rates -->
   <% if u == "Shutters" %>
   <% @shutter_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
@@ -347,12 +363,27 @@ table, th, td {
   <% @sr = @hp_rate.price %>
   <% end %>
   <!-- End of calculation -->
-
+  <% @g_area = 0 %>
+  <% @h_rate = 0 %>
+  <% @hg_rate = 0 %>
+  <% @hf_rate = 0 %>
   <% @shutter_measurements = f.measurements.where(ftype: u ) %>
   <% @tot_sqrft = 0 %>
   <% @tot_num = 0 %>
   <% @full_amt = 0 %>
    <% @shutter_measurements.each do |c| %>
+   <% if c.glass_shutter == "Yes" %>
+   <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
+   <% end %> 
+   <% if c.glass_shutter == "Yes" %>
+   <% @h_rate = c.quantity * 20 %>
+   <% end %> 
+   <% if c.glass_shutter == "Yes" %>
+   <% @hg_rate = c.quantity * 20 %>
+   <% end %> 
+   <% if c.glass_shutter == "Yes" %>
+   <% @hf_rate = c.quantity * 20 %>
+   <% end %> 
   
    <% @i += 1 %>
    <tr>
@@ -363,9 +394,16 @@ table, th, td {
    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
    <td><%= @sqrft.round(2) %></td>
    <% @tot_sqrft += @sqrft %>
+   <% if u == "Shutters" %>
+   <td><%= c.glass_shutter %></td>
+   <td><%= c.handle %></td>
+   <td><%= c.handle_groove %></td>
+   <td><%= c.handle_fitting %></td>
+   <% end %>
+
    
    <td><%= @sr %></td>
-   <% @t_amt = @sqrft.round(2)*@sr.round(2) %>
+   <% @t_amt = ((@sqrft.round(2)+@g_area.round(2))*@sr.round(2))+@h_rate+@hg_rate+@hf_rate %>
 
    <% @full_amt += @t_amt %>
 

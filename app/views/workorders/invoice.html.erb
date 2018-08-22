@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html>
+<section id="main-content" class="animated fadeInUp">
+  <div class="row">
+    <div class="col-md-12">
+      <div class=" panel panel-info">
+        <div class="panel-body">
 <head>
   <style>
     table {
@@ -136,8 +141,9 @@ table, th, td {
 <% @amt1 = 0 %> 
 <% @amt2 = 0 %> 
 <% @amt3 = 0 %> 
-
+<% @j = 0%>
 <% @workorder.fproducts.each do |f| %>
+
 <% k += 1 %>
 <% if k != 1 %>
 
@@ -149,6 +155,7 @@ table, th, td {
 
 <table style="width:100%">
    <% @letters = ('A'..'Z').to_a %>
+   
 
   <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
   <% @m = 0 %>
@@ -166,7 +173,9 @@ table, th, td {
     
   </tr>
   <% @i = 0 %>
+
    <% if u == "Carcass Box" %>
+
   
    <tr>
     <th>No</th>
@@ -190,6 +199,7 @@ table, th, td {
 <% @c1 = @carcass_rate1.price %>
 <% @c2 = @carcass_rate2.price %>
    <% @carcass_measurements.each do |c| %>
+   <% @j+=1 %>
    <% @i += 1 %>
    <% @total_no += c.quantity %>
    <% @sq = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
@@ -237,13 +247,13 @@ table, th, td {
    <td><%= c.vertical %></td>
    <td><%= c.horizontal %></td>
    
-   <td><%= @sqft.round(2) %></td>
-   <td><%= @c1 %></td>
+   <td><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true %></td>
+   <td><%= text_field_tag :"rate#{@j}" , @c1 %></td>
    
-   <td><%= @sqft_back.round(2) %></td>
-   <td><%= @c2 %></td>
+   <td><%= text_field_tag :"sqft_back#{@j}",@sqft_back.round(2),disabled: true %></td>
+   <td><%= text_field_tag :"back_rate#{@j}" , @c2 %></td>
    
-   <td><%= @tot_amt.round(2) %></td>
+   <td><%= text_field_tag :"amount#{@j}" ,@tot_amt.round(2) ,disabled: true%></td>
  </tr>
 
 <% end %>
@@ -299,22 +309,6 @@ table, th, td {
 
 
    <% if u == "Shutters" || u == "White BSL Shelf" || u =="Hinges Patti" %>
-   <% if u == "Shutters" %>
-   <tr>
-    <th>No</th>
-    
-    <th>Quantity</th>
-    <th>Sq.ft</th>
-    <th>Glass Shutter</th>
-    <th>Handle</th>
-    <th>Handle Groove</th>
-    <th>Handle Fitting</th>
-    <th>rate</th>
-    <th>AMT</th>
-   </tr>
-  <% else %>
-   
-   
    <tr>
     <th>No</th>
     
@@ -324,7 +318,6 @@ table, th, td {
     <th>AMT</th>
     
   </tr>
-  <% end %>
    
   <!-- Calculations of rates -->
   <% if u == "Shutters" %>
@@ -338,38 +331,21 @@ table, th, td {
   <% @sr = @hp_rate.price %>
   <% end %>
   <!-- End of calculation -->
-  <% @g_area = 0 %>
-  <% @h_rate = 0 %>
-  <% @hg_rate = 0 %>
-  <% @hf_rate = 0 %>
   <% @shutter_measurements = f.measurements.where(ftype: u ) %>
   <% @tot_sqrft = 0 %>
   <% @tot_num = 0 %>
   
    <% @shutter_measurements.each do |c| %>
-   <% if c.glass_shutter == "Yes" %>
-   <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
-   <% end %> 
-   <% if c.glass_shutter == "Yes" %>
-   <% @h_rate = c.quantity * 20 %>
-   <% end %> 
-   <% if c.glass_shutter == "Yes" %>
-   <% @hg_rate = c.quantity * 20 %>
-   <% end %> 
-   <% if c.glass_shutter == "Yes" %>
-   <% @hf_rate = c.quantity * 20 %>
-   <% end %> 
   <% @tot_num += c.quantity %>
    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
    
    <% @tot_sqrft += @sqrft %>
-
-    <% @t_amt = ((@sqrft.round(2)+@g_area.round(2))*@sr.round(2))+@h_rate+@hg_rate+@hf_rate %>
+   <% @t_amt = @sqrft.round(2)*@sr.round(2) %>
 
    <% @full_amt += @t_amt %>
-   
+   <% if k != 1 %>
    <% @amt2 += @full_amt %>
-   
+   <% end %>
    <% @i += 1 %>
    
    <tr>
@@ -379,12 +355,6 @@ table, th, td {
    
   
    <td><%= @tot_sqrft.round(2) %></td>
-   <% if u == "Shutters" %>
-   <td><%= c.glass_shutter %></td>
-   <td><%= c.handle %></td>
-   <td><%= c.handle_groove %></td>
-   <td><%= c.handle_fitting %></td>
-   <% end %>
    <td><%= @sr %></td>
    
 
@@ -445,10 +415,156 @@ table, th, td {
 
    
 </table>
-
+<br><br>
+ <%= link_to 'Generate Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%> 
+<%= link_to "Back" ,workorder_path(@workorder.id),class: "btn btn-default" %>
 <br><br>
 
 </body>
 </div>
 </head>
+</div>
+</div>
+</div>
+</div>
+</section>
 </html>
+<% content_for :javascript do %>
+
+
+
+
+<script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+   
+
+  $(document).on("keyup", "#rate1", function() {
+    var rate = $('#rate1').val();
+    
+    var back_rate = $('#back_rate1').val();
+    var sqft = $('#sqft1').val();
+    var sqft_back = $('#sqft_back1').val();
+    var total = (sqft*rate)+(sqft_back * back_rate);
+    $('#amount1').val(total);
+
+    
+  });
+  </script>
+  <script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+   
+
+  $(document).on("keyup", "#rate2", function() {
+    var rate = $('#rate2').val();
+    
+    var back_rate = $('#back_rate2').val();
+    var sqft = $('#sqft2').val();
+    var sqft_back = $('#sqft_back2').val();
+    var total = (sqft*rate)+(sqft_back * back_rate);
+    $('#amount2').val(total);
+
+    
+  });
+  </script>
+  <script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+   
+
+  $(document).on("keyup", "#rate3", function() {
+    var rate = $('#rate3').val();
+    
+    var back_rate = $('#back_rate3').val();
+    var sqft = $('#sqft3').val();
+    var sqft_back = $('#sqft_back3').val();
+    var total = (sqft*rate)+(sqft_back * back_rate);
+    $('#amount3').val(total);
+
+    
+  });
+  </script>
+  <script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+   
+
+  $(document).on("keyup", "#rate4", function() {
+    var rate = $('#rate4').val();
+    
+    var back_rate = $('#back_rate4').val();
+    var sqft = $('#sqft4').val();
+    var sqft_back = $('#sqft_back4').val();
+    var total = (sqft*rate)+(sqft_back * back_rate);
+    $('#amount4').val(total);
+
+    
+  });
+  </script>
+
+  <script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+     
+  $(document).on("keyup", "#back_rate1", function() {
+    var rate = $('#rate1').val();
+    var back_rate = $('#back_rate1').val();
+    var sqft = $('#sqft1').val();
+    var sqft_back = $('#sqft_back1').val();
+    var total = (sqft*rate)+(sqft_back * back_rate);
+    $('#amount1').val(total);
+    
+  });
+  </script>
+   <script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+     
+  $(document).on("keyup", "#back_rate2", function() {
+    var rate = $('#rate2').val();
+    var back_rate = $('#back_rate2').val();
+    var sqft = $('#sqft2').val();
+    var sqft_back = $('#sqft_back2').val();
+    var total = (sqft*rate)+(sqft_back * back_rate);
+    $('#amount2').val(total);
+    
+  });
+  </script>
+   <script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+     
+  $(document).on("keyup", "#back_rate3", function() {
+    var rate = $('#rate3').val();
+    var back_rate = $('#back_rate3').val();
+    var sqft = $('#sqft3').val();
+    var sqft_back = $('#sqft_back3').val();
+    var total = (sqft*rate)+(sqft_back * back_rate);
+    $('#amount3').val(total);
+    
+  });
+  </script>
+   <script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#")
+    // })
+     
+  $(document).on("keyup", "#back_rate4", function() {
+    var rate = $('#rate4').val();
+    var back_rate = $('#back_rate4').val();
+    var sqft = $('#sqft4').val();
+    var sqft_back = $('#sqft_back4').val();
+    var total = (sqft*rate)+(sqft_back * back_rate);
+    $('#amount4').val(total);
+    
+  });
+  </script>
+  <% end %>
