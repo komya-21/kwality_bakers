@@ -4,17 +4,17 @@ class WorkordersController < ApplicationController
   # GET /workorders
   # GET /workorders.json
   def index
-    @emp = Employee.find_by(employee_type: "Pasting")
+    @emps = Employee.where(employee_type: "Pasting")
 
-    @emp_cut = Employee.find_by(employee_type: "Cutting")
-    @emp_edge = Employee.find_by(employee_type: "Edge Binding")
-    @emp_pack = Employee.find_by(employee_type: "Packing & Quality")
+    @emp_cuts = Employee.where(employee_type: "Cutting")
+    @emp_edges = Employee.where(employee_type: "Edge Binding")
+    @emp_packs = Employee.where(employee_type: "Packing & Quality")
     if current_user.role == "SuperAdmin"
      @workorders = Workorder.all
      if params[:param1].present? && params[:param1] == 'false'
 
       workorder = Workorder.list(params[:id])
-
+      @emp = @emps.find_by(location_id: workorder.location_id)
       workorder.update!(approve: true)
 
       @employee_workorder = EmployeesWorkorder.create(employee_id: @emp.id,workorder_id: workorder.id ,status: "Pending")
@@ -32,24 +32,38 @@ class WorkordersController < ApplicationController
 
   if current_user.role == "Employee"
     if current_user.employee.employee_type == "Pasting"
-
+ @emp = @emps.find_by(location_id: current_user.employee.location_id)
       @workorders = Employee.find(@emp.id).workorders
     elsif current_user.employee.employee_type == "Cutting"
-
+    @emp_cut = @emp_cuts.find_by(location_id: current_user.employee.location_id)
 
       @workorders = Employee.find(@emp_cut.id).workorders
     elsif current_user.employee.employee_type == "Edge Binding"
+       @emp_edge = @emp_edges.find_by(location_id: current_user.employee.location_id)
       @workorders = Employee.find(@emp_edge.id).workorders
     elsif current_user.employee.employee_type == "Packing & Quality"
+       @emp_pack = @emp_packs.find_by(location_id: current_user.employee.location_id)
       @workorders = Employee.find(@emp_pack.id).workorders
     end
 
   elsif current_user.role == "Vendor"
+    byebug
 
-    @workorders = Workorder.where(vendor_id: current_user.vendor_id)
+    @workorders = Workorder.where(["vendor_id = ? and location_id = ?", current_user.vendor_id,current_user.vendor.location_id])
+  elsif current_user.role == "Center"
+    @workorders = Workorder.where(location_id: current_user.location_id)
   end
 
+      
+ 
 
+
+
+end
+def location_report
+  
+ @report_type = params[:report_type]
+ @location = params[:location]
 
 end
 
@@ -63,10 +77,10 @@ end
         render pdf: "payment.pdf.erb"    # Excluding ".pdf" extension.
       end
     end
-    @employee1 = @workorder.employees.find_by(employee_type: "Pasting")
-    @employee2 = @workorder.employees.find_by(employee_type: "Cutting")
-    @employee3 = @workorder.employees.find_by(employee_type: "Edge Binding")
-    @employee4 = @workorder.employees.find_by(employee_type: "Packing & Quality")
+    @employee1 = @workorder.employees.find_by(["employee_type = ? and location_id=?" ,"Pasting",@workorder.location_id])
+    @employee2 = @workorder.employees.find_by(["employee_type = ? and location_id=?" , "Cutting",@workorder.location_id])
+    @employee3 = @workorder.employees.find_by(["employee_type = ? and location_id=?" , "Edge Binding",@workorder.location_id])
+    @employee4 = @workorder.employees.find_by(["employee_type = ? and location_id=?" , "Packing & Quality",@workorder.location_id])
 
   end
 
@@ -74,6 +88,9 @@ end
   def new
     @workorder = Workorder.new
     @workorder.order_num
+    
+    @vendors = Vendor.where(location_id: current_user.location_id)
+   
   end
 
   # GET /workorders/1/edit
@@ -81,28 +98,7 @@ end
     #@workorder = Workorder.find(params[:id])
     #@workorder = Workorder.includes({ fproducts: :measurements }).find(params[:id])
   end
-  def end_time
-
-    @end = params[:endtime]
-    @employee_id = params[:employee_id]
-    @workorder_id = params[:workorder_id]
-    @emp_work =  EmployeesWorkorder.find_by(["employee_id = ? and workorder_id = ?",@employee_id,@workorder_id])
-
-    @emp_work.update(endtime: @end)
-    @emp_work.update(status: "Completed")
-    if Employee.find(@employee_id).employee_type == "Pasting"
-      @id = Employee.find_by(employee_type: "Cutting")
-    elsif Employee.find(@employee_id).employee_type == "Cutting"
-      @id = Employee.find_by(employee_type: "Edge Binding")
-    elsif Employee.find(@employee_id).employee_type == "Edge Binding"
-      @id = Employee.find_by(employee_type: "Packing & Quality")
-    end
-
-    EmployeesWorkorder.create(employee_id: @id.id,workorder_id: @workorder_id ,status: "Pending")
-
-
-
-  end
+ 
 
   def status_update
 
@@ -131,7 +127,11 @@ end
         @workorder.update(approve: false)
         if current_user.role == "Vendor"
           @workorder.update(vendor_id: current_user.vendor_id)
+          @workorder.update(location_id: current_user.vendor.location_id)
+        elsif current_user.role == "Center"
+          @workorder.update(location_id: current_user.location_id)
         end
+
         format.html { redirect_to @workorder, notice: 'Workorder was successfully created.' }
         format.json { render :show, status: :created, location: @workorder }
       else
@@ -203,6 +203,30 @@ end
     @emp_work.update(status: "Working")
 
   end
+   def end_time
+
+    @end = params[:endtime]
+    @employee_id = params[:employee_id]
+    @workorder_id = params[:workorder_id]
+    @emp_work =  EmployeesWorkorder.find_by(["employee_id = ? and workorder_id = ?",@employee_id,@workorder_id])
+
+    @emp_work.update(endtime: @end)
+    @emp_work.update(status: "Completed")
+     @location = Employee.find(@employee_id).location_id
+    if Employee.find(@employee_id).employee_type == "Pasting"
+
+      @id = Employee.find_by(["employee_type = ? and location_id = ?", "Cutting",@location])
+    elsif Employee.find(@employee_id).employee_type == "Cutting"
+      @id = Employee.find_by(["employee_type = ? and location_id = ?", "Edge Binding",@location])
+    elsif Employee.find(@employee_id).employee_type == "Edge Binding"
+      @id = Employee.find_by(["employee_type = ? and location_id = ?", "Packing & Quality",@location])
+    end
+
+    EmployeesWorkorder.create(employee_id: @id.id,workorder_id: @workorder_id ,status: "Pending")
+
+
+
+  end
   def order_status
     @employee_workorders = EmployeesWorkorder.all
     @workorders = Workorder.all
@@ -220,7 +244,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:order_no ,:date,:employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:_destroy]])
+     params.require(:workorder).permit(:order_no ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:_destroy]])
 
    end
  end

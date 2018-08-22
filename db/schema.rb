@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180818045608) do
+ActiveRecord::Schema.define(version: 20180820121255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,8 @@ ActiveRecord::Schema.define(version: 20180818045608) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "employee_type"
+    t.bigint "location_id"
+    t.index ["location_id"], name: "index_employees_on_location_id"
   end
 
   create_table "employees_workorders", force: :cascade do |t|
@@ -142,6 +144,17 @@ ActiveRecord::Schema.define(version: 20180818045608) do
     t.string "inward_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
+    t.text "address"
+    t.string "code"
+    t.string "city"
+    t.string "contact"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "email"
   end
 
   create_table "measurements", force: :cascade do |t|
@@ -215,8 +228,10 @@ ActiveRecord::Schema.define(version: 20180818045608) do
     t.datetime "updated_at", null: false
     t.bigint "vendor_id"
     t.bigint "employee_id"
+    t.bigint "location_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["employee_id"], name: "index_users_on_employee_id"
+    t.index ["location_id"], name: "index_users_on_location_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["vendor_id"], name: "index_users_on_vendor_id"
   end
@@ -235,6 +250,8 @@ ActiveRecord::Schema.define(version: 20180818045608) do
     t.string "vendor_type"
     t.string "email"
     t.string "password"
+    t.bigint "location_id"
+    t.index ["location_id"], name: "index_vendors_on_location_id"
   end
 
   create_table "work_orders", force: :cascade do |t|
@@ -294,7 +311,9 @@ ActiveRecord::Schema.define(version: 20180818045608) do
     t.boolean "remove_photo4"
     t.boolean "remove_photo5"
     t.bigint "employee_id"
+    t.bigint "location_id"
     t.index ["employee_id"], name: "index_workorders_on_employee_id"
+    t.index ["location_id"], name: "index_workorders_on_location_id"
     t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
 
@@ -306,6 +325,7 @@ ActiveRecord::Schema.define(version: 20180818045608) do
   add_foreign_key "delivery_inwards", "inward_products"
   add_foreign_key "delivery_inwards", "products"
   add_foreign_key "delivery_inwards", "vendors"
+  add_foreign_key "employees", "locations"
   add_foreign_key "employees_workorders", "employees"
   add_foreign_key "employees_workorders", "workorders"
   add_foreign_key "fproducts", "workorders"
@@ -318,8 +338,11 @@ ActiveRecord::Schema.define(version: 20180818045608) do
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
   add_foreign_key "users", "employees"
+  add_foreign_key "users", "locations"
   add_foreign_key "users", "vendors"
+  add_foreign_key "vendors", "locations"
   add_foreign_key "work_orders", "colors"
   add_foreign_key "workorders", "employees"
+  add_foreign_key "workorders", "locations"
   add_foreign_key "workorders", "vendors"
 end

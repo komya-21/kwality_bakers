@@ -4,11 +4,12 @@ class VendorsController < ApplicationController
   # GET /vendors
   # GET /vendors.json
   def index
-    if params[:search]    
-      @vendors = Vendor.search(params[:search])
-    else
+    if current_user.role == "SuperAdmin"
       @vendors = Vendor.all
+    elsif current_user.role == "Center"
+      @vendors = Vendor.where(location_id: current_user.location_id)
     end
+      
     #@vendors = Vendor.paginate(:page => params[:page], :per_page => 10)
   end
 
@@ -41,6 +42,10 @@ class VendorsController < ApplicationController
     respond_to do |format|
       if @vendor.save
         @vendor.create_user
+         if current_user.role == "Center"
+         
+          @vendor.update!(location_id: current_user.location_id)
+        end
         format.html { redirect_to @vendor, notice: 'Vendor was successfully created.' }
         format.json { render :show, status: :created, location: @vendor }
       else
@@ -55,6 +60,8 @@ class VendorsController < ApplicationController
 
     respond_to do |format|
       if @vendor.save
+
+       
         format.html { redirect_to new_delivery_path, notice: 'Vendor was successfully created.' }
         format.json { render :show, status: :created, location: @vendor }
       else
@@ -96,6 +103,6 @@ class VendorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def vendor_params
-      params.require(:vendor).permit(:name, :address, :delivery_area, :gst_no, :pan_no, :contact, :alternate_contact, :comission ,:search , :vendor_type ,:email ,:password)
+      params.require(:vendor).permit(:name, :address, :delivery_area, :gst_no, :pan_no, :contact, :alternate_contact, :comission ,:search , :vendor_type ,:email ,:password,:location_id)
     end
 end

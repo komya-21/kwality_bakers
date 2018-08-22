@@ -81,7 +81,7 @@
 
   <td style="width: 8em;" class="unity" hidden="true"> <%= task_form.text_field :unit, class: 'form-control unit',placeholder: "Unit" %> </td>
 
-  <td class="category"> <%= task_form.select :category,options_for_select(['A or B','Gold or Silver']),{prompt: "Select Category"},class: "form-control" %> </td>
+  <td class="category"> <%= task_form.select :category,options_for_select(['Gold',  'Silver']),{prompt: "Select Category"},class: "form-control" %> </td>
 
   <td class="color" hidden="true"><%= task_form.select :color_id,Color.all.collect{|c|[c.code,c.id]},{prompt: "Select Color"},class: "form-control" %></td>
 

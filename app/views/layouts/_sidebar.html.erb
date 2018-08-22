@@ -37,7 +37,7 @@
             <nav>
                 <h5 class="sidebar-header"></h5>
                 <ul class="nav nav-pills nav-stacked">
-                    <% if current_user.role == "SuperAdmin" %>
+                    <% if current_user.role == "SuperAdmin" || current_user.role == "Center" %>
                     <li>
                         <a href="/home/dashboard" title="Dashboard">
                             <i class="fa  fa-fw fa-tachometer"></i> Dashboard
@@ -47,6 +47,11 @@
                         <a href="#" title="Misc.">
                             <i class="fa  fa-fw fa-cogs"></i>Misc.
                         <ul class="nav-sub">
+                            <li>
+                                <a href="/locations" title="Locations">
+                                     Locations
+                                </a>
+                            </li>
                             <li>
                                 <a href="/companies" title="Companies">
                                      Companies
@@ -146,7 +151,7 @@
                         </a>
                     </li>
                      <% end %>
-                     <% if current_user.role == "SuperAdmin" || current_user.role == "Vendor" %>
+                     <% if current_user.role == "SuperAdmin" || current_user.role == "Vendor" || current_user.role == "Center"%>
                     <li>
                         <a href="/workorders/new" title="New Order">
                             <i class="fa  fa-fw fa-edit"></i>New Order

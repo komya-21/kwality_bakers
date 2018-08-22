@@ -45,6 +45,8 @@ Rails.application.config.assets.precompile += %w( workorders.css )
 Rails.application.config.assets.precompile += %w( workorders.js )
 Rails.application.config.assets.precompile += %w( rates.css )
 Rails.application.config.assets.precompile += %w( rates.js )
+Rails.application.config.assets.precompile += %w( locations.css )
+Rails.application.config.assets.precompile += %w( locations.js )
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.

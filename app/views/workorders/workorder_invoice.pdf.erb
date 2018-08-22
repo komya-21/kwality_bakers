@@ -131,8 +131,21 @@ table, th, td {
 </head>
 <body>
 <% k = 0 %>
+<% @final_amount = 0 %>
+<% @total_amount1 = 0 %>
+<% @amt1 = 0 %> 
+<% @amt2 = 0 %> 
+<% @amt3 = 0 %> 
+
 <% @workorder.fproducts.each do |f| %>
 <% k += 1 %>
+<% if k != 1 %>
+
+<% @amt1 = @total_amount %>
+<% @amt2 = @full_amt %>
+
+<% @amt3 = @drawer_amount %>
+<% end %>
 
 <table style="width:100%">
    <% @letters = ('A'..'Z').to_a %>
@@ -142,18 +155,25 @@ table, th, td {
 
   <% @uniq_ftypes.each do |u| %>
   <% @m += 1 %>
-  <tr>
-    <% if @m == 1 %>
-    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="10"><%= f.product %></th>
+  
+  <% @full_amt = 0 %>
+  <% @drawer_amount = 0 %>
 
-    <% end %>
+  <tr>
+    
+    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="10"><center><% if @m == 1 %><%= f.product %><br><% end %>(<%= @letters.shift %>)<%= u %></center></th>
+
+    
   </tr>
   <% @i = 0 %>
    <% if u == "Carcass Box" %>
+  
    <tr>
     <th>No</th>
-    
     <th>Quantity</th>
+    <th>Skirting</th>
+    <th>Vertical</th>
+    <th>Horizontal</th>
     <th>Sq.ft 18mm</th>
     <th>rate</th>
     <th>Sq.ft8mm(back)</th>
@@ -172,38 +192,122 @@ table, th, td {
    <% @carcass_measurements.each do |c| %>
    <% @i += 1 %>
    <% @total_no += c.quantity %>
-   <% @sqft = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
+   <% @sq = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
+   <% @skirting_sqft = 0 %>
+   <% @v_area = 0 %>
+   <% @h_area = 0 %>
+    <% if c.skirting != nil %>
+   <% @s_width = c.width - 36 %>
+   <% @skirting_sqft = ((@s_width*c.skirting)/92903)*c.quantity %>
+   <% end %>
+   <!-- end of calculation of skirting -->
+   <% if c.vertical != nil %>
+   <% if c.skirting != nil %>
+    <% @v_height = c.height-c.skirting-36 %>
+    <% else %>
+    <% @v_height = c.height-36 %>
+     <% end %>
+     <% @v_area = ((@v_height * c.depth)/92903)*c.quantity %>
+
+   <% end %>
+
+   <% if c.horizontal != nil %>
+   <% @h_width = c.width - 36 %>
+   <% @h_area =  ((@h_width*c.depth)/92903)*c.quantity %>
+   <% end %>
+    
+<% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
+    <% @total_sqft += @sqft %>
    <% @total_sqft += @sqft %>
    <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
    <% @total_sqft_back += @sqft_back %>
    <% @tot_amt = (@sqft.round(2)*@c1)+(@sqft_back.round(2)*@c2) %>
    <% @total_amount += @tot_amt %>
-   <% end %>
+   <% @amt1 += @total_amount %>
    <tr>
-   <td>(<%= @letters.shift %>)<%= u %></td>
+   <td><%= @i %></td>
   
    
-   <td><%= @total_no %></td>
+   <td><%= c.quantity %></td>
+   <% if c.skirting != nil %>
+   <td>Yes</td>
+   <% else %>
+   <td>No</td>
+   <% end %>
+   <td><%= c.vertical %></td>
+   <td><%= c.horizontal %></td>
    
-   <td><%= @total_sqft.round(2) %></td>
+   <td><%= @sqft.round(2) %></td>
    <td><%= @c1 %></td>
    
-   <td><%= @total_sqft_back.round(2) %></td>
+   <td><%= @sqft_back.round(2) %></td>
    <td><%= @c2 %></td>
    
-   <td><%= @total_amount.round(2) %></td>
+   <td><%= @tot_amt.round(2) %></td>
  </tr>
 
-
+<% end %>
 
 
   
+  
   <% end %>
+
+   <% if u == "Drawer" %>
+   
+    <th>No</th>
+    <th>W</th>
+    <th>D</th>
+    <th>H</th>
+    <th>Nos</th>
+    <th>Sq.ft</th>
+    <th>rate</th>
+    <th>AMT</th>
+  </tr>
+  <% @drawer_measurements = f.measurements.where(ftype: u) %>
+    <% @total_no = 0 %>
+    <% @total_sqft = 0 %>
+    
+    
+    <% @drawer_rate = @rates.find_by(["product = ? and ptype=?",f.product,u]) %>
+    <% @d = @drawer_rate.price %>
+    <% @drawer_measurements.each do |c| %>
+   <% @i += 1 %>
+   <% @total_no += c.quantity %>
+   <tr>
+   <td><%= @i %></td>
+   <td><%= c.width %></td>
+   <td><%= c.depth %></td>
+   <td><%= c.height %></td>
+   <td><%= c.quantity %></td>
+   <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
+   <% @total_sqft += @sqft %>
+   <td><%= @sqft.round(2) %></td>
+   <td><%= @d %></td>
+  
+   <% @d_tot_amt = (@sqft.round(2)*@d) %>
+   <% @drawer_amount += @d_tot_amt %>
+   <% @amt3 += @drawer_amount %>
+   <td><%= @d_tot_amt.round(2) %></td>
+ </tr>
+
+ <% end %>
+ <% end %>
   
  
 
 
+
    <% if u == "Shutters" || u == "White BSL Shelf" || u =="Hinges Patti" %>
+   <tr>
+    <th>No</th>
+    
+    <th>Quantity</th>
+    <th>Sq.ft</th>
+    <th>rate</th>
+    <th>AMT</th>
+    
+  </tr>
    
   <!-- Calculations of rates -->
   <% if u == "Shutters" %>
@@ -217,11 +321,10 @@ table, th, td {
   <% @sr = @hp_rate.price %>
   <% end %>
   <!-- End of calculation -->
-
   <% @shutter_measurements = f.measurements.where(ftype: u ) %>
   <% @tot_sqrft = 0 %>
   <% @tot_num = 0 %>
-  <% @full_amt = 0 %>
+  
    <% @shutter_measurements.each do |c| %>
   <% @tot_num += c.quantity %>
    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
@@ -230,16 +333,19 @@ table, th, td {
    <% @t_amt = @sqrft.round(2)*@sr.round(2) %>
 
    <% @full_amt += @t_amt %>
-   <% @i += 1 %>
+   <% if k != 1 %>
+   <% @amt2 += @full_amt %>
    <% end %>
+   <% @i += 1 %>
+   
    <tr>
-   <td>(<%= @letters.shift %>)<%= u %></td>
+   <td><%= @i %></td>
    <td><%= @tot_num %></td>
    
    
   
    <td><%= @tot_sqrft.round(2) %></td>
-   <td colspan="3"><%= @sr %></td>
+   <td><%= @sr %></td>
    
 
    <td><%= @full_amt.round(2) %></td>
@@ -250,6 +356,7 @@ table, th, td {
   </tr>
   
   <% end %>
+  <% end %>
   
   
  
@@ -259,20 +366,46 @@ table, th, td {
  
   
   
-  
 
   
-
-
+  
+    
  
   
-
 <% end %>
+<% end %>
+
+<tr><th colspan="9">Total</th>
+
+  <% @amt = @amt1 + @amt2 + @amt3 %>
+  
+  <% @final_amount += @amt %>
+<th><b><%= @final_amount.round(2) %></b></th></tr>
+<tr><th colspan="9">CGST(9%)</th>
+
+  <% @cgst = (@final_amount *9)/100 %>
+  
+
+  
+  <th><%= @cgst.round(2) %></th>
+  </tr>
+  <tr><th colspan="9">SGST(9%)</th>
+
+  
+  <% @sgst = (@final_amount *9)/100 %>
+
+  
+  <th><%= @sgst.round(2) %></th>
+  </tr>
+  <tr><th colspan="9">Total To Pay</th>
+  <% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
+  
+  
+<th style="background-color: #F0E68C;"><b><%= @pay.round(2) %></b></th></tr>
 
    
 </table>
 
-<% end %>
 <br><br>
 
 </body>

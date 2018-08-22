@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :locations
   resources :rates
   resources :workorders do 
     member do
@@ -10,6 +11,7 @@ Rails.application.routes.draw do
     collection do
       post :order_report
       get :order_status
+      get :location_report
       post :end_time
       post :status_update
     end

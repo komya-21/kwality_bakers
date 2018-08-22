@@ -14,6 +14,7 @@ class Workorder < ApplicationRecord
 	before_save :delete_photo5, if: ->{ remove_photo5 == '1' && !photo5_updated_at_changed? }
  
 	belongs_to :vendor , optional: :true
+	belongs_to :location , optional: :true
 	has_and_belongs_to_many :employees
 	has_many :fproducts ,inverse_of: :workorder,dependent: :destroy
 	accepts_nested_attributes_for :fproducts
