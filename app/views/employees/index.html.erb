@@ -45,7 +45,7 @@
         <td><%= employee.address %></td>
         <td><%= employee.employee_no %></td>
         <td><%= employee.employee_type %></td>
-        <td><%= employee.location.name %></td>
+        <td><%= employee.location.name if employee.location.present? %></td>
         <td><%=l employee.created_at %></td>
         <td>
           <%= link_to t('.show', :default => t("helpers.links.show")),
