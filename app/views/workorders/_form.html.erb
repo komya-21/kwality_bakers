@@ -114,19 +114,14 @@
         <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" ,required: true%></td>
         <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
     </tr>
-    <tr >
-      <th>Glass Shutter</th>
-      <th>Handle</th>
-      <th>Handle Groove</th>
-      <th>Handle Fitting</th>
-    </tr>
-    <tr>
-      <td class="data"><%= m.select :glass_shutter,options_for_select(['Yes','No']),{prompt: "Glass Shutter"},class: "form-control" %></td>
-        <td class="data"><%= m.select :handle,options_for_select(['Yes','No']),{prompt:true},class: "form-control" %></td>
+    
+    <tr class="choose" hidden="true">
+      <td ><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
+        <%= m.check_box :handle, {}, "Yes", "No" %>Handle<br>
         
-        <td class="data"><%= m.select :handle_groove,options_for_select(['Yes','No']),{prompt:true},class: "form-control" %></td>
+        <%= m.check_box :handle_groove, {}, "Yes", "No"%>Handle Groove<br>
         
-        <td class="data"><%= m.select :handle_fitting,options_for_select(['Yes','No']),{prompt:true},class: "form-control" %></td>
+        <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting</td>
 </tr>
   </table>
       
@@ -265,14 +260,18 @@
   
 
     container = elem.parents("tr.fields");
+    container2 = elem.parents("tr.choose");
+    container3 = elem.parents("th.choose");
+
     container1 = elem.parents("th.fields");
     container.find("#work_order_width").focus();
     if(type == "Shutters" || type == "White BSL Shelf" || type == "Hinges Patti"){
-      if(type == "Shutter")
+      if(type == "Shutters")
     {
-      container1.find('.data').show();
+
+
+      $('.choose').show();
       
-            
 
     }
       container.find('#work_order_depth').hide();
@@ -305,7 +304,7 @@ $(document).on('nested:fieldAdded', function(event){
   alert(vbvbvb);
 
   var selectField1 = field.find('#work_order_width');
-  selectField1.focus();;
+  selectField1.focus();
 }); 
 </script>
  
