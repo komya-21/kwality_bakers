@@ -66,7 +66,7 @@
          <label class="col-sm-1 control-label">Product</label> 
          <div class="col-md-3">
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
-          
+
           
            <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "form-control" ,required: true%>
           <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
@@ -126,17 +126,25 @@
        <% end %>
        <td> <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td>
         <td><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
-        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %></td>
-        <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
-    </tr>
-     <tr class="choose" hidden="true">
-      <td ><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
+        <% if m.object.ftype == "Shutters" %>
+        <td class="choose"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
         <%= m.check_box :handle, {}, "Yes", "No" %>Handle<br>
         
         <%= m.check_box :handle_groove, {}, "Yes", "No"%>Handle Groove<br>
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting</td>
-</tr>
+        <% else %>
+        <td class="choose" hidden="true"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
+        <%= m.check_box :handle, {}, "Yes", "No" %>Handle<br>
+        
+        <%= m.check_box :handle_groove, {}, "Yes", "No"%>Handle Groove<br>
+        
+        <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting</td>
+        <% end %>
+        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %></td>
+        <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
+    </tr>
+     
   </table>
       
 
