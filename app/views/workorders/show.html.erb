@@ -37,6 +37,14 @@
               <th>Horizontal</th>
               <th>Vertical</th>
               <th>Quantity</th>
+              <% f.measurements.each do |m| %>
+              <% if m.ftype == "Shutters" %>
+              <th>Glass Shutter</th>
+              <th>Handle</th>
+              <th>Handle Groove</th>
+              <th>Handle Fitting</th>
+              <% end %>
+              <% end %> 
             </tr>
           </thead>
           <tbody>
@@ -54,7 +62,13 @@
               <td><%= m.vertical %></td>
 
               <td><%= m.quantity %></td>
+              <% if m.ftype == "Shutters" %>
               <td><%= m.glass_shutter %></td>
+              <td><%= m.handle %></td>
+              <td><%= m.handle_groove %></td>
+              <td><%= m.handle_fitting %></td>
+
+              <% end %>
             </tr>
             <% end %>
 

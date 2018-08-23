@@ -132,20 +132,14 @@ table, th, td {
 <body>
 <% k = 0 %>
 <% @final_amount = 0 %>
-<% @total_amount1 = 0 %>
 <% @amt1 = 0 %> 
 <% @amt2 = 0 %> 
 <% @amt3 = 0 %> 
 
 <% @workorder.fproducts.each do |f| %>
 <% k += 1 %>
-<% if k != 1 %>
 
-<% @amt1 = @total_amount %>
-<% @amt2 = @full_amt %>
 
-<% @amt3 = @drawer_amount %>
-<% end %>
 
 <table style="width:100%">
    <% @letters = ('A'..'Z').to_a %>
@@ -370,6 +364,8 @@ table, th, td {
    
    <% @amt2 += @full_amt %>
    
+
+   
    <% @i += 1 %>
    
    <tr>
@@ -418,6 +414,7 @@ table, th, td {
 <tr><th colspan="9">Total</th>
 
   <% @amt = @amt1 + @amt2 + @amt3 %>
+  
   
   <% @final_amount += @amt %>
 <th><b><%= @final_amount.round(2) %></b></th></tr>

@@ -101,28 +101,27 @@
     
 
       <td>  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)" , required: true%></td>
-       <td><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
+       <td class="depth"><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
        <td><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td>
-       <td> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%></td>
+       <td class="skirting"> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%></td>
        <td class="vert" hidden="true"> <%= m.text_field :vertical, id: :work_order_vertical ,placeholder: "V(qty)" %></td>
        <td class="hor" hidden="true"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)" %></td>
        <td> <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td>
         <td><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
+        <td class="choose" hidden="true"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
+        <%= m.check_box :handle, {}, "Yes", "No" %>Handle<br>
+        
+        <%= m.check_box :handle_groove, {}, "Yes", "No" %>Handle Groove<br>
+        
+        <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting</td>
 
 
-
-        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" ,required: true%></td>
+        <td style="width: 8em;"><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" ,required: true%></td>
         <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
     </tr>
     
-    <tr class="choose" hidden="true">
-      <td ><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
-        <%= m.check_box :handle, {}, "Yes", "No" %>Handle<br>
-        
-        <%= m.check_box :handle_groove, {}, "Yes", "No"%>Handle Groove<br>
-        
-        <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting</td>
-</tr>
+    
+      
   </table>
       
 
@@ -252,6 +251,7 @@
    
   /*var product_id = $(this);*/
   elem = jQuery(this);
+  elemt = jQuery(this);
   var type = $(this).val();
 
   
@@ -260,7 +260,7 @@
   
 
     container = elem.parents("tr.fields");
-    container2 = elem.parents("tr.choose");
+   
     container3 = elem.parents("th.choose");
 
     container1 = elem.parents("th.fields");
@@ -270,12 +270,12 @@
     {
 
 
-      $('.choose').show();
+      container.find('.choose').show();
       
 
     }
-      container.find('#work_order_depth').hide();
-      container.find('#work_order_skirting').hide();
+      container.find('.depth').hide();
+      container.find('.skirting').hide();
 
     }
 if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box") || (ftype == "Loft" && type == "Carcass Box") ){

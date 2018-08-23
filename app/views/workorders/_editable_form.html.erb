@@ -25,14 +25,36 @@
   
      
     </div>
-    <% if current_user.role == "SuperAdmin" %>
-    <label class="col-sm-1 control-label">Vendor</label> 
+    
+     <% if current_user.role == "SuperAdmin" %>
+    <label class="col-sm-1 control-label">Location</label> 
+    <% location = form.object.location %>
+
     <div class="col-md-2">
-    <%= form.select :vendor_id, Vendor.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control"%>
+    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true},required: true%>
 
   </div>
-</div>
+    <label class="col-sm-1 control-label">Vendor</label> 
+    <div class="col-md-2">
+      <% name = form.object.vendor.name %>
+    <%= form.grouped_collection_select :vendor_id, Location.order(:name),:vendors,:name,:id,:name,class: "form-control",required: true%>
+
+  </div>
+
+<% elsif current_user.role == "Center" %>
+
+  <label class="col-sm-1 control-label">Vendor</label> 
+    <div class="col-md-2">
+      
+    <%= form.select :vendor_id, @vendors.all.collect{|v| [v.name,v.id]},
+    {prompt:true},class: "form-control",required: true,id: :diff_id %>
+
+  </div>
+
+
+ 
 <% end %>
+</div>
     <%#= form.date_field :date, value: Date.today, :class => 'form-control' %>
          
         <%= form.fields_for :fproducts do |w| %>
@@ -77,8 +99,18 @@
       <tr class="fields">
         <% product = m.object.ftype %>
         
-      
-       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "select" %></td>
+      <% if product == "Carcass Box" %>
+       <td>  <%= m.select :ftype, options_for_select([product,'Shutters','White BSL Shelf','Drawer','Hinges Patti']),{prompt:true},class: "select" %></td>
+       <% elsif product == "Shutters" %>
+       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Drawer','White BSL Shelf','Hinges Patti']),{prompt:true},class: "select" %></td>
+       <% elsif product == "White BSL Shelf" %>
+       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Shutters','Drawer','Hinges Patti']),{prompt:true},class: "select" %></td>
+       <% elsif product == "Hinges Patti" %>
+       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Shutters','Drawer','White BSL Shelf']),{prompt:true},class: "select" %></td>
+       <% elsif product == "Drawer" %>
+       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "select" %></td>
+
+       <% end %>
       
      
       
@@ -97,6 +129,14 @@
         <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %></td>
         <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
     </tr>
+     <tr class="choose" hidden="true">
+      <td ><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
+        <%= m.check_box :handle, {}, "Yes", "No" %>Handle<br>
+        
+        <%= m.check_box :handle_groove, {}, "Yes", "No"%>Handle Groove<br>
+        
+        <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting</td>
+</tr>
   </table>
       
 
@@ -235,36 +275,81 @@
 
 
 <% content_for :javascript do %>
+<script type="text/javascript">
+  $('.select').addClass("form-control");
+ $(document).on('nested:fieldAdded', function(event){
+ // this field was just inserted into your form
+ var field = event.field;
+ var selectField = field.find('.product');
 
- <!--  <script type="text/javascript">
-  $(document).on("change", ".select", function () {
+ selectField.addClass("form-control");
+ 
 
-   var ftype = $(this).val();
+ // and activate datepicker on it
+//  dateField.datepicker();
+});
+</script>
+
+   <script type="text/javascript">
+    var ftype;
+  $(document).on("change", ".product", function () {
+
+
+   ftype = $(this).val();
    
-  $('#work_order_width').focus();
-  if(ftype == "Shutters"){
-   $('#work_order_depth').hide();
-   $('#work_order_skirting').hide();
-   /*$('#work_order_height').focus();*/
-  }
+   
+   
+  
+  
+
 
   });
-  </script> -->
-   <script type="text/javascript">
+  
 
   $(document).on("change", ".select", function () {
+    
+    
+    
+
+    
+   
+   
   /*var product_id = $(this);*/
   elem = jQuery(this);
   var type = $(this).val();
 
+  
+
+
+  
+
     container = elem.parents("tr.fields");
+    container2 = elem.parents("tr.choose");
+    container3 = elem.parents("th.choose");
+
     container1 = elem.parents("th.fields");
     container.find("#work_order_width").focus();
     if(type == "Shutters" || type == "White BSL Shelf" || type == "Hinges Patti"){
-      container.find('#work_order_depth').hide();
-      container.find('#work_order_skirting').hide();
+      if(type == "Shutters")
+    {
+
+
+      $('.choose').show();
+      
 
     }
+      container.find('.depth').hide();
+      container.find('.skirting').hide();
+
+    }
+if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box") || (ftype == "Loft" && type == "Carcass Box") ){
+     container.find('.vert').show();
+      container.find('.hor').show();
+      container.find('#work_order_vertical').addClass('form-control');
+      container.find('#work_order_horizontal').addClass('form-control');
+     
+    }
+    
     
 
     
@@ -272,16 +357,6 @@
   });
 
   
-  </script>
-  <script type="text/javascript">
-    $(document).on("load", function () {
-
-
-
-
-
-
-    });
   </script>
 
 <script type="text/javascript">
@@ -290,10 +365,10 @@ $(document).on('nested:fieldAdded', function(event){
   // this field was just inserted into your form
   var field = event.field; 
   // it's a jQuery object already! Now you can find date input
-  
+  alert(vbvbvb);
 
   var selectField1 = field.find('#work_order_width');
-  selectField1.focus();;
+  selectField1.focus();
 }); 
 </script>
  
@@ -376,9 +451,38 @@ $('#workorder_name1').hide();
 
   });
 </script>
+
+<script type="text/javascript">
+  $("#workorder_location_id").addClass('form-control');
+  $("#workorder_vendor_id").addClass('form-control');
+  jQuery(function() {
+  var states;
+  $('#workorder_vendor_id').parent().show();
+  states = $('#workorder_vendor_id').html();
+  console.log(states);
+
+  return $('#workorder_location_id').change(function() {
+    var id;
+  id = $('#workorder_location_id').val();
+  
+    var country, escaped_country, options;
+    country = $('#workorder_location_id :selected').text();
+    escaped_country = country.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1');
+    options = $(states).filter("optgroup[label=" + escaped_country + "]").html();
+    console.log(options);
+    
+    if (options) {
+      $('#workorder_vendor_id').html(options);
+      return $('#workorder_vendor_id').parent().show();
+    } else {
+      $('#workorder_vendor_id').empty();
+      return $('#workorder_vendor_id').parent().hide();
+    }
+  });
+});
+</script>
  
 <% end %>
-
 
 
 
