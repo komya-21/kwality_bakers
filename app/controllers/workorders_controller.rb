@@ -134,10 +134,29 @@ end
     respond_to do |format|
 
       if @workorder.save
+         @workorder.update(approve: false)
+        @workorder.fproducts.each do |f| 
+          f.measurements.each do |m|
+            if m.ftype == "Carcass Box"
+            
+            @rate1 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"Back" ])
+            @rate2 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"TB/LR" ])
+
+            m.update(back_rate: @rate1.price)
+            m.update(rate: @rate2.price)
+          else
+
+            @rate1 = Rate.find_by(["product = ? and ptype = ?",f.product,m.ftype])
+            m.update(rate: @rate1.price)
+           
+          end
+        end
+      end
+             
 
 
 
-        @workorder.update(approve: false)
+       
         if current_user.role == "Vendor"
           @workorder.update(vendor_id: current_user.vendor_id)
           @workorder.update(location_id: current_user.vendor.location_id)
@@ -154,6 +173,11 @@ end
     end
   end
   def edit_rate
+
+    @rate = params[:rate]
+    @id = params[:id]
+    Measurement.find(@id).update(rate: @rate)
+
   end
 
   # PATCH/PUT /workorders/1
@@ -259,7 +283,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:order_no ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:depth,:color_id,:side,:skirting,:rate,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
+     params.require(:workorder).permit(:order_no ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
 
    end
  end

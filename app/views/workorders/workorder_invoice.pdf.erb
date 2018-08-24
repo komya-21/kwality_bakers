@@ -180,9 +180,9 @@ table, th, td {
     <% @total_sqft_back = 0 %>
     <% @total_amount = 0 %>
     <% @carcass_rate1 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"TB/LR"]) %>
-<% @carcass_rate2 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"Back"]) %>
-<% @c1 = @carcass_rate1.price %>
-<% @c2 = @carcass_rate2.price %>
+<%# @carcass_rate2 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"Back"]) %>
+<%# @c1 = @carcass_rate1.price %>
+<%# @c2 = @carcass_rate2.price %>
    <% @carcass_measurements.each do |c| %>
    <% @i += 1 %>
    <% @total_no += c.quantity %>
@@ -232,10 +232,10 @@ table, th, td {
    <td><%= c.horizontal %></td>
    
    <td><%= @sqft.round(2) %></td>
-   <td><%= @c1 %></td>
+   <td><%= c.rate if c.rate.present? %></td>
    
    <td><%= @sqft_back.round(2) %></td>
-   <td><%= @c2 %></td>
+   <td><%= c.back_rate %></td>
    
    <td><%= @tot_amt.round(2) %></td>
  </tr>
@@ -263,8 +263,8 @@ table, th, td {
     <% @total_sqft = 0 %>
     
     
-    <% @drawer_rate = @rates.find_by(["product = ? and ptype=?",f.product,u]) %>
-    <% @d = @drawer_rate.price %>
+    <%# @drawer_rate = @rates.find_by(["product = ? and ptype=?",f.product,u]) %>
+    <%# @d = @drawer_rate.price %>
     <% @drawer_measurements.each do |c| %>
    <% @i += 1 %>
    <% @total_no += c.quantity %>
@@ -277,7 +277,7 @@ table, th, td {
    <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
    <% @total_sqft += @sqft %>
    <td><%= @sqft.round(2) %></td>
-   <td><%= @d %></td>
+   <td><%= c.rate if c.rate.present? %></td>
   
    <% @d_tot_amt = (@sqft.round(2)*@d) %>
    <% @drawer_amount += @d_tot_amt %>
@@ -321,16 +321,7 @@ table, th, td {
   <% end %>
    
   <!-- Calculations of rates -->
-  <% if u == "Shutters" %>
-  <% @shutter_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
-  <% @sr = @shutter_rate.price %>
-  <% elsif u == "White BSL Shelf" %>
-  <% @wbs_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
-  <% @sr = @wbs_rate.price %>
-  <% elsif u == "Hinges Patti" %>
-  <% @hp_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
-  <% @sr = @hp_rate.price %>
-  <% end %>
+  
   <!-- End of calculation -->
   <% @g_area = 0 %>
   <% @h_rate = 0 %>
@@ -344,13 +335,13 @@ table, th, td {
    <% if c.glass_shutter == "Yes" %>
    <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
    <% end %> 
-   <% if c.glass_shutter == "Yes" %>
-   <% @h_rate = c.quantity * 20 %>
+   <% if c.handle == "Yes" %>
+   <% @h_rate = ((c.width/305)*c.quantity)*20 %>
    <% end %> 
-   <% if c.glass_shutter == "Yes" %>
+   <% if c.handle_groove == "Yes" %>
    <% @hg_rate = c.quantity * 20 %>
    <% end %> 
-   <% if c.glass_shutter == "Yes" %>
+   <% if c.handle_fitting == "Yes" %>
    <% @hf_rate = c.quantity * 20 %>
    <% end %> 
   <% @tot_num += c.quantity %>
@@ -358,7 +349,7 @@ table, th, td {
    
    <% @tot_sqrft += @sqrft %>
 
-    <% @t_amt = ((@sqrft.round(2)+@g_area.round(2))*@sr.round(2))+@h_rate+@hg_rate+@hf_rate %>
+    <% @t_amt = ((@sqrft.round(2)+@g_area.round(2))*c.rate.round(2))+@h_rate+@hg_rate+@hf_rate %>
 
    <% @full_amt += @t_amt %>
    
@@ -381,7 +372,7 @@ table, th, td {
    <td><%= c.handle_groove %></td>
    <td><%= c.handle_fitting %></td>
    <% end %>
-   <td><%= @sr %></td>
+   <td><%= c.rate if c.rate.present? %></td>
    
 
    <td><%= @full_amt.round(2) %></td>

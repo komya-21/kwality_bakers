@@ -153,7 +153,7 @@ table, th, td {
 <% @amt3 = @drawer_amount %>
 <% end %>
 
-<table style="width:100%">
+<table id="example" style="width:100%">
    <% @letters = ('A'..'Z').to_a %>
    
 
@@ -194,11 +194,12 @@ table, th, td {
     <% @total_sqft = 0 %>
     <% @total_sqft_back = 0 %>
     <% @total_amount = 0 %>
-    <% @carcass_rate1 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"TB/LR"]) %>
-<% @carcass_rate2 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"Back"]) %>
-<% @c1 = @carcass_rate1.price %>
-<% @c2 = @carcass_rate2.price %>
+    <%# @carcass_rate1 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"TB/LR"]) %>
+<%# @carcass_rate2 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"Back"]) %>
+<%# @c1 = @carcass_rate1.price %>
+<%# @c2 = @carcass_rate2.price %>
    <% @carcass_measurements.each do |c| %>
+
    <% @j+=1 %>
    <% @i += 1 %>
    <% @total_no += c.quantity %>
@@ -231,11 +232,12 @@ table, th, td {
    <% @total_sqft += @sqft %>
    <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
    <% @total_sqft_back += @sqft_back %>
-   <% @tot_amt = (@sqft.round(2)*@c1)+(@sqft_back.round(2)*@c2) %>
+   <% @tot_amt = (@sqft.round(2)*c.rate)+(@sqft_back.round(2)*c.back_rate) %>
    <% @total_amount += @tot_amt %>
    <% @amt1 += @total_amount %>
    <tr>
    <td><%= @i %></td>
+   <%= hidden_field_tag :id , c.id ,class: "hidden"%>
   
    
    <td><%= c.quantity %></td>
@@ -247,13 +249,13 @@ table, th, td {
    <td><%= c.vertical %></td>
    <td><%= c.horizontal %></td>
    
-   <td><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true %></td>
-   <td><%= text_field_tag :"rate#{@j}" , @c1 %></td>
+   <td><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true,class: "a1" %></td>
+   <td><%= text_field_tag :"rate#{@j}" , c.rate,class: "a2" %></td>
    
-   <td><%= text_field_tag :"sqft_back#{@j}",@sqft_back.round(2),disabled: true %></td>
-   <td><%= text_field_tag :"back_rate#{@j}" , @c2 %></td>
+   <td ><%= text_field_tag :"sqft_back#{@j}",@sqft_back.round(2),disabled: true, class: "a3" %></td>
+   <td><%= text_field_tag :"back_rate#{@j}" , c.back_rate, class: "a4" %></td>
    
-   <td><%= text_field_tag :"amount#{@j}" ,@tot_amt.round(2) ,disabled: true%></td>
+   <td><%= text_field_tag :"amount#{@j}" ,@tot_amt.round(2) ,disabled: true , class: "a5"%></td>
  </tr>
 
 <% end %>
@@ -279,26 +281,28 @@ table, th, td {
     <% @total_sqft = 0 %>
     
     
-    <% @drawer_rate = @rates.find_by(["product = ? and ptype=?",f.product,u]) %>
-    <% @d = @drawer_rate.price %>
+    <%# @drawer_rate = @rates.find_by(["product = ? and ptype=?",f.product,u]) %>
+    <%# @d = @drawer_rate.price %>
     <% @drawer_measurements.each do |c| %>
    <% @i += 1 %>
+   <% @j += 1 %>
    <% @total_no += c.quantity %>
    <tr>
    <td><%= @i %></td>
+   <%= hidden_field_tag :id , c.id ,class: "hidden" %>
    <td><%= c.width %></td>
    <td><%= c.depth %></td>
    <td><%= c.height %></td>
    <td><%= c.quantity %></td>
    <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
    <% @total_sqft += @sqft %>
-   <td><%= @sqft.round(2) %></td>
-   <td><%= @d %></td>
+   <td class="b1"><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true %></td>
+   <td class="b2"><%= text_field_tag :"rate#{@j}" ,c.rate %></td>
   
-   <% @d_tot_amt = (@sqft.round(2)*@d) %>
+   <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
    <% @drawer_amount += @d_tot_amt %>
    <% @amt3 += @drawer_amount %>
-   <td><%= @d_tot_amt.round(2) %></td>
+   <td class="b3"><%= text_field_tag :"amount#{@j}" ,  @d_tot_amt.round(2),disabled: true %></td>
  </tr>
 
  <% end %>
@@ -320,27 +324,28 @@ table, th, td {
   </tr>
    
   <!-- Calculations of rates -->
-  <% if u == "Shutters" %>
-  <% @shutter_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
-  <% @sr = @shutter_rate.price %>
-  <% elsif u == "White BSL Shelf" %>
-  <% @wbs_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
-  <% @sr = @wbs_rate.price %>
-  <% elsif u == "Hinges Patti" %>
-  <% @hp_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
-  <% @sr = @hp_rate.price %>
-  <% end %>
+  <%# if u == "Shutters" %>
+  <%# @shutter_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
+  <%# @sr = @shutter_rate.price %>
+  <%# elsif u == "White BSL Shelf" %>
+  <%# @wbs_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
+  <%# @sr = @wbs_rate.price %>
+  <%# elsif u == "Hinges Patti" %>
+  <%# @hp_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
+  <%# @sr = @hp_rate.price %>
+  <%# end %>
   <!-- End of calculation -->
   <% @shutter_measurements = f.measurements.where(ftype: u ) %>
   <% @tot_sqrft = 0 %>
   <% @tot_num = 0 %>
   
    <% @shutter_measurements.each do |c| %>
+   <% @j += 1 %>
   <% @tot_num += c.quantity %>
    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
    
    <% @tot_sqrft += @sqrft %>
-   <% @t_amt = @sqrft.round(2)*@sr.round(2) %>
+   <% @t_amt = @sqrft.round(2)*c.rate.round(2) %>
 
    <% @full_amt += @t_amt %>
    <% if k != 1 %>
@@ -350,15 +355,16 @@ table, th, td {
    
    <tr>
    <td><%= @i %></td>
+   <%= hidden_field_tag :id , c.id ,class: "hidden"%>
    <td><%= @tot_num %></td>
    
    
   
-   <td><%= @tot_sqrft.round(2) %></td>
-   <td><%= @sr %></td>
+   <td><%= text_field_tag :"sqft#{@j}" ,@tot_sqrft.round(2),disabled: true, class: "c1" %></td>
+   <td ><%= text_field_tag :"rate#{@j}" ,c.rate,class: "c2" %></td>
    
 
-   <td><%= @full_amt.round(2) %></td>
+   <td><%= text_field_tag :"amount#{@j}" ,@full_amt.round(2),disabled: true , class: "c3"%></td>
    
    
   
@@ -385,33 +391,6 @@ table, th, td {
 <% end %>
 <% end %>
 
-<tr><th colspan="9">Total</th>
-
-  <% @amt = @amt1 + @amt2 + @amt3 %>
-  
-  <% @final_amount += @amt %>
-<th><b><%= @final_amount.round(2) %></b></th></tr>
-<tr><th colspan="9">CGST(9%)</th>
-
-  <% @cgst = (@final_amount *9)/100 %>
-  
-
-  
-  <th><%= @cgst.round(2) %></th>
-  </tr>
-  <tr><th colspan="9">SGST(9%)</th>
-
-  
-  <% @sgst = (@final_amount *9)/100 %>
-
-  
-  <th><%= @sgst.round(2) %></th>
-  </tr>
-  <tr  style="background-color: #F0E68C;"><th colspan="9">Total To Pay</th>
-  <% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
-  
-  
-<th><b><%= @pay.round(2) %></b></th></tr>
 
    
 </table>
@@ -429,142 +408,41 @@ table, th, td {
 </div>
 </section>
 </html>
+
 <% content_for :javascript do %>
-
-
-
 
 <script type="text/javascript">
     // $(document).ready(function(){
-    //   $("#")
+    //   ("#")
     // })
-   
+     $("table tr").on("change", 'input', function() {
+      
+      var m = $("#id").val();
 
-  $(document).on("keyup", "#rate1", function() {
-    var rate = $('#rate1').val();
-    
-    var back_rate = $('#back_rate1').val();
-    var sqft = $('#sqft1').val();
-    var sqft_back = $('#sqft_back1').val();
-    var total = (sqft*rate)+(sqft_back * back_rate);
-    $('#amount1').val(total);
+      var a = $("table tr").find(".hidden").val();
+      alert(a);
 
-    
-  });
-  </script>
-  <script type="text/javascript">
-    // $(document).ready(function(){
-    //   $("#")
-    // })
-   
 
-  $(document).on("keyup", "#rate2", function() {
-    var rate = $('#rate2').val();
-    
-    var back_rate = $('#back_rate2').val();
-    var sqft = $('#sqft2').val();
-    var sqft_back = $('#sqft_back2').val();
-    var total = (sqft*rate)+(sqft_back * back_rate);
-    $('#amount2').val(total);
+       
+      var price = $(this).val();
+      
+      
+          $.ajax({
+            url: "/workorders/edit_rate",
+            type: 'POST',
+            dataType: 'json',
+            data: {rate: price,id: m}
+          });
+ 
 
     
-  });
-  </script>
-  <script type="text/javascript">
-    // $(document).ready(function(){
-    //   $("#")
-    // })
-   
 
-  $(document).on("keyup", "#rate3", function() {
-    var rate = $('#rate3').val();
-    
-    var back_rate = $('#back_rate3').val();
-    var sqft = $('#sqft3').val();
-    var sqft_back = $('#sqft_back3').val();
-    var total = (sqft*rate)+(sqft_back * back_rate);
-    $('#amount3').val(total);
-
-    
-  });
-  </script>
-  <script type="text/javascript">
-    // $(document).ready(function(){
-    //   $("#")
-    // })
-   
-
-  $(document).on("keyup", "#rate4", function() {
-    var rate = $('#rate4').val();
-    
-    var back_rate = $('#back_rate4').val();
-    var sqft = $('#sqft4').val();
-    var sqft_back = $('#sqft_back4').val();
-    var total = (sqft*rate)+(sqft_back * back_rate);
-    $('#amount4').val(total);
-
-    
-  });
-  </script>
-
-  <script type="text/javascript">
-    // $(document).ready(function(){
-    //   $("#")
-    // })
      
-  $(document).on("keyup", "#back_rate1", function() {
-    var rate = $('#rate1').val();
-    var back_rate = $('#back_rate1').val();
-    var sqft = $('#sqft1').val();
-    var sqft_back = $('#sqft_back1').val();
-    var total = (sqft*rate)+(sqft_back * back_rate);
-    $('#amount1').val(total);
-    
   });
   </script>
-   <script type="text/javascript">
-    // $(document).ready(function(){
-    //   $("#")
-    // })
-     
-  $(document).on("keyup", "#back_rate2", function() {
-    var rate = $('#rate2').val();
-    var back_rate = $('#back_rate2').val();
-    var sqft = $('#sqft2').val();
-    var sqft_back = $('#sqft_back2').val();
-    var total = (sqft*rate)+(sqft_back * back_rate);
-    $('#amount2').val(total);
-    
-  });
-  </script>
-   <script type="text/javascript">
-    // $(document).ready(function(){
-    //   $("#")
-    // })
-     
-  $(document).on("keyup", "#back_rate3", function() {
-    var rate = $('#rate3').val();
-    var back_rate = $('#back_rate3').val();
-    var sqft = $('#sqft3').val();
-    var sqft_back = $('#sqft_back3').val();
-    var total = (sqft*rate)+(sqft_back * back_rate);
-    $('#amount3').val(total);
-    
-  });
-  </script>
-   <script type="text/javascript">
-    // $(document).ready(function(){
-    //   $("#")
-    // })
-     
-  $(document).on("keyup", "#back_rate4", function() {
-    var rate = $('#rate4').val();
-    var back_rate = $('#back_rate4').val();
-    var sqft = $('#sqft4').val();
-    var sqft_back = $('#sqft_back4').val();
-    var total = (sqft*rate)+(sqft_back * back_rate);
-    $('#amount4').val(total);
-    
-  });
-  </script>
+ 
+  
   <% end %>
+
+
+  
