@@ -175,13 +175,18 @@ end
   def edit_rate
 
     @rate = params[:rate]
+    @back_rate = params[:back_rate]
     @id = params[:id]
     @k = @id.select{|p| p!=""}
-
+    @r = @rate.select{|r| r!=""}
+    @rt = @r[0].to_f
     @m = @k[0].to_i
+
     
 
-    Measurement.find(@m).update(rate: @rate)
+    Measurement.find(@m).update(rate: @rt)
+    Measurement.find(@m).update(back_rate: @back_rate)
+
 
 
   end

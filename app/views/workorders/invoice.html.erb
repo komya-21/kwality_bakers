@@ -250,10 +250,10 @@ table, th, td {
    <td><%= c.horizontal %></td>
    
    <td><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true,class: "a1" %></td>
-   <td><%= text_field_tag :"rate#{@j}" , c.rate,class: "a2" %></td>
+   <td><%= text_field_tag :"rate" , c.rate, style: "background-color:skyblue;" %></td>
    
    <td ><%= text_field_tag :"sqft_back#{@j}",@sqft_back.round(2),disabled: true, class: "a3" %></td>
-   <td><%= text_field_tag :"back_rate#{@j}" , c.back_rate,disabled: true %></td>
+   <td><%= text_field_tag :back_rate , c.back_rate,style: "background-color:skyblue;" %></td>
    
    <!-- <td><%#= text_field_tag :"amount#{@j}" ,@tot_amt.round(2) ,disabled: true , class: "a5"%></td> -->
  </tr>
@@ -297,7 +297,7 @@ table, th, td {
    <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
    <% @total_sqft += @sqft %>
    <td class="b1"><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true %></td>
-   <td class="b2"><%= text_field_tag :"rate#{@j}" ,c.rate %></td>
+   <td class="b2"><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
   
    <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
    <% @drawer_amount += @d_tot_amt %>
@@ -345,7 +345,7 @@ table, th, td {
    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
    
    <% @tot_sqrft += @sqrft %>
-   <% @t_amt = @sqrft.round(2)*c.rate.round(2) %>
+   <% @t_amt = (@sqrft * c.rate).round(2) %>
 
    <% @full_amt += @t_amt %>
    <% if k != 1 %>
@@ -360,8 +360,8 @@ table, th, td {
    
    
   
-   <td><%= text_field_tag :"sqft#{@j}" ,@tot_sqrft.round(2),disabled: true, class: "c1" %></td>
-   <td ><%= text_field_tag :"rate#{@j}" ,c.rate,class: "c2" %></td>
+   <td><%= text_field_tag :"sqft#{@j}" ,@tot_sqrft.round(2),disabled: true %></td>
+   <td ><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
    
 
    <!-- <td><%#= text_field_tag :"amount#{@j}" ,@full_amt.round(2),disabled: true , class: "c3"%></td> -->
@@ -426,6 +426,10 @@ table, th, td {
       var a = container.find("#id").val();
       var b = container1.find("#id").val();
       var c = container2.find("#id").val();
+      var bk = container.find("#back_rate").val();
+      var k = container.find("#rate").val();
+      var l = container2.find("#rate").val();
+      var m = container1.find("#rate").val();
       
 
 
@@ -439,7 +443,7 @@ table, th, td {
             url: "/workorders/edit_rate",
             type: 'POST',
             dataType: 'json',
-            data: {rate: price,id: [a,b,c]}
+            data: {rate: [k,l,m],id: [a,b,c],back_rate: bk}
           });
  
 
