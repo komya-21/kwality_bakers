@@ -187,7 +187,7 @@ table, th, td {
     <th>rate</th>
     <th>Sq.ft8mm(back)</th>
     <th>rate</th>
-    <th>AMT</th>
+    <!-- <th>AMT</th> -->
   </tr>
    <% @carcass_measurements = f.measurements.where(ftype: u) %>
     <% @total_no = 0 %>
@@ -235,7 +235,7 @@ table, th, td {
    <% @tot_amt = (@sqft.round(2)*c.rate)+(@sqft_back.round(2)*c.back_rate) %>
    <% @total_amount += @tot_amt %>
    <% @amt1 += @total_amount %>
-   <tr>
+   <tr class="fields">
    <td><%= @i %></td>
    <%= hidden_field_tag :id , c.id ,class: "hidden"%>
   
@@ -253,9 +253,9 @@ table, th, td {
    <td><%= text_field_tag :"rate#{@j}" , c.rate,class: "a2" %></td>
    
    <td ><%= text_field_tag :"sqft_back#{@j}",@sqft_back.round(2),disabled: true, class: "a3" %></td>
-   <td><%= text_field_tag :"back_rate#{@j}" , c.back_rate, class: "a4" %></td>
+   <td><%= text_field_tag :"back_rate#{@j}" , c.back_rate,disabled: true %></td>
    
-   <td><%= text_field_tag :"amount#{@j}" ,@tot_amt.round(2) ,disabled: true , class: "a5"%></td>
+   <!-- <td><%#= text_field_tag :"amount#{@j}" ,@tot_amt.round(2) ,disabled: true , class: "a5"%></td> -->
  </tr>
 
 <% end %>
@@ -274,7 +274,7 @@ table, th, td {
     <th>Nos</th>
     <th>Sq.ft</th>
     <th>rate</th>
-    <th>AMT</th>
+    <!-- <th>AMT</th> -->
   </tr>
   <% @drawer_measurements = f.measurements.where(ftype: u) %>
     <% @total_no = 0 %>
@@ -287,7 +287,7 @@ table, th, td {
    <% @i += 1 %>
    <% @j += 1 %>
    <% @total_no += c.quantity %>
-   <tr>
+   <tr class="fields1">
    <td><%= @i %></td>
    <%= hidden_field_tag :id , c.id ,class: "hidden" %>
    <td><%= c.width %></td>
@@ -302,7 +302,7 @@ table, th, td {
    <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
    <% @drawer_amount += @d_tot_amt %>
    <% @amt3 += @drawer_amount %>
-   <td class="b3"><%= text_field_tag :"amount#{@j}" ,  @d_tot_amt.round(2),disabled: true %></td>
+   <!-- <td class="b3"><%#= text_field_tag :"amount#{@j}" ,  @d_tot_amt.round(2),disabled: true %></td> -->
  </tr>
 
  <% end %>
@@ -319,7 +319,7 @@ table, th, td {
     <th>Quantity</th>
     <th>Sq.ft</th>
     <th>rate</th>
-    <th>AMT</th>
+    <!-- <th>AMT</th> -->
     
   </tr>
    
@@ -353,7 +353,7 @@ table, th, td {
    <% end %>
    <% @i += 1 %>
    
-   <tr>
+   <tr class="fields2">
    <td><%= @i %></td>
    <%= hidden_field_tag :id , c.id ,class: "hidden"%>
    <td><%= @tot_num %></td>
@@ -364,7 +364,7 @@ table, th, td {
    <td ><%= text_field_tag :"rate#{@j}" ,c.rate,class: "c2" %></td>
    
 
-   <td><%= text_field_tag :"amount#{@j}" ,@full_amt.round(2),disabled: true , class: "c3"%></td>
+   <!-- <td><%#= text_field_tag :"amount#{@j}" ,@full_amt.round(2),disabled: true , class: "c3"%></td> -->
    
    
   
@@ -417,21 +417,29 @@ table, th, td {
     // })
      $("table tr").on("change", 'input', function() {
       
-      var m = $("#id").val();
+      
 
-      var a = $("table tr").find(".hidden").val();
-      alert(a);
+      var elem = jQuery(this);
+      container = elem.parents("tr.fields");
+      container1 = elem.parents("tr.fields1");
+      container2 = elem.parents("tr.fields2");
+      var a = container.find("#id").val();
+      var b = container1.find("#id").val();
+      var c = container2.find("#id").val();
+      
+
 
 
        
       var price = $(this).val();
+
       
       
           $.ajax({
             url: "/workorders/edit_rate",
             type: 'POST',
             dataType: 'json',
-            data: {rate: price,id: m}
+            data: {rate: price,id: [a,b,c]}
           });
  
 

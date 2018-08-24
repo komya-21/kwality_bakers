@@ -215,7 +215,7 @@ table, th, td {
    <% @total_sqft += @sqft %>
    <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
    <% @total_sqft_back += @sqft_back %>
-   <% @tot_amt = (@sqft.round(2)*@c1)+(@sqft_back.round(2)*@c2) %>
+   <% @tot_amt = (@sqft.round(2)*c.rate)+(@sqft_back.round(2)*c.back_rate) %>
    <% @total_amount += @tot_amt %>
    <% @amt1 += @total_amount %>
    <tr>
@@ -279,7 +279,7 @@ table, th, td {
    <td><%= @sqft.round(2) %></td>
    <td><%= c.rate if c.rate.present? %></td>
   
-   <% @d_tot_amt = (@sqft.round(2)*@d) %>
+   <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
    <% @drawer_amount += @d_tot_amt %>
    <% @amt3 += @drawer_amount %>
    <td><%= @d_tot_amt.round(2) %></td>
