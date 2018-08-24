@@ -181,7 +181,7 @@ end
     @m = @k[0].to_i
     
 
-    #Measurement.find(@m).update(rate: @rate)
+    Measurement.find(@m).update(rate: @rate)
 
 
   end
