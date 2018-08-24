@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180822132458) do
+ActiveRecord::Schema.define(version: 20180823132051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,8 +178,11 @@ ActiveRecord::Schema.define(version: 20180822132458) do
     t.string "handle"
     t.string "handle_groove"
     t.string "handle_fitting"
+    t.bigint "rate_id"
+    t.float "back_rate"
     t.index ["color_id"], name: "index_measurements_on_color_id"
     t.index ["fproduct_id"], name: "index_measurements_on_fproduct_id"
+    t.index ["rate_id"], name: "index_measurements_on_rate_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -339,6 +342,7 @@ ActiveRecord::Schema.define(version: 20180822132458) do
   add_foreign_key "inward_products", "products"
   add_foreign_key "measurements", "colors"
   add_foreign_key "measurements", "fproducts"
+  add_foreign_key "measurements", "rates"
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
