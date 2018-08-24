@@ -176,7 +176,13 @@ end
 
     @rate = params[:rate]
     @id = params[:id]
-    Measurement.find(@id).update(rate: @rate)
+    @k = @id.select{|p| p!=""}
+
+    @m = @k[0].to_i
+    
+
+    #Measurement.find(@m).update(rate: @rate)
+
 
   end
 
