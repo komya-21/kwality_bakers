@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  side: MyString
+  color: MyString
+  shade: MyString
+  measurement: one
+
+two:
+  side: MyString
+  color: MyString
+  shade: MyString
+  measurement: two

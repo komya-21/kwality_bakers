@@ -6,16 +6,23 @@ Rails.application.routes.draw do
       get :workorder_pdf
       get :workorder_status
       get :workorder_invoice
+      get :proforma_invoice
       get :invoice
-
+     
     end
     collection do
       post :order_report
+      get :addition
       get :order_status
       get :location_report
       post :end_time
       post :status_update
       post :edit_rate
+       post :add
+       patch :update_additional
+
+
+
     end
   end
   resources :furnitures

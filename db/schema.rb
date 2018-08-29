@@ -10,10 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180823132051) do
+ActiveRecord::Schema.define(version: 20180828064009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "additionals", force: :cascade do |t|
+    t.string "right"
+    t.string "right_color"
+    t.string "right_dark"
+    t.string "right_light"
+    t.string "left"
+    t.string "left_color"
+    t.string "left_dark"
+    t.string "left_light"
+    t.string "top"
+    t.string "top_color"
+    t.string "top_dark"
+    t.string "top_light"
+    t.string "bottom"
+    t.string "bottom_color"
+    t.string "bottom_dark"
+    t.string "bottom_light"
+    t.bigint "measurement_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["measurement_id"], name: "index_additionals_on_measurement_id"
+  end
 
   create_table "colors", force: :cascade do |t|
     t.string "name"
@@ -21,6 +44,8 @@ ActiveRecord::Schema.define(version: 20180823132051) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "price"
+    t.string "light"
+    t.string "dark"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -180,6 +205,7 @@ ActiveRecord::Schema.define(version: 20180823132051) do
     t.string "handle_fitting"
     t.bigint "rate_id"
     t.float "back_rate"
+    t.string "bsl_type"
     t.index ["color_id"], name: "index_measurements_on_color_id"
     t.index ["fproduct_id"], name: "index_measurements_on_fproduct_id"
     t.index ["rate_id"], name: "index_measurements_on_rate_id"
@@ -320,11 +346,14 @@ ActiveRecord::Schema.define(version: 20180823132051) do
     t.boolean "remove_photo5"
     t.bigint "employee_id"
     t.bigint "location_id"
+    t.bigint "color_id"
+    t.index ["color_id"], name: "index_workorders_on_color_id"
     t.index ["employee_id"], name: "index_workorders_on_employee_id"
     t.index ["location_id"], name: "index_workorders_on_location_id"
     t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
 
+  add_foreign_key "additionals", "measurements"
   add_foreign_key "current_inventories", "delivery_inwards"
   add_foreign_key "current_inventories", "inward_products"
   add_foreign_key "current_inventories", "products"
@@ -351,6 +380,7 @@ ActiveRecord::Schema.define(version: 20180823132051) do
   add_foreign_key "users", "vendors"
   add_foreign_key "vendors", "locations"
   add_foreign_key "work_orders", "colors"
+  add_foreign_key "workorders", "colors"
   add_foreign_key "workorders", "employees"
   add_foreign_key "workorders", "locations"
   add_foreign_key "workorders", "vendors"
