@@ -56,8 +56,25 @@
 <% end %>
 </div>
     <%#= form.date_field :date, value: Date.today, :class => 'form-control' %>
-         
+         <% @darks = Color.where(dark: "Dark") %>
+         <% @lights = Color.where(light: "Light") %>
         <%= form.fields_for :fproducts do |w| %>
+
+        <label class="col-sm-1 control-label">Light Shades</label> 
+    <div class="col-md-2">
+      
+    <%= form.select :color_id, @lights.all.collect{|v| [v.code,v.id]},
+    {prompt:true},class: "form-control",id: :diff_id %>
+
+  </div>
+  <label class="col-sm-1 control-label">Dark Shades</label> 
+    <div class="col-md-2">
+      
+    <%= form.select :color_id, @darks.all.collect{|v| [v.code,v.id]},
+    {prompt:true},class: "form-control",id: :diff_id %>
+
+  </div>
+        
 
         <div class="form-group">
         
@@ -69,9 +86,10 @@
 
           
            <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "form-control" ,required: true%>
-          <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
+          <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf']),{prompt:true},class: "form-control"%>
         </div>
-        
+
+
          
         
           
@@ -100,15 +118,15 @@
         <% product = m.object.ftype %>
         
       <% if product == "Carcass Box" %>
-       <td>  <%= m.select :ftype, options_for_select([product,'Shutters','White BSL Shelf','Drawer','Hinges Patti']),{prompt:true},class: "select" %></td>
+       <td>  <%= m.select :ftype, options_for_select([product,'Shutters','White BSL Shelf','Drawer']),{prompt:true},class: "select" %></td>
        <% elsif product == "Shutters" %>
-       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Drawer','White BSL Shelf','Hinges Patti']),{prompt:true},class: "select" %></td>
+       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Drawer','White BSL Shelf']),{prompt:true},class: "select" %></td>
        <% elsif product == "White BSL Shelf" %>
-       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Shutters','Drawer','Hinges Patti']),{prompt:true},class: "select" %></td>
-       <% elsif product == "Hinges Patti" %>
-       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Shutters','Drawer','White BSL Shelf']),{prompt:true},class: "select" %></td>
+       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Shutters','Drawer']),{prompt:true},class: "select" %></td>
        <% elsif product == "Drawer" %>
-       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "select" %></td>
+       <td>  <%= m.select :ftype, options_for_select([product,'Carcass Box','Shutters','White BSL Shelf']),{prompt:true},class: "select" %></td>
+       <% else %>
+       <td>  <%= m.select :ftype, options_for_select(['Carcass Box','Shutters','Drawer','White BSL Shelf']),{prompt:true},class: "select" %></td>
 
        <% end %>
       
@@ -116,16 +134,20 @@
       
     
 
-      <td>  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)"%></td>
-      <% if m.object.ftype == "Carcass Box" %>
-       <td><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
-       <% end %>
-       <td><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%></td>
-       <% if m.object.ftype == "Carcass Box" %>
-       <td> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%></td>
-       <% end %>
-       <td> <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td>
-        <td><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
+      <td class="width">  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)"%></td>
+      <td class="wh" hidden="true">  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width/Height(mm)" , required: true%></td>
+      
+       <td class="depth"><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
+      
+       <td class="height"><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%></td>
+       
+       <td class="skirting"> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%></td>
+       <td class="vert"> <%= m.text_field :vertical, id: :work_order_vertical ,placeholder: "V(qty)",class: "form-control" %></td>
+       <td class="hor"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)",class: "form-control" %></td>
+      
+       <!-- <td> <%#= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td> -->
+        <td class="side"><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
+        <td class="bsl" hidden="true"><%= m.select :bsl_type,options_for_select(["Shelf","Vertical","Framing Patti","Other"]),{prompt: "BSL type"},id: :bsl_type_id,class: "form-control" %></td>
         <% if m.object.ftype == "Shutters" %>
         <td class="choose"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
         <%= m.check_box :handle, {}, "Yes", "No" %>Handle<br>
@@ -304,6 +326,7 @@
 
 
    ftype = $(this).val();
+  
    
    
    
@@ -324,7 +347,9 @@
    
   /*var product_id = $(this);*/
   elem = jQuery(this);
+  elemt = jQuery(this);
   var type = $(this).val();
+
 
   
 
@@ -332,30 +357,74 @@
   
 
     container = elem.parents("tr.fields");
-    container2 = elem.parents("tr.choose");
+   
     container3 = elem.parents("th.choose");
 
     container1 = elem.parents("th.fields");
     container.find("#work_order_width").focus();
-    if(type == "Shutters" || type == "White BSL Shelf" || type == "Hinges Patti"){
+    
       if(type == "Shutters")
     {
 
 
-      $('.choose').show();
+      container.find('.choose').show();
+      container.find('.depth').hide();
+      container.find('.skirting').hide();
+      container.find('.vert').hide();
+      container.find('.hor').hide();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
       
 
     }
-      container.find('.depth').hide();
+if(type == "White BSL Shelf"){
+  container.find('.choose').hide();
+      container.find('.depth').show();
       container.find('.skirting').hide();
+      container.find('.vert').hide();
+      container.find('.hor').hide();
+      container.find('.side').show();
+      container.find('.bsl').show();
+      container.find('.wh').show();
+      container.find('.width').hide();
+      container.find('.height').hide();
+
+
 
     }
+
 if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box") || (ftype == "Loft" && type == "Carcass Box") ){
      container.find('.vert').show();
       container.find('.hor').show();
       container.find('#work_order_vertical').addClass('form-control');
       container.find('#work_order_horizontal').addClass('form-control');
-     
+      container.find('.choose').hide();
+      container.find('.skirting').show();
+      container.find('.side').show();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.depth').show();
+      container.find('.wh').hide();
+
+
+    }
+
+    if(type == "Drawer"){
+      container.find('.vert').hide();
+      container.find('.hor').hide();
+      container.find('.choose').hide();
+      container.find('.skirting').hide();
+      container.find('.depth').show();
+      container.find('.side').hide();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+
+
     }
     
     
@@ -366,7 +435,6 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
 
   
   </script>
-
 <script type="text/javascript">
  
 $(document).on('nested:fieldAdded', function(event){
@@ -376,7 +444,9 @@ $(document).on('nested:fieldAdded', function(event){
   alert(vbvbvb);
 
   var selectField1 = field.find('#work_order_width');
+  var selectField2 = field.find('.select');
   selectField1.focus();
+  selectField2.addClass("form-control");
 }); 
 </script>
  

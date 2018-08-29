@@ -54,8 +54,24 @@
 <% end %>
 </div>
     <%#= form.date_field :date, value: Date.today, :class => 'form-control' %>
-         
+         <% @darks = Color.where(dark: "Dark") %>
+         <% @lights = Color.where(light: "Light") %>
+
         <%= form.fields_for :fproducts,@workorder.fproducts.build do |w| %>
+        <label class="col-sm-1 control-label">Light Shades</label> 
+    <div class="col-md-2">
+      
+    <%= form.select :color_id, @lights.all.collect{|v| [v.code,v.id]},
+    {prompt:true},class: "form-control",id: :diff_id %>
+
+  </div>
+  <label class="col-sm-1 control-label">Dark Shades</label> 
+    <div class="col-md-2">
+      
+    <%= form.select :color_id, @darks.all.collect{|v| [v.code,v.id]},
+    {prompt:true},class: "form-control",id: :diff_id %>
+
+  </div>
 
         <div class="form-group">
         
@@ -94,33 +110,46 @@
       
       <tr class="fields">
       
-       <td>  <%= m.select :ftype, options_for_select(['Carcass Box' ,'Drawer', 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control select" ,required: true%></td>
+       <td>  <%= m.select :ftype, options_for_select(['Carcass Box' ,'Drawer', 'Shutters','White BSL Shelf']),{prompt:true},class: "form-control select" ,required: true%></td>
       
      
       
     
 
-      <td>  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)" , required: true%></td>
+      <td class="width ">  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)" , required: true%></td>
+      <td class="wh" hidden="true">  <%= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width/Height(mm)" , required: true%></td>
+       
+       <td class="height"><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td>
+       <!-- <td style="display: inline-block;"><%#= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)" , required: true%><%#= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td> -->
        <td class="depth"><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
-       <td><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td>
-       <td class="skirting"> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(mm)"%></td>
+       <td class="skirting"> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(Height)"%></td>
        <td class="vert" hidden="true"> <%= m.text_field :vertical, id: :work_order_vertical ,placeholder: "V(qty)" %></td>
        <td class="hor" hidden="true"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)" %></td>
-       <td> <%= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td>
-        <td><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
+       <!-- <td> <%#= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td> -->
+        <td class="side"><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
+        <td class="bsl" hidden="true"><%= m.select :bsl_type,options_for_select(["Shelf","Vertical","Framing Patti","Other"]),{prompt: "BSL type"},id: :bsl_type_id,class: "form-control" %></td>
+
         <td class="choose" hidden="true"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
-        <%= m.check_box :handle, {}, "Yes", "No" %>Handle<br>
+        
         
         <%= m.check_box :handle_groove, {}, "Yes", "No" %>Handle Groove<br>
         
-        <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting</td>
+        <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
+        <%= m.check_box :handle, {}, "Yes", "No" %>Handle
+      </td>
 
 
         <td style="width: 8em;"><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" ,required: true%></td>
+        
+
+        <!-- <td><%#= link_to 'Add colors', add_workorders_path, {:remote => true, :class => "btn btn-warning", 'data-target' => "#exampleModalCenter", 'data-toggle' => "modal"} %></td> -->
+
         <td><%= m.link_to_remove "Remove",class: "btn btn-link" %></td>
     </tr>
     
     
+   
+
       
   </table>
       
@@ -130,6 +159,8 @@
   
   <% end %>
 </div>
+
+
 
 <div class="add_m">
 <p><%= w.link_to_add "Add Measurements", :measurements,class: "btn btn-warning btn-sm" %></p>
@@ -207,7 +238,61 @@
 </div>
 </section>
 
+ <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <% modal ||= false %>
+<% remote = modal ? true : false %>
+<% @colors = Color.all %>
+<div class="modal-dialog">    
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id="exampleModalCenterTitle">Add Color</h4>
+        </div>
+        <div class="modal-body">
+          <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <tr>
+              <%#= nested_form_for @workorder do |form| %>
+              <%= form_for :additional,url: {action: 'add' , controller: 'workorders'} do |form| %>
 
+<td>Right<%= form.check_box :right , {},"Yes" , "No" %></td>
+<%# @colors = Color.all %>
+<%# byebug %>
+<td><%= form.select :right_color , options_from_collection_for_select(@colors,"code","id"),{prompt: "Select Color"},class: "form-control"%></td>
+
+<td><%= form.check_box :right_dark, {} %>Dark</td>
+<td><%= form.check_box :right_light, {} %>Light</td>
+</tr>
+<tr>
+<td>Left<%= form.check_box :left , {},"Yes" , "No" %></td>
+<td><%= form.select :left_color , options_from_collection_for_select(@colors,"code","id"),{prompt: "Select Color"},class: "form-control"%></td>
+<td><%= form.check_box :left_dark, {} %>Dark</td>
+<td><%= form.check_box :left_light, {} %>Light</td>
+</tr>
+<tr>
+<td>Top<%= form.check_box :top , {},"Yes" , "No" %></td> 
+<td><%= form.select :top_color , options_from_collection_for_select(@colors,"code","id"),{prompt: "Select Color"},class: "form-control"%></td>
+<td><%= form.check_box :top_dark, {} %>Dark</td>
+<td><%= form.check_box :top_light, {} %>Light</td>
+</tr>
+<tr>
+<td>Bottom<%= form.check_box :bottom , {},"Yes" , "No" %></td>
+<td><%= form.select :bottom_color , options_from_collection_for_select(@colors,"code","id"),{prompt: "Select Color"},class: "form-control"%></td>
+<td><%= form.check_box :bottom_dark, {} %>Dark</td>
+<td><%= form.check_box :bottom_light, {} %>Light</td>
+</tr>
+</table>
+<%= form.submit "Submit" ,class: "btn btn-success",id: "submit" %>
+
+<% end %>
+</div>
+</div>
+</div>
+
+
+
+</div>
 
 <% content_for :javascript do %>
 <script type="text/javascript">
@@ -231,6 +316,7 @@
 
 
    ftype = $(this).val();
+  
    
    
    
@@ -265,25 +351,81 @@
 
     container1 = elem.parents("th.fields");
     container.find("#work_order_width").focus();
-    if(type == "Shutters" || type == "White BSL Shelf" || type == "Hinges Patti"){
+    
       if(type == "Shutters")
     {
 
 
       container.find('.choose').show();
+      container.find('.depth').hide();
+      container.find('.skirting').hide();
+      container.find('.vert').hide();
+      container.find('.hor').hide();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
       
 
     }
-      container.find('.depth').hide();
+if(type == "White BSL Shelf"){
+  container.find('.choose').hide();
+      container.find('.depth').show();
       container.find('.skirting').hide();
+      container.find('.vert').hide();
+      container.find('.hor').hide();
+      container.find('.side').show();
+      container.find('.bsl').show();
+      container.find('.wh').show();
+      container.find('.width').hide();
+      container.find('.height').hide();
+
+
 
     }
+
 if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box") || (ftype == "Loft" && type == "Carcass Box") ){
      container.find('.vert').show();
       container.find('.hor').show();
       container.find('#work_order_vertical').addClass('form-control');
       container.find('#work_order_horizontal').addClass('form-control');
-     
+      container.find('.choose').hide();
+      container.find('.skirting').show();
+      container.find('.side').show();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+
+
+    }
+
+    if(type == "Drawer"){
+      container.find('.vert').hide();
+      container.find('.hor').hide();
+      container.find('.choose').hide();
+      container.find('.skirting').hide();
+      container.find('.depth').show();
+      container.find('.side').hide();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+
+
+    }
+    if(type == "Carcass Box"){
+      
+      container.find('.choose').hide();
+      container.find('.skirting').show();
+      container.find('.side').show();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+
+
+
     }
     
     

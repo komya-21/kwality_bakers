@@ -97,7 +97,7 @@ table.qr-code td.white { background-color: #fff; }
 
 </style>
 <div class="centerdiv">
-<h3>Work Order</h3>
+<h3>Proforma Invoice</h3>
 </div>
 
 <div class="rightdiv">
@@ -117,20 +117,6 @@ table.qr-code td.white { background-color: #fff; }
     </div>
 
   
-    <table class="qr-code">
-<% @qr.modules.each_index do |x| %>
-
-  <tr>
-  <% @qr.modules.each_index do |y| %>
-   <% if @qr.dark?(x,y) %>
-    <td class="black"/>
-   <% else %>
-    <td class="white"/>
-   <% end %>
-  <% end %>
-  </tr>
-<% end %>
-</table>
 
 <br>
 <%= @workorder.order_no %>
@@ -175,10 +161,10 @@ table, th, td {
     <th>Horizontal</th>
     <th>Nos</th>
     <th>Sq.ft 18mm</th>
-    
+    <th>rate</th>
     <th>Sq.ft8mm(back)</th>
-    
-    
+    <th>rate</th>
+    <th>AMT</th>
   </tr>
    <% @carcass_measurements = f.measurements.where(ftype: u) %>
     <% @total_no = 0 %>
@@ -230,13 +216,14 @@ table, th, td {
 <% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
     <% @total_sqft += @sqft %>
    <td><%= @sqft.round(2) %></td>
-   
+   <td><%= c.rate if c.rate.present? %></td>
    <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
    <% @total_sqft_back += @sqft_back %>
    <td><%= @sqft_back.round(2) %></td>
-   
-   
-   
+   <td><%= c.back_rate if c.back_rate.present? %></td>
+   <% @tot_amt = (@sqft.round(2)*c.rate)+(@sqft_back.round(2)*c.back_rate) %>
+   <% @total_amount += @tot_amt %>
+   <td><%= @tot_amt.round(2) %></td>
  </tr>
 
 
@@ -249,16 +236,21 @@ table, th, td {
   <td><b><%= @total_no %></b></td>
   <td><b><%= @total_sqft.round(2) %></b></td>
   
-  
+  <td><b>-</b></td>
   <td><b><%= @total_sqft_back.round(2) %></b></td>
-  
+  <td><b>-</b></td>
+  <td><b>-</b></td>
   </tr>
   <tr>
-  <th colspan="9">Total Quantity(SQ.FEET):</th>
+  <th colspan="12">Total Quantity(SQ.FEET):</th>
   <td><b><%= (@total_sqft + @total_sqft_back).round(2) %></b></td>
   
   </tr>
+  <tr>
+  <th colspan="12">Total AMOUNT:</th>
+  <td><b><%= @total_amount.round(2) %></b></td>
   
+  </tr>
   <% end %>
   <% if u == "Drawer" %>
    <tr>
@@ -268,7 +260,8 @@ table, th, td {
     <th>H</th>
     <th>Nos</th>
     <th>Sq.ft</th>
-    
+    <th>rate</th>
+    <th>AMT</th>
   </tr>
   <% @drawer_measurements = f.measurements.where(ftype: u) %>
     <% @total_no = 0 %>
@@ -289,10 +282,11 @@ table, th, td {
    <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
    <% @total_sqft += @sqft %>
    <td><%= @sqft.round(2) %></td>
-   
+   <td><%= c.rate if c.rate.present? %></td>
   
-   
-   
+   <% @tot_amt = (@sqft.round(2)*c.rate) if c.rate.present? %>
+   <% @total_amount += @tot_amt %>
+   <td><%= @tot_amt.round(2) %></td>
  </tr>
  <% end %>
   <tr>
@@ -300,18 +294,23 @@ table, th, td {
   <td><b><%= @total_no %></b></td>
   <td><b><%= @total_sqft.round(2) %></b></td>
   
-  
+  <td><b>-</b></td>
+  <td><b><%#= @total_sqft_back.round(2) %></b></td>
   
   </tr>
   <tr>
-  <th colspan="5">Total Quantity(SQ.FEET):</th>
+  <th colspan="7">Total Quantity(SQ.FEET):</th>
   <td><b><%= @total_sqft.round(2) %></b></td>
   
   </tr>
+  <tr>
+  <th colspan="7">Total AMOUNT:</th>
+  <td><b><%= @total_amount.round(2) %></b></td>
   
+  </tr>
   <% end %>
 
-   <% if u == "Shutters" || u == "White BSL Shelf"  %>
+   <% if u == "Shutters" || u == "White BSL Shelf" || u =="Hinges Patti" %>
    <% if u == "Shutters" %>
    <tr>
     <th colspan="2">No</th>
@@ -323,7 +322,8 @@ table, th, td {
     <th>Handle</th>
     <th>Handle Groove</th>
     <th>Handle Fitting</th>
-    
+    <th>rate</th>
+    <th>AMT</th>
    </tr>
   <% else %>
    <tr>
@@ -332,7 +332,8 @@ table, th, td {
     <th colspan="2">H</th>
     <th>Nos</th>
     <th>Sq.ft</th>
-    
+    <th>rate</th>
+    <th>AMT</th>
     
   </tr>
    <% end %>
@@ -392,7 +393,12 @@ table, th, td {
    <% end %>
 
    
-  
+   <td><%= c.rate if c.rate.present? %></td>
+   <% @t_amt = (((@sqrft.round(2)+@g_area.round(2))*c.rate.round(2)))+@h_rate+@hg_rate+@hf_rate %>
+
+   <% @full_amt += @t_amt %>
+
+   <td><%= @t_amt.round(2) %></td>
    
    
   
@@ -405,7 +411,8 @@ table, th, td {
 
   <td><b><%= @tot_num %></b> </td>
   <td><b><%= @tot_sqrft.round(2) %></b></td>
-  
+  <td>-</td>
+  <td>-</td>
   
 
   </tr>
@@ -415,7 +422,12 @@ table, th, td {
  
 
   </tr>
-  
+  <tr>
+  <th colspan="9">Total AMOUNT:</th>
+  <td><b><%= @full_amt.round(2) %></b></td>
+ 
+
+  </tr>
   <% end %>
   <% end %>
  

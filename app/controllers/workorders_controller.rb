@@ -229,6 +229,18 @@ end
       end
     end
   end
+  def proforma_invoice
+    @workorder = Workorder.find(params[:id])
+    @qr = RQRCode::QRCode.new(@workorder.order_no, size: 4)
+    @rates = Rate.all
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "proforma_invoice.pdf.erb" 
+        response.headers['Content-Disposition'] = 'attachment;' "filename= \"#{@workorder.order_no}\".pdf"  # Excluding ".pdf" extension.
+      end
+    end
+  end
   def workorder_invoice
     @workorder = Workorder.find(params[:id])
     @rates = Rate.all
@@ -277,10 +289,70 @@ end
 
 
   end
+ 
+  def add
+    workorder = params[:workorder_id]
+    if params[:measurement_id] != nil
+
+
+      
+     m = params[:measurement_id]
+     id = m.to_i
+     right = params[:right]
+     right_color = params[:right_color]
+     right_dark = params[:right_dark]
+     right_light = params[:right_light]
+     left = params[:left]
+     left_color = params[:left_color]
+     left_dark = params[:left_dark]
+     left_light = params[:left_light]
+     top = params[:top]
+     top_color = params[:top_color]
+     top_dark = params[:top_dark]
+     top_light = params[:top_light]
+     bottom = params[:bottom]
+     bottom_color = params[:bottom_color]
+     bottom_dark = params[:bottom_dark]
+     bottom_light = params[:bottom_light]
+     
+
+
+
+     Additional.create(right: right , right_color: right_color,right_dark: right_dark,right_light: right_light,left: left , left_color: left_color,left_dark: left_dark,left_light: left_light,top: top , top_color: top_color,top_dark: top_dark,top_light: top_light,bottom: bottom , bottom_color: bottom_color,bottom_dark: bottom_dark,bottom_light: bottom_light,measurement_id: id)
+
+    end
+
+redirect_to workorder_path(workorder)
+ end
+
+def addition
+
+  @colors = Color.all
+  m = params[:measurement_id]
+
+  @workorder = params[:workorder_id]
+  @additional = Additional.find_by(measurement_id: m)
+
+
+  #@additional = Additional.find_by(measurement_id: params[:measurement_id])
+end
+
+def update_additional
+  m_id = params[:measurement_id]
+  w_id = params[:workorder_id]
+
+  @additional = Additional.find_by(measurement_id: m_id)
+  @additional.update(additional_params)
+  redirect_to workorder_path(w_id)
+ 
+  
+end
+
   def order_status
     @employee_workorders = EmployeesWorkorder.all
     @workorders = Workorder.all
   end
+
   def workorder_status
     @workorder = Workorder.find(params[:id])
     @employee_workorder = EmployeesWorkorder.find_by(workorder_id: params[:id])
@@ -294,7 +366,10 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:order_no ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
+     params.require(:workorder).permit(:order_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
 
    end
+   def additional_params
+    params.require(:additional).permit(:right,:right_color,:right_dark,:right_light,:left,:left_color,:left_dark,:left_light,:top,:top_color,:top_dark,:top_light,:bottom,:bottom_color,:bottom_dark,:bottom_light,:measurement_id)
  end
+end

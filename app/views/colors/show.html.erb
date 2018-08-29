@@ -18,6 +18,11 @@
   <strong>Code:</strong>
   <%= @color.price if @color.price.present? %>
 </p>
+<p>
+  <strong>Shade:</strong>
+  <%= @color.light if @color.light.present? %>
+  <%= @color.dark if @color.dark.present? %>
+</p>
 
 <%= link_to 'Edit', edit_color_path(@color),class: "btn btn-link" %> |
 <%= link_to 'Back', colors_path,class: "btn btn-link" %>
