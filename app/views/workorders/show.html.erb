@@ -46,8 +46,9 @@
               <th>Handle Fitting</th>
               <% end %>
               <% end %> 
-              <th>Additional</th>
+              
               <th>BSL type</th>
+              <th>Additional</th>
             </tr>
           </thead>
           <tbody>
@@ -57,7 +58,11 @@
 
               <%= hidden_field_tag :m_id , m.id  %>
               <td><%= m.ftype %></td>
+              <% if m.ftype == "White BSL Shelf" %>
+              <td><%= m.wh %></td>
+              <% else %>
               <td><%= m.width %></td>
+              <% end %>
               <td><%= m.height %></td>
               <td><%= m.depth %></td>
              <td><%= m.skirting %></td>

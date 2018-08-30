@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180830052504) do
+ActiveRecord::Schema.define(version: 20180830065403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,6 +206,7 @@ ActiveRecord::Schema.define(version: 20180830052504) do
     t.bigint "rate_id"
     t.float "back_rate"
     t.string "bsl_type"
+    t.string "wh"
     t.index ["color_id"], name: "index_measurements_on_color_id"
     t.index ["fproduct_id"], name: "index_measurements_on_fproduct_id"
     t.index ["rate_id"], name: "index_measurements_on_rate_id"
