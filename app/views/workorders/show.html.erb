@@ -47,6 +47,7 @@
               <% end %>
               <% end %> 
               <th>Additional</th>
+              <th>BSL type</th>
             </tr>
           </thead>
           <tbody>
@@ -70,6 +71,9 @@
               <td><%= m.handle_groove %></td>
               <td><%= m.handle_fitting %></td>
 
+              <% end %>
+              <% if m.ftype == "White BSL Shelf" %>
+              <td><%= m.bsl_type if m.bsl_type.present? %></td>
               <% end %>
               <% if m.ftype == "Carcass Box" %>
 
