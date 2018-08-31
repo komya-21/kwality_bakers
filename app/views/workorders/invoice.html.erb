@@ -312,7 +312,7 @@ table, th, td {
 
 
 
-   <% if u == "Shutters" || u == "White BSL Shelf" || u =="Hinges Patti" %>
+   <% if u == "Shutters" || u == "White BSL Shelf" %>
    <tr>
     <th>No</th>
     
@@ -342,7 +342,13 @@ table, th, td {
    <% @shutter_measurements.each do |c| %>
    <% @j += 1 %>
   <% @tot_num += c.quantity %>
+  <% if u == "White BSL Shelf" %>
+
+  <% @sqrft = ((c.wh.to_f * c.depth)/92903)*c.quantity %>
+  <% else %>
+
    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
+   <% end %>
    
    <% @tot_sqrft += @sqrft %>
    <% @t_amt = (@sqrft * c.rate).round(2) %>

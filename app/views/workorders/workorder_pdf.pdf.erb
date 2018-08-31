@@ -329,7 +329,7 @@ table, th, td {
    <tr>
     <th colspan="2">No</th>
     <th colspan="2">W</th>
-    <th colspan="2">H</th>
+    <th colspan="2">D</th>
     <th>Nos</th>
     <th>Sq.ft</th>
     
@@ -378,10 +378,20 @@ table, th, td {
    <% @i += 1 %>
    <tr>
    <td colspan="2"><%= @i %></td>
+   <% if u == "White BSL Shelf" %>
+   <td colspan="2"><%= c.wh %></td>
+   <td colspan="2"><%= c.depth %></td>
+   <% else %>
    <td colspan="2"><%= c.width %></td>
    <td colspan="2"><%= c.height %></td>
+   <% end %>
+   
    <td><%= c.quantity %></td>
+   <% if u == "White BSL Shelf" %>
+   <% @sqrft = ((c.wh.to_f*c.depth)/92903)*c.quantity %>
+   <% else %>
    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
+   <% end %>
    <td><%= @sqrft.round(2) %></td>
    <% @tot_sqrft += @sqrft %>
    <% if u == "Shutters" %>

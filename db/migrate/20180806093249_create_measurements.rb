@@ -13,7 +13,7 @@ class CreateMeasurements < ActiveRecord::Migration[5.1]
       t.integer :vertical
       t.integer :center
       t.string :total
-
+     
       t.timestamps
     end
   end
