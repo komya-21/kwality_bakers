@@ -146,7 +146,7 @@
        <td class="hor"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)",class: "form-control" %></td>
       
        <!-- <td> <%#= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td> -->
-        <td class="side"><%= m.select :side,options_for_select(['Right', 'Left','Top','Bottom','LR','TB']),{prompt:true},id: :side_id,class: "form-control" %></td>
+        <td class="side" hidden="true"><%= m.select :side,options_for_select(["Yes","No"]),{prompt:true},id: :side_id,class: "form-control" %></td>
         <td class="bsl" hidden="true"><%= m.select :bsl_type,options_for_select(["Shelf","Vertical","Framing Patti","Other"]),{prompt: "BSL type"},id: :bsl_type_id,class: "form-control" %></td>
         <% if m.object.ftype == "Shutters" %>
         <td class="choose"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
@@ -376,6 +376,7 @@
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
+      container.find('.side').hide();
       
 
     }
@@ -385,7 +386,7 @@ if(type == "White BSL Shelf"){
       container.find('.skirting').hide();
       container.find('.vert').hide();
       container.find('.hor').hide();
-      container.find('.side').show();
+      container.find('.side').hide();
       container.find('.bsl').show();
       container.find('.wh').show();
       container.find('.width').hide();
@@ -426,6 +427,22 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
 
 
     }
+
+    if(type == "Carcass Box"){
+      
+      container.find('.choose').hide();
+      container.find('.skirting').show();
+      container.find('.side').show();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+
+
+
+    }
+    
+
     
     
 

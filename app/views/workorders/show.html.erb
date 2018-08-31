@@ -4,145 +4,138 @@
       <div class=" panel panel-info">
         <div class="panel-body">
           <div align="right">
+            <!-- Links to download pdfs -->
             <%= link_to 'Download Pro-forma Invoice ',proforma_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>|
-            <%= link_to 'Download Workorder PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%> |
-            <%#= link_to 'Generate Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>
-           
+            <%= link_to 'Download Workorder PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%>
             <%= link_to 'View Invoice',invoice_workorder_path(@workorder),class: "btn btn-danger" %>
+            <!-- End of links -->
+          </div><br>
+  <p>
+    <strong>Order No.:</strong>
+    <%= @workorder.order_no if @workorder.order_no.present? %><br>
+    <strong>Date:</strong>
+    <%= @workorder.date if @workorder.date.present? %>
+  </p>        
+          
+  <% @workorder.fproducts.each do |f| %>
+  <b><u><%= f.product %></u></b>
+  <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Width</th>
+        <th>Height</th>
+        <th>Depth</th>
+        <th>Skirting</th>
+        <th>Horizontal</th>
+        <th>Vertical</th>
+        <th>Quantity</th>
+        <th>Glass Shutter</th>
+        <th>Handle</th>
+        <th>Handle Groove</th>
+        <th>Handle Fitting</th>
+        <th>BSL type</th>
+        <th>Additional</th>
+      </tr>
+    </thead>
+    <tbody>
+       <% f.measurements.each do |m| %>
+      <tr class="data">
+        <%= hidden_field_tag :m_id , m.id  %>
+        <td><%= m.ftype %></td>
+        <% if m.ftype == "White BSL Shelf" %>
+        <td><%= m.wh %></td>
+        <% else %>
+        <td><%= m.width %></td>
+        <% end %>
+        <td><%= m.height %></td>
+        <% if m.ftype == "Carcass Box" || m.ftype == "Drawer" || m.ftype == "White BSL Shelf  " %>
+        <td><%= m.depth %></td>
+        <% else %>
+        <td>NA</td>
+        <% end %>
+        <% if m.ftype == "Carcass Box" %>
+        <td><%= m.skirting %></td>
+        <td><%= m.horizontal %></td>
+        <td><%= m.vertical %></td>
+        <% else %>
+        <td>NA</td>
+        <td>NA</td>
+        <td>NA</td>
+        <% end %>
+        <td><%= m.quantity %></td>
+        <% if m.ftype == "Shutters" %>
+        <td><%= m.glass_shutter %></td>
+        <td><%= m.handle %></td>
+        <td><%= m.handle_groove %></td>
+        <td><%= m.handle_fitting %></td>
+        <% else %>
+        <td>NA</td>
+        <td>NA</td>
+        <td>NA</td>
+        <td>NA</td>
+        <% end %>
+        <% if m.ftype == "White BSL Shelf" %>
+        <td><%= m.bsl_type if m.bsl_type.present? %></td>
+        <% else %>
+        <td>NA</td>
+        <% end %>
+        <% if m.ftype == "Carcass Box" %>
+        <% if !Additional.find_by(measurement_id: m.id).present? %>
+            <% if m.side == "Yes" %>
+              <td><button name="subject" type="submit" value="HTML" class="btn btn-success" data-target="#exampleModalCenter" data-toggle="modal" id="add_color">Add Color</button></td>
+            <% else %>
+              <td></td>
+            <% end %>
+        <% else %>
+          <td><%= link_to "Additionals" , addition_workorders_path(measurement_id: m.id,workorder_id: @workorder.id) %></td>
+        <% end%>
+        <% end %>
+    </tr>
+    <% end %>
 
-          </div>
-          <br>
-          <p>
-            <strong>Order No.:</strong>
-            <%= @workorder.order_no if @workorder.order_no.present? %><br>
-            <strong>Date:</strong>
-            <%= @workorder.date if @workorder.date.present? %>
+  </tbody>
+</table>
+  <% end %>
 
-
-
-
-          </p>
-          <% @workorder.fproducts.each do |f| %>
-          <b><u><%= f.product %></u></b>
-
-          <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-           <thead>
-            <tr>
-
-
-              <th>Type</th>
-              <th>Width</th>
-              <th>Height</th>
-              <th>Depth</th>
-              <th>Skirting</th>
-              <th>Horizontal</th>
-              <th>Vertical</th>
-              <th>Quantity</th>
-              <% f.measurements.each do |m| %>
-              <% if m.ftype == "Shutters" %>
-              <th>Glass Shutter</th>
-              <th>Handle</th>
-              <th>Handle Groove</th>
-              <th>Handle Fitting</th>
-              <% end %>
-              <% end %> 
-              
-              <th>BSL type</th>
-              <th>Additional</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%# @workorder.fproducts.each_with_index do |f,i| %>
-            <% f.measurements.each do |m| %>
-            <tr class="data">
-
-              <%= hidden_field_tag :m_id , m.id  %>
-              <td><%= m.ftype %></td>
-              <% if m.ftype == "White BSL Shelf" %>
-              <td><%= m.wh %></td>
-              <% else %>
-              <td><%= m.width %></td>
-              <% end %>
-              <td><%= m.height %></td>
-              <td><%= m.depth %></td>
-             <td><%= m.skirting %></td>
-              <td><%= m.horizontal %></td>
-              <td><%= m.vertical %></td>
-
-              <td><%= m.quantity %></td>
-              <% if m.ftype == "Shutters" %>
-              <td><%= m.glass_shutter %></td>
-              <td><%= m.handle %></td>
-              <td><%= m.handle_groove %></td>
-              <td><%= m.handle_fitting %></td>
-
-              <% end %>
-              <% if m.ftype == "White BSL Shelf" %>
-              <td><%= m.bsl_type if m.bsl_type.present? %></td>
-              <% end %>
-              <% if m.ftype == "Carcass Box" %>
-
-              <% if !Additional.find_by(measurement_id: m.id).present? %>
-              <td>
-              
-              <button name="subject" type="submit" value="HTML" class="btn btn-success" data-target="#exampleModalCenter" data-toggle="modal" id="add_color">Add Color</button></td>
-              <% else %>
-              <td><%= link_to "Additionals" , addition_workorders_path(measurement_id: m.id,workorder_id: @workorder.id) %></td>
-              <% end%>
-              <% end %>
-            </tr>
+<%= image_tag  @workorder.photo1.url ,width: "160",height: "160" if @workorder.photo1.present? %>
+<%= image_tag  @workorder.photo2.url ,width: "160",height: "160" if @workorder.photo2.present?%>
+<%= image_tag  @workorder.photo3.url ,width: "160",height: "160" if @workorder.photo3.present?%>
+<%= image_tag  @workorder.photo4.url ,width: "160",height: "160" if @workorder.photo4.present?%>
+<%= image_tag  @workorder.photo5.url ,width: "160",height: "160" if @workorder.photo5.present?%>
+<br>
+<% if current_user.role == "Employee" %>
+  <div id="chronoExample">
+  <div>
+  <% if @employee1.present? || @employee2.present? || @employee3.present? || @employee4.present? %>
+  <% if @employee1.present? %>
+  <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
+  <% elsif @employee2.present? %>
+  <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
+  <% elsif @employee3.present? %>
+  <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
+            <% elsif @employee4.present? %>
+            <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
+            <% end %>
             <% end %>
 
-          </tbody>
-        </table>
-        <% end %>
-        <%= image_tag  @workorder.photo1.url ,width: "160",height: "160" if @workorder.photo1.present? %>
-        <%#= link_to "Download", @workorder.photo1.url(:original, false) %>
 
 
-        <%= image_tag  @workorder.photo2.url ,width: "160",height: "160" if @workorder.photo2.present?%>
-        <%= image_tag  @workorder.photo3.url ,width: "160",height: "160" if @workorder.photo3.present?%>
-        <%= image_tag  @workorder.photo4.url ,width: "160",height: "160" if @workorder.photo4.present?%>
-        <%= image_tag  @workorder.photo5.url ,width: "160",height: "160" if @workorder.photo5.present?%>
-        <br>
+            <button class="startButton" style="color: green;">Start Work</button>
 
 
-
-        <% if current_user.role == "Employee" %>
-
-        <div id="chronoExample">
-         <!--  <div class="values" style="font-size: 150%"><b>00:00:00</b></div> -->
-         <div>
-          <% if @employee1.present? || @employee2.present? || @employee3.present? || @employee4.present? %>
-          <% if @employee1.present? %>
-          <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
-          <% elsif @employee2.present? %>
-
-          <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
-          <% elsif @employee3.present? %>
-          <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
-          <% elsif @employee4.present? %>
-          <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
-          <% end %>
-          <% end %>
-
-
-          
-          <button class="startButton" style="color: green;">Start Work</button>
-         
-          
-          <button class="holdButton"  style="color: orange;">Hold Work</button>
-          <!-- <button class="pauseButton" style="color: orange;">Pause</button> -->
-          <button class="stopButton"  style="color: red;">Stop Work</button>
-          
+            <button class="holdButton"  style="color: orange;">Hold Work</button>
+            <!-- <button class="pauseButton" style="color: orange;">Pause</button> -->
+            <button class="stopButton"  style="color: red;">Stop Work</button>
 
 
 
 
 
-          <%#= link_to "Stop" , student_detail_path(:param1 => timer.getTimeValues().toString , :id => @student_detail.id) %>
 
-          <%#=link_to 'Deactivate', centers_path(:param1 => false, :id => center.id),style: 'color: red'%>
+            <%#= link_to "Stop" , student_detail_path(:param1 => timer.getTimeValues().toString , :id => @student_detail.id) %>
+
+            <%#=link_to 'Deactivate', centers_path(:param1 => false, :id => center.id),style: 'color: red'%>
 <!--         <button class="stopButton">Stop</button>
 -->        <!-- <button class="resetButton" style="color: blue;">Reset</button> -->
 </div> 
@@ -152,417 +145,462 @@
 <% if current_user.role == "SuperAdmin" || current_user.role == "Vendor" %>
 <%= link_to 'Edit', edit_workorder_path(@workorder),class: "btn btn-warning " %>| 
 <% end %>
-<%= link_to 'Back', workorders_path,class: "btn btn-warning " %>
+<%= link_to 'Back', workorders_path,class: "btn btn-warning ",id: "back" %>
 </div>
 </div>
 </div>
 </div>
 </section>
- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
   <% modal ||= false %>
-<% remote = modal ? true : false %>
-<% @colors = Color.all %>
-<div class="modal-dialog">    
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="exampleModalCenterTitle">Add Color</h4>
-        </div>
-        <div class="modal-body">
-          <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <tr class="measurements">
-              <%#= nested_form_for @workorder do |form| %>
-              <%= form_for :additional ,url: {controller: "workorders",action: "add",workorder_id: @workorder.id} do |form| %>
-
-
-<td>Right&nbsp;&nbsp;<%= form.check_box :right , {},"Yes" , "No" %></td>
-<%# @colors = Color.all %>
-<%# byebug %>
-<td><%= form.select :right_color , Color.all.collect{|c| [c.code,c.id]},{prompt: "Select Color"},class: "form-control"%></td>
-<td><%= form.check_box :right_dark, {},"Yes","No" %>Dark</td>
-<td><%= form.check_box :right_light, {},"Yes","No" %>Light</td>
-</tr>
-<tr>
-<td>Left&nbsp;&nbsp;<%= form.check_box :left , {},"Yes" , "No" %></td>
-<td><%= form.select :left_color ,Color.all.collect{|c| [c.code,c.id]},{prompt: "Select Color"},class: "form-control"%></td>
-<td><%= form.check_box :left_dark, {},"Yes","No" %>Dark</td>
-<td><%= form.check_box :left_light, {},"Yes","No" %>Light</td>
-</tr>
-<tr>
-<td>Top&nbsp;&nbsp;<%= form.check_box :top , {},"Yes" , "No" %></td> 
-<td><%= form.select :top_color , Color.all.collect{|c| [c.code,c.id]},{prompt: "Select Color"},class: "form-control"%></td>
-<td><%= form.check_box :top_dark, {},"Yes","No" %>Dark</td>
-<td><%= form.check_box :top_light, {},"Yes","No" %>Light</td>
-</tr>
-<tr>
-<td>Bottom&nbsp;&nbsp;<%= form.check_box :bottom , {},"Yes" , "No" %></td>
-<td><%= form.select :bottom_color , Color.all.collect{|c| [c.code,c.id]},{prompt: "Select Color"},class: "form-control"%></td>
-<td><%= form.check_box :bottom_dark, {},"Yes","No" %>Dark</td>
-<td><%= form.check_box :bottom_light, {},"Yes","No" %>Light</td>
-</tr>
-</table>
-
-<%= form.submit "Submit" ,class: "btn btn-success",id: "submit"%>
-
-<% end %>
-</div>
-</div>
-</div>
-
-
-
-<% content_for :javascript do %>
-<!-- <script src="/assets/easytimer.js"></script> -->
-
-<script type="text/javascript">
-
-  /*var timer = new Timer();*/
-
-  $('#chronoExample .startButton').click(function () {
-
-    /*timer.start();*/
-    var currentdate = new Date(); 
-    var datetime = "Started Working: " + currentdate.getDate() + "/"
-    + (currentdate.getMonth()+1)  + "/" 
-    + currentdate.getFullYear() + " @ "  
-    + currentdate.getHours() + ":"  
-    + currentdate.getMinutes() + ":" 
-    + currentdate.getSeconds();
-    alert(datetime);
-    var workorder_id = <%= @workorder.id%>;
-
-    <%if @employee1.present? %>
-    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
-    <% if @work.status == "Pending" || @work.status == "Hold" %>
-    
-    var employee_id = <%= @employee1.id%>;
-    <% end %>
-    <% end %>
-
-    <%if @employee2.present? %>
-    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
-    <% if @work.status == "Pending" || @work.status == "Hold" %>
-    
-    var employee_id = <%= @employee2.id%>;
-    <% end %>
-    <% end %>
-    <%if @employee3.present? %>
-
-    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
-    <% if @work.status == "Pending" || @work.status == "Hold" %>
-    
-    var employee_id = <%= @employee3.id%>;
-    <% end %>
-    <% end %>
-    <%if @employee4.present? %>
-    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
-    <% if @work.status == "Pending" || @work.status == "Hold" %>
-    
-    var employee_id = <%= @employee4.id%>;
-    <% end %>
-    <% end %>
+  <% remote = modal ? true : false %>
+  <% @colors = Color.all %>
+  <div class="modal-dialog">    
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="exampleModalCenterTitle">Add Color</h4>
+      </div>
+      <div class="modal-body">
+        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+          <tr class="measurements">
+            <%#= nested_form_for @workorder do |form| %>
+            <%= form_for :additional ,url: {controller: "workorders",action: "add",workorder_id: @workorder.id} do |form| %>
 
 
-    
+            <td>Right&nbsp;&nbsp;<%= form.check_box :right , {class: "right"},"Yes" , "No" %></td>
+            <%# @colors = Color.all %>
+            <%# byebug %>
+            <td><%= form.check_box :right_dark, {:class => "chb"},"Yes","No"%>Dark
+            <%= form.check_box :right_light, {:class => "chb"},"Yes","No" %>Light</td>
+          </tr>
+          <tr>
+            <td>Left&nbsp;&nbsp;<%= form.check_box :left , {class: "left"},"Yes" , "No" %></td>
 
-    $.ajax({
-     url: "/workorders/order_report",
-     type: 'post',
-     dataType: 'json',
+            <td><%= form.check_box :left_dark, {:class => "chb1"},"Yes","No" %>Dark
+            <%= form.check_box :left_light, {:class => "chb1"},"Yes","No" %>Light</td>
+          </tr>
+          <tr>
+            <td>Top&nbsp;&nbsp;<%= form.check_box :top , {class: "top"},"Yes" , "No" %></td> 
 
-     data: { starttime: datetime ,employee_id: employee_id,workorder_id: workorder_id}
+            <td><%= form.check_box :top_dark, {:class => "chb2"},"Yes","No" %>Dark
+            <%= form.check_box :top_light, {:class => "chb2"},"Yes","No" %>Light</td>
+          </tr>
+          <tr>
+            <td>Bottom&nbsp;&nbsp;<%= form.check_box :bottom , {class: "bottom"},"Yes" , "No" %></td>
 
-     
+            <td><%= form.check_box :bottom_dark, {:class => "chb3"},"Yes","No" %>Dark
+            <%= form.check_box :bottom_light, {:class => "chb3"},"Yes","No" %>Light</td>
+          </tr>
+        </table>
 
-   });
+        <%= form.submit "Submit" ,class: "btn btn-success",id: "submit"%>
 
-    $('#chronoExample .startButton').hide();
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-    
-  });
-</script>
 
 
-<script type="text/javascript">
+  <% content_for :javascript do %>
+  <!-- <script src="/assets/easytimer.js"></script> -->
 
-  $('#chronoExample .stopButton').on("click" ,function () {
+  <script type="text/javascript">
 
+    /*var timer = new Timer();*/
 
-    var currentdate = new Date(); 
+    $('#chronoExample .startButton').click(function () {
 
-    var datetime = "Completed Working: " + currentdate.getDate() + "/"
-    + (currentdate.getMonth()+1)  + "/" 
-    + currentdate.getFullYear() + " @ "  
-    + currentdate.getHours() + ":"  
-    + currentdate.getMinutes() + ":" 
-    + currentdate.getSeconds();
-    alert(datetime);
-    var workorder_id = <%= @workorder.id%>;
+      /*timer.start();*/
+      var currentdate = new Date(); 
+      var datetime = "Started Working: " + currentdate.getDate() + "/"
+      + (currentdate.getMonth()+1)  + "/" 
+      + currentdate.getFullYear() + " @ "  
+      + currentdate.getHours() + ":"  
+      + currentdate.getMinutes() + ":" 
+      + currentdate.getSeconds();
+      alert(datetime);
+      var workorder_id = <%= @workorder.id%>;
 
-    <%if @employee1.present? %>
-    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
-    <% if @work.status == "Working" %>
-    
-    var employee_id = <%= @employee1.id%>;
-    <% end %>
-    <% end %>
+      <%if @employee1.present? %>
+      <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
+      <% if @work.status == "Pending" || @work.status == "Hold" %>
 
-    <%if @employee2.present? %>
-    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
-    <% if @work.status == "Working" %>
-    
-    var employee_id = <%= @employee2.id%>;
-    <% end %>
-    <% end %>
-    <%if @employee3.present? %>
-    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
-    <% if @work.status == "Working" %>
-    
-    var employee_id = <%= @employee3.id%>;
-    <% end %>
-    <% end %>
-    <%if @employee4.present? %>
-    <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
-    <% if @work.status == "Working" %>
-    
-    var employee_id = <%= @employee4.id%>;
-    <% end %>
-    <% end %>
+      var employee_id = <%= @employee1.id%>;
+      <% end %>
+      <% end %>
 
-    $.ajax({
-     url: "/workorders/end_time",
-     type: 'post',
-     dataType: 'json',
+      <%if @employee2.present? %>
+      <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
+      <% if @work.status == "Pending" || @work.status == "Hold" %>
 
-     data: { endtime: datetime ,employee_id: employee_id,workorder_id: workorder_id}
+      var employee_id = <%= @employee2.id%>;
+      <% end %>
+      <% end %>
+      <%if @employee3.present? %>
 
-     
+      <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
+      <% if @work.status == "Pending" || @work.status == "Hold" %>
 
-   });
+      var employee_id = <%= @employee3.id%>;
+      <% end %>
+      <% end %>
+      <%if @employee4.present? %>
+      <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
+      <% if @work.status == "Pending" || @work.status == "Hold" %>
 
-    
-  });
+      var employee_id = <%= @employee4.id%>;
+      <% end %>
+      <% end %>
 
 
 
 
+      $.ajax({
+       url: "/workorders/order_report",
+       type: 'post',
+       dataType: 'json',
 
+       data: { starttime: datetime ,employee_id: employee_id,workorder_id: workorder_id}
 
 
-</script>
 
-<script type="text/javascript">
+     });
 
-  $('#chronoExample .holdButton').on("click" ,function () {
+      $('#chronoExample .startButton').hide();
 
 
-
-   var workorder_id = <%= @workorder.id%>;
-
-   <%if @employee1.present? %>
-   <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
-   <% if @work.status == "Working" %>
-
-   var employee_id = <%= @employee1.id%>;
-   <% end %>
-   <% end %>
-
-   <%if @employee2.present? %>
-   <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
-   <% if @work.status == "Working" %>
-
-   var employee_id = <%= @employee2.id%>;
-   <% end %>
-   <% end %>
-   <%if @employee3.present? %>
-   <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
-   <% if @work.status == "Working" %>
-
-   var employee_id = <%= @employee3.id%>;
-   <% end %>
-   <% end %>
-   <%if @employee4.present? %>
-   <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
-   <% if @work.status == "Working" %>
-
-   var employee_id = <%= @employee4.id%>;
-   <% end %>
-   <% end %>
-
-   $.ajax({
-     url: "/workorders/status_update",
-     type: 'post',
-     dataType: 'json',
-
-     data: { status: "Hold" ,employee_id: employee_id,workorder_id: workorder_id}
-
-     
-
-   });
-
-
- });
-
-
-
-
-
-
-
-</script>
-
-
-<script type="text/javascript">
-    // $(document).ready(function(){
-    //   ("#")
-    // })
-     var a;
-      $("table tr").on("click", '#add_color', function() {
-      
-      
-      
-
-      var elem = jQuery(this);
-      container = elem.parents("tr.data");
-     
-      /*container1 = elem.parents("tr.fields1");
-      container2 = elem.parents("tr.fields2");*/
-       a = container.find("#m_id").val();
-     
-      
-      /*$.ajax({
-            url: "/workorders/add",
-            type: 'POST',
-            dataType: 'json',
-            data: {measurement_id: a}
-          });*/
-     /* var b = container1.find("#id").val();
-      var c = container2.find("#id").val();
-      var bk = container.find("#back_rate").val();
-      var k = container.find("#rate").val();
-      var l = container2.find("#rate").val();
-      var m = container1.find("#rate").val();*/
-      
-
-});
-
-      $(document).on("click" ,"#submit" , function(){
-        
-        var right_color = $("#additional_right_color").val();
-        var workorder = <%= @workorder.id %>;
-
-        
-
-        if($("#additional_right").prop('checked') == true){
-          var right = $("#additional_right").val();
-          
-          var right_color = $("#additional_right_color").val();
-         
-          
-          if($("#additional_right_dark").prop('checked') == true){
-            var right_dark = $("#additional_right_dark").val();
-            }
-            else if($("#additional_right_light").prop('checked') == true){
-              var right_light = $("#additional_right_light").val();
-      
-
-      }
-
-      
-         
-         
-        }
-        if($("#additional_left").prop('checked') == true){
-          var left = $("#additional_left").val();
-          var left_color = $("#additional_left_color").val();
-         
-          
-          if($("#additional_left_dark").prop('checked') == true){
-            var left_dark = $("#additional_left_dark").val();
-            }
-            else if($("#additional_left_light").prop('checked') == true){
-              var left_light = $("#additional_left_light").val();
-
-      
-
-      }
-
-      
-         
-         
-        }
-        if($("#additional_top").prop('checked') == true){
-          var top = $("#additional_top").val();
-          var top_color = $("#additional_top_color").val();
-         
-          
-          if($("#additional_top_dark").prop('checked') == true){
-            var top_dark = $("#additional_top_dark").val();
-            }
-            else if($("#additional_top_light").prop('checked') == true){
-              var top_light = $("#additional_top_light").val();
-
-      
-
-      }
-
-      
-         
-         
-        }
-        if($("#additional_bottom").prop('checked') == true){
-          var bottom = $("#additional_bottom").val();
-          var bottom_color = $("#additional_bottom_color").val();
-         
-          
-          if($("#additional_bottom_dark").prop('checked') == true){
-            var bottom_dark = $("#additional_bottom_dark").val();
-            }
-            else if($("#additional_bottom_light").prop('checked') == true){
-              var bottom_light = $("#additional_bottom_light").val();
-
-      
-
-      }
-
-      
-         
-         
-        }
-
-
-        $.ajax({
-            url: "/workorders/add",
-            type: 'POST',
-            dataType: 'json',
-            data: {measurement_id: a,right: right,right_color: right_color,right_dark: right_dark,right_light: right_light,left: left,left_color: left_color,left_dark: left_dark,left_light: left_light,top: top,top_color: top_color,top_dark: top_dark,top_light: top_light,bottom: bottom,bottom_color: bottom_color,bottom_dark: bottom_dark,bottom_light: bottom_light,workorder_id: workorder}
-          });
-
-
-
-      });
-
-       
-     /* var price = $(this).val();
-
-      
-      
-          $.ajax({
-            url: "/workorders/edit_rate",
-            type: 'POST',
-            dataType: 'json',
-            data: {rate: [k,l,m],id: [a,b,c],back_rate: bk}
-          });
- 
-
-    
-
-     
-  });*/
+    });
   </script>
 
-<% end %>
+
+  <script type="text/javascript">
+
+    $('#chronoExample .stopButton').on("click" ,function () {
+
+
+      var currentdate = new Date(); 
+
+      var datetime = "Completed Working: " + currentdate.getDate() + "/"
+      + (currentdate.getMonth()+1)  + "/" 
+      + currentdate.getFullYear() + " @ "  
+      + currentdate.getHours() + ":"  
+      + currentdate.getMinutes() + ":" 
+      + currentdate.getSeconds();
+      alert(datetime);
+      var workorder_id = <%= @workorder.id%>;
+
+      <%if @employee1.present? %>
+      <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
+      <% if @work.status == "Working" %>
+
+      var employee_id = <%= @employee1.id%>;
+      <% end %>
+      <% end %>
+
+      <%if @employee2.present? %>
+      <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
+      <% if @work.status == "Working" %>
+
+      var employee_id = <%= @employee2.id%>;
+      <% end %>
+      <% end %>
+      <%if @employee3.present? %>
+      <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
+      <% if @work.status == "Working" %>
+
+      var employee_id = <%= @employee3.id%>;
+      <% end %>
+      <% end %>
+      <%if @employee4.present? %>
+      <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
+      <% if @work.status == "Working" %>
+
+      var employee_id = <%= @employee4.id%>;
+      <% end %>
+      <% end %>
+
+      $.ajax({
+       url: "/workorders/end_time",
+       type: 'post',
+       dataType: 'json',
+
+       data: { endtime: datetime ,employee_id: employee_id,workorder_id: workorder_id}
+
+
+
+     });
+
+
+    });
+
+
+
+
+
+
+
+  </script>
+
+  <script type="text/javascript">
+
+    $('#chronoExample .holdButton').on("click" ,function () {
+
+
+
+     var workorder_id = <%= @workorder.id%>;
+
+     <%if @employee1.present? %>
+     <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee1.id]) %>
+     <% if @work.status == "Working" %>
+
+     var employee_id = <%= @employee1.id%>;
+     <% end %>
+     <% end %>
+
+     <%if @employee2.present? %>
+     <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee2.id]) %>
+     <% if @work.status == "Working" %>
+
+     var employee_id = <%= @employee2.id%>;
+     <% end %>
+     <% end %>
+     <%if @employee3.present? %>
+     <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee3.id]) %>
+     <% if @work.status == "Working" %>
+
+     var employee_id = <%= @employee3.id%>;
+     <% end %>
+     <% end %>
+     <%if @employee4.present? %>
+     <% @work = EmployeesWorkorder.find_by(["workorder_id = ? and employee_id = ?",@workorder.id,@employee4.id]) %>
+     <% if @work.status == "Working" %>
+
+     var employee_id = <%= @employee4.id%>;
+     <% end %>
+     <% end %>
+
+     $.ajax({
+       url: "/workorders/status_update",
+       type: 'post',
+       dataType: 'json',
+
+       data: { status: "Hold" ,employee_id: employee_id,workorder_id: workorder_id}
+     });
+  });
+ </script>
+
+
+ <script type="text/javascript">
+    var a;
+    $("table tr").on("click", '#add_color', function() {
+      var elem = jQuery(this);
+      container = elem.parents("tr.data");
+      a = container.find("#m_id").val();
+     });
+
+    $(document).on("click" ,"#submit" , function(){
+      var right_color = $("#additional_right_color").val();
+      var workorder = <%= @workorder.id %>;
+      if($("#additional_right").prop('checked') == true){
+        var right = $("#additional_right").val();
+        var right_color = $("#additional_right_color").val();
+
+       
+          
+
+        if ($("#additional_right_dark").prop('checked') == false && $("#additional_right_light").prop('checked') == false){
+          
+
+          
+          alert("Please select color shade");
+          return false;
+          
+        }
+
+
+
+
+      if($("#additional_right_dark").prop('checked') == true){
+          var right_dark = $("#additional_right_dark").val();
+        }
+        else if($("#additional_right_light").prop('checked') == true){
+          var right_light = $("#additional_right_light").val();
+        }
+     }
+      if($("#additional_left").prop('checked') == true){
+        var left = $("#additional_left").val();
+        var left_color = $("#additional_left_color").val();
+        if ($("#additional_left_dark").prop('checked') == false && $("#additional_left_light").prop('checked') == false){
+          
+          
+          
+          alert("Please select color shade");
+          return false;
+          
+        }
+
+        if($("#additional_left_dark").prop('checked') == true){
+          var left_dark = $("#additional_left_dark").val();
+        }
+        else if($("#additional_left_light").prop('checked') == true){
+          var left_light = $("#additional_left_light").val();
+
+
+
+        }
+
+
+
+
+      }
+      if($("#additional_top").prop('checked') == true){
+        var top = $("#additional_top").val();
+        var top_color = $("#additional_top_color").val();
+        if ($("#additional_top_dark").prop('checked') == false && $("#additional_top_light").prop('checked') == false){
+          
+          
+          
+          alert("Please select color shade");
+          return false;
+          
+        }
+
+
+        if($("#additional_top_dark").prop('checked') == true){
+          var top_dark = $("#additional_top_dark").val();
+        }
+        else if($("#additional_top_light").prop('checked') == true){
+          var top_light = $("#additional_top_light").val();
+
+
+
+        }
+
+
+
+
+      }
+      if($("#additional_bottom").prop('checked') == true){
+        var bottom = $("#additional_bottom").val();
+        var bottom_color = $("#additional_bottom_color").val();
+        if ($("#additional_bottom_dark").prop('checked') == false && $("#additional_bottom_light").prop('checked') == false){
+          
+          
+          
+          alert("Please select color shade");
+          return false;
+          
+        }
+
+        if($("#additional_bottom_dark").prop('checked') == true){
+          var bottom_dark = $("#additional_bottom_dark").val();
+        }
+        else if($("#additional_bottom_light").prop('checked') == true){
+          var bottom_light = $("#additional_bottom_light").val();
+
+
+
+        }
+
+
+
+
+      }
+
+
+      $.ajax({
+        url: "/workorders/add",
+        type: 'POST',
+        dataType: 'json',
+        data: {measurement_id: a,right: right,right_color: right_color,right_dark: right_dark,right_light: right_light,left: left,left_color: left_color,left_dark: left_dark,left_light: left_light,top: top,top_color: top_color,top_dark: top_dark,top_light: top_light,bottom: bottom,bottom_color: bottom_color,bottom_dark: bottom_dark,bottom_light: bottom_light,workorder_id: workorder}
+      });
+
+
+
+    });
+
+
+
+  </script>
+
+
+
+  
+ 
+  <!-- <script type="text/javascript">
+    if($("#add_color").length != 0) {
+    $("#back").on("click" , function(){
+
+      
+       if (confirm("Add Colors before leaving the page")) {
+        return false;
+    }
+
+
+    });
+  }
+  </script> -->
+<!-- <script type="text/javascript">
+
+  window.onbeforeunload = function(event){
+
+ 
+  event.preventDefault();
+  return 'Please add colors before leaving this page';
+};
+</script> -->
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#add_color').trigger('click');
+});
+</script>
+
+
+
+<script type="text/javascript">
+
+  
+
+  $(".chb").change(function() {
+    var checked = $(this).is(':checked');
+    $(".chb").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }
+  });
+
+  $(".chb1").change(function() {
+    var checked = $(this).is(':checked');
+    $(".chb1").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }
+  });
+
+  $(".chb2").change(function() {
+    var checked = $(this).is(':checked');
+    $(".chb2").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }
+  });
+
+  $(".chb3").change(function() {
+    var checked = $(this).is(':checked');
+    $(".chb3").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }
+  });
+  
+
+</script>
+  
+  <% end %>
 
