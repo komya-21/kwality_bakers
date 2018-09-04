@@ -7,7 +7,7 @@
             <!-- Links to download pdfs -->
             <%= link_to 'Download Pro-forma Invoice ',proforma_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>|
             <%= link_to 'Download Workorder PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%>
-            <%= link_to 'View Invoice',invoice_workorder_path(@workorder),class: "btn btn-danger" %>
+            <%= link_to 'Edit Invoice',invoice_workorder_path(@workorder),class: "btn btn-danger" %>
             <!-- End of links -->
           </div><br>
   <p>
@@ -81,22 +81,24 @@
         <td>NA</td>
         <% end %>
         <% if m.ftype == "Carcass Box" %>
-        <% if !Additional.find_by(measurement_id: m.id).present? %>
-            <% if m.side == "Yes" %>
-              <td><button name="subject" type="submit" value="HTML" class="btn btn-success" data-target="#exampleModalCenter" data-toggle="modal" id="add_color">Add Color</button></td>
-            <% else %>
-              <td></td>
-            <% end %>
-        <% else %>
+       
+          <% if m.side == "Yes" %>
+           <% if !Additional.find_by(measurement_id: m.id).present? %>
+          <td><button name="subject" type="submit" value="HTML" class="btn btn-success" data-target="#exampleModalCenter" data-toggle="modal" id="add_color">Add Color</button></td>
+          <% else %>
           <td><%= link_to "Additionals" , addition_workorders_path(measurement_id: m.id,workorder_id: @workorder.id) %></td>
+          <% end %>
+          <% end %>
+        <% else %>
+          <td></td>
         <% end%>
-        <% end %>
+        
     </tr>
     <% end %>
 
   </tbody>
 </table>
-  <% end %>
+<% end %>
 
 <%= image_tag  @workorder.photo1.url ,width: "160",height: "160" if @workorder.photo1.present? %>
 <%= image_tag  @workorder.photo2.url ,width: "160",height: "160" if @workorder.photo2.present?%>
@@ -151,17 +153,233 @@
 </div>
 </div>
 </section>
+
+<% k = 0 %>
+<% @final_amount = 0 %>
+<% @total_amount1 = 0 %>
+<% @amt1 = 0 %> 
+<% @amt2 = 0 %> 
+<% @amt3 = 0 %> 
+<% @j = 0%>
+<% @workorder.fproducts.each do |f| %>
+
+<% k += 1 %>
+<% if k != 1 %>
+
+<% @amt1 = @total_amount %>
+<% @amt2 = @full_amt %>
+
+<% @amt3 = @drawer_amount %>
+<% end %>
+
+
+   
+
+  <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
+  <% @m = 0 %>
+
+  <% @uniq_ftypes.each do |u| %>
+  <% @m += 1 %>
+  
+  <% @full_amt = 0 %>
+  <% @drawer_amount = 0 %>
+
+  
+  <% @i = 0 %>
+
+   <% if u == "Carcass Box" %>
+
+  
+   
+   <% @carcass_measurements = f.measurements.where(ftype: u) %>
+    <% @total_no = 0 %>
+    <% @total_sqft = 0 %>
+    <% @total_sqft_back = 0 %>
+    <% @total_amount = 0 %>
+    <%# @carcass_rate1 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"TB/LR"]) %>
+    <%# @carcass_rate2 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"Back"]) %>
+    <%# @c1 = @carcass_rate1.price %>
+    <%# @c2 = @carcass_rate2.price %>
+   <% @carcass_measurements.each do |c| %>
+
+   <% @j+=1 %>
+   <% @i += 1 %>
+   <% @total_no += c.quantity %>
+   <% @sq = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
+   <% @skirting_sqft = 0 %>
+   <% @v_area = 0 %>
+   <% @h_area = 0 %>
+    <% if c.skirting != nil %>
+   <% @s_width = c.width - 36 %>
+   <% @skirting_sqft = ((@s_width*c.skirting)/92903)*c.quantity %>
+   <% end %>
+   <!-- end of calculation of skirting -->
+   <% if c.vertical != nil %>
+   <% if c.skirting != nil %>
+    <% @v_height = c.height-c.skirting-36 %>
+    <% else %>
+    <% @v_height = c.height-36 %>
+     <% end %>
+     <% @v_area = ((@v_height * c.depth)/92903)*c.quantity %>
+
+   <% end %>
+
+   <% if c.horizontal != nil %>
+   <% @h_width = c.width - 36 %>
+   <% @h_area =  ((@h_width*c.depth)/92903)*c.quantity %>
+   <% end %>
+    
+<% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
+    <% @total_sqft += @sqft %>
+   <% @total_sqft += @sqft %>
+   <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
+   <% @total_sqft_back += @sqft_back %>
+   <% @tot_amt = (@sqft.round(2)*c.rate)+(@sqft_back.round(2)*c.back_rate) %>
+   <% @total_amount += @tot_amt %>
+   <% @amt1 += @total_amount %>
+   <tr class="fields">
+   <td><% @i %></td>
+   <%= hidden_field_tag :id , c.id ,class: "hidden"%>
+  
+   
+  
+   
+   
+   
+   
+   
+
+<% end %>
+
+
+  
+  
+  <% end %>
+
+   <% if u == "Drawer" %>
+   
+    
+  <% @drawer_measurements = f.measurements.where(ftype: u) %>
+    <% @total_no = 0 %>
+    <% @total_sqft = 0 %>
+    
+    
+    <%# @drawer_rate = @rates.find_by(["product = ? and ptype=?",f.product,u]) %>
+    <%# @d = @drawer_rate.price %>
+    <% @drawer_measurements.each do |c| %>
+   <% @i += 1 %>
+   <% @j += 1 %>
+   <% @total_no += c.quantity %>
+   <tr class="fields1">
+   
+   <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
+   <% @total_sqft += @sqft %>
+  
+  
+   <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
+   <% @drawer_amount += @d_tot_amt %>
+   <% @amt3 += @drawer_amount %>
+   <!-- <td class="b3"><%#= text_field_tag :"amount#{@j}" ,  @d_tot_amt.round(2),disabled: true %></td> -->
+ </tr>
+
+ <% end %>
+ <% end %>
+  
+ 
+
+
+
+   <% if u == "Shutters" || u == "White BSL Shelf" %>
+   
+  <!-- Calculations of rates -->
+  <%# if u == "Shutters" %>
+  <%# @shutter_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
+  <%# @sr = @shutter_rate.price %>
+  <%# elsif u == "White BSL Shelf" %>
+  <%# @wbs_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
+  <%# @sr = @wbs_rate.price %>
+  <%# elsif u == "Hinges Patti" %>
+  <%# @hp_rate = @rates.find_by(["product = ? and ptype=? ",f.product,u])%>
+  <%# @sr = @hp_rate.price %>
+  <%# end %>
+  <!-- End of calculation -->
+  <% @shutter_measurements = f.measurements.where(ftype: u ) %>
+  <% @tot_sqrft = 0 %>
+  <% @tot_num = 0 %>
+  
+   <% @shutter_measurements.each do |c| %>
+   <% @j += 1 %>
+  <% @tot_num += c.quantity %>
+  <% if u == "White BSL Shelf" %>
+
+  <% @sqrft = ((c.wh.to_f * c.depth)/92903)*c.quantity %>
+  <% else %>
+
+   <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
+   <% end %>
+   
+   <% @tot_sqrft += @sqrft %>
+   <% @t_amt = (@sqrft * c.rate).round(2) %>
+
+   <% @full_amt += @t_amt %>
+   <% if k != 1 %>
+   <% @amt2 += @full_amt %>
+   <% end %>
+   <% @i += 1 %>
+   
+   
+   
+
+   
+   
+   
+  
+
+  </tr>
+  
+  <% end %>
+  <% end %>
+  
+  
+ 
+
+ 
+  
+ 
+  
+  
+
+  
+  
+    
+ 
+  
+<% end %>
+<% end %>
+
+
+<% @amt = @amt1 + @amt2 + @amt3 %>
+<% @final_amount += @amt %>
+<% @cgst = (@final_amount *9)/100 %>
+<% @sgst = (@final_amount *9)/100 %>
+<% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
+<% @total_to_pay = @pay.round(2) %>
+
+<% @workorder.update(total_to_pay: @total_to_pay) %>
+
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
   <% modal ||= false %>
   <% remote = modal ? true : false %>
   <% @colors = Color.all %>
+
   <div class="modal-dialog">    
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
+
         <h4 class="modal-title" id="exampleModalCenterTitle">Add Color</h4>
       </div>
       <div class="modal-body">
@@ -398,14 +616,41 @@
  <script type="text/javascript">
     var a;
     $("table tr").on("click", '#add_color', function() {
+      
       var elem = jQuery(this);
       container = elem.parents("tr.data");
       a = container.find("#m_id").val();
+      
      });
 
     $(document).on("click" ,"#submit" , function(){
+     
       var right_color = $("#additional_right_color").val();
       var workorder = <%= @workorder.id %>;
+
+      
+      if($("#additional_right").prop('checked') == false && ($("#additional_right_dark").prop('checked') == true || $("#additional_right_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_left").prop('checked') == false && ($("#additional_left_dark").prop('checked') == true || $("#additional_left_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_top").prop('checked') == false && ($("#additional_top_dark").prop('checked') == true || $("#additional_top_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_bottom").prop('checked') == false && ($("#additional_bottom_dark").prop('checked') == true || $("#additional_bottom_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+
+
       if($("#additional_right").prop('checked') == true){
         var right = $("#additional_right").val();
         var right_color = $("#additional_right_color").val();

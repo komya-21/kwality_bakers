@@ -1,0 +1,92 @@
+
+
+
+
+<section id="main-content" class="animated fadeInUp">
+                      <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-warning">
+                          <div class="panel-heading">
+                            <h3 class="panel-title"><b>Invoices</b></h3>
+                            <div class="actions pull-right">
+                             <i class="fa fa-expand"></i>
+                                <i class="fa fa-chevron-down"></i>
+                                <i class="fa fa-times"></i>
+                            </div>
+                          </div>
+                          <div class="panel-body">
+
+
+       
+<table id="example" class="table table-hover" cellspacing="0" width="100%">
+<thead>
+  <tr>
+    <th>Invoice No</th>
+    <th>Vendor Name</th>
+    <th>Date</th>
+    <th>Total</th>
+    <th>Amount Due</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    
+
+    
+  </tr>
+
+
+</thead>
+
+<tbody>
+  
+  <% @workorders.each do |w| %>
+  <tr>
+    <td><%= w.invoice_no if w.invoice_no.present? %></td>
+  
+    <td><%= w.vendor.name%>
+      
+    </td>
+  
+    <td><%= w.date %></td>
+    <td>Rs.<%= w.total_to_pay.to_f.ceil %></td>
+    <% if w.rem_price == nil %>
+    <td>Rs.<%= w.total_to_pay.to_f.ceil %></td>
+    <% else %>
+    <td>Rs.<%= w.rem_price %></td>
+    <% end %>
+    <% if w.rem_price == nil || w.rem_price != "0" %>
+    <td><span class="label label-danger">Pending</span></td>
+    <% else %>
+    <td><span class="label label-success">Paid</span></td>
+    <% end %>
+    <td><%= link_to 'View' ,invoicee_workorder_path(w),rel: "tooltip",title: "You can view but not edit" %></td>
+    
+    <td><b><%= link_to "Record Payment",record_payment_workorder_workorder_path(w),style: "color: #007694;"%></b></td>
+  </tr>
+</tbody>
+<% end %>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+
+<% content_for :javascript do %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#example').dataTable();
+  });
+</script>
+
+<script type="text/javascript">
+  $(function(){
+  $("link_to[rel='tooltip']").tooltip();
+})
+</script>
+
+<% end %>

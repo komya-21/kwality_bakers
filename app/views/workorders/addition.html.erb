@@ -178,6 +178,28 @@
 <script type="text/javascript">
 	
 	$(document).on("click" ,"#submit" , function(){
+
+
+		if($("#additional_right").prop('checked') == false && ($("#additional_right_dark").prop('checked') == true || $("#additional_right_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_left").prop('checked') == false && ($("#additional_left_dark").prop('checked') == true || $("#additional_left_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_top").prop('checked') == false && ($("#additional_top_dark").prop('checked') == true || $("#additional_top_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_bottom").prop('checked') == false && ($("#additional_bottom_dark").prop('checked') == true || $("#additional_bottom_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
       
       if($("#additional_right").prop('checked') == true){
          if ($("#additional_right_dark").prop('checked') == false && $("#additional_right_light").prop('checked') == false){

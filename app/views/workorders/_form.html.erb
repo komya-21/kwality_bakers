@@ -20,7 +20,7 @@
           <div class="col-md-2">
     <%= form.text_field :order_no, id: :workorder_order_no,readonly: true,:value=> @workorder.order_no, class: "form-control" %>
      </div>
-     
+     <%= form.hidden_field :invoice_no , :value => @workorder.invoice_no %>
    
      <div class="col-md-2">
     <%= form.date_field :date, :value=> Date.today, class: "form-control"%>

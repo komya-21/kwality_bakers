@@ -1,0 +1,134 @@
+<%#- model_class = Delivery -%>
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+ <%#= link_to 'Download PDF ',payment_delivery_path(@delivery, format: 'pdf'),target: '_blank', class: "btn btn-primary" %> 
+ 
+
+
+<!-- <p class="text-info">
+  <strong>Payment Status:</strong>
+  <%#if @delivery.remaining_price == "0"%>
+  <%#@delivery.update!(payment_status:'true')%>
+  <%#end%>
+  <%#=@delivery.payment_status%>
+</p>  -->
+<div align="right">
+<%= link_to 'Download Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>
+</div>
+</div>
+
+<h3>Vendor:<%= @workorder.vendor.name %></h3><br>
+<% if @workorder.rem_price != "0" %>
+<h3>Total To Pay:<%= @workorder.total_to_pay.to_f.ceil %></h3><br><br>
+<% end %>
+<%if @workorder.rem_price == '0'%>
+<font color="red">Payment of Rs.<%= @workorder.total_to_pay.to_f.ceil %> Done Successfully</font><br><br>
+<%end%>                       
+
+
+<%if @workorder.rem_price.present?%>
+Payment Total: <%=text_field_tag :total,"",id: :total, value:  @workorder.rem_price, readonly:true, class: 'form-control'%><br>
+<%else%>
+Payment Total: <%=text_field_tag :total,"",id: :total, value: @workorder.total_to_pay.to_f.ceil, readonly:true, class: 'form-control'%><br>
+<%end%>
+<% if @workorder.rem_price.present?%>
+Remaining <%=text_field_tag :rem_price,"",value: @workorder.rem_price,id: :rem_price,readonly:true,class: 'form-control'%>
+                <%else%>
+ Remaining <%=text_field_tag :rem_price,"",id: :rem_price,readonly:true,class: 'form-control'%>
+                      <%end%>
+<div class="amt">
+Add Amount To Pay<%= text_field_tag :add_price,"",id: :add_price, class: 'form-control'%>
+</div><br><br>
+<button onclick="myFunction()", class="btn btn-success">Pay</button>
+<%= link_to "Back" , invoice_workorder_path(@workorder),class: "btn btn-danger" %>
+
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+ <%= hidden_field_tag :date ,"#{Date.today}" %>
+
+
+<% content_for :javascript do %>
+
+<script type="text/javascript">
+  
+  function refresh (timeoutPeriod){ 
+    refresh = setTimeout(function(){window.location.reload(true);},timeoutPeriod); 
+  } 
+
+  $(document).ready(function(){
+
+     var rm = $("#rem_price").val();
+     
+     
+      
+
+     
+
+
+    
+
+    $("#add_price").keyup(function()
+    {
+      var b = $("#total").val();
+      var c = $("#rem_price").val();
+      var a = $("#add_price").val();
+      
+       
+       $("#rem_price").val(b-a);
+       if (parseInt(a) > parseInt(b))
+       {
+        alert("Wrong Value");
+        $("#rem_price").val("NA");
+       }
+        if (a == 0 && c == 0)
+       {
+        
+        
+        document.getElementById("#add_price").readOnly = true;
+       }
+    
+      
+       });
+
+  });
+
+  function myFunction() {
+    var paid_price  = $('#add_price').val();
+    var rem_price = $('#rem_price').val();
+    document.location.search += '&params1='+ paid_price + '&params2='+ rem_price;
+};
+
+ function button(){
+  alert(par);
+ };
+
+
+
+</script>
+<% end %>
+
+      
+  
+
+
+
+
+  
+       
+
+      
+    
+    
+    
+    
+     
+    
+
+  

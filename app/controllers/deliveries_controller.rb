@@ -37,16 +37,18 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/1/edit
   def edit
   end
+
   def todays_delivery
     @deliveries = Delivery.where(created_at: Date.today.midnight..Date.today.end_of_day)
   end
+
   def export_delivery_index
     @deliveries = Delivery.all
     respond_to do |format|
-format.xlsx {
-  response.headers['Content-Disposition'] = 'attachment;' "filename= All_Deliveries\"#{Date.today}\".xlsx"
-}
-end
+    format.xlsx {
+    response.headers['Content-Disposition'] = 'attachment;' "filename= All_Deliveries\"#{Date.today}\".xlsx"
+    }
+    end
   end
   #record payment
   def record_payment
@@ -61,6 +63,7 @@ end
       end
     end
   end
+
   def record_payment_all
     @deliveries = Delivery.all
   end
@@ -77,28 +80,21 @@ end
   # POST /deliveries
   # POST /deliveries.json
   def create
-
-
-   @delivery = Delivery.new(delivery_params)
-
-
+    @delivery = Delivery.new(delivery_params)
     @inward_products = InwardProduct.all
-
-
     respond_to do |format|
       if @delivery.save
         @delivery.delivery_inwards.update(vendor_id: @delivery.vendor_id)
         @delivery.delivery_inwards.each do |di|
-          di.update(vendor_id: di.delivery.vendor_id)
-        end
-       
-            @delivery.delivery_inwards.each do |d|
-              @current = CurrentInventory.find_by(product_id: d.product_id)
-              @current.update(current_quantity: d.rem_quantity)
-            end
-        format.html { redirect_to @delivery, notice: 'Delivery was successfully created.' }
-        format.json { render :show, status: :created, location: @delivery }
-      else
+        di.update(vendor_id: di.delivery.vendor_id)
+      end
+    @delivery.delivery_inwards.each do |d|
+    @current = CurrentInventory.find_by(product_id: d.product_id)
+    @current.update(current_quantity: d.rem_quantity)
+    end
+    format.html { redirect_to @delivery, notice: 'Delivery was successfully created.' }
+    format.json { render :show, status: :created, location: @delivery }
+    else
         format.html { render :new }
         format.json { render json: @delivery.errors, status: :unprocessable_entity }
     end

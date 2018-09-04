@@ -97,7 +97,7 @@ table.qr-code td.white { background-color: #fff; }
 
 </style>
 <div class="centerdiv">
-<h3>Invoice</h3>
+<h3>Invoice-<%= @workorder.invoice_no %></h3>
 </div>
 
 <div class="rightdiv">
@@ -111,7 +111,7 @@ table.qr-code td.white { background-color: #fff; }
       
     
     
-      <h5> <b>To:</b><%= @workorder.vendor.name if @workorder.vendor.present? %>
+    <h5><b>To:</b><%= @workorder.vendor.name if @workorder.vendor.present? %>
       <b>Gst No:</b><%= @workorder.vendor.gst_no if @workorder.vendor.present? %>
     </h5>
     </div>
@@ -142,7 +142,7 @@ table, th, td {
 
 
 <table style="width:100%">
-   <% @letters = ('A'..'Z').to_a %>
+  <% @letters = ('A'..'Z').to_a %>
 
   <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
   <% @m = 0 %>
@@ -160,9 +160,8 @@ table, th, td {
     
   </tr>
   <% @i = 0 %>
-   <% if u == "Carcass Box" %>
-  
-   <tr>
+  <% if u == "Carcass Box" %>
+  <tr>
     <th>No</th>
     <th>Quantity</th>
     <th>Skirting</th>
@@ -174,15 +173,18 @@ table, th, td {
     <th>rate</th>
     <th>AMT</th>
   </tr>
-   <% @carcass_measurements = f.measurements.where(ftype: u) %>
-    <% @total_no = 0 %>
-    <% @total_sqft = 0 %>
-    <% @total_sqft_back = 0 %>
-    <% @total_amount = 0 %>
-    <% @carcass_rate1 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"TB/LR"]) %>
-<%# @carcass_rate2 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"Back"]) %>
-<%# @c1 = @carcass_rate1.price %>
-<%# @c2 = @carcass_rate2.price %>
+  <% @carcass_measurements = f.measurements.where(ftype: u) %>
+  <% @total_no = 0 %>
+  <% @total_sqft = 0 %>
+  <% @total_sqft_back = 0 %>
+  <% @total_amount = 0 %>
+  <% @carcass_rate1 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"TB/LR"]) %>
+  
+  
+    
+    <%# @carcass_rate2 = @rates.find_by(["product = ? and ptype=? and ctype = ?",f.product,u,"Back"]) %>
+    <%# @c1 = @carcass_rate1.price %>
+    <%# @c2 = @carcass_rate2.price %>
    <% @carcass_measurements.each do |c| %>
    <% @i += 1 %>
    <% @total_no += c.quantity %>
@@ -210,7 +212,7 @@ table, th, td {
    <% @h_area =  ((@h_width*c.depth)/92903)*c.quantity %>
    <% end %>
     
-<% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
+    <% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
     <% @total_sqft += @sqft %>
    <% @total_sqft += @sqft %>
    <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
@@ -240,12 +242,8 @@ table, th, td {
    <td><%= @tot_amt.round(2) %></td>
  </tr>
 
-<% end %>
-
-
-  
-  
   <% end %>
+<% end %>
 
    <% if u == "Drawer" %>
    
@@ -435,8 +433,25 @@ table, th, td {
   
 <th><b><%= @pay.round(2) %></b></th></tr>
 
+<% @workorder.update(total_to_pay: @pay) %>
+
    
 </table>
+
+<div class="rightdiv">
+                         <font color="green">Amount:<%=@workorder.total_to_pay.to_f.ceil%><br></font> 
+                         
+<%if @workorder.rem_price.present?%>
+  Paid Amt:<%= @workorder.total_to_pay.to_f.ceil - @workorder.rem_price.to_f.ceil %>Rs<br>
+<%else%>
+  To Pay: <%= @workorder.total_to_pay.to_f.ceil%>Rs<br>
+<%end%>
+<%if @workorder.rem_price.present?%>
+  Remaining:<%= @workorder.rem_price %>Rs<br>
+<%end%>
+</div>
+
+
 
 <br><br>
 
