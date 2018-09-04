@@ -3,8 +3,10 @@
 
 //= require src/app
 //= require jquery_ujs
+//= require bootstrap/bootstrap-tooltip
 //= require bootstrap-select.min
 //= require src/app
 //= require jquery_nested_form
 //= require dataTables/js/jquery.dataTables
 //= require dataTables/js/dataTables.bootstrap
+//= require bootstrap/bootstrap-tooltip

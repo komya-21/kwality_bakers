@@ -64,6 +64,11 @@ def invoice
   @workorder = Workorder.find(params[:id])
     @rates = Rate.all
   end
+  def invoicee
+     @workorder = Workorder.find(params[:id])
+    @rates = Rate.all
+  end
+
 
 def location_report
   
@@ -103,6 +108,7 @@ end
     @workorder = Workorder.new
     @workorder.order_num
     
+    
     @vendors = Vendor.where(location_id: current_user.location_id)
    
   end
@@ -112,69 +118,59 @@ end
     #@workorder = Workorder.find(params[:id])
     #@workorder = Workorder.includes({ fproducts: :measurements }).find(params[:id])
   end
+
+  def invoice_list
+    @workorders = Workorder.order(:invoice_no)
+  end
  
 
   def status_update
-
-
     @status = params[:status]
     @employee_id = params[:employee_id]
     @workorder_id = params[:workorder_id]
     @emp_work =  EmployeesWorkorder.find_by(["employee_id = ? and workorder_id = ?",@employee_id,@workorder_id])
-
     @emp_work.update(status: @status)
-
   end
 
   # POST /workorders
   # POST /workorders.json
   def create
     @workorder = Workorder.new(workorder_params)
-
-
     respond_to do |format|
-
       if @workorder.save
-         @workorder.update(approve: false)
+        date = Date.today.strftime('%Y%m%d')
+        invoice_num = 'IN' + date.to_s + @workorder.id.to_s
+        @workorder.update(invoice_no: invoice_num )
+        @workorder.update(approve: false)
         @workorder.fproducts.each do |f| 
-          f.measurements.each do |m|
-            if m.ftype == "Carcass Box"
-            
+        f.measurements.each do |m|
+          if m.ftype == "Carcass Box"
             @rate1 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"Back" ])
             @rate2 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"TB/LR" ])
-
             m.update(back_rate: @rate1.price)
             m.update(rate: @rate2.price)
           else
-
             @rate1 = Rate.find_by(["product = ? and ptype = ?",f.product,m.ftype])
             m.update(rate: @rate1.price)
-           
           end
-        end
       end
-             
-
-
-
-       
-        if current_user.role == "Vendor"
-          @workorder.update(vendor_id: current_user.vendor_id)
-          @workorder.update(location_id: current_user.vendor.location_id)
-        elsif current_user.role == "Center"
-          @workorder.update(location_id: current_user.location_id)
-        end
-
-        format.html { redirect_to @workorder, notice: 'Workorder was successfully created.' }
-        format.json { render :show, status: :created, location: @workorder }
-      else
-        format.html { render :new }
-        format.json { render json: @workorder.errors, status: :unprocessable_entity }
+    end
+    if current_user.role == "Vendor"
+      @workorder.update(vendor_id: current_user.vendor_id)
+      @workorder.update(location_id: current_user.vendor.location_id)
+      elsif current_user.role == "Center"
+        @workorder.update(location_id: current_user.location_id)
+      end
+      format.html { redirect_to @workorder, notice: 'Workorder was successfully created.' }
+      format.json { render :show, status: :created, location: @workorder }
+    else
+      format.html { render :new }
+      format.json { render json: @workorder.errors, status: :unprocessable_entity }
       end
     end
   end
-  def edit_rate
 
+  def edit_rate
     @rate = params[:rate]
     @back_rate = params[:back_rate]
     @id = params[:id]
@@ -182,30 +178,21 @@ end
     @r = @rate.select{|r| r!=""}
     @rt = @r[0].to_f
     @m = @k[0].to_i
-
-    
-
     Measurement.find(@m).update(rate: @rt)
     Measurement.find(@m).update(back_rate: @back_rate)
-
-
-
   end
 
   # PATCH/PUT /workorders/1
   # PATCH/PUT /workorders/1.json
   def update
-
     respond_to do |format|
-      if @workorder.update(workorder_params)
-
-
-        format.html { redirect_to @workorder, notice: 'Workorder was successfully updated.' }
-        format.json { render :show, status: :ok, location: @workorder }
-      else
-        format.html { render :edit }
-        format.json { render json: @workorder.errors, status: :unprocessable_entity }
-      end
+    if @workorder.update(workorder_params)
+      format.html { redirect_to @workorder, notice: 'Workorder was successfully updated.' }
+      format.json { render :show, status: :ok, location: @workorder }
+    else
+      format.html { render :edit }
+      format.json { render json: @workorder.errors, status: :unprocessable_entity }
+    end
     end
   end
 
@@ -249,30 +236,34 @@ end
       format.html
       format.pdf do
         render pdf: "workorder_invoice.pdf.erb" 
-        response.headers['Content-Disposition'] = 'attachment;' "filename= \"#{@workorder.order_no}\".pdf"  # Excluding ".pdf" extension.
+        response.headers['Content-Disposition'] = 'attachment;' "filename= \"#{@workorder.invoice_no}\".pdf"  # Excluding ".pdf" extension.
       end
     end
   end
-  def order_report
 
+  def order_report
     @start = params[:starttime]
     @end = params[:endtime]
-
     @employee_id = params[:employee_id]
     @workorder_id = params[:workorder_id]
     @emp_work =  EmployeesWorkorder.find_by(["employee_id = ? and workorder_id = ?",@employee_id,@workorder_id])
-
     @emp_work.update(starttime: @start)
     @emp_work.update(status: "Working")
-
   end
-   def end_time
 
+  def record_payment_workorder
+    @workorder = Workorder.find(params[:id])
+
+    if params[:params1].present?
+      @workorder.update(add_price: params[:params1], rem_price: params[:params2])
+    end
+  end
+
+  def end_time
     @end = params[:endtime]
     @employee_id = params[:employee_id]
     @workorder_id = params[:workorder_id]
     @emp_work =  EmployeesWorkorder.find_by(["employee_id = ? and workorder_id = ?",@employee_id,@workorder_id])
-
     @emp_work.update(endtime: @end)
     @emp_work.update(status: "Completed")
      @location = Employee.find(@employee_id).location_id
@@ -355,6 +346,7 @@ end
   end
 
   def workorder_status
+    @employee_workorders = EmployeesWorkorder.all
     @workorder = Workorder.find(params[:id])
     @employee_workorder = EmployeesWorkorder.find_by(workorder_id: params[:id])
   end
@@ -367,7 +359,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:order_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
+     params.require(:workorder).permit(:total_to_pay,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
 
    end
    def additional_params

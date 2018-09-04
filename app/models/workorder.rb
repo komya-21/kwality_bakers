@@ -55,6 +55,8 @@ else
                       end
   end
 
+  
+
   scope :list, ->(id) { where(id: id).take }
 
   

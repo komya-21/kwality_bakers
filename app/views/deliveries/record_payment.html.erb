@@ -4,7 +4,7 @@
                     <div class="col-md-12">
                         <div class=" panel panel-info">
                             <div class="panel-body">
- <%= link_to 'Download PDF ',payment_delivery_path(@delivery, format: 'pdf'),target: '_blank', class: "btn btn-primary"%> 
+ <%= link_to 'Download PDF ',payment_delivery_path(@delivery, format: 'pdf'),target: '_blank', class: "btn btn-primary" %> 
  
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:invoice_no) %>:</strong></dt>
@@ -57,58 +57,38 @@
         <td><%= p.product.name if p.product.present? %></td>
         <td><%= p.price%></td>
         <td><%= p.quantity %></td>
-         <td><%= p.rem_quantity %></td>
-          <td><%= p.qty %></td>
-          <%# if p.qty.present?%>
-          <%#.update(after_delivery_string: p.rem_quantity)%>
-          <%#end%>  <% @total_gst = p.total.to_f.ceil %>
-                    <td><%= p.total_amt %></td>
-                    <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
-                    <% total2 += @total_gst %>
-                    <td><%= @total_gst %></td>
-                    <% end %>
-                    <% total1 += p.total_amt.to_i %>
-                    
-                    <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
-                    
-                    <% @comission = (total2 * @delivery.vendor.comission.to_f)/100 if @delivery.vendor.present? %>
-                    <% else %>
-                    <% @comission = (total1.to_i * @delivery.vendor.comission.to_f)/100 if @delivery.vendor.present? %>
-                    <% end %>
-                              
-
-                    
-
-
+        <td><%= p.rem_quantity %></td>
+        <td><%= p.qty %></td>
+        <% @total_gst = p.total.to_f.ceil %>
+        <td><%= p.total_amt %></td>
+        <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
+        <% total2 += @total_gst %>
+        <td><%= @total_gst %></td>
+        <% end %>
+        <% total1 += p.total_amt.to_i %>
+        <% if p.vendor.vendor_type.present? && p.vendor.vendor_type == "Custom" %>
+        <% @comission = (total2 * @delivery.vendor.comission.to_f)/100 if @delivery.vendor.present? %>
+        <% else %>
+        <% @comission = (total1.to_i * @delivery.vendor.comission.to_f)/100 if @delivery.vendor.present? %>
+        <% end %>
       </tr>
       <% end %>  
       <% if@delivery.vendor.comission.present? %>
-                      
-                      <% if@delivery.vendor.vendor_type.present? &&@delivery.vendor.vendor_type == "Custom" %>
-                      
-                       <td><strong>Amount To Pay:</strong><b><%= @total_pay = (total2 - @comission.to_f).ceil %></b></td>
-                         <% else %>
-                       <td><strong>Amount To Pay:</strong><b><%= @total_pay = (total1.to_i - @comission.to_f).ceil %></b></td>
-                      <% end %>
+      <% if@delivery.vendor.vendor_type.present? &&@delivery.vendor.vendor_type == "Custom" %>
+      <td><strong>Amount To Pay:</strong><b><%= @total_pay = (total2 - @comission.to_f).ceil %></b></td>
+      <% else %>
+      <td><strong>Amount To Pay:</strong><b><%= @total_pay = (total1.to_i - @comission.to_f).ceil %></b></td>
+      <% end %>
       <% elsif @delivery.vendor.vendor_type.present? && @delivery.vendor.vendor_type == "Custom" %>
-     <td><strong>Amount To Pay:</strong><b><%= @total_pay = total2 %></b></td>
-     <% else %>
-     <td><strong>Amount To Pay:</strong><b><%= @total_pay = total1 %></b></td>
-
-    
-
-                    </p>
-
-    
-            <% @delivery.update(comission: @total_pay) %>
-                    
-           <% end %> 
-           <% if @delivery.remaining_price.present? %>
-                      <td><strong>Pending Payment:</strong><font color="red"><%=@delivery.remaining_price %></font></td>
-                      <% end %>                 
-
-    
-   
+      <td><strong>Amount To Pay:</strong><b><%= @total_pay = total2 %></b></td>
+      <% else %>
+      <td><strong>Amount To Pay:</strong><b><%= @total_pay = total1 %></b ></td>
+    </p>
+      <% @delivery.update(comission: @total_pay) %>
+    <% end %> 
+    <% if @delivery.remaining_price.present? %>
+    <td><strong>Pending Payment:</strong><font color="red"><%=@delivery.remaining_price %></font></td>
+    <% end %>                 
   </tbody>
 </table>
 

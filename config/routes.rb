@@ -3,11 +3,13 @@ Rails.application.routes.draw do
   resources :rates
   resources :workorders do 
     member do
+      get :record_payment_workorder
       get :workorder_pdf
       get :workorder_status
       get :workorder_invoice
       get :proforma_invoice
       get :invoice
+      get :invoicee
      
     end
     collection do
@@ -20,6 +22,7 @@ Rails.application.routes.draw do
       post :edit_rate
        post :add
        patch :update_additional
+       get :invoice_list
 
 
 

@@ -7,7 +7,8 @@
 
 
  *= require custom/app
- *= require dataTables/jquery.dataTables
+ *= require dataTables/jquery.dataTables\
+ *= require bootstrap/bootstrap-tooltip
 
 
 

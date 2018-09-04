@@ -123,7 +123,7 @@ table.qr-code td.white { background-color: #fff; }
     </div>
 
   
-   
+    
    
 
 <div class="maindiv">
@@ -250,11 +250,11 @@ table, th, td {
    <td><%= c.vertical %></td>
    <td><%= c.horizontal %></td>
    
-   <td><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true,class: "a1" %></td>
-   <td><%= text_field_tag :"rate" , c.rate, style: "background-color:skyblue;" %></td>
+   <td><%= @sqft.round(2) %></td>
+   <td><%= c.rate %></td>
    
-   <td ><%= text_field_tag :"sqft_back#{@j}",@sqft_back.round(2),disabled: true, class: "a3" %></td>
-   <td><%= text_field_tag :back_rate , c.back_rate,style: "background-color:skyblue;" %></td>
+   <td ><%= @sqft_back.round(2) %></td>
+   <td><%=c.back_rate%></td>
    
    <!-- <td><%#= text_field_tag :"amount#{@j}" ,@tot_amt.round(2) ,disabled: true , class: "a5"%></td> -->
  </tr>
@@ -297,8 +297,8 @@ table, th, td {
    <td><%= c.quantity %></td>
    <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
    <% @total_sqft += @sqft %>
-   <td class="b1"><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true %></td>
-   <td class="b2"><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
+   <td class="b1"><%= @sqft.round(2)%></td>
+   <td class="b2"><%= c.rate %></td>
   
    <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
    <% @drawer_amount += @d_tot_amt %>
@@ -367,8 +367,8 @@ table, th, td {
    
    
   
-   <td><%= text_field_tag :"sqft#{@j}" ,@tot_sqrft.round(2),disabled: true %></td>
-   <td ><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
+   <td><%= @tot_sqrft.round(2)%></td>
+   <td ><%=c.rate%></td>
    
 
    
@@ -406,25 +406,19 @@ table, th, td {
 <% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
 <% @total_to_pay = @pay.round(2) %>
 
-<% @workorder.update(total_to_pay: @total_to_pay) %>
 
 
 </table>
-
 <br><br>
  <%#= link_to 'Generate Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>
  
  
-  <%= link_to "Back" ,invoice_list_workorders_path,class: "btn btn-default" %>|
-  <% if @workorder.total_to_pay.to_f.ceil == @workorder.add_price.to_i %>
-
+  <%= link_to "Back" ,invoice_list_workorders_path,class: "btn btn-default" %>|<% if @workorder.rem_price.present? && @workorder.rem_price == "0" %>
  <%= link_to "Record Payment",record_payment_workorder_workorder_path(@workorder),class: 'btn btn-danger',disabled: true%>
-  <font color="red">Payment of Rs.<%=@workorder.total_to_pay.to_f.ceil %> Done Successfully</font>
+  <font color="red">Payment of Rs.<%=@workorder.total_to_pay.to_f.ceil%> Done Successfully</font>
  <% else %>
  <%= link_to "Record Payment",record_payment_workorder_workorder_path(@workorder),class: 'btn btn-danger'%>
  <% end %>
- <b><%= link_to "refresh",invoice_workorder_path(@workorder),style: "color: skyblue;" %></b>
-
 <br><br>
 
 
@@ -439,52 +433,6 @@ table, th, td {
 </section>
 </html>
 
-<% content_for :javascript do %>
-
-<script type="text/javascript">
-    // $(document).ready(function(){
-    //   ("#")
-    // })
-     $("table tr").on("change", 'input', function() {
-      
-      
-
-      var elem = jQuery(this);
-      container = elem.parents("tr.fields");
-      container1 = elem.parents("tr.fields1");
-      container2 = elem.parents("tr.fields2");
-      var a = container.find("#id").val();
-      var b = container1.find("#id").val();
-      var c = container2.find("#id").val();
-      var bk = container.find("#back_rate").val();
-      var k = container.find("#rate").val();
-      var l = container2.find("#rate").val();
-      var m = container1.find("#rate").val();
-      
-
-
-
-       
-      var price = $(this).val();
-
-      
-      
-          $.ajax({
-            url: "/workorders/edit_rate",
-            type: 'POST',
-            dataType: 'json',
-            data: {rate: [k,l,m],id: [a,b,c],back_rate: bk}
-          });
- 
-
-    
-
-     
-  });
-  </script>
- 
-  
-  <% end %>
 
 
   
