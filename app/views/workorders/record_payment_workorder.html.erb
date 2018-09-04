@@ -52,6 +52,12 @@ Add Amount To Pay<%= text_field_tag :add_price,"",id: :add_price, class: 'form-c
 </div>
 </section>
  <%= hidden_field_tag :date ,"#{Date.today}" %>
+ <% if @workorder.rem_price == "0" %>
+ <% @workorder.update(payment_status: true) %>
+ <% elsif @workorder.rem_price != "0" %>
+ <% @workorder.update(payment_status: false) %>
+   
+ <% end %>
 
 
 <% content_for :javascript do %>

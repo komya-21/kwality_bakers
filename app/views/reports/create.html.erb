@@ -11,9 +11,9 @@
                             </div>
                           </div>
                           <div class="panel-body">
-<%if @type == 'Payment Status'%>
-<font color="green"> <b>Total Deliveries</b></font
-  > <%=@deliveries.count%> 
+<%if @type == 'Workorder'%>
+<font color="green"> <b>Total Workorders</b></font
+  > <%=@workorders.count%> 
     <%#= link_to "Excel", deliveries_path(format: "xls"), class: 'btn btn-success' %>
  
  <div class="table-responsive">
@@ -21,26 +21,27 @@
 
   <thead>
     <tr>
-      <th>Invoice no</th>
+      <th>Order No</th>
       <th>Date</th>
       <th>Vendor</th>
-      <th>Bill checked by</th>
-      <th>Payment Status</th>
+      
+      <th>Order Status</th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @deliveries.each do |delivery| %>
+    <% @workorders.each do |delivery| %>
       <tr>
-        <td><%= link_to delivery.invoice_no, record_payment_delivery_path(delivery)%></td>
+        <td><%= link_to delivery.order_no, workorder_path(delivery)%></td>
         <td><%= delivery.date %></td>
         <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
-        <td><%= delivery.bill_checked_by %></td>
-       <td><%if delivery.payment_status == true%>
+        <td><%#= delivery.bill_checked_by %></td>
+       <td><%#if delivery.payment_status == true%>
         <font color="green">Paid</font>
-        <%elsif delivery.payment_status == false%>
+        <%#elsif delivery.payment_status == false%>
         <font color="red">Pending</font>
-        <%end%></td>
+        <%#end%></td>
       </tr>
     <% end %>
   </tbody>

@@ -30,7 +30,7 @@
     <div class="form-group">
         <div class="col-md-4">
           <label class="col-sm-6 control-label">Report Type</label>
-          <%= f.select :report_type, options_for_select(['Payment Status', 'Return', 'Inward', 'Delivery Items','All Vendors(Custom/Regular)','Custom Deliveries','Regular Deliveries']),{prompt: true},class: "form-control" %>
+          <%= f.select :report_type, options_for_select(['Workorder','Payment','Inward']),{prompt: true},class: "form-control" %>
     </div>
   </div>
 

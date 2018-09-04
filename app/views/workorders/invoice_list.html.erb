@@ -54,11 +54,14 @@
     <% else %>
     <td>Rs.<%= w.rem_price %></td>
     <% end %>
-    <% if w.rem_price == nil || w.rem_price != "0" %>
-    <td><span class="label label-danger">Pending</span></td>
-    <% else %>
+    <% if w.payment_status == true ||  w.payment_status == false %>
+    <% if w.payment_status == true %>
     <td><span class="label label-success">Paid</span></td>
+    <% else %> 
+    <td><span class="label label-danger">Pending</span></td>
+    <% end %> 
     <% end %>
+    
     <td><%= link_to 'View' ,invoicee_workorder_path(w),rel: "tooltip",title: "You can view but not edit" %></td>
     
     <td><b><%= link_to "Record Payment",record_payment_workorder_workorder_path(w),style: "color: #007694;"%></b></td>

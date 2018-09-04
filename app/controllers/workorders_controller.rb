@@ -363,6 +363,6 @@ end
 
    end
    def additional_params
-    params.require(:additional).permit(:right,:right_color,:right_dark,:right_light,:left,:left_color,:left_dark,:left_light,:top,:top_color,:top_dark,:top_light,:bottom,:bottom_color,:bottom_dark,:bottom_light,:measurement_id)
+    params.require(:additional).permit(:right,:payment_status,:right_color,:right_dark,:right_light,:left,:left_color,:left_dark,:left_light,:top,:top_color,:top_dark,:top_light,:bottom,:bottom_color,:bottom_dark,:bottom_light,:measurement_id)
  end
 end

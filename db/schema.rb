@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180901110603) do
+ActiveRecord::Schema.define(version: 20180904062854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -352,6 +352,7 @@ ActiveRecord::Schema.define(version: 20180901110603) do
     t.string "total_to_pay"
     t.string "add_price"
     t.string "rem_price"
+    t.boolean "payment_status"
     t.index ["color_id"], name: "index_workorders_on_color_id"
     t.index ["employee_id"], name: "index_workorders_on_employee_id"
     t.index ["location_id"], name: "index_workorders_on_location_id"
