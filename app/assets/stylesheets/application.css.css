@@ -9,7 +9,7 @@
  *= require custom/app
  *= require dataTables/jquery.dataTables\
  *= require bootstrap/bootstrap-tooltip
- 
+ *= require select2
 
 
 
