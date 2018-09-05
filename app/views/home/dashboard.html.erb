@@ -62,8 +62,18 @@
                                 <div class="panel panel-solid-warning widget-mini">
                                     <div class="panel-body">
                                         <i class="icon-bar-chart"></i>
+
                                         <span class="total text-center"><%#= Delivery.where(payment_status: false).count %></span>
                                         <span class="title text-center"><%#=link_to 'Pending Payment',deliveries_path%></span>
+
+                                        <span class="total text-center"><%= Delivery.where(payment_status: false).count %></span>
+                                        <span cployee_type: "Edge Binding")
+
+        @emp_type3 = Employee.find_by(employee_type: "Packing & Quality")
+
+
+@pasting_record = EmployeesWorkorder.where(employlass="title text-center"><%=link_to 'Pending Payment',deliveries_path%></span>
+
                                     </div>
                                 </div>
                             </div> -->
@@ -132,4 +142,77 @@
     <!--Config demo-->
     
     <!--Global JS-->
+ <!--    <%#= bar_chart Workorder.all.map { |goal|
+
+    {id: goal.id, data: goal.fproducts.group_by_week(:created_at).count}
+} %>
+ -->
+<%#= pie_chart Workorder.group(:created_at).count %>
+
+
+<%#= column_chart EmployeesWorkorder.all.map { |goal|
+    if goal.employee.employee_type == 'Pasting' || goal.status == 'Completed'
+    {employee_id: goal.employee_id, data: 'Pasting'}
+end
+} %>
+
+
+<!-- <div class="container text-center tanks-list">
+  <div class="row">
+    <%#@tanks =  Workorder.all%>
+    <% #@tanks.each do |tank| %>
+    <%#@emp = EmployeesWorkorder.where(workorder_id: tank.id, status: 'Completed')%>
+    <%#@status = @emp.map{|e| e.employee.employee_type}%>
+               <%#= pie_chart [["Pasting",@emp.map{|w| w.workorder_id}.count], ["Cutting", 0]] %>
+      <div class="col-md-4 tank">
+
+             <%#@status.each do |s|%>
+
+        <p>Pasting: <%#= (s == 'Pasting') ? "Completed" : "Pending"%></p>
+        <p>Cutting: <%#= (s == 'Cutting') ? "Completed" : "Pending" %></p>
+        <p>Edge: <%#= (s == 'Edge') ? "Completed" : "Pending"%>%</p>
+        <p>Packing: <%#= (s == 'Packing') ? "Completed" : "Pending"%>%</p>
+      </div>
+    <%# end %>
+      <%# end %>
+            <%#= line_chart @emp.group_by_day_of_week(:created_at, format: "%a").count,xtitle: "Today", ytitle: "Pasting"  %>
+
    
+
+
+
+  </div>
+</div>
+ -->
+
+
+
+ <%@tanks =  Workorder.all%>
+    <% @tanks.each do |tank| %>
+    <%@emp = EmployeesWorkorder.where(workorder_id: tank.id, status: 'Completed')%>
+    <%@emp_type = @emp.map{|e| e.employee.employee_type}%>
+     <%@emp_status = @emp.map{|e| e.status}%>
+      
+      <%@emp_workorder = @emp.map{|e| [e.workorder_id].count}%>
+
+<%end%>
+
+
+<%= high_chart_globals(@chart_globals) %>
+
+ <%= high_chart("some_id", @chart) %>
+<%#= column_chart Workorder.group_by_day_of_week(:created_at, format: "%a").count %>
+
+
+<!-- 
+<script type="text/javascript">
+    Chartkick.eachChart( function(chart) {
+  chart.redraw();
+});
+</script> -->
+
+<!-- 
+<script src="/assets/highcharts.js"></script>
+<div id="container" style="width:100%; height:400px;"></div>
+
+

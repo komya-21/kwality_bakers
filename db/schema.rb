@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20180904120641) do
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "address"
+    t.string "fssai_lic_no"
     t.string "contact_no"
     t.string "email"
     t.string "gst_no"
@@ -212,7 +213,6 @@ ActiveRecord::Schema.define(version: 20180904120641) do
     t.string "handle_groove"
     t.string "handle_fitting"
     t.bigint "rate_id"
-    t.float "back_rate"
     t.string "bsl_type"
     t.string "wh"
     t.index ["color_id"], name: "index_measurements_on_color_id"
@@ -319,6 +319,7 @@ ActiveRecord::Schema.define(version: 20180904120641) do
   create_table "workorders", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "date"
     t.string "name1"
     t.string "name2"
     t.string "name3"
@@ -346,14 +347,12 @@ ActiveRecord::Schema.define(version: 20180904120641) do
     t.datetime "photo5_updated_at"
     t.string "order_no"
     t.bigint "vendor_id"
-    t.date "date"
     t.boolean "approve"
     t.boolean "remove_photo1"
     t.boolean "remove_photo2"
     t.boolean "remove_photo3"
     t.boolean "remove_photo4"
     t.boolean "remove_photo5"
-    t.bigint "employee_id"
     t.bigint "location_id"
     t.bigint "color_id"
     t.string "invoice_no"
@@ -365,7 +364,6 @@ ActiveRecord::Schema.define(version: 20180904120641) do
     t.string "light_color"
     t.boolean "delivered"
     t.index ["color_id"], name: "index_workorders_on_color_id"
-    t.index ["employee_id"], name: "index_workorders_on_employee_id"
     t.index ["location_id"], name: "index_workorders_on_location_id"
     t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
@@ -399,7 +397,6 @@ ActiveRecord::Schema.define(version: 20180904120641) do
   add_foreign_key "vendors", "locations"
   add_foreign_key "work_orders", "colors"
   add_foreign_key "workorders", "colors"
-  add_foreign_key "workorders", "employees"
   add_foreign_key "workorders", "locations"
   add_foreign_key "workorders", "vendors"
 end
