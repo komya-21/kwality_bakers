@@ -20,7 +20,7 @@
 
 <% end %>
        <%= stylesheet_link_tag 'application', media: 'all' %>
-
+<%= javascript_include_tag 'application', 'Chart.bundle', 'chartkick', 'data-turbolinks-track': 'reload' %> 
          <%= csrf_meta_tags %>
 </head>
 <body>
@@ -58,6 +58,7 @@
 <%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
 <% end %>
      <%= javascript_include_tag 'application' %>
+     <%= javascript_include_tag 'application', 'Chart.bundle', 'chartkick', 'data-turbolinks-track': 'reload' %> 
      <%= yield :javascript %>
 
 </body>
