@@ -185,6 +185,12 @@ end
     Measurement.find(@m).update(rate: @rt)
     Measurement.find(@m).update(back_rate: @back_rate)
   end
+  def delivery_status
+    @d_status = params[:delivered]
+    @w_id = params[:workorder_id]
+    
+    Workorder.find(@w_id).update(delivered: true)
+  end
 
 def payment_status_report
   @payment_status = params[:payment_status]

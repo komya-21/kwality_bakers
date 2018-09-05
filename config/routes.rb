@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get :proforma_invoice
       get :invoice
       get :invoicee
+      
      
     end
     collection do
@@ -26,7 +27,7 @@ Rails.application.routes.draw do
        get :invoice_list
        get :payment_status_report
        get :workorder_status_report
-
+       post :delivery_status
 
 
     end

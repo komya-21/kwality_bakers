@@ -1,52 +1,71 @@
 ﻿
         <% if current_user.role == "SuperAdmin" %>
+        <% render "/home/calc" %>
         <section class="main-content-wrapper">
             
             <section id="main-content" class="animated fadeInUp">
                 <div class="row">
-                    <div class="col-md-12 col-lg-6">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="panel panel-solid-warning widget-mini">
+                    <div class="col-md-12">
+                        
+                            <div class="col-md-3">
+                                <div class="panel panel-solid-success widget-mini">
                                     <div class="panel-body">
                                         <i class="icon-bar-chart"></i>
-                                        <span class="total text-center"><%= Product.count %></span>
-                                        <span class="title text-center"><%=link_to "Products", products_path%></span>
+                                        <span class="total text-center">Payment</span>
+                                        <div class="title text-center">
+                                            Paid: Rs.<%= @totl %><br>
+                                            Pending:<br>
+                                            All:<br>
+                                            <%=link_to "Products", products_path%></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="panel widget-mini">
+                            <div class="col-md-3">
+                                <div class="panel panel-solid-danger widget-mini">
                                     <div class="panel-body">
                                         <i class="icon-support"></i>
-                                        <span class="total text-center"><%= Return.count%></span>
-                                        <span class="title text-center"><%= link_to 'Returned Products', returns_path%></span>
+                                        <span class="total text-center">Workorders</span>
+                                        <span class="title text-center">
+                                            Not Approved:<%= @unapproved%><br>
+                                            Pending:<%= @pending_orders %><br>
+                                            Hold:<%= @hold_orders %><br>
+                                            Working:<%= @working_orders %><br>
+                                            Complete:<%= @complete_orders %><br>
+                                            <%= link_to 'Status of Orders', order_status_workorders_path%></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="panel widget-mini">
                                     <div class="panel-body">
                                         <i class="icon-envelope-open"></i>
-                                        <span class="total text-center"><%= Vendor.count%></span>
-                                        <span class="title text-center"><%= link_to 'Total Vendors', vendors_path %></span>
+                                        <span class="total text-center">Vendor</span>
+                                        <span class="title text-center">
+                                            <%= @vendor %><br><%= link_to 'All Vendors', vendors_path %></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="panel panel-solid-warning widget-mini">
+                            <div class="col-md-3">
+                                <div class="panel panel-solid-info widget-mini">
                                     <div class="panel-body">
                                         <i class="icon-user"></i>
-                                        <span class="total text-center"><%= Delivery.where(payment_status: true).count %></span>
-                                        <span class="title text-center"><%=link_to 'Record Payment', deliveries_path%></span>
+                                        <span class="total text-center">Employee</span>
+                                        <span class="title text-center">
+                                            <%= @employees %><br><%=link_to 'All Employees', employees_path%></span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                        
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-3">
                                 <div class="panel panel-solid-warning widget-mini">
                                     <div class="panel-body">
                                         <i class="icon-bar-chart"></i>
+
+                                        <span class="total text-center"><%#= Delivery.where(payment_status: false).count %></span>
+                                        <span class="title text-center"><%#=link_to 'Pending Payment',deliveries_path%></span>
+
                                         <span class="total text-center"><%= Delivery.where(payment_status: false).count %></span>
                                         <span cployee_type: "Edge Binding")
 
@@ -54,17 +73,17 @@
 
 
 @pasting_record = EmployeesWorkorder.where(employlass="title text-center"><%=link_to 'Pending Payment',deliveries_path%></span>
+
                                     </div>
                                 </div>
-                            </div>
-                             </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            </div> -->
+                             
+                   <!--  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                         <div class="panel panel-warning browser-chart">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Today's Delivery report</h3>
                             </div>
-                            <% render "/home/calc" %>
+                            
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -87,7 +106,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                         <div class="panel panel-default">
                             <div class="panel-heading">

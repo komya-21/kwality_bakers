@@ -4,7 +4,8 @@ class DeliveriesController < ApplicationController
   # GET /deliveries
   # GET /deliveries.json
   def index
-    @deliveries = Delivery.all
+    #@deliveries = Delivery.all
+    @deliveries = Workorder.where(delivered: true)
      respond_to do |format|
         format.html
         format.csv { send_data @deliveries.to_csv }
