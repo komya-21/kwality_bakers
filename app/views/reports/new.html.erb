@@ -16,21 +16,21 @@
      <div class="form-group">
         <div class="col-md-4">
           <label class="col-sm-8 control-label">Select Start Date</label>
-          <%= f.date_field :start_date,class: "form-control datepicker" %>
+          <%= f.date_field :start_date,value: "#{Date.today}",class: "form-control datepicker" %>
     </div>
   </div>
 
    <div class="form-group">
         <div class="col-md-4">
           <label class="col-sm-8 control-label">Select End Date</label>
-          <%= f.date_field :end_date,class: "form-control datepicker" %>
+          <%= f.date_field :end_date,value: "#{Date.today}",class: "form-control datepicker" %>
     </div>
   </div>
 
     <div class="form-group">
         <div class="col-md-4">
           <label class="col-sm-6 control-label">Report Type</label>
-          <%= f.select :report_type, options_for_select(['Workorder','Payment','Inward']),{prompt: true},class: "form-control" %>
+          <%= f.select :report_type, options_for_select(['Workorder','Payment','Inward']),{prompt: true},class: "form-control",required: true %>
     </div>
   </div>
 
@@ -55,3 +55,16 @@
 </div>
 </div>
 </section>
+<% content_for :javascript do %>
+<script type="text/javascript">
+  $( document ).ready(function() {
+    
+    $("#report_report_type").select2({
+   
+   
+  });
+    
+    
+});
+</script>
+<% end %>

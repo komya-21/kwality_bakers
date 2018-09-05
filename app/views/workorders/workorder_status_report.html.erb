@@ -3,7 +3,7 @@
                     <div class="col-md-12">
                         <div class=" panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Workorders</h3>
+                                <h3 class="panel-title">Workorder Status Report</h3>
                                 <div class="actions pull-right">
                                  <i class="fa fa-expand"></i>
                                     <i class="fa fa-chevron-down"></i>
@@ -11,13 +11,16 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-<%= form_for :vendor, url:{action: 'select_vendor',remote:true} do |form| %>
+<%= form_for :workorder, url:{action: 'workorder_status_report',remote:true} do |form| %>
  
 <div class = "center">
-     <div class="form-group">
-        <div class="col-md-4">
-          <label class="col-sm-12 control-label">Select Vendor</label>
-    <%= form.select :vendor, Vendor.all.collect{|c| [c.name,c.id]}, {prompt:true},id: 'vendor_id',class: "form-control" %>
+
+  
+     
+<div class="form-group">
+  <div class="col-md-4">
+    <label class="col-sm-12 control-label">Select Status</label>
+      <%= select_tag :status, options_for_select(["Pending","Completed","Working","Hold","Not Approved","All"]) ,{prompt: "Please Select",class: "form-control"}%>
     </div>
   </div>
 </div>
@@ -40,35 +43,44 @@
 </div>
 </section>
 
-
 <% content_for :javascript do %>
-
 <script type="text/javascript">
-  $( document ).ready(function() {
-    
-    $("#vendor_id").select2({
-   
-   
-  });
-    
-    
-});
-</script>
+  
 
+  $('#status').on('change', function() {
+    
+    var t ;
+  Item = $(this).val();
 
-<script type='text/javascript'>
-$('#vendor_id').on('change', function() {
- var vendor_id;
- Item = $(this).val();
+ 
  $.ajax({
-   url: '/deliveries/select_vendor',
+   url: '/workorders/workorder_status_report',
    type: 'GET',
    dataType: 'script',
-   data: {vendor_id: Item},
+   data: {t: Item},
    }).success(function(data) {
    
  });
 });
 </script>
-<% end %>
+<script type="text/javascript">
+  $( document ).ready(function() {
+    
+    $("#status").select2({
 
+    });
+     /*$("#payment_status").select2({
+      width: 200,
+
+     });
+     $("#vendor_id").select2({
+      width: 200,
+
+     });*/
+    
+    
+});
+</script>
+
+
+<% end %>

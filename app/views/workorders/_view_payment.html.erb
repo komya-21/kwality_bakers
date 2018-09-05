@@ -1,0 +1,87 @@
+         
+
+
+ <% if @payment_status.present? %>
+         <table id="payment_status" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>Order no</th>
+      <th>Date</th>
+      <th>Vendor</th>
+      <th>Payment Status</th>
+      <% if @payment_status == "PENDING"%>
+      <th>Pending Amount</th>
+      <% end %>
+      
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @returns.each do |delivery| %>
+      <tr>
+        <td><%= link_to delivery.order_no%></td>
+        <td><%= delivery.date %></td>
+        <td><%= delivery.vendor.name %></td>
+        
+       <td><%if delivery.payment_status == true%>
+        <font color="green">Paid</font>
+        <%elsif delivery.payment_status == false%>
+        <font color="red">Pending</font>
+        <%end%></td>
+        <% if @payment_status == "PENDING" %>
+        <% if delivery.rem_price == nil %>
+        <td><%= delivery.total_to_pay %></td>
+        <% else%>
+        <td><%= delivery.rem_price %></td>
+        <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+<table id="vendor_table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>Order no</th>
+      <th>Date</th>
+      <th>Vendor</th>
+      <th>Payment Status</th>
+      <% if @payment_status == "PENDING"%>
+      <th>Pending Amount</th>
+      <% end %>
+    </tr>
+  </thead>
+  
+
+  <tbody>
+    <% @workorders.each do |delivery| %>
+      <tr>
+        <td><%= delivery.order_no%></td>
+        <td><%= delivery.date %></td>
+        <td><%= delivery.vendor.name %></td>
+        
+       <td><%if delivery.payment_status == true%>
+        <font color="green">Paid</font>
+        <%elsif delivery.payment_status == false%>
+        <font color="red">Pending</font>
+        <%end%></td>
+        <% if @payment_status == "PENDING" %>
+        <% if delivery.rem_price == nil %>
+        <td><%= delivery.total_to_pay %></td>
+        <% else%>
+        <td><%= delivery.rem_price %></td>
+        <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% end %>
+
+<%#= link_to "Excel", export_payment_deliveries_path(payment_status: @payment_status,format: "xlsx"), class: 'btn btn-success' %>
+
+
+</div>
+

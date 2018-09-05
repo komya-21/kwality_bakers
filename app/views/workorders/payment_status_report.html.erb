@@ -1,0 +1,136 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Payment Status Report</h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+<%= form_for :workorder, url:{action: 'payment_status_report',remote:true} do |form| %>
+ 
+<div class = "center">
+
+  <div class="form-group ">
+    <div class="col-md-4">
+       <label class="col-sm-12 control-label">Select Report Type</label>
+    <%= select_tag :report_type , options_for_select(["Status Wise","Vendor Wise"]),{prompt: "Please Select",id: "report_type",class: "form-control"} %>
+  </div>
+  </div>
+     <div class="form-group payment">
+        <div class="col-md-4">
+          <label class="col-sm-12 control-label">Select Payment Status</label>
+    <%= form.select :payment_status, options_for_select(['PENDING', 'PAID','ALL']),{prompt:true}, class: 'form-control',id: "payment_status" %>
+  </div>
+</div>
+
+<div class="form-group vendor">
+        <div class="col-md-4">
+          <label class="col-sm-12 control-label">Select Vendor</label>
+
+    <%= form.select :vendor_id, Vendor.all.collect{|v|[v.name,v.id]},{prompt:true}, class: 'form-control',id: "vendor_id" %>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+  <div id="vendor">
+</div>
+
+        
+
+<% end %>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<% content_for :javascript do %>
+<script type="text/javascript">
+  $(".payment").hide();
+      $(".vendor").hide();
+
+  $('#report_type').on('change', function() {
+    
+    var t = $("#report_type").val();
+    if(t == "Status Wise"){
+
+      $(".payment").show();
+      $(".vendor").hide();
+
+    }
+    if(t == "Vendor Wise"){
+      $(".payment").hide();
+      $(".vendor").show();
+
+
+    }
+
+
+
+  });
+
+</script>
+<script type='text/javascript'>
+$('#payment_status').on('change', function() {
+  
+ var payment_status;
+ Item = $(this).val();
+ 
+ $.ajax({
+   url: '/workorders/payment_status_report',
+   type: 'GET',
+   dataType: 'script',
+   data: {payment_status: Item},
+   }).success(function(data) {
+   
+ });
+});
+</script>
+
+<script type='text/javascript'>
+$('#vendor_id').on('change', function() {
+  
+ var vendor_id;
+ Item = $(this).val();
+ 
+ $.ajax({
+   url: '/workorders/payment_status_report',
+   type: 'GET',
+   dataType: 'script',
+   data: {vendor_id: Item},
+   }).success(function(data) {
+   
+ });
+});
+</script>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    
+    $("#report_type").select2({
+
+    });
+     $("#payment_status").select2({
+      width: 200,
+
+     });
+     $("#vendor_id").select2({
+      width: 200,
+
+     });
+    
+    
+});
+</script>
+<% end %>

@@ -1,0 +1,24 @@
+ <section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Color:</strong>
+  <%= @color_location.color.code %>
+</p>
+
+<p>
+  <strong>Located:</strong>
+  <%= @color_location.located %>
+</p>
+
+<%= link_to 'Edit', edit_color_location_path(@color_location) %> |
+<%= link_to 'Back', color_locations_path %>
+</div>
+</div>
+</div>
+</div>
+</section>

@@ -30,7 +30,7 @@
 <label class="col-sm-1 control-label">Product</label> 
 
          <div class="col-md-2">
-   <%= form.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "form-control" ,required: true%>
+   <%= form.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "form-control" ,required: true,id: "product"%>
 </div>
 </div>
 
@@ -42,10 +42,10 @@
 </div>
 
 <div class="form-group">
-<div id="ctype">
+<div class="ctype">
 <label class="col-sm-1 control-label">Carcass</label> 
 <div class="col-md-2">
-<%= form.select :ctype, options_for_select(['TB/LR','Back']),{prompt:true},class: "form-control" %>
+<%= form.select :ctype, options_for_select(['TB/LR','Back']),{prompt:true},class: "form-control",id: :ctypes %>
 </div>
 </div>
 </div>
@@ -94,12 +94,28 @@
 
   });
   </script> -->
+  <script type="text/javascript">
+  $( document ).ready(function() {
+    
+    $("#product").select2({
+
+    });
+     $("#type").select2({
+      
+
+     });
+     
+    
+    
+});
+</script>
    <script type="text/javascript">
-    $('#ctype').hide();
+    $('.ctype').hide();
   $(document).on("change", "#type", function () {
     var ctype = $(this).val();
     if (ctype == "Carcass Box"){
-    $('#ctype').show();
+    $('.ctype').show();
+    $('#ctypes').select2();
   }
 
 

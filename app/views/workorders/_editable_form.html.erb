@@ -60,18 +60,18 @@
          <% @lights = Color.where(light: "Light") %>
         <%= form.fields_for :fproducts do |w| %>
 
-        <label class="col-sm-1 control-label">Light Shades</label> 
+       <!--  <label class="col-sm-1 control-label">Light Shades</label>  -->
     <div class="col-md-2">
       
     <%= form.select :color_id, @lights.all.collect{|v| [v.code,v.id]},
-    {prompt:true},class: "form-control",id: :diff_id %>
+    {prompt: " Select Light Shade"},class: "form-control",id: :diff_id%>
 
   </div>
-  <label class="col-sm-1 control-label">Dark Shades</label> 
-    <div class="col-md-2">
+<!--   <label class="col-sm-1 control-label">Dark Shades</label> 
+ -->    <div class="col-md-2">
       
     <%= form.select :color_id, @darks.all.collect{|v| [v.code,v.id]},
-    {prompt:true},class: "form-control",id: :diff_id %>
+    {prompt: "Select Dark Shade"},class: "form-control",id: :light_id %>
 
   </div>
         
@@ -85,7 +85,7 @@
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
 
           
-           <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "form-control" ,required: true%>
+           <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "product" ,required: true%>
           <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf']),{prompt:true},class: "form-control"%>
         </div>
 
@@ -306,20 +306,37 @@
 
 <% content_for :javascript do %>
 <script type="text/javascript">
-  $('.select').addClass("form-control");
- $(document).on('nested:fieldAdded', function(event){
- // this field was just inserted into your form
- var field = event.field;
- var selectField = field.find('.product');
-
- selectField.addClass("form-control");
- 
-
- // and activate datepicker on it
-//  dateField.datepicker();
+  
+  $( document ).ready(function() {
+    $("#workorder_location_id").select2();
+    $("#workorder_vendor_id").select2();
+    $("#diff_id").select2();
+    $("#light_id").select2();
 });
 </script>
+<script type="text/javascript">
+ $(".product").addClass("form-control");
+ $(".select").select2();
+ $(".product").select2();
+$(document).on('nested:fieldAdded', function(event){
+  // this field was just inserted into your form
+  var field = event.field; 
+  // it's a jQuery object already! Now you can find date input
+  
 
+  var selectField1 = field.find('#work_order_width');
+  var selectField2 = field.find('.select');
+  var selectField3 = field.find('.product');
+  selectField1.focus();
+ 
+
+  selectField2.select2();
+  selectField3.addClass("form-control");
+  selectField3.select2();
+  
+
+}); 
+</script>
    <script type="text/javascript">
     var ftype;
   $(document).on("change", ".product", function () {

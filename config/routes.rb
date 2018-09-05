@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :color_locations
   resources :locations
   resources :rates
   resources :workorders do 
@@ -23,6 +24,8 @@ Rails.application.routes.draw do
        post :add
        patch :update_additional
        get :invoice_list
+       get :payment_status_report
+       get :workorder_status_report
 
 
 

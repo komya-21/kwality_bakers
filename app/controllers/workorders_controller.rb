@@ -74,12 +74,15 @@ def location_report
   
  @report_type = params[:report_type]
  @location = params[:location]
+
  if (@report_type == "Workorders")
   @workorders = Workorder.where(location_id: @location)
 elsif @report_type == "Employees"
   @employees = Employee.where(location_id: @location)
 elsif @report_type == "Vendors"
   @vendors = Vendor.where(location_id: @location)
+else
+  @emp_workorders = EmployeesWorkorder.all
 end
     
     
@@ -138,6 +141,7 @@ end
     @workorder = Workorder.new(workorder_params)
     respond_to do |format|
       if @workorder.save
+        
         date = Date.today.strftime('%Y%m%d')
         invoice_num = 'IN' + date.to_s + @workorder.id.to_s
         @workorder.update(invoice_no: invoice_num )
@@ -182,6 +186,36 @@ end
     Measurement.find(@m).update(back_rate: @back_rate)
   end
 
+def payment_status_report
+  @payment_status = params[:payment_status]
+  @vendor_id = params[:vendor_id]
+  @workorders = Workorder.where(vendor_id: @vendor_id)
+   
+
+    if @payment_status == 'PAID'
+         
+
+      @returns = Workorder.list1
+    elsif @payment_status == 'PENDING'
+      @returns = Workorder.list2
+    else
+      @returns = Workorder.all
+    end 
+end
+
+def workorder_status_report
+  
+  @status = params[:t]
+
+  
+  if @status == "Not Approved"
+    @workorders = Workorder.where(approve: false)
+  elsif @status == "All"
+    @workorders = Workorder.all
+  else
+  @workorders = EmployeesWorkorder.where(status: @status)
+  end
+end
   # PATCH/PUT /workorders/1
   # PATCH/PUT /workorders/1.json
   def update
@@ -359,7 +393,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:total_to_pay,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
+     params.require(:workorder).permit(:total_to_pay,:dark_color,:light_color,:delivered,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
 
    end
    def additional_params
