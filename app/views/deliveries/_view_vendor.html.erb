@@ -9,9 +9,10 @@
   <thead>
     <tr>
       <th>Invoice no</th>
+      <th>Workorder No</th>
       <th>Date</th>
       <th>Vendor Name</th>
-      <th>Bill checked by</th>
+      
       <th>Total Amount</th>
       <th>Amount Paid</th>
       <th>Pending Amount</th>
@@ -19,20 +20,21 @@
   </thead>
 
   <tbody>
-    <% @vendor.deliveries.each do |delivery| %>
+    <% @vendor.workorders.each do |delivery| %>
       <tr>
-        <td><%= link_to delivery.invoice_no, delivery_path(delivery) %></td>
+        <td><%= link_to delivery.invoice_no, record_payment_workorder_workorder_path(delivery),style: "color: #007694;" %></td>
+        <td><%= link_to delivery.order_no, workorder_path(delivery),style: "color: hotpink;" %></td>
         <td><%= delivery.date %></td>
         <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
-        <td><%= delivery.bill_checked_by %></td>
-        <td><%= delivery.total_to_pay%></td>
-        <% if delivery.remaining_price == nil %>
+        
+        <td><%= delivery.total_to_pay.to_f.ceil%></td>
+        <% if delivery.rem_price == nil %>
         <% @paid = 0 %>
         <% else %>
-        <% @paid = delivery.total_to_pay.to_i-delivery.remaining_price.to_i %>
+        <% @paid = delivery.total_to_pay.to_f.ceil-delivery.rem_price.to_f.ceil %>
         <% end %>
         <td><%= @paid %></td>
-        <td><%= delivery.total_to_pay.to_i - @paid%></td>
+        <td><%= delivery.total_to_pay.to_f.ceil - @paid%></td>
       </tr>
     <% end %>
   </tbody>

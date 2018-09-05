@@ -15,7 +15,27 @@
     <%= @workorder.order_no if @workorder.order_no.present? %><br>
     <strong>Date:</strong>
     <%= @workorder.date if @workorder.date.present? %>
-  </p>        
+  </p>  
+
+  <p>
+  <strong>Selected Color Shades of this work order:</strong><br>
+  <% if @workorder.light_color.present? %>
+  <% @id1  = @workorder.light_color.to_i %> 
+  <b>Light Shade:</b>
+  <%= Color.find(@id1).code %><br> 
+  <b>Location:</b>
+  <li>
+  <%= ColorLocation.find_by(color_id: @id1).located %></li>
+  <% end %>
+  <% if @workorder.dark_color.present? %>
+  <% @id2  = @workorder.dark_color.to_i %> 
+  <b>Dark Shade:</b>
+  <%= Color.find(@id2).code %><br> 
+  <b>Location:</b><li>
+  <%= ColorLocation.find_by(color_id: @id2).located %></li>
+  <% end %>
+</p>
+
           
   <% @workorder.fproducts.each do |f| %>
   <b><u><%= f.product %></u></b>

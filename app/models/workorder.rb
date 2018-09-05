@@ -55,7 +55,8 @@ else
                       end
   end
 
-  
+  scope :list1, -> {where(payment_status: true)}
+  scope :list2, -> {where(payment_status: false)}
 
   scope :list, ->(id) { where(id: id).take }
 

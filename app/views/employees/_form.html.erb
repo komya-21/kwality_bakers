@@ -70,7 +70,7 @@
   <% if current_user.role == "SuperAdmin" %>
   <div class="form-group">
   <label class="col-lg-2 control-label">Location</label> 
-    <div class="col-md-8">
+    <div class="col-md-10">
     <%= f.select :location_id, Location.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control",required: true%>
 
   </div>
@@ -92,3 +92,17 @@
 </div>
 </div>
 </section>
+<% content_for :javascript do %>
+<script type="text/javascript">
+  
+  $( document ).ready(function() {
+    
+    $("#employee_location_id").select2({
+   
+   
+  });
+    $("#employee_employee_type").select2();
+    
+});
+</script>
+<% end %>

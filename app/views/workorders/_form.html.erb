@@ -59,15 +59,15 @@
          <label class="col-sm-1 control-label">Light Shades</label> 
     <div class="col-md-2">
       
-    <%= form.select :color_id, @lights.all.collect{|v| [v.code,v.id]},
+    <%= form.select :dark_color, @lights.all.collect{|v| [v.code,v.id]},
     {prompt:true},class: "form-control",id: :diff_id %>
 
   </div>
   <label class="col-sm-1 control-label">Dark Shades</label> 
     <div class="col-md-2">
       
-    <%= form.select :color_id, @darks.all.collect{|v| [v.code,v.id]},
-    {prompt:true},class: "form-control",id: :diff_id %>
+    <%= form.select :light_color, @darks.all.collect{|v| [v.code,v.id]},
+    {prompt:true},class: "form-control",id: :light_id %>
 
   </div>
 
@@ -111,7 +111,7 @@
       
       <tr class="fields">
       
-       <td><%= m.select :ftype, options_for_select(['Carcass Box' ,'Drawer', 'Shutters','White BSL Shelf']),{prompt:true},class: "form-control select" ,required: true%></td>
+       <td><%= m.select :ftype, options_for_select(['Carcass Box' ,'Drawer', 'Shutters','White BSL Shelf']),{prompt:true} ,class: 'select'%></td>
       
      
       
@@ -248,11 +248,25 @@
 <% content_for :javascript do %>
 
 <script type="text/javascript">
+  
+  $( document ).ready(function() {
+    $("#workorder_location_id").select2();
+    $("#workorder_vendor_id").select2();
+    $("#diff_id").select2();
+    $("#light_id").select2();
+});
+</script>
+
+<!-- <script type="text/javascript">
   $('.product').addClass("form-control");
  $(document).on('nested:fieldAdded', function(event){
  // this field was just inserted into your form
+ alert("Added Nested Fields");
  var field = event.field;
  var selectField = field.find('.product');
+selectField.addClass("form-control");
+var selectField1 = field.find('.select');
+selectField1.select2();
 
  
  
@@ -261,7 +275,7 @@
 //  dateField.datepicker();
 });
 </script>
-
+ -->
    <script type="text/javascript">
     var ftype;
   $(document).on("change", ".product", function () {
@@ -391,17 +405,29 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
   </script>
 
 <script type="text/javascript">
- 
+ $(".product").addClass("form-control");
+ $(".select").select2();
+ $(".product").select2();
 $(document).on('nested:fieldAdded', function(event){
   // this field was just inserted into your form
   var field = event.field; 
   // it's a jQuery object already! Now you can find date input
-  alert(vbvbvb);
+  
 
   var selectField1 = field.find('#work_order_width');
+  var selectField2 = field.find('.select');
+  var selectField3 = field.find('.product');
   selectField1.focus();
+ 
+
+  selectField2.select2();
+  selectField3.addClass("form-control");
+  selectField3.select2();
+  
+
 }); 
 </script>
+
  
  
  <script type="text/javascript">

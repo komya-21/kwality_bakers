@@ -3,6 +3,7 @@
 
 //= require src/app
 //= require jquery_ujs
+//= require select2-full
 //= require bootstrap/bootstrap-tooltip
 //= require bootstrap-select.min
 //= require src/app
