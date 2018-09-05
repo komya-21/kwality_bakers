@@ -3,6 +3,7 @@
 <% @rem_amt = 0 %>
 <% @paid = 0 %>
 <% @count = 0 %>
+
 <% @deliveries = Delivery.where(created_at: Date.today.midnight..Date.today.end_of_day) %> 
 <% @delivery_inwards = DeliveryInward.where(created_at: Date.today.midnight..Date.today.end_of_day) %> 
 <% @products = @delivery_inwards.all.map{|i| i.product_id}.uniq.to_a %>
@@ -31,3 +32,19 @@
 <% @rem_amt += @rem_amt1 %>
 
 <% end %>
+<% @totl = 0 %>
+<% @workorders = Workorder.all %>
+<% @paid1 = @workorders.where(payment_status: true) %>
+<% @paid1.each do |p| %>
+	<% @total_paid = p.total_to_pay.to_f.ceil %>
+	<% @totl += @total_paid %>
+	<% end %>
+<% @unapproved = @workorders.where(approve: false).count %>
+<% @vendor = Vendor.all.count %>
+<% @employees = Employee.all.count %>
+<% @pending_orders = EmployeesWorkorder.where(status: "Pending").count %>
+<% @working_orders = EmployeesWorkorder.where(status: "Working").count %>
+<% @hold_orders = EmployeesWorkorder.where(status: "Hold").count %>
+<% @complete_orders = EmployeesWorkorder.where(status: "Completed").count %>
+
+

@@ -149,7 +149,13 @@
             <button class="holdButton"  style="color: orange;">Hold Work</button>
             <!-- <button class="pauseButton" style="color: orange;">Pause</button> -->
             <button class="stopButton"  style="color: red;">Stop Work</button>
+            <% if current_user.employee.employee_type == "Packing & Quality" %> 
+            <% @pqc = EmployeesWorkorder.find_by(employee_id: current_user.employee_id , workorder_id: @workorder.id) %>
+            <% if @pqc.status == "Completed" %>
 
+<button class="delButton"  style="color: blue;">Ready To Deliever</button>
+<% end %>
+<% end%>
 
 
 
@@ -163,6 +169,8 @@
 </div> 
 </div>
 <% end %>
+
+
 <br><br>
 <% if current_user.role == "SuperAdmin" || current_user.role == "Vendor" %>
 <%= link_to 'Edit', edit_workorder_path(@workorder),class: "btn btn-warning " %>| 
@@ -628,6 +636,26 @@
        dataType: 'json',
 
        data: { status: "Hold" ,employee_id: employee_id,workorder_id: workorder_id}
+     });
+  });
+ </script>
+
+ <script type="text/javascript">
+
+    $('.delButton').on("click" ,function () {
+
+
+
+
+     var workorder_id = <%= @workorder.id%>;
+
+
+     $.ajax({
+       url: "/workorders/delivery_status",
+       type: 'post',
+       dataType: 'json',
+
+       data: {delivered: true ,workorder_id: workorder_id}
      });
   });
  </script>
