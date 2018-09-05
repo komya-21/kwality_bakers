@@ -19,8 +19,8 @@ class DeliveriesController < ApplicationController
 
   def select_vendor
       @vendor = Vendor.find(params[:vendor_id])
-      @vendors = @vendor.deliveries
-      @total = @vendor.deliveries.count
+      @vendors = @vendor.workorders
+      @total = @vendor.workorders.count
   end
 
   # GET /deliveries/1

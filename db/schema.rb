@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180901110603) do
+ActiveRecord::Schema.define(version: 20180904120641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,14 @@ ActiveRecord::Schema.define(version: 20180901110603) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["measurement_id"], name: "index_additionals_on_measurement_id"
+  end
+
+  create_table "color_locations", force: :cascade do |t|
+    t.bigint "color_id"
+    t.string "located"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["color_id"], name: "index_color_locations_on_color_id"
   end
 
   create_table "colors", force: :cascade do |t|
@@ -351,12 +359,17 @@ ActiveRecord::Schema.define(version: 20180901110603) do
     t.string "total_to_pay"
     t.string "add_price"
     t.string "rem_price"
+    t.boolean "payment_status"
+    t.string "dark_color"
+    t.string "light_color"
+    t.boolean "delivered"
     t.index ["color_id"], name: "index_workorders_on_color_id"
     t.index ["location_id"], name: "index_workorders_on_location_id"
     t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
 
   add_foreign_key "additionals", "measurements"
+  add_foreign_key "color_locations", "colors"
   add_foreign_key "current_inventories", "delivery_inwards"
   add_foreign_key "current_inventories", "inward_products"
   add_foreign_key "current_inventories", "products"

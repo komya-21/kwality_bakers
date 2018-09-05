@@ -11,9 +11,9 @@
                             </div>
                           </div>
                           <div class="panel-body">
-<%if @type == 'Payment Status'%>
-<font color="green"> <b>Total Deliveries</b></font
-  > <%=@deliveries.count%> 
+<%if @type == 'Workorder'%>
+<font color="green"> <b>Total Workorders</b></font
+  > <%=@workorders.count%> 
     <%#= link_to "Excel", deliveries_path(format: "xls"), class: 'btn btn-success' %>
  
  <div class="table-responsive">
@@ -21,30 +21,92 @@
 
   <thead>
     <tr>
-      <th>Invoice no</th>
+      <th>Order No</th>
       <th>Date</th>
       <th>Vendor</th>
-      <th>Bill checked by</th>
-      <th>Payment Status</th>
+      
+      
     </tr>
   </thead>
 
   <tbody>
-    <% @deliveries.each do |delivery| %>
+    <% @workorders.each do |delivery| %>
       <tr>
-        <td><%= link_to delivery.invoice_no, record_payment_delivery_path(delivery)%></td>
+        <td><%= link_to delivery.order_no, workorder_path(delivery)%></td>
         <td><%= delivery.date %></td>
         <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
-        <td><%= delivery.bill_checked_by %></td>
-       <td><%if delivery.payment_status == true%>
-        <font color="green">Paid</font>
-        <%elsif delivery.payment_status == false%>
-        <font color="red">Pending</font>
-        <%end%></td>
+       
       </tr>
     <% end %>
   </tbody>
 </table>
+<script type="text/javascript">
+        $('#payment_status').dataTable()
+        sPaginationType: "full_numbers"
+</script>
+
+<br>
+</div>
+
+    <% end %>
+
+
+    <%if @type == 'Payment'%>
+<font color="green"> <b>Total Workorders</b></font
+  > <%=@workorders.count%> 
+    <%#= link_to "Excel", deliveries_path(format: "xls"), class: 'btn btn-success' %>
+ 
+ <div class="table-responsive">
+         <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+  <thead>
+    <tr>
+      <th>Order No</th>
+      <th>Date</th>
+      <th>Vendor</th>
+      <th>Payment Status</th>
+      <th>Total Amount</th>
+      <th>Amount Paid</th>
+      <th>Pending Amount</th>
+      
+      
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @total_paid = 0 %>
+    <% @total_pending = 0 %>
+    <% @workorders.each do |delivery| %>
+      <tr>
+        <td><%= link_to delivery.order_no, workorder_path(delivery)%></td>
+        <td><%= delivery.date %></td>
+        <td><%= delivery.vendor.name if delivery.vendor.present?%></td>
+        <% if delivery.payment_status == true%>
+        <td><font color="green">Paid</font></td>
+        <% else %>
+        <td><font color="red">Pending</font></td>
+        <% end %>
+
+        <td><%= delivery.total_to_pay.to_f.ceil%></td>
+        <% if delivery.rem_price == nil %>
+        <% @paid = 0 %>
+        <% else %>
+        <% @paid = delivery.total_to_pay.to_f.ceil-delivery.rem_price.to_f.ceil %>
+        <% @total_paid += @paid %>
+        <% end %>
+        <td><%= @paid %></td>
+        <% @pending = delivery.total_to_pay.to_f.ceil - @paid %>
+        <% @total_pending += @pending %>
+        <td><%= @pending %></td>
+       
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<strong>Total Pending:</strong>Rs.<%= @total_pending %><br>
+<strong>Total Paid:</strong>Rs.<%= @total_paid %>
+
 <script type="text/javascript">
         $('#payment_status').dataTable()
         sPaginationType: "full_numbers"
@@ -109,7 +171,7 @@
     <%if @type == 'Inward'%>
     <font color="green"> <b>Total Inwards</b></font> 
     <%=@total_inwards.count%> 
-    <%= link_to "Excel", export_reports_path(start_date: @start_date ,end_date: @end_date ,format: "xlsx"), class: 'btn btn-success' %>
+    <%#= link_to "Excel", export_reports_path(start_date: @start_date ,end_date: @end_date ,format: "xlsx"), class: 'btn btn-success' %>
 
 <div class="table-responsive">
           <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -133,7 +195,7 @@
        <td><%= inward_module.inward.date %></td>
         <td><%= inward_module.inward.inward_no %></td>
         <td><%= inward_module.product.name %></td>
-        <td><%= inward_module.quantity %></td>
+        <td><%= inward_module.quantity %><%= inward_module.product.unit if inward_module.product.unit.present? %></td>
       </tr>
    
   
