@@ -295,7 +295,7 @@ DEPENDENCIES
   byebug
   capybara (~> 2.13)
   chartkick (~> 1.2.4)
-  coffee-rails
+  coffee-rails (~> 4.2)
   devise
   groupdate!
   jbuilder (~> 2.5)
@@ -314,7 +314,7 @@ DEPENDENCIES
   roo-xls
   rqrcode-with-patches (~> 0.5.4)
   rubyzip (>= 1.2.1)
-  sass-rails
+  sass-rails (~> 5.0)
   select2-rails
   selenium-webdriver
   spring

@@ -57,9 +57,9 @@ gem 'roo-xls'
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 # gem "twitter-bootstrap-rails"
 group :assets do
-  gem 'therubyracer'
-  gem 'sass-rails'
-  gem 'coffee-rails'
+  gem 'therubyracer', platforms: :ruby
+  gem 'sass-rails', '~> 5.0'
+  gem 'coffee-rails', '~> 4.2'
   gem 'uglifier', '>= 1.3.0'
 end
 group :production do 
