@@ -32,19 +32,77 @@
 <% @rem_amt += @rem_amt1 %>
 
 <% end %>
+
+
 <% @totl = 0 %>
+<% @today_totl = 0 %>
+<% @todays_workorders = Workorder.where(created_at: Date.today.midnight..Date.today.end_of_day) %> 
 <% @workorders = Workorder.all %>
+<% @all = 0 %>
+<% @workorders.each do |w| %>
+<% @all += w.total_to_pay.to_f.ceil %>
+<% end %>
 <% @paid1 = @workorders.where(payment_status: true) %>
-<% @paid1.each do |p| %>
+<% @today_paid = @todays_workorders.where(payment_status: true) %>
+
+	<% @paid1.each do |p| %>
 	<% @total_paid = p.total_to_pay.to_f.ceil %>
 	<% @totl += @total_paid %>
 	<% end %>
+
+	<% @today_paid.each do |p| %>
+	<% @today_total_paid = p.total_to_pay.to_f.ceil %>
+	<% @today_totl +=  @today_total_paid %>
+	<% end %>
+
+	<%# @pending = @workorders.where(["rem_price != ? or rem_price != ?","0",nil])
+ %>
+ <% @p_amt = 0 %>
+ <% @workorders.each do |pd| %>
+ 
+ <% if pd.rem_price == nil %>
+ <% @p_amt += pd.total_to_pay.to_f.ceil %>
+ <% elsif pd.rem_price != "0" %>
+ <% @p_amt += pd.rem_price.to_i %>
+ <% end %>
+ <% end %>
+
+
+<!-- Calculation of status of workorders -->
 <% @unapproved = @workorders.where(approve: false).count %>
 <% @vendor = Vendor.all.count %>
 <% @employees = Employee.all.count %>
-<% @pending_orders = EmployeesWorkorder.where(status: "Pending").count %>
-<% @working_orders = EmployeesWorkorder.where(status: "Working").count %>
-<% @hold_orders = EmployeesWorkorder.where(status: "Hold").count %>
-<% @complete_orders = EmployeesWorkorder.where(status: "Completed").count %>
+
+<%# @pending_orders = EmployeesWorkorder.where(status: "Pending").count %>
+<%# @working_orders = EmployeesWorkorder.where(status: "Working").count %>
+<%# @hold_orders = EmployeesWorkorder.where(status: "Hold").count %>
+<%# @complete_orders = EmployeesWorkorder.where(status: "Completed").count %>
+
+<% @pending = 0 %>
+<% @working =0 %>
+<% @hold = 0 %>
+<% @completed = 0 %>
+<% @Delivered = 0 %>
+
+<% @workorders.each do |w| %>
+<% @worko = EmployeesWorkorder.where(workorder_id: w.id) %>
+<% @worko.each do |wr| %>
+<% if wr.status == "Pending" %>
+<% @pending += 1 %>
+<% elsif wr.status == "Working" %>
+<% @working += 1 %>
+<% elsif wr.status == "Hold" %>
+<% @hold += 1 %>
+<% elsif wr.employee.employee_type == "Packing & Quality" && wr.status == "Completed" %>
+<% @completed += 1 %>
+<% end %>
+
+<% end %>
+<% if w.delivered == true %>
+<% @Delivered += 1 %>
+<% end %>
+
+<% end %>
+<!-- End of workoorder status calculation -->
 
 
