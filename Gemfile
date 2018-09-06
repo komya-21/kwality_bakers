@@ -60,7 +60,7 @@ group :assets do
   gem 'therubyracer'
   gem 'sass-rails'
   gem 'coffee-rails'
-  gem 'uglifier', '~> 2.6.1'
+  gem 'uglifier', '>= 1.3.0'
 end
 group :production do 
   gem 'rails_12factor'
