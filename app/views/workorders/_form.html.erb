@@ -4,8 +4,8 @@
       <div class="panel panel-warning">
         <div class="panel-heading">
           <h3 class="panel-title">New Work Order</h3>
-          <div class="actions pull-right">
-           <i class="fa fa-expand"></i>
+            <div class="actions pull-right">
+             <i class="fa fa-expand"></i>
            <i class="fa fa-chevron-down"></i>
            <i class="fa fa-times"></i>
          </div>
@@ -316,6 +316,7 @@ selectField1.select2();
     container3 = elem.parents("th.choose");
 
     container1 = elem.parents("th.fields");
+
     container.find("#work_order_width").focus();
     
       if(type == "Shutters")
@@ -408,6 +409,7 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
  $(".product").addClass("form-control");
  $(".select").select2();
  $(".product").select2();
+
 $(document).on('nested:fieldAdded', function(event){
   // this field was just inserted into your form
   var field = event.field; 
@@ -417,7 +419,7 @@ $(document).on('nested:fieldAdded', function(event){
   var selectField1 = field.find('#work_order_width');
   var selectField2 = field.find('.select');
   var selectField3 = field.find('.product');
-  selectField1.focus();
+  
  
 
   selectField2.select2();

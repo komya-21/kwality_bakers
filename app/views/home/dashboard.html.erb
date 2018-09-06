@@ -13,10 +13,11 @@
                                         <i class="icon-bar-chart"></i>
                                         <span class="total text-center">Payment</span>
                                         <div class="title text-center">
-                                            Paid: Rs.<%= @totl %><br>
-                                            Pending:<br>
-                                            All:<br>
-                                            <%=link_to "Products", products_path%></div>
+                                            Today's Paid: Rs.<%= @today_totl %><br>
+                                            All Pendings:Rs.<%= @p_amt %><br>
+                                            All:Rs.<%= @all %><br>
+
+                                            <%= link_to "All Records", invoice_list_workorders_path %></div>
                                     </div>
                                 </div>
                             </div>
@@ -26,11 +27,12 @@
                                         <i class="icon-support"></i>
                                         <span class="total text-center">Workorders</span>
                                         <span class="title text-center">
-                                            Not Approved:<%= @unapproved%><br>
-                                            Pending:<%= @pending_orders %><br>
-                                            Hold:<%= @hold_orders %><br>
-                                            Working:<%= @working_orders %><br>
-                                            Complete:<%= @complete_orders %><br>
+                                            Not Approved:<b><%= @unapproved%></b><br>
+                                            Pending:<b><%= @pending %></b><br>
+                                            Hold:<b><%= @hold %></b><br>
+                                            Working:<b><%= @working %></b><br>
+                                            Complete:<b><%= @completed %></b><br>
+                                            Delivered:<b><%= @Delivered %></b><br>
                                             <%= link_to 'Status of Orders', order_status_workorders_path%></span>
                                     </div>
                                 </div>
@@ -66,13 +68,13 @@
                                         <span class="total text-center"><%#= Delivery.where(payment_status: false).count %></span>
                                         <span class="title text-center"><%#=link_to 'Pending Payment',deliveries_path%></span>
 
-                                        <span class="total text-center"><%= Delivery.where(payment_status: false).count %></span>
+                                        <span class="total text-center"><%#= Delivery.where(payment_status: false).count %></span>
                                         <span cployee_type: "Edge Binding")
 
         @emp_type3 = Employee.find_by(employee_type: "Packing & Quality")
 
 
-@pasting_record = EmployeesWorkorder.where(employlass="title text-center"><%=link_to 'Pending Payment',deliveries_path%></span>
+@pasting_record = EmployeesWorkorder.where(employlass="title text-center"><%#=link_to 'Pending Payment',deliveries_path%></span>
 
                                     </div>
                                 </div>
@@ -127,7 +129,30 @@
                     </div>
                 </div> -->
                 
-               
+               <%@tanks =  Workorder.all%>
+    <% @tanks.each do |tank| %>
+    <%@emp = EmployeesWorkorder.where(workorder_id: tank.id, status: 'Completed')%>
+    <%@emp_type = @emp.map{|e| e.employee.employee_type}%>
+     <%@emp_status = @emp.map{|e| e.status}%>
+      
+      <%@emp_workorder = @emp.map{|e| [e.workorder_id].count}%>
+
+<%end%>
+<%= high_chart_globals(@chart_globals) %>
+
+<div class="col-md-6">
+
+
+
+ <%= high_chart("some_id", @chart) %>
+</div>
+<div class="col-md-6">
+    <%# @paid = Workorder.where(payment_status: true).count %>
+    <%# @pending = Workorder.count - @paid %>
+
+<%#= high_chart("view_id",@hi) %>
+<%= pie_chart [["Paid", @totl], ["Pending", @p_amt]] %>
+</div>
 
                                 
                 </div>
@@ -187,20 +212,7 @@ end
 
 
 
- <%@tanks =  Workorder.all%>
-    <% @tanks.each do |tank| %>
-    <%@emp = EmployeesWorkorder.where(workorder_id: tank.id, status: 'Completed')%>
-    <%@emp_type = @emp.map{|e| e.employee.employee_type}%>
-     <%@emp_status = @emp.map{|e| e.status}%>
-      
-      <%@emp_workorder = @emp.map{|e| [e.workorder_id].count}%>
 
-<%end%>
-
-
-<%= high_chart_globals(@chart_globals) %>
-
- <%= high_chart("some_id", @chart) %>
 <%#= column_chart Workorder.group_by_day_of_week(:created_at, format: "%a").count %>
 
 

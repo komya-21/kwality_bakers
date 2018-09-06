@@ -8,6 +8,7 @@ class HomeController < ApplicationController
 
 
 	@pasting_record = EmployeesWorkorder.where(employee_id: @emp_type.id, status: 'Completed')
+
 	@cutting_record = EmployeesWorkorder.where(employee_id: @emp_type1.id, status: 'Completed')
 	@edge_record = EmployeesWorkorder.where(employee_id: @emp_type2.id, status: 'Completed')
 	@pack_record = EmployeesWorkorder.where(employee_id: @emp_type3.id, status: 'Completed')
@@ -35,13 +36,27 @@ class HomeController < ApplicationController
         [0, "rgb(240, 240, 255)"]
       ]
     },
-    borderWidth: 2,
+    borderWidth: 0,
     plotBackgroundColor: "rgba(255, 255, 255, .9)",
+    BackgroundColor: "#fff",
     plotShadow: true,
-    plotBorderWidth: 1
+    plotBorderWidth: 0,
+    width: 573,
+    height: 300
   )
   f.lang(thousandsSep: ",")
   f.colors(["#90ed7d", "#f7a35c", "#8085e9", "#f15c80", "#e4d354"])
 end
-  end
+
+  @hi = LazyHighCharts::HighChart.new('graph') do |f|
+      f.options[:chart][:defaultSeriesType] = "pie"
+      f.options[:title][:text] = "Payment Status"
+
+      
+        #f.series(:name=>"Pending", :data=>[:name=>"pending", :y=>10])
+        f.series(:name=>"Paid", :data=>[:name=>"paid", :y=>12])
+      
+end
+end
+  
 end
