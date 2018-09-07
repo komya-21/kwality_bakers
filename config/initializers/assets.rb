@@ -49,6 +49,10 @@ Rails.application.config.assets.precompile += %w( locations.css )
 Rails.application.config.assets.precompile += %w( locations.js )
 Rails.application.config.assets.precompile += %w( color_locations.css )
 Rails.application.config.assets.precompile += %w( color_locations.js )
+Rails.application.config.assets.precompile += %w( Chart.bundle.js )
+Rails.application.config.assets.precompile += %w( chartkick.js )
+Rails.application.config.assets.precompile += %w( highcharts.js )
+
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.

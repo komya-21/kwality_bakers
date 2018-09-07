@@ -1,10 +1,33 @@
 ﻿
         <% if current_user.role == "SuperAdmin" %>
         <% render "/home/calc" %>
-        <section class="main-content-wrapper">
-            
+        
+            <section class="main-content-wrapper">
+
+
+
+    
+ <%#= pie_chart [["Paid", @totl], ["Pending", @p_amt]] %>
+
             <section id="main-content" class="animated fadeInUp">
-                <div class="row">
+               
+                        <div class="col-md-6">
+                                <div class="panel panel-solid-danger widget-mini">
+                                    <div class="panel-body">
+                        <%= high_chart_globals(@chart_globals) %>
+                        <%= high_chart("some_id", @chart) %>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                                <div class="panel panel-solid-success widget-mini">
+                                    <div class="panel-body">
+                        <%#= high_chart_globals(@chart_globals) %>
+                        <%= pie_chart [["Paid", @totl], ["Pending", @p_amt]] %>
+                    </div>
+                </div>
+            </div>
+                 <div class="row">
                     <div class="col-md-12">
                         
                             <div class="col-md-3">
@@ -129,36 +152,24 @@
                     </div>
                 </div> -->
                 
-               <%@tanks =  Workorder.all%>
-    <% @tanks.each do |tank| %>
-    <%@emp = EmployeesWorkorder.where(workorder_id: tank.id, status: 'Completed')%>
-    <%@emp_type = @emp.map{|e| e.employee.employee_type}%>
-     <%@emp_status = @emp.map{|e| e.status}%>
-      
-      <%@emp_workorder = @emp.map{|e| [e.workorder_id].count}%>
 
-<%end%>
-<%= high_chart_globals(@chart_globals) %>
+        
 
-<div class="col-md-6">
-
-
-
- <%= high_chart("some_id", @chart) %>
-</div>
-<div class="col-md-6">
-    <%# @paid = Workorder.where(payment_status: true).count %>
+              
+<!-- <div class="col-md-6">
+ -->    <%# @paid = Workorder.where(payment_status: true).count %>
     <%# @pending = Workorder.count - @paid %>
 
 <%#= high_chart("view_id",@hi) %>
-<%= pie_chart [["Paid", @totl], ["Pending", @p_amt]] %>
-</div>
-
+<!-- </div>
+ -->
                                 
                 </div>
             </section>
         </section>
    <% end %>
+
+   <script src="chartkick.js"></script>
         <!--main content end-->
    
     <!--sidebar right start-->

@@ -55,7 +55,7 @@ end
     BackgroundColor: "#fff",
     plotShadow: true,
     plotBorderWidth: 0,
-    width: 573,
+    width: 545,
     height: 300
   )
   f.lang(thousandsSep: ",")
