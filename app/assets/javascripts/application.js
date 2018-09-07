@@ -15,5 +15,4 @@
 //= require Chart.bundle
 //= require chartkick
 //= require highcharts
-//= require highcharts-more
-//= require highstock
+
