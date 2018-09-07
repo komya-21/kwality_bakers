@@ -13,4 +13,5 @@
 //= require dataTables/js/dataTables.bootstrap
 //= require bootstrap/bootstrap-tooltip
 //= require highcharts
-
+//= require highcharts-more
+//= require highstock

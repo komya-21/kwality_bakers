@@ -19,14 +19,13 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-6">
+            <div class="col-md-6">
                                 <div class="panel panel-solid-success widget-mini">
                                     <div class="panel-body">
-                        <%#= high_chart_globals(@chart_globals) %>
-                        <%#= pie_chart [["Paid", @totl], ["Pending", @p_amt]] %>
+                        <%= high_chart("some_other_id",@chart_teste5) %>
                     </div>
                 </div>
-            </div> -->
+            </div> 
                  <div class="row">
                     <div class="col-md-12">
                         
@@ -160,11 +159,12 @@
  -->    <%# @paid = Workorder.where(payment_status: true).count %>
     <%# @pending = Workorder.count - @paid %>
 
-<%#= high_chart("view_id",@hi) %>
 <!-- </div>
  -->
                                 
                 </div>
+
+
            
         </section>
    <% end %>

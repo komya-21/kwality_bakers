@@ -71,6 +71,37 @@ end
         f.series(:name=>"Paid", :data=>[:name=>"paid", :y=>12])
       
 end
+@chart_teste5 = LazyHighCharts::HighChart.new('graph') do |f|
+   @totl = 0
+   @p_amt = 0
+   @workorders = Workorder.all
+ @workorders.each do |pd|
+ 
+ if pd.rem_price == nil
+ @p_amt += pd.total_to_pay.to_f.ceil
+ elsif pd.rem_price != "0"
+ @p_amt += pd.rem_price.to_i
+ end
+ end
+ @paid1 = @workorders.where(payment_status: true)
+@paid1.each do |p|
+  @total_paid = p.total_to_pay.to_f.ceil
+  @totl += @total_paid
+  end
+
+  f.chart({:defaultSeriesType=>"pie", :margin=> [50, 0, 0, 0]})
+  f.title({:text => "Payment"})
+  f.subtitle({:text => "Payment Status"})
+  f.series({
+    :type => "pie",
+    :name => "Payment",
+    :size => "80%",
+    :innerSize => "20%",
+    :data => [{ :name => "Pending", :y => @p_amt, :color =>"#80699B" },{ :name => "Paid", :y => @totl, :color => "#3D96AE" }],
+    :dataLabels=> { :enabled => true }
+  }
+  )
+end
 end
   
 end
