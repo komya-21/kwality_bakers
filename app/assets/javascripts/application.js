@@ -13,6 +13,6 @@
 //= require dataTables/js/dataTables.bootstrap
 //= require bootstrap/bootstrap-tooltip
 
-//= require chartkick
+
 //= require highcharts
 
