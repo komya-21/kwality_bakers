@@ -1,22 +1,36 @@
 class HomeController < ApplicationController
   def dashboard
   	@chart = LazyHighCharts::HighChart.new('graph') do |f|
-  	@emp_type = Employee.find_by(employee_type: "Pasting")
-  	@emp_type1 = Employee.find_by(employee_type: "Cutting")
-  	@emp_type2 = Employee.find_by(employee_type: "Edge Binding")
-	@emp_type3 = Employee.find_by(employee_type: "Packing & Quality")
+  	@emp_type = Employee.where(employee_type: "Pasting")
+  	@emp_type1 = Employee.where(employee_type: "Cutting")
+  	@emp_type2 = Employee.where(employee_type: "Edge Binding")
+    @emp_type3 = Employee.where(employee_type: "Packing & Quality")
+    @a = 0
+  @emp_type.each do |e|
+	@pasting_record = EmployeesWorkorder.where(employee_id: e.id, status: 'Completed')
+  @a += @pasting_record.count
+  end
 
-
-	@pasting_record = EmployeesWorkorder.where(employee_id: @emp_type.id, status: 'Completed')
-
-	@cutting_record = EmployeesWorkorder.where(employee_id: @emp_type1.id, status: 'Completed')
-	@edge_record = EmployeesWorkorder.where(employee_id: @emp_type2.id, status: 'Completed')
-	@pack_record = EmployeesWorkorder.where(employee_id: @emp_type3.id, status: 'Completed')
+  @b = 0
+  @emp_type1.each do |e|
+	@cutting_record = EmployeesWorkorder.where(employee_id: e.id, status: 'Completed')
+  @b += @cutting_record.count
+end
+@c = 0
+@emp_type2.each do |e|
+	@edge_record = EmployeesWorkorder.where(employee_id: e.id, status: 'Completed')
+  @c += @edge_record.count
+end
+@d = 0
+@emp_type3.each do |e|
+	@pack_record = EmployeesWorkorder.where(employee_id: e.id, status: 'Completed')
+  @d += @pack_record.count
+end
 
 
   	f.title(text: "Total WorkOrder Completed")
   	f.xAxis(categories: ["Pasting","Cutting","Edge Binging","Packing & Quality"])
-  	f.series(name: "Workorder Completed Count", yAxis: 0, data: [@pasting_record.count, @cutting_record.count, @edge_record.count, @pack_record.count])
+  	f.series(name: "Workorder Completed Count", yAxis: 0, data: [@a, @b, @c, @d])
 
   	f.yAxis [
     	{title: {text: "Workorder", margin: 70} },
