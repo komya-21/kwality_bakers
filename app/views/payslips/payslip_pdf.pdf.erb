@@ -1,0 +1,65 @@
+
+
+
+
+<center><font color="maroon"><h2>Payslip</h2></font></center>
+
+
+
+Payslip generated on <%= @payslip.date %> 
+<p>
+  <strong>Employee Name:</strong>
+  <%= @payslip.employee.name %>
+</p>
+
+<p>
+  <strong>Employee ID:</strong>
+  <%= @payslip.employee.employee_no %>
+</p>
+
+<p>
+  <strong>Basic salary:</strong>
+  <%= @payslip.basic_salary %>
+</p>
+<p>
+  <strong>Date:</strong>
+  <%= @payslip.date %>
+</p>
+<hr>
+
+<p>
+  <font color="maroon"><strong>Earning:</strong></font>
+ 
+  <% @earnings.each do |e| %>
+  <p>
+    <strong><%= e.employee_payroll.category_name %>:</strong>
+    <%= @payslip.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %>
+  </p>
+  <% end %>
+
+  
+</p>
+<hr>
+<p>
+  <font color="maroon"><strong>Deduction:</strong></font>
+ 
+  <% @deductions.each do |e| %>
+  <p>
+    <strong><%= e.employee_payroll.category_name %>:</strong>
+    <%= @payslip.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %>
+  </p>
+  <% end %>
+
+  
+</p>
+<hr>
+<p>
+<strong>Total:</strong>
+<%= @payslip.net_salary %>
+</p>
+
+
+
+
+
+

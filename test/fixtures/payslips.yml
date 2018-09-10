@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employee: one
+  earning: one
+  deduction: one
+  date: 2018-09-08
+  basic_salary: MyString
+
+two:
+  employee: two
+  earning: two
+  deduction: two
+  date: 2018-09-08
+  basic_salary: MyString

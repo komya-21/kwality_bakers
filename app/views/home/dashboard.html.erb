@@ -1,6 +1,5 @@
 ﻿
-        <% if current_user.role == "SuperAdmin" %>
-        <% render "/home/calc" %>
+        
         
             
 
@@ -9,7 +8,27 @@
     
  <%#= pie_chart [["Paid", @totl], ["Pending", @p_amt]] %>
 
-            <section id="main-content" class="animated fadeInUp">
+<section id="main-content" class="animated fadeInUp">
+<%if current_user.role == "Employee" %>
+<div align="center">
+    <button id="inButton" class="btn btn-success" >IN</button>
+    <button id="outButton"  class="btn btn-danger">OUT</button>
+</div>
+<% @date = Date.today %>
+
+<% @emp = EmpWork.find_by(employee_id: current_user.employee_id,date: @date) %>
+
+<!-- <p><h1>Your Today's In Time:</h1></p>
+ --> <%# if @emp != nil %>
+    <!-- <p id="demo"><%#= @emp.in_time %></p> -->
+    <%# end%>
+        <!-- <p><h1>Your Today's Out Time:</h1></p> -->
+       
+        <!-- <p id="demo1"></p> -->
+        
+<% elsif current_user.role == "SuperAdmin" %>
+    <% render "/home/calc" %>
+    
                
                         <div class="col-md-6">
                                 <div class="panel panel-solid-danger widget-mini">
@@ -79,8 +98,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+
+
+</div>
+</div>
+
                        
                     <!-- <div class="col-md-3">
                                 <div class="panel panel-solid-warning widget-mini">
@@ -160,81 +182,126 @@
     <%# @pending = Workorder.count - @paid %>
 
 <!-- </div>
+
  -->
-                                
+            
+
                 </div>
 
+<% end %>
 
-           
-        </section>
-   <% end %>
+</section>
+        
+       
+        
 
-        <!--main content end-->
-   
-    <!--sidebar right start-->
+<% content_for :javascript do %>
+    <script type="text/javascript">
+        var time;
+        $('#inButton').on("click" ,function () {
+            var emp_id = <%= current_user.employee_id %>;
+            var currentdate = new Date(); 
+             time = + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" 
+      + currentdate.getSeconds();
+      
+      var date = currentdate.getDate() + "/" +(currentdate.getMonth()+1)  + "/" 
+      + currentdate.getFullYear();
+      alert(time);
+
+/*      document.getElementById("demo").innerHTML = time;
+*/
+      
+      $.ajax({
+       url: "/employees/in_time",
+       type: 'post',
+       dataType: 'json',
+
+       data: {in_time: time,date: date,employee_id: emp_id }
+
+
+
+     });
+        
+      
+
+      
+
+    });
+
+
+
+
+
+
+
+  
+            
+    $('#outButton').on("click" ,function () {
+        var emp_id = <%= current_user.employee_id %>;
+            
+        
+       
+      var currentdate = new Date(); 
+
+
+      var out_time =   
+      + currentdate.getHours() + ":"  
+      + currentdate.getMinutes() + ":" 
+      + currentdate.getSeconds();
+      
+     start = time.split(":");
+     end = out_time.split(":");
+
+     alert(out_time);
+/*           document.getElementById("demo1").innerHTML = out_time;
+*/
+    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
     
-    <!--/sidebar right end-->
-    <!--Config demo-->
-    
-    <!--Global JS-->
- <!--    <%#= bar_chart Workorder.all.map { |goal|
+    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+    start_time = startDate.getTime();
 
-    {id: goal.id, data: goal.fproducts.group_by_week(:created_at).count}
-} %>
- -->
-<%#= pie_chart Workorder.group(:created_at).count %>
+    var diff = endDate.getTime() - startDate.getTime();
 
+    var hours = Math.floor(diff / 1000 / 60 / 60);
 
-<%#= column_chart EmployeesWorkorder.all.map { |goal|
-    if goal.employee.employee_type == 'Pasting' || goal.status == 'Completed'
-    {employee_id: goal.employee_id, data: 'Pasting'}
-end
-} %>
+    diff -= hours * 1000 * 60 * 60;
+
+    var minutes = Math.floor(diff / 1000 / 60);
 
 
-<!-- <div class="container text-center tanks-list">
-  <div class="row">
-    <%#@tanks =  Workorder.all%>
-    <% #@tanks.each do |tank| %>
-    <%#@emp = EmployeesWorkorder.where(workorder_id: tank.id, status: 'Completed')%>
-    <%#@status = @emp.map{|e| e.employee.employee_type}%>
-               <%#= pie_chart [["Pasting",@emp.map{|w| w.workorder_id}.count], ["Cutting", 0]] %>
-      <div class="col-md-4 tank">
+    // If using time pickers with 24 hours format, add the below line get exact hours
+    if (hours < 0)
+       hours = hours + 24;
 
-             <%#@status.each do |s|%>
+    var wt = (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
+    alert(wt);
 
-        <p>Pasting: <%#= (s == 'Pasting') ? "Completed" : "Pending"%></p>
-        <p>Cutting: <%#= (s == 'Cutting') ? "Completed" : "Pending" %></p>
-        <p>Edge: <%#= (s == 'Edge') ? "Completed" : "Pending"%>%</p>
-        <p>Packing: <%#= (s == 'Packing') ? "Completed" : "Pending"%>%</p>
-      </div>
-    <%# end %>
-      <%# end %>
-            <%#= line_chart @emp.group_by_day_of_week(:created_at, format: "%a").count,xtitle: "Today", ytitle: "Pasting"  %>
+      
+      var date = currentdate.getDate() + "/" +(currentdate.getMonth()+1)  + "/" 
+      + currentdate.getFullYear();
+      
+      
+      $.ajax({
+       url: "/employees/out_time",
+       type: 'post',
+       dataType: 'json',
 
-   
+       data: {out_time: out_time,date: date,employee_id: emp_id,work_hours: wt }
 
 
 
-  </div>
-</div>
- -->
+     });
+
+
+    });
+
+</script>
+        <% end %>
 
 
 
 
-<%#= column_chart Workorder.group_by_day_of_week(:created_at, format: "%a").count %>
 
 
-<!-- 
-<script type="text/javascript">
-    Chartkick.eachChart( function(chart) {
-  chart.redraw();
-});
-</script> -->
-
-<!-- 
-<script src="/assets/highcharts.js"></script>
-<div id="container" style="width:100%; height:400px;"></div>
 
 

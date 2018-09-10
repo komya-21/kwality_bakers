@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employee: one
+  in_time: MyString
+  out_time: MyString
+  work_hours: MyString
+  date: MyString
+
+two:
+  employee: two
+  in_time: MyString
+  out_time: MyString
+  work_hours: MyString
+  date: MyString

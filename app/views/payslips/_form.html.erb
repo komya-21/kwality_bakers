@@ -1,0 +1,134 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                  <% @emp = Employee.find(params[:employee_id]) %>
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Payslip of <%= @emp.name%></h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+<div class="form-horizontal form-border">
+  <% @earnings = Earning.all %>
+   <% @deductions = Deduction.all %>
+<%= form_with(model: payslip, local: true) do |form| %>
+
+<%= form.hidden_field :employee_id, value: @employee_id %>
+
+  
+  <!--<div class="field">
+    <%#= form.label :employee_id %>
+    <%#= form.select :employee_id,Employee.all.collect{|e| [e.name,e.id]},{prompt:true} %>
+  </div>-->
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">Date:</label> 
+    <div class="col-lg-6">
+    <%= form.date_field :date, id: :payslip_date,class: "form-control" %>
+  </div>
+</div>
+
+
+<div class="form-group">
+     <label class="col-sm-3 control-label">Enter Basic Salary:</label> 
+     <div class="col-lg-6">
+         <%#= form.label :basic_salary %>
+    <%= form.text_field :basic_salary, id: :payslip_basic_salary,class: "form-control" %>
+  </div>
+</div>
+<hr>Earnings:
+<% @i = 0 %>
+<% @earnings.each do |e| %>
+<% @i += 1 %>
+  <div class="form-group">
+     <label class="col-sm-3 control-label"><%= e.employee_payroll.category_name %></label> 
+     <div class="col-lg-6">
+    <%= text_field_tag "#{e.employee_payroll.category_name}","", id: "earning#{@i}",class: "form-control" %>
+  </div>
+</div>
+<% end %>
+<% @j = 0 %>
+<hr>Deductions:
+  <% @deductions.each do |e| %>
+  <% @j += 1 %>
+  <div class="form-group">
+     <label class="col-sm-3 control-label"><%= e.employee_payroll.category_name %></label> 
+     <div class="col-lg-6">
+    <%= text_field_tag "#{e.employee_payroll.category_name}","", id: "deduction#{@j}",class: "form-control" %>
+  </div>
+</div>
+<% end %>
+<div class="form-group">
+     <label class="col-sm-3 control-label">Salary Calculation</label> 
+     <div class="col-lg-3">
+    <%= form.text_field :gross_salary, id: :gross_salary,placeholder: "Gross Salary",class: "form-control" %>
+  </div>
+  <div class="col-lg-3">
+    <%= form.text_field :net_salary, id: :net_salary,placeholder: "Net Salary",class: "form-control" %>
+  </div>
+</div>
+
+  
+
+  
+<div class="form-group">
+    
+     <div class="col-lg-6">
+ 
+    <%= form.submit "Create Payslip",class: "btn btn-primary" %>
+    <%= link_to 'Back', employees_payslips_path,class: "btn btn-success" %>
+  </div>
+</div>
+<% end %>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<% @hra = EmployeePayroll.find_by(category_name: "HRA") %>
+<% @da = EmployeePayroll.find_by(category_name: "DA") %>
+<% @ca = EmployeePayroll.find_by(category_name: "CA") %>
+<% @ta = EmployeePayroll.find_by(category_name: "TA") %>
+<% @pt = EmployeePayroll.find_by(category_name: "Professional Tax") %>
+<% @pf = EmployeePayroll.find_by(category_name: "PF") %>
+
+<% content_for :javascript do %>
+<script type="text/javascript">
+  $("#payslip_basic_salary").keyup(function(){
+    var basic_salary = +$(this).val();
+    
+    var hra = <%= @hra.percentage %>;
+    var da = <%= @da.percentage %>;
+    var ca = <%= @ca.percentage %>;
+    var ta = <%= @ta.percentage %>;
+    var pt = <%= @pt.percentage %>;
+    var pf = <%= @pf.percentage %>;
+
+    var hra_cal = basic_salary * (hra/100);
+    var da_cal = basic_salary * (da/100);
+    var ca_cal = basic_salary * (ca/100);
+    var ta_cal = basic_salary * (ta/100);
+    var pt_cal = basic_salary * (pt/100);
+    var pf_cal = basic_salary * (pf/100);
+
+   +$("#earning1").val(hra_cal);
+    +$("#earning2").val(da_cal);
+    +$("#earning3").val(ca_cal);
+    +$("#earning4").val(ta_cal);
+    +$("#deduction1").val(pt_cal);
+    +$("#deduction2").val(pf_cal);
+
+      var gs = basic_salary + hra_cal + da_cal + ca_cal+ta_cal;
+      $("#gross_salary").val(gs);
+  var ns =   gs - (pt_cal + pf_cal);
+  $("#net_salary").val(ns);
+      
+       });
+  
+</script>
+<% end %>

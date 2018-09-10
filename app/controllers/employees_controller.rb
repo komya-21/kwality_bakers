@@ -17,10 +17,34 @@ class EmployeesController < ApplicationController
   def show
   end
 
+  def in_time
+    @in_time = params[:in_time]
+    @date = params[:date]
+    @emp_id = params[:employee_id]
+    EmpWork.create(in_time: @in_time , date: @date , employee_id: @emp_id)
+  end
+
+  def out_time
+    @out_time = params[:out_time]
+    @date = params[:date]
+    @emp_id = params[:employee_id]
+    @wt = params[:work_hours]
+    @emp = EmpWork.find_by(date: @date)
+    EmpWork.find_by(employee_id: @emp_id,date: @date).update(out_time: @out_time,work_hours: @wt)
+  end
+
   # GET /employees/new
   def new
     @employee = Employee.new
     @employee.emp_no
+  end
+
+  def report
+
+  end
+
+  def empwork
+    @emp_works = EmpWork.all
   end
 
   # GET /employees/1/edit

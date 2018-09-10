@@ -21,7 +21,7 @@
                <p>
                 <h2><font color="red"><marquee behavior="alternate">This Workorder is not approved yet!!!</font></marquee></h2>
                 <% if current_user.role == "SuperAdmin" %>
-                <%= link_to "Approve Now" ,workorders_path,class: "btn btn-link" %>
+                <b><%= link_to "Approve Now" ,workorders_path,class: "btn btn-link",style: "color: hotpink;" %></b>
                 <% end %>
               </p>
                <% else %> 

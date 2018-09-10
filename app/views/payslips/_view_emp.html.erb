@@ -1,0 +1,69 @@
+                     
+                            
+
+ <%#= link_to t('.new', :default => t("helpers.links.new")),
+            new_employee_path,:class => 'btn btn-primary' %>
+ <% if @payslip_emp.present? %>           
+      <div class="row">
+                  <%# @emp = Employee.find(params[:employee_id]) %>
+                    <div class="col-md-12">
+                        <div class=" panel panel-danger">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><b><%= @payslip_emp.employee.name %></b>-Payslip generated on <%= @payslip_emp.date %></h3>
+                                <div class="actions pull-right">
+                                 <i class="fa fa-expand"></i>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+
+
+<table class="table table-stried">
+ 
+    <tr>
+      <th><font color="maroon">Earnings:</font></th>
+      <th></th>
+      </tr>
+      <tr>
+        <th>Category</th>
+        <th>Amount</th>
+      </tr>
+      
+      <tr>
+        <td>Basic Salary</td>
+        <td><%= @payslip_emp.basic_salary.to_f %></td>
+      </tr>
+        <% @earnings.each do |e| %>
+        <tr>
+        <td><%= e.employee_payroll.category_name %></td>
+        <td><%= @payslip_emp.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %></td>
+         </tr>
+        <% end %>
+     
+      
+      <tr>
+        <th><font color="maroon">Deduction:</font></th>
+      </tr>
+      <% @deductions.each do |e| %>
+      <tr>
+        <td><%= e.employee_payroll.category_name %></td>
+        <td><%= @payslip_emp.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %></td>
+      </tr>
+      <% end %>
+      <tr>
+        <th>Total:</th>
+        <th><%= @payslip_emp.net_salary.to_f %>
+        </th>
+  </tr>
+</table>
+<% else %>
+<h1>Payment receipt of <%=@date%> is not generated</h1>
+<% end %>
+</div>
+</div>
+</div>
+
+</div>
+
+
