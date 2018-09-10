@@ -309,14 +309,14 @@ end
      @location = Employee.find(@employee_id).location_id
     if Employee.find(@employee_id).employee_type == "Pasting"
 
-      @id = Employee.find_by(["employee_type = ? and location_id = ?", "Cutting",@location])
+    @id = Employee.find_by(["employee_type = ? and location_id = ?", "Cutting",@location])
     elsif Employee.find(@employee_id).employee_type == "Cutting"
       @id = Employee.find_by(["employee_type = ? and location_id = ?", "Edge Binding",@location])
     elsif Employee.find(@employee_id).employee_type == "Edge Binding"
       @id = Employee.find_by(["employee_type = ? and location_id = ?", "Packing & Quality",@location])
     end
 
-    EmployeesWorkorder.create(employee_id: @id.id,workorder_id: @workorder_id ,status: "Pending")
+  EmployeesWorkorder.create(employee_id: @id.id,workorder_id: @workorder_id ,status: "Pending")
 
 
 

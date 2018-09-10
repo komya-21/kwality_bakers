@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180904120641) do
+ActiveRecord::Schema.define(version: 20180910130056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(version: 20180904120641) do
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "address"
-    t.string "fssai_lic_no"
     t.string "contact_no"
     t.string "email"
     t.string "gst_no"
@@ -77,6 +76,13 @@ ActiveRecord::Schema.define(version: 20180904120641) do
     t.index ["delivery_inward_id"], name: "index_current_inventories_on_delivery_inward_id"
     t.index ["inward_product_id"], name: "index_current_inventories_on_inward_product_id"
     t.index ["product_id"], name: "index_current_inventories_on_product_id"
+  end
+
+  create_table "deductions", force: :cascade do |t|
+    t.bigint "employee_payroll_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_payroll_id"], name: "index_deductions_on_employee_payroll_id"
   end
 
   create_table "deliveries", force: :cascade do |t|
@@ -113,6 +119,32 @@ ActiveRecord::Schema.define(version: 20180904120641) do
     t.index ["inward_product_id"], name: "index_delivery_inwards_on_inward_product_id"
     t.index ["product_id"], name: "index_delivery_inwards_on_product_id"
     t.index ["vendor_id"], name: "index_delivery_inwards_on_vendor_id"
+  end
+
+  create_table "earnings", force: :cascade do |t|
+    t.bigint "employee_payroll_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_payroll_id"], name: "index_earnings_on_employee_payroll_id"
+  end
+
+  create_table "emp_works", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.string "in_time"
+    t.string "out_time"
+    t.string "work_hours"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_emp_works_on_employee_id"
+  end
+
+  create_table "employee_payrolls", force: :cascade do |t|
+    t.string "category_name"
+    t.string "percentage"
+    t.boolean "is_deduction"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "employees", force: :cascade do |t|
@@ -213,11 +245,28 @@ ActiveRecord::Schema.define(version: 20180904120641) do
     t.string "handle_groove"
     t.string "handle_fitting"
     t.bigint "rate_id"
+    t.float "back_rate"
     t.string "bsl_type"
     t.string "wh"
     t.index ["color_id"], name: "index_measurements_on_color_id"
     t.index ["fproduct_id"], name: "index_measurements_on_fproduct_id"
     t.index ["rate_id"], name: "index_measurements_on_rate_id"
+  end
+
+  create_table "payslips", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.bigint "earning_id"
+    t.bigint "deduction_id"
+    t.date "date"
+    t.string "basic_salary"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "gross_salary"
+    t.string "net_salary"
+    t.string "month_year"
+    t.index ["deduction_id"], name: "index_payslips_on_deduction_id"
+    t.index ["earning_id"], name: "index_payslips_on_earning_id"
+    t.index ["employee_id"], name: "index_payslips_on_employee_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -319,7 +368,6 @@ ActiveRecord::Schema.define(version: 20180904120641) do
   create_table "workorders", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.date "date"
     t.string "name1"
     t.string "name2"
     t.string "name3"
@@ -347,12 +395,14 @@ ActiveRecord::Schema.define(version: 20180904120641) do
     t.datetime "photo5_updated_at"
     t.string "order_no"
     t.bigint "vendor_id"
+    t.date "date"
     t.boolean "approve"
     t.boolean "remove_photo1"
     t.boolean "remove_photo2"
     t.boolean "remove_photo3"
     t.boolean "remove_photo4"
     t.boolean "remove_photo5"
+    t.bigint "employee_id"
     t.bigint "location_id"
     t.bigint "color_id"
     t.string "invoice_no"
@@ -364,6 +414,7 @@ ActiveRecord::Schema.define(version: 20180904120641) do
     t.string "light_color"
     t.boolean "delivered"
     t.index ["color_id"], name: "index_workorders_on_color_id"
+    t.index ["employee_id"], name: "index_workorders_on_employee_id"
     t.index ["location_id"], name: "index_workorders_on_location_id"
     t.index ["vendor_id"], name: "index_workorders_on_vendor_id"
   end
@@ -373,11 +424,14 @@ ActiveRecord::Schema.define(version: 20180904120641) do
   add_foreign_key "current_inventories", "delivery_inwards"
   add_foreign_key "current_inventories", "inward_products"
   add_foreign_key "current_inventories", "products"
+  add_foreign_key "deductions", "employee_payrolls"
   add_foreign_key "deliveries", "vendors"
   add_foreign_key "delivery_inwards", "deliveries"
   add_foreign_key "delivery_inwards", "inward_products"
   add_foreign_key "delivery_inwards", "products"
   add_foreign_key "delivery_inwards", "vendors"
+  add_foreign_key "earnings", "employee_payrolls"
+  add_foreign_key "emp_works", "employees"
   add_foreign_key "employees", "locations"
   add_foreign_key "employees_workorders", "employees"
   add_foreign_key "employees_workorders", "workorders"
@@ -388,6 +442,9 @@ ActiveRecord::Schema.define(version: 20180904120641) do
   add_foreign_key "measurements", "colors"
   add_foreign_key "measurements", "fproducts"
   add_foreign_key "measurements", "rates"
+  add_foreign_key "payslips", "deductions"
+  add_foreign_key "payslips", "earnings"
+  add_foreign_key "payslips", "employees"
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
@@ -397,6 +454,7 @@ ActiveRecord::Schema.define(version: 20180904120641) do
   add_foreign_key "vendors", "locations"
   add_foreign_key "work_orders", "colors"
   add_foreign_key "workorders", "colors"
+  add_foreign_key "workorders", "employees"
   add_foreign_key "workorders", "locations"
   add_foreign_key "workorders", "vendors"
 end

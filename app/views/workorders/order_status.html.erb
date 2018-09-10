@@ -25,6 +25,7 @@
       <th>Vendor</th>
       <th>Date</th>
       <th>Status</th>
+      <th>Work</th>
      <!-- <th>Employee</th>
      <th>Start(Date & Time)</th>
      <th>End(Date & Time)</th>
@@ -47,16 +48,18 @@
 
       <tr >
         
-        <td><%= link_to w.order_no , workorder_status_workorder_path(w.id),class: "btn btn-link" %></td>
+        <td><%= link_to w.order_no , workorder_status_workorder_path(w.id),class: "btn btn-link",style: "color: #007694;" %></td>
        
         <td><%= w.vendor.name %></td>
         <td><%= w.date %></td>
         <% if w.approve == false %>
         <td><font color="red">Not Approved</font></td>
+        <td></td>
         <% else %>
         <% @emp = @employee_workorders.find_by(workorder_id: w.id) %>
         <% @st = @emp.status %>
         <td><%= @st %></td>
+        <td><%= @emp.employee.employee_type %></td>
         <% end %>
         <!-- <td><%#= w.employee.name %></td>
         <td><%#= w.starttime %></td>

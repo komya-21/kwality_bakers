@@ -1,0 +1,71 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+                              <div align="right">
+                                <%= link_to "PDF Report" , payslip_pdf_payslip_path(@payslip, format: 'pdf'),class: "btn btn-success btn-sm" %>
+                              </div>
+
+
+
+<p>
+  <strong>Employee:</strong>
+  <%= @payslip.employee.name %>
+</p>
+
+<p>
+  <strong>Basic salary:</strong>
+  <%= @payslip.basic_salary %>
+</p>
+<p>
+  <strong>Date:</strong>
+  <%= @payslip.date %>
+</p>
+<hr>
+
+<p>
+  <strong>Earning:</strong>
+ 
+  <% @earnings.each do |e| %>
+  <p>
+    <strong><%= e.employee_payroll.category_name %>:</strong>
+    <%= @payslip.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %>
+  </p>
+  <% end %>
+
+  
+</p>
+<hr>
+<p>
+  <strong>Deduction:</strong>
+ 
+  <% @deductions.each do |e| %>
+  <p>
+    <strong><%= e.employee_payroll.category_name %>:</strong>
+    <%= @payslip.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %>
+  </p>
+  <% end %>
+
+  
+</p>
+<hr>
+
+
+
+
+
+
+<p>
+  <strong>In hand salary:</strong>
+    <b>Rs.<%= @payslip.net_salary %></b>
+  </p>
+ 
+
+<%= link_to 'Edit', edit_payslip_path(@payslip) %> |
+<%= link_to 'Back', payslips_path %>
+</div>
+</div>
+</div>
+</div>
+</section>

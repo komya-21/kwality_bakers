@@ -1,4 +1,21 @@
 Rails.application.routes.draw do
+  resources :payslips do 
+    collection do
+      get :employees
+      get :employee_payslip
+      get :select_emp
+    end
+    member do 
+      get :monthly_payslip
+      get :payslip_pdf
+    end
+  end
+  resources :employee_payrolls do 
+    collection do
+      get :earnings
+      get :deductions
+    end
+  end
   resources :color_locations
   resources :locations
   resources :rates
@@ -96,7 +113,14 @@ Rails.application.routes.draw do
       get :export_all_vendor
     end
   end
-  resources :employees
+  resources :employees do
+    collection do
+      post :in_time
+      post :out_time
+      get :empwork
+      get :report
+    end
+  end
   resources :products do
     collection { post :import }
     

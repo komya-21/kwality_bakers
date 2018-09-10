@@ -1,0 +1,27 @@
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+<p>
+  <strong>Category name:</strong>
+  <%= @employee_payroll.category_name %>
+</p>
+
+<p>
+  <strong>Percentage:</strong>
+  <%= @employee_payroll.percentage %>
+</p>
+
+<p>
+  <strong>Is deduction:</strong>
+  <%= @employee_payroll.is_deduction %>
+</p>
+
+<%= link_to 'Edit', edit_employee_payroll_path(@employee_payroll) %> |
+<%= link_to 'Back', employee_payrolls_path %>
+</div>
+</div>
+</div>
+</div>
+</section>
