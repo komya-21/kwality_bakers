@@ -135,7 +135,8 @@ table, th, td {
 <% @amt1 = 0 %> 
 <% @amt2 = 0 %> 
 <% @amt3 = 0 %> 
-
+<% @amt4 = 0 %>
+<% byebug %>
 <% @workorder.fproducts.each do |f| %>
 <% k += 1 %>
 
@@ -219,7 +220,8 @@ table, th, td {
    <% @total_sqft_back += @sqft_back %>
    <% @tot_amt = (@sqft.round(2)*c.rate)+(@sqft_back.round(2)*c.back_rate) %>
    <% @total_amount += @tot_amt %>
-   <% @amt1 += @total_amount %>
+   <% @amt1 += @tot_amt %>
+
    <tr>
    <td><%= @i %></td>
   
@@ -279,7 +281,7 @@ table, th, td {
   
    <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
    <% @drawer_amount += @d_tot_amt %>
-   <% @amt3 += @drawer_amount %>
+   <% @amt2 += @d_tot_amt %>
    <td><%= @d_tot_amt.round(2) %></td>
  </tr>
 
@@ -290,11 +292,10 @@ table, th, td {
 
 
 
-   <% if u == "Shutters" || u == "White BSL Shelf" %>
+   <%# if u == "Shutters" || u == "White BSL Shelf" %>
    <% if u == "Shutters" %>
    <tr>
     <th>No</th>
-    
     <th>Quantity</th>
     <th>Sq.ft</th>
     <th>Glass Shutter</th>
@@ -304,61 +305,37 @@ table, th, td {
     <th>rate</th>
     <th>AMT</th>
    </tr>
-  <% else %>
-   
-   
-   <tr>
-    <th>No</th>
-    
-    <th>Quantity</th>
-    <th>Sq.ft</th>
-    <th>rate</th>
-    <th>AMT</th>
-    
-  </tr>
-  <% end %>
-   
-  <!-- Calculations of rates -->
-  
-  <!-- End of calculation -->
+
   <% @g_area = 0 %>
   <% @h_rate = 0 %>
   <% @hg_rate = 0 %>
   <% @hf_rate = 0 %>
   <% @shutter_measurements = f.measurements.where(ftype: u ) %>
-  <% @tot_sqrft = 0 %>
-  <% @tot_num = 0 %>
-  
-   <% @shutter_measurements.each do |c| %>
-   <% if c.glass_shutter == "Yes" %>
-   <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
-   <% end %> 
-   <% if c.handle == "Yes" %>
-   <% @h_rate = ((c.width/305)*c.quantity)*20 %>
-   <% end %> 
-   <% if c.handle_groove == "Yes" %>
-   <% @hg_rate = c.quantity * 20 %>
-   <% end %> 
-   <% if c.handle_fitting == "Yes" %>
-     <% @hf_rate = c.quantity * 20 %>
-   <% end %> 
-  <% @tot_num += c.quantity %>
-  <% if u == "White BSL Shelf" %>
-  <% @sqrft = ((c.wh.to_f*c.depth)/92903)*c.quantity %>
-  <% else %>
-   <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
-   <% end %>
-   
-   <% @tot_sqrft += @sqrft %>
+    <% @tot_sqrft = 0 %>
+    <% @tot_num = 0 %>
+    <% @shutter_measurements.each do |c| %>
+    <% if c.glass_shutter == "Yes" %>
+    <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
+    <% end %> 
+    <% if c.handle == "Yes" %>
+    <% @h_rate = ((c.width/305)*c.quantity)*20 %>
+    <% end %> 
+    <% if c.handle_groove == "Yes" %>
+    <% @hg_rate = c.quantity * 20 %>
+    <% end %> 
+    <% if c.handle_fitting == "Yes" %>
+    <% @hf_rate = c.quantity * 20 %>
+    <% end %>
+    <% @tot_sqrft = 0 %>
+    <% @tot_num = 0 %>
+    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
+    <% @tot_sqrft += @sqrft %>
 
     <% @t_amt = ((@sqrft.round(2)+@g_area.round(2))*c.rate.round(2))+@h_rate+@hg_rate+@hf_rate %>
 
    <% @full_amt += @t_amt %>
    
-   <% @amt2 += @full_amt %>
-   
-
-   
+   <% @amt3 += @t_amt %>
    <% @i += 1 %>
    
    <tr>
@@ -368,12 +345,12 @@ table, th, td {
    
   
    <td><%= @tot_sqrft.round(2) %></td>
-   <% if u == "Shutters" %>
+  
    <td><%= c.glass_shutter %></td>
    <td><%= c.handle %></td>
    <td><%= c.handle_groove %></td>
    <td><%= c.handle_fitting %></td>
-   <% end %>
+  
    <td><%= c.rate if c.rate.present? %></td>
    
 
@@ -386,34 +363,68 @@ table, th, td {
   
   <% end %>
   <% end %>
-  
-  
- 
-
- 
-  
- 
-  
-  
-
-  
-  
+   
+   <% if u == "White BSL Shelf" %>
+   <tr>
+    <th>No</th>
     
- 
+    <th>Quantity</th>
+    <th>Sq.ft</th>
+    <th>rate</th>
+    <th>AMT</th>
+    
+  </tr>
+  <% @bsl_measurements = f.measurements.where(ftype: u ) %>
+  <% @tot_sqrft = 0 %>
+  <% @tot_num = 0 %>
+  <% @bsl_measurements.each do |c| %>
+  <% @tot_num += c.quantity %>
+  <% @sqrft = ((c.wh.to_f*c.depth)/92903)*c.quantity %>
+  <% @tot_sqrft += @sqrft %>
+  <% @t_amt = @sqrft.round(2) * c.rate %>
+
+   <% @full_amt += @t_amt %>
+   
+   <% @amt4 += @t_amt %>
+   <% @i += 1 %>
+   
+   <tr>
+   <td><%= @i %></td>
+   <td><%= @tot_num %></td>
+   
+   
   
-<% end %>
-<% end %>
+   <td><%= @tot_sqrft.round(2) %></td>
+   
+   <td><%= c.rate if c.rate.present? %></td>
+   
+
+   <td><%= @full_amt.round(2) %></td>
+
+
+   
+   
+  
+
+  </tr>
+   
+  <% end %>
+  <% end%>
+  <% end %>
+  <% end %>
+
+   
+  <!-- Calculations of rates -->
+  
+  <!-- End of calculation -->
+  
 
 <tr><th colspan="9">Total</th>
-
-  <% @amt = @amt1 + @amt2 + @amt3 %>
-  
-  
-  <% @final_amount += @amt %>
+<% @amt = @amt1 + @amt2 + @amt3 + @amt4 %>
+<% @final_amount += @amt %>
 <th><b><%= @final_amount.round(2) %></b></th></tr>
 <tr><th colspan="9">CGST(9%)</th>
-
-  <% @cgst = (@final_amount *9)/100 %>
+<% @cgst = (@final_amount *9)/100 %>
   
 
   
@@ -428,18 +439,18 @@ table, th, td {
   <th><%= @sgst.round(2) %></th>
   </tr>
   <tr  style="background-color: #F0E68C;"><th colspan="9">Total To Pay</th>
-  <% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
+  <%# @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
   
   
-<th><b><%= @pay.round(2) %></b></th></tr>
+<th><b><%= @workorder.total_to_pay %></b></th></tr>
 
-<% @workorder.update(total_to_pay: @pay) %>
+<%# @workorder.update(total_to_pay: @pay) %>
 
    
 </table>
 
 <div class="rightdiv">
-                         <font color="green">Amount:<%=@workorder.total_to_pay.to_f.ceil%><br></font> 
+  <font color="green">Amount:<%=@workorder.total_to_pay.to_f.ceil%><br></font> 
                          
 <%if @workorder.rem_price.present?%>
   Paid Amt:<%= @workorder.total_to_pay.to_f.ceil - @workorder.rem_price.to_f.ceil %>Rs<br>

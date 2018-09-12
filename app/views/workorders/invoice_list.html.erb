@@ -28,7 +28,9 @@
     <th>Amount Due</th>
     <th>Status</th>
     <th></th>
+    <% if current_user.role == "SuperAdmin" %>
     <th></th>
+    <% end %>
     
 
     
@@ -63,8 +65,9 @@
     
     
     <td><%= link_to 'View' ,invoicee_workorder_path(w),rel: "tooltip",title: "You can view but not edit" %></td>
-    
+    <% if current_user.role == "SuperAdmin" %>
     <td><b><%= link_to "Record Payment",record_payment_workorder_workorder_path(w),style: "color: #007694;"%></b></td>
+    <% end %>
   </tr>
 </tbody>
 <% end %>

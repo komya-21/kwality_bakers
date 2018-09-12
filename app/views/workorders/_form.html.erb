@@ -30,12 +30,12 @@
     <% if current_user.role == "SuperAdmin" %>
     <label class="col-sm-1 control-label">Location</label> 
     <div class="col-md-2">
-    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true},required: true%>
+    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true}%>
 
   </div>
     <label class="col-sm-1 control-label">Vendor</label> 
     <div class="col-md-2">
-    <%= form.grouped_collection_select :vendor_id, Location.order(:name),:vendors,:name,:id,:name,include_blank: true,class: "form-control",required: true%>
+    <%= form.grouped_collection_select :vendor_id, Location.order(:name),:vendors,:name,:id,:name,include_blank: true,class: "form-control"%>
 
   </div>
 
@@ -45,7 +45,7 @@
     <div class="col-md-2">
       
     <%= form.select :vendor_id, @vendors.all.collect{|v| [v.name,v.id]},
-    {prompt:true},class: "form-control",required: true,id: :diff_id %>
+    {prompt:true},class: "form-control",id: :diff_id %>
 
   </div>
 
@@ -81,7 +81,7 @@
          <label class="col-sm-1 control-label">Product</label> 
          <div class="col-md-3">
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
-          <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "product" ,required: true %>
+          <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "product" %>
           <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
         </div>
         
@@ -121,14 +121,15 @@
 
       <td class="wh" hidden="true">  <%= m.text_field :wh, id: :work_order_wh ,class: "form-control" , placeholder: "Width/Height(mm)"%></td>
        
-       <td class="height"><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%></td>
+       
        <!-- <td style="display: inline-block;"><%#= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)" , required: true%><%#= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td> -->
        <td class="depth"><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
-       <td class="skirting"> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(Height)"%></td>
+       <td class="height"><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%></td>
+       <td class="skirting" hidden="true"> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(Height)"%></td>
        <td class="vert" hidden="true"> <%= m.text_field :vertical, id: :work_order_vertical ,placeholder: "V(qty)" %></td>
        <td class="hor" hidden="true"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)" %></td>
        <!-- <td> <%#= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td> -->
-        <td class="side" hidden="true"><%= m.select :side,options_for_select(["Yes","No"]),{prompt:true},id: :side_id,class: "form-control" %></td>
+        
         <td class="bsl" hidden="true"><%= m.select :bsl_type,options_for_select(["Shelf","Vertical","Framing Patti","Other"]),{prompt: "BSL type"},id: :bsl_type_id,class: "form-control" %></td>
 
         <td class="choose" hidden="true"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
@@ -137,11 +138,49 @@
         <%= m.check_box :handle_groove, {}, "Yes", "No" %>Handle Groove<br>
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
-        <%= m.check_box :handle, {}, "Yes", "No" %>Handle
+        <%= m.check_box :handle, {}, "Yes", "No" %>G Handle
       </td>
 
 
-        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" ,required: true%></td>
+        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty"%></td>
+        <td class="add_color" hidden="true">
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <tr style="background-color: burlywood;">
+    <th>Side</th>
+    <th>D</th>
+    <th>L</th>
+  </tr>
+            <tr>
+              <%#= nested_form_for @workorder do |form| %>
+              <%#= form_for :measurement do |form| %>
+<td>R<%= m.check_box :right , {},"Yes" , "No" %></td>
+
+<td><%= m.check_box :right_dark, {:class => "chb"},"Yes" , "No" %></td>
+<td><%= m.check_box :right_light, {:class => "chb"},"Yes" , "No" %></td>
+</tr>
+<tr>
+<td>L<%= m.check_box :left , {},"Yes" , "No" %></td>
+<td><%= m.check_box :left_dark, {:class => "chb1"},"Yes" , "No" %></td>
+<td><%= m.check_box :left_light, {:class => "chb1"},"Yes" , "No" %></td>
+</tr>
+<tr>
+<td>T<%= m.check_box :top , {},"Yes" , "No" %></td> 
+<td><%= m.check_box :top_dark, {:class => "chb2"},"Yes" , "No" %></td>
+<td><%= m.check_box :top_light, {:class => "chb2"},"Yes" , "No" %></td>
+</tr>
+<tr>
+<td>B<%= m.check_box :bottom , {},"Yes" , "No" %></td>
+
+<td><%= m.check_box :bottom_dark, {:class => "chb3"},"Yes" , "No" %></td>
+<td><%= m.check_box :bottom_light, {:class => "chb3"},"Yes" , "No" %></td>
+</tr>
+</table>
+
+<%# end %>
+
+
+
+</td>
         
 
         
@@ -282,10 +321,12 @@ selectField1.select2();
 
 
    ftype = $(this).val();
-  
+
+
+
    
-   
-   
+/*   $('#example tr td:eq(2)').appendTo('#example tr');
+*/   
   
   
 
@@ -294,6 +335,8 @@ selectField1.select2();
   
 
   $(document).on("change", ".select", function () {
+
+
     
     
     
@@ -311,15 +354,11 @@ selectField1.select2();
 
   
 
-    container = elem.parents("tr.fields");
-   
-    container3 = elem.parents("th.choose");
-
-    container1 = elem.parents("th.fields");
-
-    container.find("#work_order_width").focus();
-    
-      if(type == "Shutters")
+  container = elem.parents("tr.fields");
+  container3 = elem.parents("th.choose");
+  container1 = elem.parents("th.fields");
+  container.find("#work_order_width").focus();
+  if(type == "Shutters")
     {
 
 
@@ -332,39 +371,81 @@ selectField1.select2();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
-      container.find('.side').hide();
+      
+      container.find('.add_color').hide();
       
 
     }
 if(type == "White BSL Shelf"){
   container.find('.choose').hide();
       container.find('.depth').show();
-      container.find('.skirting').hide();
-      container.find('.vert').hide();
+    container.find('.skirting').hide();
+    container.find('.vert').hide();
       container.find('.hor').hide();
-      container.find('.side').hide();
+      
       container.find('.bsl').show();
       container.find('.wh').show();
       container.find('.width').hide();
       container.find('.height').hide();
+      container.find('.add_color').hide();
 
 
 
     }
+    if(ftype == "Loft" && type == "Carcass Box"){
 
-if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box") || (ftype == "Loft" && type == "Carcass Box") ){
+
+      container.find('.vert').show();
+      container.find('.hor').show();
+      container.find('#work_order_vertical').addClass('form-control');
+      container.find('#work_order_horizontal').addClass('form-control');
+      container.find('.choose').hide();
+/*      container.find('.skirting').hide();
+*/     
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+      container.find('.add_color').show();
+      $('.height').insertAfter('.depth');
+
+    }
+
+if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box")){
+
      container.find('.vert').show();
       container.find('.hor').show();
       container.find('#work_order_vertical').addClass('form-control');
       container.find('#work_order_horizontal').addClass('form-control');
       container.find('.choose').hide();
       container.find('.skirting').show();
-      container.find('.side').show();
+     
       container.find('.bsl').hide();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
+      container.find('.add_color').show();
+      $('.height').insertAfter('.depth');
 
+
+
+    }
+    
+    if(ftype == "Crockery" && type == "Carcass Box"){
+
+      container.find('.vert').hide();
+      container.find('.hor').hide();
+      container.find('#work_order_vertical').addClass('form-control');
+      container.find('#work_order_horizontal').addClass('form-control');
+      container.find('.choose').hide();
+/*      container.find('.skirting').hide();
+*/     
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+      container.find('.add_color').show();
+      $('.height').insertAfter('.depth');
 
     }
 
@@ -372,25 +453,32 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.vert').hide();
       container.find('.hor').hide();
       container.find('.choose').hide();
-      container.find('.skirting').hide();
+     container.find('.skirting').hide();
       container.find('.depth').show();
-      container.find('.side').hide();
+      
       container.find('.bsl').hide();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
+      container.find('.add_color').hide();
+      $('.depth').insertAfter('.height');
+      
+/*      container.find('#work_order_depth')[0].placeholder='Height(mm)';
+*/      /*container.find('#work_order_height')[0].placeholder='Depth(mm)';*/
 
 
     }
     if(type == "Carcass Box"){
       
       container.find('.choose').hide();
-      container.find('.skirting').show();
-      container.find('.side').show();
+/*      container.find('.skirting').show();
+*/     
       container.find('.bsl').hide();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
+      container.find('.add_color').show();
+      $('.height').insertAfter('.depth');
 
 
 
@@ -539,6 +627,44 @@ $('#workorder_name1').hide();
     }
   });
 });
+</script>
+<script type="text/javascript">
+
+  
+
+  $(".chb").change(function() {
+    var checked = $(this).is(':checked');
+    $(".chb").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }
+  });
+
+  $(".chb1").change(function() {
+    var checked = $(this).is(':checked');
+    $(".chb1").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }
+  });
+
+  $(".chb2").change(function() {
+    var checked = $(this).is(':checked');
+    $(".chb2").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }
+  });
+
+  $(".chb3").change(function() {
+    var checked = $(this).is(':checked');
+    $(".chb3").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }
+  });
+  
+
 </script>
  
 <% end %>

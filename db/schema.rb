@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180910130056) do
+ActiveRecord::Schema.define(version: 20180912080100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,6 +248,18 @@ ActiveRecord::Schema.define(version: 20180910130056) do
     t.float "back_rate"
     t.string "bsl_type"
     t.string "wh"
+    t.string "right"
+    t.string "right_dark"
+    t.string "right_light"
+    t.string "left"
+    t.string "left_dark"
+    t.string "left_light"
+    t.string "top"
+    t.string "top_dark"
+    t.string "top_light"
+    t.string "bottom"
+    t.string "bottom_dark"
+    t.string "bottom_light"
     t.index ["color_id"], name: "index_measurements_on_color_id"
     t.index ["fproduct_id"], name: "index_measurements_on_fproduct_id"
     t.index ["rate_id"], name: "index_measurements_on_rate_id"
