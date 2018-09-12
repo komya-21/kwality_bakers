@@ -270,8 +270,7 @@
     <% @total_sqft = 0 %>
     
     
-    <%# @drawer_rate = @rates.find_by(["product = ? and ptype=?",f.product,u]) %>
-    <%# @d = @drawer_rate.price %>
+   
     <% @drawer_measurements.each do |c| %>
    <% @i += 1 %>
    <% @j += 1 %>
@@ -285,7 +284,7 @@
    <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
    <% @drawer_amount += @d_tot_amt %>
    <% @amt2 += @d_tot_amt %>
-   <!-- <td class="b3"><%#= text_field_tag :"amount#{@j}" ,  @d_tot_amt.round(2),disabled: true %></td> -->
+   
  </tr>
 
  <% end %>
