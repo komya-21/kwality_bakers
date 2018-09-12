@@ -123,7 +123,11 @@ end
   end
 
   def invoice_list
+    if current_user.role == "Vendor"
+      @workorders = Workorder.where(vendor_id: current_user.vendor_id).order(:invoice_no)
+    else
     @workorders = Workorder.order(:invoice_no)
+  end
   end
  
 
@@ -141,6 +145,8 @@ end
     @workorder = Workorder.new(workorder_params)
     respond_to do |format|
       if @workorder.save
+        @workorder.update(payment_status: false)
+
         
         date = Date.today.strftime('%Y%m%d')
         invoice_num = 'IN' + date.to_s + @workorder.id.to_s
@@ -194,6 +200,7 @@ end
 
 def payment_status_report
   @payment_status = params[:payment_status]
+
   @vendor_id = params[:vendor_id]
   @workorders = Workorder.where(vendor_id: @vendor_id)
    
@@ -360,10 +367,10 @@ redirect_to workorder_path(workorder)
 def addition
 
   @colors = Color.all
-  m = params[:measurement_id]
+  @m = Measurement.find(params[:measurement_id])
+  @workorder = Workorder.find(params[:workorder_id])
 
-  @workorder = params[:workorder_id]
-  @additional = Additional.find_by(measurement_id: m)
+  @additional = Additional.find_by(measurement_id: @m)
 
 
   #@additional = Additional.find_by(measurement_id: params[:measurement_id])
@@ -399,7 +406,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:total_to_pay,:dark_color,:light_color,:delivered,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:_destroy]])
+     params.require(:workorder).permit(:total_to_pay,:dark_color,:light_color,:delivered,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:right,:right_dark,:right_light,:left,:left_dark,:left_light,:top,:top_dark,:top_light,:bottom,:bottom_dark,:bottom_light,:_destroy]])
 
    end
    def additional_params

@@ -159,6 +159,7 @@ table, th, td {
     <th>Skirting</th>
     <th>Vertical</th>
     <th>Horizontal</th>
+    <th>Color Side</th>
     <th>Nos</th>
     <th>Sq.ft 18mm</th>
     <th>rate</th>
@@ -186,6 +187,20 @@ table, th, td {
    <td><%= c.skirting %></td>
    <td><%= c.vertical%></td>
    <td><%= c.horizontal %></td>
+   <td>
+   <% if c.right == "Yes" %>
+   Right,
+   <% end %>
+   <% if c.left == "Yes" %>
+   Left,
+   <% end %>
+   <% if c.top == "Yes" %>
+   Top,
+   <% end %>
+   <% if c.bottom == "Yes" %>
+   Bottom
+   <% end %>
+</td>
    <td><%= c.quantity %></td>
 
    <% @sq = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
@@ -256,8 +271,9 @@ table, th, td {
    <tr>
     <th>No</th>
     <th>W</th>
-    <th>D</th>
+    
     <th>H</th>
+    <th>D</th>
     <th>Nos</th>
     <th>Sq.ft</th>
     <th>rate</th>
@@ -276,8 +292,9 @@ table, th, td {
    <tr>
    <td><%= @i %></td>
    <td><%= c.width %></td>
-   <td><%= c.depth %></td>
    <td><%= c.height %></td>
+   <td><%= c.depth %></td>
+   
    <td><%= c.quantity %></td>
    <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
    <% @total_sqft += @sqft %>
@@ -328,7 +345,7 @@ table, th, td {
   <% else %>
    <tr>
     <th colspan="2">No</th>
-    <th colspan="2">W</th>
+    <th colspan="2">W/H</th>
     <th colspan="2">D</th>
     <th>Nos</th>
     <th>Sq.ft</th>
@@ -404,7 +421,7 @@ table, th, td {
 
    
    <td><%= c.rate if c.rate.present? %></td>
-   <% @t_amt = (((@sqrft.round(2)+@g_area.round(2))*c.rate.round(2)))+@h_rate+@hg_rate+@hf_rate %>
+   <% @t_amt = (@sqrft.round(2)*c.rate.round(2))+(@g_area.round(2))*(c.rate.round(2)+20)+@h_rate+@hg_rate+@hf_rate %>
 
    <% @full_amt += @t_amt %>
 

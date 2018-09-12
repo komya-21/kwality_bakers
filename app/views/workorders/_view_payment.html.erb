@@ -9,9 +9,10 @@
       <th>Date</th>
       <th>Vendor</th>
       <th>Payment Status</th>
-      <% if @payment_status == "PENDING"%>
+      <th>Total</th>
+      <th>Paid</th>
       <th>Pending Amount</th>
-      <% end %>
+     
       
     </tr>
   </thead>
@@ -25,16 +26,20 @@
         
        <td><%if delivery.payment_status == true%>
         <font color="green">Paid</font>
-        <%elsif delivery.payment_status == false%>
+        <%elsif delivery.payment_status == false || delivery.payment_status == nil%>
         <font color="red">Pending</font>
         <%end%></td>
-        <% if @payment_status == "PENDING" %>
+        <td><%= delivery.total_to_pay.to_f.ceil %></td>
         <% if delivery.rem_price == nil %>
-        <td><%= delivery.total_to_pay %></td>
-        <% else%>
-        <td><%= delivery.rem_price %></td>
-        <% end %>
-        <% end %>
+        <td>Rs.0</td>
+        <td><%= delivery.total_to_pay.to_f.ceil %></td>
+        <% else %>
+         <td><%= delivery.total_to_pay.to_f.ceil - delivery.rem_price.to_f.ceil %></td>
+          <td><%= delivery.rem_price.to_f.ceil %></td>
+         <% end %>
+       
+        
+        
       </tr>
     <% end %>
   </tbody>
@@ -47,9 +52,9 @@
       <th>Date</th>
       <th>Vendor</th>
       <th>Payment Status</th>
-      <% if @payment_status == "PENDING"%>
+       <th>Total</th>
+      <th>Paid</th>
       <th>Pending Amount</th>
-      <% end %>
     </tr>
   </thead>
   
@@ -66,13 +71,15 @@
         <%elsif delivery.payment_status == false%>
         <font color="red">Pending</font>
         <%end%></td>
-        <% if @payment_status == "PENDING" %>
+        <td><%= delivery.total_to_pay.to_f.ceil %></td>
         <% if delivery.rem_price == nil %>
-        <td><%= delivery.total_to_pay %></td>
-        <% else%>
-        <td><%= delivery.rem_price %></td>
-        <% end %>
-        <% end %>
+        <td>Rs.0</td>
+        <td><%= delivery.total_to_pay.to_f.ceil %></td>
+        <% else %>
+         <td><%= delivery.total_to_pay.to_f.ceil - delivery.rem_price.to_f.ceil %></td>
+          <td><%= delivery.rem_price.to_f.ceil %></td>
+         <% end %>
+       
       </tr>
     <% end %>
   </tbody>

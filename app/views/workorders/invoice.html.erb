@@ -406,7 +406,7 @@ table, th, td {
 <% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
 <% @total_to_pay = @pay.round(2) %>
 
-<% @workorder.update(total_to_pay: @total_to_pay) %>
+<%# @workorder.update(total_to_pay: @total_to_pay) %>
 
 
 </table>
@@ -414,8 +414,13 @@ table, th, td {
 <br><br>
  <%#= link_to 'Generate Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>
  
- 
+ <% if current_user.role == "Vendor" %>
+ <%= link_to "Back" ,workorders_path(@workorder),class: "btn btn-default" %>|
+
+ <% else %>
+
   <%= link_to "Back" ,invoice_list_workorders_path,class: "btn btn-default" %>|
+  <% end %>
   <% if @workorder.total_to_pay.to_f.ceil == @workorder.add_price.to_i %>
 
  <%= link_to "Record Payment",record_payment_workorder_workorder_path(@workorder),class: 'btn btn-danger',disabled: true%>

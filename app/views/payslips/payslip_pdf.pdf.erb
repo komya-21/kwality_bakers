@@ -1,4 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table {
+     width:100%;
+   }
+   p {
+       margin-bottom:0px;
+   }
+   address{
+    display: block;
+    width: 300px;
+    margin:0px;
+    
+   }
+   table, th, td {
+     border: 1px solid black;
+     border-collapse: collapse;
+     font-size: 12px;
+   }
+   th, td {
+     padding: 2px;
+     text-align: left;
+   }
+   table#t01 tr:nth-child(even) {
+     background-color: #eee      }
+   table#t01 tr:nth-child(odd) {
+    background-color:#fff;
+  }
+  table#t01 th {
+   background-color: black;
+   color: white;
+ }
+ h5 {
+   display:inline;
+ }
+.maindiv{
+    width:100%;
+}
+.leftdiv{
+  float:left;
+  width:50%;
+} 
+.rightdiv{
+  float:right;
+  width:40%;
+} 
+.centerdiv{
+  width:100%;
+  margin:0 auto;
+}
 
+.maindiv{
+    width:100%;
+}
+.leftdiv{
+  float:left;
+  width:50%;
+} 
+.rightdiv{
+  float:right;
+  width:40%;
+} 
+.centerdiv{
+  width:100%;
+  margin:0 auto;
+}
+p span{
+  font-weight:700;
+  color:#000;
+}
+</style>
 
 
 
@@ -27,36 +99,43 @@ Payslip generated on <%= @payslip.date %>
 </p>
 <hr>
 
-<p>
-  <font color="maroon"><strong>Earning:</strong></font>
  
+  <div class="rightdiv">
+<table style="width:50%">
+   
+  <th colspan="2"><font color="maroon"><strong>Earning</strong></font></th>
   <% @earnings.each do |e| %>
-  <p>
-    <strong><%= e.employee_payroll.category_name %>:</strong>
-    <%= @payslip.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %>
-  </p>
+  <tr>
+    <th><%= e.employee_payroll.category_name %></th>
+    <td><%= @payslip.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %></td>
+  </tr>
   <% end %>
+</table>
+</div>
 
-  
-</p>
-<hr>
-<p>
-  <font color="maroon"><strong>Deduction:</strong></font>
+
+<div class="leftdiv">
+<table style="width:50%">
  
+  <th colspan="2"><font color="maroon"><strong>Deductions</strong></font></th>
   <% @deductions.each do |e| %>
-  <p>
-    <strong><%= e.employee_payroll.category_name %>:</strong>
-    <%= @payslip.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %>
-  </p>
+  <tr>
+    <th><%= e.employee_payroll.category_name %></th>
+    <td><%= @payslip.basic_salary.to_f * (e.employee_payroll.percentage.to_f/100) %></td>
+  </tr>
   <% end %>
+</table>
+</div>
 
-  
-</p>
-<hr>
-<p>
+
+<br><br><br><br>
+<div class="leftdiv">
 <strong>Total:</strong>
 <%= @payslip.net_salary %>
-</p>
+</div>
+
+</html>
+
 
 
 
