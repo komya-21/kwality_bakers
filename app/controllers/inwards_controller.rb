@@ -52,6 +52,27 @@ class InwardsController < ApplicationController
   def edit
   end
 
+  def inward_record_payment
+    @inward = Inward.find(params[:id])
+    if params[:params1].present?
+      @inward.update(add_price: params[:params1], rem_price: params[:params2])
+    end
+
+  end
+
+  def transaction_detail
+   inward_id = params[:inward_id]
+   rem_price = Inward.find(inward_id).rem_price
+   payment_mode = params[:payment_mode]
+   bank_name = params[:bank_name]
+   cheque_no = params[:cheque_no]
+    if payment_mode == "Cash"
+      TransactionDetail.create(date: Date.today ,inward_id: inward_id,payment_mode: "Cash")
+    else
+      TransactionDetail.create(date: Date.today,inward_id: inward_id,payment_mode: "Cheque",bank_name: bank_name,cheque_no: cheque_no)
+    end
+  end
+
   # POST /inwards
   # POST /inwards.json
   def create
@@ -107,6 +128,11 @@ end
     end
   end
 
+  def inward_transaction_detail
+    @inward_transaction_detail = TransactionDetail.find_by(inward_id: params[:inward_id])
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_inward
@@ -115,6 +141,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def inward_params
-      params.require(:inward).permit(:date, :inward_no ,inward_products_attributes: [:id, :updated_quantity ,:product_id, :quantity, :inward_id,:total_quantity ,:width,:height,:category,:color_id,:unit, :_destroy])
+      params.require(:inward).permit(:date, :inward_no ,:total_to_pay,:add_price,:rem_price,:supplier_id,inward_products_attributes: [:id, :updated_quantity ,:product_id, :quantity, :inward_id,:total_quantity ,:width,:height,:category,:color_id,:unit, :_destroy])
     end
 end

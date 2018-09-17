@@ -57,9 +57,16 @@
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
+                      <%if inward.rem_price == 0 %>
+                      <%= link_to "Record Payment" ,inward_record_payment_inward_path(inward),class: "btn btn-xs btn-success" ,disabled: true %>
+                      <% else %>
+                      <%= link_to "Record Payment" ,inward_record_payment_inward_path(inward),class: "btn btn-xs btn-success" %>
+                      <% end %>
+                      <%= link_to "Transaction Details" ,inward_transaction_detail_inwards_path(inward_id: inward.id),class: "btn btn-xs btn-danger" %>
         </td>
       </tr>
     <% end %>
+
   </tbody>
 </table>
 </div>

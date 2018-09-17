@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180912080100) do
+ActiveRecord::Schema.define(version: 20180917124104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -210,6 +210,11 @@ ActiveRecord::Schema.define(version: 20180912080100) do
     t.string "inward_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "supplier_id"
+    t.float "total_to_pay"
+    t.integer "add_price"
+    t.integer "rem_price"
+    t.index ["supplier_id"], name: "index_inwards_on_supplier_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -314,6 +319,27 @@ ActiveRecord::Schema.define(version: 20180912080100) do
     t.index ["inward_product_id"], name: "index_returns_on_inward_product_id"
     t.index ["product_id"], name: "index_returns_on_product_id"
     t.index ["vendor_id"], name: "index_returns_on_vendor_id"
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "contact"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "transaction_details", force: :cascade do |t|
+    t.date "date"
+    t.bigint "inward_id"
+    t.boolean "payment_status"
+    t.string "payment_mode"
+    t.string "bank_name"
+    t.string "cheque_no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inward_id"], name: "index_transaction_details_on_inward_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -451,6 +477,7 @@ ActiveRecord::Schema.define(version: 20180912080100) do
   add_foreign_key "inward_products", "colors"
   add_foreign_key "inward_products", "inwards"
   add_foreign_key "inward_products", "products"
+  add_foreign_key "inwards", "suppliers"
   add_foreign_key "measurements", "colors"
   add_foreign_key "measurements", "fproducts"
   add_foreign_key "measurements", "rates"
@@ -460,6 +487,7 @@ ActiveRecord::Schema.define(version: 20180912080100) do
   add_foreign_key "returns", "inward_products"
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
+  add_foreign_key "transaction_details", "inwards"
   add_foreign_key "users", "employees"
   add_foreign_key "users", "locations"
   add_foreign_key "users", "vendors"

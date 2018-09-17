@@ -1,0 +1,71 @@
+<section id="main-content" class="animated fadeInUp">
+                      <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Transaction Details</h3>
+                            <div class="actions pull-right">
+                             <i class="fa fa-expand"></i>
+                                <i class="fa fa-chevron-down"></i>
+                                <i class="fa fa-times"></i>
+                            </div>
+                          </div>
+                          <div class="panel-body">
+                           
+
+
+       
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <tr>
+    <th>Date</th>
+    <th>Total</th>
+    <th>Paid</th>
+    <th>Pending</th>
+    <th>Payment Mode</th>
+    <th>Bank Name</th>
+    <th>Cheque No</th>
+    <th>Payment status</th>
+  </tr>
+<%# @inward_transaction_detail.each do |inward_transaction_detail| %>
+  <tr>
+    <td><%= @inward_transaction_detail.date if @inward_transaction_detail.date.present? %></td>
+    <td><%= @inward_transaction_detail.inward.total_to_pay.ceil %></td>
+
+    <% if @inward_transaction_detail.inward.rem_price == nil %>
+
+    <td>Rs.0</td>
+     <td><%= @inward_transaction_detail.inward.total_to_pay.ceil %></td>
+    <% elsif @inward_transaction_detail.inward.rem_price == 0 %>
+    <td><%= @inward_transaction_detail.inward.total_to_pay.ceil %></td>
+    <td>0</td>
+    <% else %>
+    <% @paid = @inward_transaction_detail.inward.total_to_pay.ceil - @inward_transaction_detail.inward.rem_price %>
+    <td><%= @paid %></td>
+    <td><%= @inward_transaction_detail.inward.total_to_pay.ceil - @paid %></td>
+
+    <% end %>
+      
+    <% if @inward_transaction_detail.payment_mode == "Cash" %>
+    <td><%= @inward_transaction_detail.payment_mode %></td>
+    <td>NA</td>
+    <td>NA</td>
+    <% else %>
+    <td><%= @inward_transaction_detail.payment_mode %></td>
+    <td><%= @inward_transaction_detail.bank_name %></td>
+    <td><%= @inward_transaction_detail.cheque_no %></td>
+    <% end %>
+    <% if @inward_transaction_detail.inward.rem_price == 0 %>
+    <td><font color="green"> Paid</font></td>
+    <% else %>
+    <td><font color="red">Pending</font></td>
+    <% end %>
+  </tr>
+  <%# end %>
+</table>
+<%= link_to "Back" , inwards_path,class: "btn btn-danger" %>
+
+</div>
+</div>
+</div>
+</div>
+</section>

@@ -12,7 +12,7 @@
                             </div>
                             <div class="panel-body">
 
-
+<% @products = Product.all %>
 <%= nested_form_for @inward, :html => { :class => "form-horizontal inward" } do |f| %>
 
   <% if @inward.errors.any? %>
@@ -40,6 +40,12 @@
     <%= f.label :inward_no, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :inward_no, :class => 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :supplier_id, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.select :supplier_id, Supplier.all.collect{|s|[s.name, s.id]},{prompt: "Please select"}, :class => 'form-control' %>
     </div>
   </div>
 
@@ -79,7 +85,8 @@
     <td class="width" style="width: 8em;"><%= task_form.text_field :height, class: 'form-control',placeholder: "Height(mm)"%></td>
   <td> <%= task_form.text_field :quantity, class: 'form-control quantity',placeholder: "Quanity" %> </td>
 
-  <td style="width: 8em;" class="unity" hidden="true"> <%= task_form.text_field :unit, class: 'form-control unit',placeholder: "Unit" %> </td>
+  <td style="width: 8em;" class="unity" hidden="true"> <%= task_form.text_field :unit, class: 'form-control unit',placeholder: "Unit" %></td>
+  
 
   <td class="category"> <%= task_form.select :category,options_for_select(['Gold',  'Silver']),{prompt: "Select Category"},class: "form-control" %> </td>
 
@@ -121,36 +128,49 @@
 
 
 <% content_for :javascript do %>
-
-
   <script type="text/javascript">
 
-
-  function myFunction(selTag) {
-
+    
+    function myFunction(selTag) {
     elem = jQuery(selTag);
-
-  
-   
-
-    
     var x = selTag.options[selTag.selectedIndex].text;
-    
- 
-
- 
-  
-  
     container = elem.parents("tr.fields");
     container1 = elem.parents("th.fields");
+
+
     
+
+   
   if(x == "Laminate"){
 
     
     /*container.find(".color").addClass("form-control");*/
     container.find(".color").show();
+    container.find(".width").show();
+  }
+
+  if(x == "Plywood"){
+
+    
+    /*container.find(".color").addClass("form-control");*/
+    container.find(".width").show();
+  }
+  if(x == "MDF"){
+
+    
+    /*container.find(".color").addClass("form-control");*/
+    
+    container.find(".width").show();
+  }
+  if(x == "Particle Board"){
+
+    
+    /*container.find(".color").addClass("form-control");*/
+    
+    container.find(".width").show();
   }
   if(x == "Fevicol" || x == "SR" || x == "Hydrolic Pump" || x == "Jsection Handle" || x == "PVC Edge Binding Roll" ){
+   
 
     container.find(".width").hide();
     container.find(".category").hide();
@@ -182,6 +202,8 @@
   
 
   };
+  
+
   </script>
 
 

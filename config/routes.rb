@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :suppliers
   resources :payslips do 
     collection do
       get :employees
@@ -84,6 +85,12 @@ Rails.application.routes.draw do
       get :load_item_data
       get :stock
       get :export_inward
+      post :transaction_detail
+       get :inward_transaction_detail
+    end
+    member do
+      get :inward_record_payment
+
     end
   end
   resources :vendors do

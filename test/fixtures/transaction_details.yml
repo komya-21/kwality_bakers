@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2018-09-17
+  inward: one
+  payment_status: false
+  payment_mode: MyString
+  bank_name: MyString
+  cheque_no: MyString
+
+two:
+  date: 2018-09-17
+  inward: two
+  payment_status: false
+  payment_mode: MyString
+  bank_name: MyString
+  cheque_no: MyString
