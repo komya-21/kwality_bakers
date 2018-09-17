@@ -1,0 +1,178 @@
+<%#- model_class = Delivery -%>
+<section id="main-content" class="animated fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class=" panel panel-info">
+                            <div class="panel-body">
+ <%#= link_to 'Download PDF ',payment_delivery_path(@delivery, format: 'pdf'),target: '_blank', class: "btn btn-primary" %> 
+ 
+
+
+<!-- <p class="text-info">
+  <strong>Payment Status:</strong>
+  <%#if @delivery.remaining_price == "0"%>
+  <%#@delivery.update!(payment_status:'true')%>
+  <%#end%>
+  <%#=@delivery.payment_status%>
+</p>  -->
+<div align="right">
+<%#= link_to 'Download Invoice ',workorder_invoice_workorder_path(@inward, format: 'pdf'),target: '_blank', class: "btn btn-success"%>
+</div>
+</div>
+
+<h3>Supplier:<%= @inward.supplier.name if @inward.supplier.present? %></h3><br>
+<% if @inward.rem_price != "0" %>
+<h3>Total To Pay:<%= @inward.total_to_pay.ceil %></h3><br><br>
+<% end %>
+<%if @inward.rem_price == 0%>
+<font color="red">Payment of Rs.<%= @inward.total_to_pay.ceil %> Done Successfully</font><br><br>
+<%end%>                       
+
+
+<%if @inward.rem_price.present?%>
+Payment Total: <%=text_field_tag :total,"",id: :total, value:  @inward.rem_price, readonly:true, class: 'form-control'%><br>
+<%else%>
+Payment Total: <%=text_field_tag :total,"",id: :total, value: @inward.total_to_pay.to_f.ceil, readonly:true, class: 'form-control'%><br>
+<%end%>
+<% if @inward.rem_price.present?%>
+Remaining <%=text_field_tag :rem_price,"",value: @inward.rem_price,id: :rem_price,readonly:true,class: 'form-control'%>
+                <%else%>
+ Remaining <%=text_field_tag :rem_price,"",id: :rem_price,readonly:true,class: 'form-control'%>
+                      <%end%>
+<div class="amt">
+Add Amount To Pay<%= text_field_tag :add_price,"",id: :add_price, class: 'form-control'%>
+</div>
+<div class="pymnt_mode">
+Payment Mode<%= select_tag :payment_mode,options_for_select(["Cash","Cheque"]),{prompt: "Please Select", class: 'form-control'}%>
+<%#= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "product" %>
+</div>
+<div class="bank_name" hidden="true">
+  Bank Name<%= text_field_tag :bank_name,"",id: :bank_name, class: 'form-control'%>
+  </div>
+  <div class="cheque_no" hidden="true">
+ Cheque No.<%= text_field_tag :cheque_no,"",id: :cheque_no, class: 'form-control'%>
+  </div>
+<br><br>
+<button onclick="myFunction()", class="btn btn-success">Pay</button>
+<%= link_to "Back" , inwards_path,class: "btn btn-danger" %>
+
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+ <%= hidden_field_tag :date ,"#{Date.today}" %>
+ <%# if @inward.rem_price == "0" %>
+ <%# @inward.update(payment_status: true) %>
+ <%# elsif @inward.rem_price != "0" %>
+ <%# @inward.update(payment_status: false) %>
+   
+ <%# end %>
+
+
+<% content_for :javascript do %>
+
+<script type="text/javascript">
+  
+  function refresh (timeoutPeriod){ 
+    refresh = setTimeout(function(){window.location.reload(true);},timeoutPeriod); 
+  } 
+  
+
+  $(document).ready(function(){
+
+     var rm = $("#rem_price").val();
+     
+     
+      
+
+     
+
+
+    
+
+    $("#add_price").keyup(function()
+    {
+      var b = $("#total").val();
+      var c = $("#rem_price").val();
+      var a = $("#add_price").val();
+      
+       
+       $("#rem_price").val(b-a);
+       if (parseInt(a) > parseInt(b))
+       {
+        alert("Wrong Value");
+        $("#rem_price").val("NA");
+       }
+        if (a == 0 && c == 0)
+       {
+        
+        
+        document.getElementById("#add_price").readOnly = true;
+       }
+    
+      
+       });
+
+  });
+
+  function myFunction() {
+    var paid_price  = $('#add_price').val();
+    var rem_price = $('#rem_price').val();
+    var payment_mode = $("#payment_mode").val();
+    var bank_name = $("#bank_name").val();
+    var cheque_no = $("#cheque_no").val();
+    var inward_id = <%= @inward.id %>;
+   $.ajax({
+  url: "/inwards/transaction_detail",
+  type: "POST",
+  data: {inward_id: inward_id,payment_mode: payment_mode,bank_name: bank_name,cheque_no: cheque_no},
+  dataType: "json"
+ 
+ 
+   
+   
+  // $("#uom").val(data[1]);
+  // $("#rate").val(data[2]);
+
+  });
+    document.location.search += '&params1='+ paid_price + '&params2='+ rem_price;
+};
+
+ function button(){
+  alert(par);
+ };
+
+
+
+</script>
+<script type="text/javascript">
+  $(document).on("change","#payment_mode",function(){
+    var mode = $(this).val();
+    if(mode == "Cheque"){
+      $(".bank_name").show();
+      $(".cheque_no").show();
+    }
+  });
+</script>
+<% end %>
+
+      
+  
+
+
+
+
+  
+       
+
+      
+    
+    
+    
+    
+     
+    
+
+  

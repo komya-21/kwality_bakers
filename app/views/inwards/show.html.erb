@@ -9,6 +9,8 @@
   <dd><%= @inward.date %></dd>
   <dt><strong><%= model_class.human_attribute_name(:inward_no) %>:</strong></dt>
   <dd><%= @inward.inward_no %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:supplier_id) %>:</strong></dt>
+  <dd><%= @inward.supplier.name %></dd>
 </dl>
 
 
@@ -40,11 +42,20 @@
 
         <%#= i.inward_products.map{|q| q.quantity.to_i}.to_a.inject(0){|sum , 
         x|sum+x } %><%# end %>
+        <% @total = 0 %>
  <%  @inward.inward_products.each do |i| %> 
 
 
 <td>
 <%= i.product.name %>
+<% if i.product.name == "Fevicol" || i.product.name == "SR" %>
+<% @product_total = i.product.price.to_f * i.quantity.to_i %>
+<% @total += @product_total %>
+<% else %>
+<% @product_total = ((i.width * i.height)/92903)*i.product.price.to_f %>
+<% @total += @product_total %>
+<% end %>
+
 </td>
 <% if i.width.present? %>
 <td>
@@ -74,7 +85,6 @@
   </td>
 
   <% end %>
-
 
 
 
@@ -119,6 +129,10 @@
 </table>
 
 
+
+<% @inward.update(total_to_pay: @total) %>
+Total to pay:<%= @total.ceil %>&nbsp;&nbsp;<% if @inward.rem_price != 0 %><%= link_to "Record Payment" ,inward_record_payment_inward_path(@inward),class: "btn btn-xs btn-success" %>
+</font><% else%><font color="green">Payment of Rs.<%= @inward.total_to_pay.ceil %> have done successfully<% end %><br><br>
 
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

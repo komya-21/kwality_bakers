@@ -2,6 +2,7 @@ class Inward < ApplicationRecord
 	has_many :inward_products, inverse_of: :inward, dependent: :destroy
   accepts_nested_attributes_for :inward_products, reject_if: :all_blank, allow_destroy: true, :update_only => true
   validates :inward_products, presence:true
+  belongs_to :supplier,optional: true
   
   def self.inward_no
     date = Date.today.strftime('%Y%m%d')
