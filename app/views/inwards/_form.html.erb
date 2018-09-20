@@ -45,7 +45,7 @@
   <div class="form-group">
     <%= f.label :supplier_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.select :supplier_id, Supplier.all.collect{|s|[s.name, s.id]},{prompt: "Please select"}, :class => 'form-control' %>
+      <%= f.select :supplier_id, Supplier.all.collect{|s|[s.name, s.id]},{prompt: "Please select"}, :class => 'form-control',required: true %>
     </div>
   </div>
 
@@ -84,6 +84,7 @@
   
     <td class="width" style="width: 8em;"><%= task_form.text_field :height, class: 'form-control',placeholder: "Height(mm)"%></td>
   <td> <%= task_form.text_field :quantity, class: 'form-control quantity',placeholder: "Quanity" %> </td>
+  <td><%= task_form.text_field :price,class: "form-control price",placeholder: "Price"%></td>
 
   <td style="width: 8em;" class="unity" hidden="true"> <%= task_form.text_field :unit, class: 'form-control unit',placeholder: "Unit" %></td>
   

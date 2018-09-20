@@ -48,13 +48,11 @@
 
 <td>
 <%= i.product.name %>
-<% if i.product.name == "Fevicol" || i.product.name == "SR" %>
-<% @product_total = i.product.price.to_f * i.quantity.to_i %>
+
+<% @product_total = i.price * i.quantity.to_i %>
 <% @total += @product_total %>
-<% else %>
-<% @product_total = ((i.width * i.height)/92903)*i.product.price.to_f %>
-<% @total += @product_total %>
-<% end %>
+
+
 
 </td>
 <% if i.width.present? %>

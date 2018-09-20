@@ -244,10 +244,11 @@ table, th, td {
     
 <% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
 <% @total_sqft += @sqft %>
-<td><%= @sqft.round(2) %></td>
+<td><%= @sqft.round(7) %></td>
   <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
+
   <% @total_sqft_back += @sqft_back %>
-<td><%= @sqft_back.round(2) %></td>
+<td><%= @sqft_back.round(4) %></td>
    
    
    
@@ -259,7 +260,7 @@ table, th, td {
   
   <% end %>
   <tr>
-  <th colspan="7">Total:</th>
+  <th colspan="8">Total:</th>
   <td><b><%= @total_no %></b></td>
   <td><b><%= @total_sqft.round(2) %></b></td>
   
@@ -268,7 +269,7 @@ table, th, td {
   
   </tr>
   <tr>
-  <th colspan="9">Total Quantity(SQ.FEET):</th>
+  <th colspan="10">Total Quantity(SQ.FEET):</th>
   <td><b><%= (@total_sqft + @total_sqft_back).round(2) %></b></td>
   
   </tr>
@@ -434,7 +435,7 @@ table, th, td {
 
   </tr>
   <tr>
-  <th colspan="9">Total Quantity(SQ.FEET):</th>
+  <th colspan="8">Total Quantity(SQ.FEET):</th>
   <td><b><%= @tot_sqrft.round(2) %></b></td>
  
 
