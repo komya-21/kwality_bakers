@@ -345,15 +345,9 @@ ActiveRecord::Schema.define(version: 20180917124104) do
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "role"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
@@ -362,15 +356,9 @@ ActiveRecord::Schema.define(version: 20180917124104) do
     t.datetime "updated_at", null: false
     t.text "authentication_token"
     t.datetime "authentication_token_created_at"
-    t.bigint "vendor_id"
-    t.bigint "location_id"
-    t.bigint "employee_id"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["employee_id"], name: "index_users_on_employee_id"
-    t.index ["location_id"], name: "index_users_on_location_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["vendor_id"], name: "index_users_on_vendor_id"
   end
 
   create_table "vendors", force: :cascade do |t|
@@ -495,9 +483,6 @@ ActiveRecord::Schema.define(version: 20180917124104) do
   add_foreign_key "returns", "products"
   add_foreign_key "returns", "vendors"
   add_foreign_key "transaction_details", "inwards"
-  add_foreign_key "users", "employees"
-  add_foreign_key "users", "locations"
-  add_foreign_key "users", "vendors"
   add_foreign_key "vendors", "locations"
   add_foreign_key "work_orders", "colors"
   add_foreign_key "workorders", "colors"
