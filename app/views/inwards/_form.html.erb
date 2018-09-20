@@ -46,7 +46,9 @@
     <%= f.label :supplier_id, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.select :supplier_id, Supplier.all.collect{|s|[s.name, s.id]},{prompt: "Please select"}, :class => 'form-control',required: true %>
+      <%= link_to 'Add Supplier', new_supplier_path, {:remote => true, :class => "btn btn-danger", 'data-target' => "#exampleModalCenter", 'data-toggle' => "modal"} %>
     </div>
+
   </div>
 
 
@@ -121,6 +123,9 @@
 </div>
 </div>
 </section>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+</div>
 
 
 

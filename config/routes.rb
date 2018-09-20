@@ -10,12 +10,17 @@ Rails.application.routes.draw do
     end
   end
 end
-  resources :suppliers
+  resources :suppliers do 
+    collection do
+       post :create_supplier
+     end
+   end
   resources :payslips do 
     collection do
       get :employees
       get :employee_payslip
       get :select_emp
+
     end
     member do 
       get :monthly_payslip

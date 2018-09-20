@@ -295,7 +295,7 @@ table, th, td {
    <%# if u == "Shutters" || u == "White BSL Shelf" %>
    <% if u == "Shutters" %>
    <tr>
-    <th>No</th>
+    <th colspan="2">No</th>
     <th>Quantity</th>
     <th>Sq.ft</th>
     <th>Glass Shutter</th>
@@ -331,7 +331,7 @@ table, th, td {
     <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
     <% @tot_sqrft += @sqrft %>
 
-    <% @t_amt = ((@sqrft.round(2)+@g_area.round(2))*c.rate.round(2))+@h_rate+@hg_rate+@hf_rate %>
+    <% @t_amt = (@sqrft.round(2)*c.rate.round(2))+(@g_area.round(2))*(c.rate.round(2)+20)+@h_rate+@hg_rate+@hf_rate %>
 
    <% @full_amt += @t_amt %>
    
@@ -339,7 +339,7 @@ table, th, td {
    <% @i += 1 %>
    
    <tr>
-   <td><%= @i %></td>
+   <td colspan="2"><%= @i %></td>
    <td><%= @tot_num %></td>
    
    
@@ -354,7 +354,7 @@ table, th, td {
    <td><%= c.rate if c.rate.present? %></td>
    
 
-   <td><%= @full_amt.round(2) %></td>
+   <td><%= @t_amt %></td>
    
    
   
@@ -394,12 +394,12 @@ table, th, td {
    
    
   
-   <td><%= @tot_sqrft.round(2) %></td>
+   <td><%= @sqrft.round(2) %></td>
    
    <td><%= c.rate if c.rate.present? %></td>
    
 
-   <td><%= @full_amt.round(2) %></td>
+   <td><%= @t_amt %></td>
 
 
    

@@ -244,7 +244,7 @@ table, th, td {
     
 <% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
 <% @total_sqft += @sqft %>
-<td><%= @sqft.round(7) %></td>
+<td><%= @sqft.round(4) %></td>
   <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
 
   <% @total_sqft_back += @sqft_back %>
@@ -262,15 +262,15 @@ table, th, td {
   <tr>
   <th colspan="8">Total:</th>
   <td><b><%= @total_no %></b></td>
-  <td><b><%= @total_sqft.round(2) %></b></td>
+  <td><b><%= @total_sqft.round(4) %></b></td>
   
   
-  <td><b><%= @total_sqft_back.round(2) %></b></td>
+  <td><b><%= @total_sqft_back.round(4) %></b></td>
   
   </tr>
   <tr>
   <th colspan="10">Total Quantity(SQ.FEET):</th>
-  <td><b><%= (@total_sqft + @total_sqft_back).round(2) %></b></td>
+  <td><b><%= (@total_sqft + @total_sqft_back).round(4) %></b></td>
   
   </tr>
   
@@ -303,7 +303,7 @@ table, th, td {
    <td><%= c.quantity %></td>
    <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
    <% @total_sqft += @sqft %>
-   <td><%= @sqft.round(2) %></td>
+   <td><%= @sqft.round(4) %></td>
    
   
    
@@ -313,14 +313,14 @@ table, th, td {
   <tr>
   <th colspan="4">Total:</th>
   <td><b><%= @total_no %></b></td>
-  <td><b><%= @total_sqft.round(2) %></b></td>
+  <td><b><%= @total_sqft.round(4) %></b></td>
   
   
   
   </tr>
   <tr>
   <th colspan="5">Total Quantity(SQ.FEET):</th>
-  <td><b><%= @total_sqft.round(2) %></b></td>
+  <td><b><%= @total_sqft.round(4) %></b></td>
   
   </tr>
   
@@ -407,7 +407,7 @@ table, th, td {
    <% else %>
    <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
    <% end %>
-   <td><%= @sqrft.round(2) %></td>
+   <td><%= @sqrft.round(4) %></td>
    <% @tot_sqrft += @sqrft %>
    <% if u == "Shutters" %>
    <td><%= c.glass_shutter %></td>
@@ -429,14 +429,14 @@ table, th, td {
   <th colspan="6">Total:</th>
 
   <td><b><%= @tot_num %></b> </td>
-  <td><b><%= @tot_sqrft.round(2) %></b></td>
+  <td><b><%= @tot_sqrft.round(4) %></b></td>
   
   
 
   </tr>
   <tr>
-  <th colspan="8">Total Quantity(SQ.FEET):</th>
-  <td><b><%= @tot_sqrft.round(2) %></b></td>
+  <th colspan="7">Total Quantity(SQ.FEET):</th>
+  <td><b><%= @tot_sqrft.round(4) %></b></td>
  
 
   </tr>

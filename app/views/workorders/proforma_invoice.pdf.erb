@@ -247,7 +247,7 @@ table, th, td {
   
   <% end %>
   <tr>
-  <th colspan="7">Total:</th>
+  <th colspan="8">Total:</th>
   <td><b><%= @total_no %></b></td>
   <td><b><%= @total_sqft.round(2) %></b></td>
   
@@ -257,12 +257,12 @@ table, th, td {
   <td><b>-</b></td>
   </tr>
   <tr>
-  <th colspan="12">Total Quantity(SQ.FEET):</th>
+  <th colspan="13">Total Quantity(SQ.FEET):</th>
   <td><b><%= (@total_sqft + @total_sqft_back).round(2) %></b></td>
   
   </tr>
   <tr>
-  <th colspan="12">Total AMOUNT:</th>
+  <th colspan="13">Total AMOUNT:</th>
   <td><b><%= @total_amount.round(2) %></b></td>
   
   </tr>
