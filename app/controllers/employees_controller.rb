@@ -28,7 +28,13 @@ class EmployeesController < ApplicationController
     @out_time = params[:out_time]
     @date = params[:date]
     @emp_id = params[:employee_id]
-    @wt = params[:work_hours]
+    @in_time = EmpWork.find_by(employee_id: @emp_id,date: @date).in_time
+    start_time = @in_time
+end_time = @out_time
+
+@wt = TimeDifference.between(start_time, end_time).in_hours
+
+    #@wt = params[:work_hours]
     @emp = EmpWork.find_by(date: @date)
     EmpWork.find_by(employee_id: @emp_id,date: @date).update(out_time: @out_time,work_hours: @wt)
   end

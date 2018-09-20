@@ -193,23 +193,25 @@
 </section>
         
        
-        
+
 
 <% content_for :javascript do %>
-    <script type="text/javascript">
-        var time;
+
+<script type="text/javascript">
+    
         $('#inButton').on("click" ,function () {
+
             var emp_id = <%= current_user.employee_id %>;
             var currentdate = new Date(); 
-             time = + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" 
+             var time = + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" 
       + currentdate.getSeconds();
       
       var date = currentdate.getDate() + "/" +(currentdate.getMonth()+1)  + "/" 
       + currentdate.getFullYear();
+
       alert(time);
 
-/*      document.getElementById("demo").innerHTML = time;
-*/
+
       
       $.ajax({
        url: "/employees/in_time",
@@ -228,33 +230,38 @@
 
     });
 
+ 
+    
 
-
-
-
-
-
-  
-            
     $('#outButton').on("click" ,function () {
+
+        alert("clicked out button");
         var emp_id = <%= current_user.employee_id %>;
+
+
+       /*var intime = <%#= @emp_work.in_time if @emp_work.present? %>;
+        alert(intime);*/
+        
+
             
         
        
       var currentdate = new Date(); 
 
 
+
       var out_time =   
       + currentdate.getHours() + ":"  
       + currentdate.getMinutes() + ":" 
       + currentdate.getSeconds();
-      
-     start = time.split(":");
+
+      alert(out_time);
+     
+    /* start = in_time.split(":");
      end = out_time.split(":");
 
-     alert(out_time);
-/*           document.getElementById("demo1").innerHTML = out_time;
-*/
+     
+
     var startDate = new Date(0, 0, 0, start[0], start[1], 0);
     
     var endDate = new Date(0, 0, 0, end[0], end[1], 0);
@@ -274,7 +281,7 @@
        hours = hours + 24;
 
     var wt = (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
-    alert(wt);
+    alert(wt);*/
 
       
       var date = currentdate.getDate() + "/" +(currentdate.getMonth()+1)  + "/" 
@@ -286,7 +293,7 @@
        type: 'post',
        dataType: 'json',
 
-       data: {out_time: out_time,date: date,employee_id: emp_id,work_hours: wt }
+       data: {out_time: out_time,date: date,employee_id: emp_id}
 
 
 

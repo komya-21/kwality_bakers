@@ -354,11 +354,18 @@ ActiveRecord::Schema.define(version: 20180917124104) do
     t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "authentication_token"
+    t.datetime "authentication_token_created_at"
     t.bigint "vendor_id"
-    t.bigint "employee_id"
     t.bigint "location_id"
+    t.bigint "employee_id"
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["employee_id"], name: "index_users_on_employee_id"
     t.index ["location_id"], name: "index_users_on_location_id"

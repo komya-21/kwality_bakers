@@ -20,6 +20,7 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 gem 'lazy_high_charts'
+gem 'time_difference'
 
 gem 'paperclip'
 gem 'bootstrap-tooltip-rails'
@@ -50,6 +51,7 @@ gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
 # gem 'bcrypt', '~> 3.1.7'
 # authentication
 gem 'devise'
+gem 'devise-token_authenticatable'
 gem 'roo'
 gem 'roo-xls'
 # Use Capistrano for deployment

@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
   def dashboard
+    @emp_work =  EmpWork.find_by(employee_id: current_user.employee_id)
+
   	@chart = LazyHighCharts::HighChart.new('graph') do |f|
   	@emp_type = Employee.where(employee_type: "Pasting")
   	@emp_type1 = Employee.where(employee_type: "Cutting")
