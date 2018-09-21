@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180920110504) do
+ActiveRecord::Schema.define(version: 20180921120017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -455,6 +455,8 @@ ActiveRecord::Schema.define(version: 20180920110504) do
     t.string "dark_color"
     t.string "light_color"
     t.boolean "delivered"
+    t.string "g_section"
+    t.string "g_section_with_end_cap"
     t.index ["color_id"], name: "index_workorders_on_color_id"
     t.index ["employee_id"], name: "index_workorders_on_employee_id"
     t.index ["location_id"], name: "index_workorders_on_location_id"

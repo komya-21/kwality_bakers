@@ -56,20 +56,35 @@
     <%#= form.date_field :date, value: Date.today, :class => 'form-control' %>
          <% @darks = Color.where(dark: "Dark") %>
          <% @lights = Color.where(light: "Light") %>
-         <label class="col-sm-1 control-label">Light Shades</label> 
+        
     <div class="col-md-2">
       
     <%= form.select :dark_color, @lights.all.collect{|v| [v.code,v.id]},
-    {prompt:true},class: "form-control",id: :diff_id %>
+    {prompt: "Light Shades"},class: "form-control",id: :diff_id %>
 
   </div>
-  <label class="col-sm-1 control-label">Dark Shades</label> 
+  <!-- <label class="col-sm-1 control-label">Dark Shades</label>  -->
     <div class="col-md-2">
       
     <%= form.select :light_color, @darks.all.collect{|v| [v.code,v.id]},
-    {prompt:true},class: "form-control",id: :light_id %>
+    {prompt: "Dark Shades"},class: "form-control",id: :light_id %>
 
   </div>
+
+
+    <div class="form-group">
+          <!-- <label class="col-sm-2 control-label">G Section</label>  -->
+          <div class="col-md-2">
+           <%= form.select :g_section, options_for_select(["AF","CP","CP Brush"]),{prompt: "G Section"},class: "form-control" %>
+         </div>
+   
+          <!-- <label class="col-sm-2 control-label">G Section(with end cap)</label>  -->
+             <div class="col-md-2">
+            <%= form.select :g_section_with_end_cap, options_for_select(["AF","CP","CP Brush"]),{prompt: "G Section(with end cap)"},class: "form-control" %>
+            </div>
+    </div>
+        
+     <hr>    
 
         <%= form.fields_for :fproducts,@workorder.fproducts.build do |w| %>
         
@@ -84,8 +99,8 @@
           <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "product" %>
           <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
         </div>
-        
-         
+
+
         
           
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>

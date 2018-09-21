@@ -406,7 +406,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:total_to_pay,:dark_color,:light_color,:delivered,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:right,:right_dark,:right_light,:left,:left_dark,:left_light,:top,:top_dark,:top_light,:bottom,:bottom_dark,:bottom_light,:_destroy]])
+     params.require(:workorder).permit(:total_to_pay,:g_section,:g_section_with_end_cap,:dark_color,:light_color,:delivered,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:right,:right_dark,:right_light,:left,:left_dark,:left_light,:top,:top_dark,:top_light,:bottom,:bottom_dark,:bottom_light,:_destroy]])
 
    end
    def additional_params
