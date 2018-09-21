@@ -407,7 +407,8 @@ if(type == "White BSL Shelf"){
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
-      $('.height').insertAfter('.depth');
+      container.find('.height').insertAfter(container.find('.depth'));
+      
 
     }
 
@@ -425,6 +426,7 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
+      container.find('.height').insertAfter(container.find('.depth'));
       
 
 
@@ -445,6 +447,7 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
+      container.find('.height').insertAfter(container.find('.depth'));
       
 
     }
@@ -461,7 +464,7 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').hide();
-      $('.depth').insertAfter('.height');
+      container.find('.depth').insertAfter(container.find('.height'));
       
 /*      container.find('#work_order_depth')[0].placeholder='Height(mm)';
 */      /*container.find('#work_order_height')[0].placeholder='Depth(mm)';*/
