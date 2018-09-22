@@ -24,7 +24,7 @@
                         <% elsif current_user.role == "Employee" %>
                         <span class="text"><%= current_user.employee.name%></span>
                         <% else %>
-                        <span class="text"><%= current_user.location.name%></span>
+                        <span class="text"><%= current_user.location.name if current_user.location.present? %></span>
                         <% end %>
                         <span class="caret"></span>
                         </span>
