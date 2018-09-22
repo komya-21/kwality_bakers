@@ -66,6 +66,7 @@ end
 
     end
   end
+  
   resources :furnitures
   resources :work_orders do 
     collection do

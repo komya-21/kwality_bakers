@@ -1,7 +1,7 @@
 class Api::V1::SessionsController < Devise::SessionsController
    skip_before_action :verify_signed_out_user
-  skip_before_action :verify_authenticity_token,
-                     :if => Proc.new { |c| c.request.format == 'application/json' }
+  skip_before_action :verify_authenticity_token
+                     
 
   respond_to :json
  
@@ -12,7 +12,7 @@ class Api::V1::SessionsController < Devise::SessionsController
     render :status => 200,
            :json => { :success => true,
                       :info => "Logged in",
-                      :data => { :auth_token => current_user.authentication_token,:email => current_user.email } }
+                      :data => { :auth_token => current_user.authentication_token,:email => current_user.email,:id => current_user.id } }
   end
 
   def destroy

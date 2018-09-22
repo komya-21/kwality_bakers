@@ -9,8 +9,12 @@ class WorkordersController < ApplicationController
     @emp_cuts = Employee.where(employee_type: "Cutting")
     @emp_edges = Employee.where(employee_type: "Edge Binding")
     @emp_packs = Employee.where(employee_type: "Packing & Quality")
+    
+   if current_user.present?
     if current_user.role == "SuperAdmin"
      @workorders = Workorder.all
+     render json: @workorders
+
      if params[:param1].present? && params[:param1] == 'false'
 
       workorder = Workorder.list(params[:id])
@@ -54,9 +58,8 @@ class WorkordersController < ApplicationController
     @workorders = Workorder.where(location_id: current_user.location_id)
   end
 
-      
+   end   
  
-
 
 
 end
@@ -95,6 +98,7 @@ end
     #@qr = RQRCode::QRCode.new(@workorder.order_no, size: 4)
     respond_to do |format|
       format.html
+      format.json { render json: @workorder }
       format.pdf do
         render pdf: "payment.pdf.erb"    # Excluding ".pdf" extension.
       end
