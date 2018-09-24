@@ -13,7 +13,7 @@ class WorkordersController < ApplicationController
    if current_user.present?
     if current_user.role == "SuperAdmin"
      @workorders = Workorder.all
-     render json: @workorders
+     
 
      if params[:param1].present? && params[:param1] == 'false'
 
@@ -95,10 +95,15 @@ end
   # GET /workorders/1
   # GET /workorders/1.json
   def show
+
+    render :status => 200,
+           :json => { :success => true,
+                      :info => "Workorder",
+                      :data => { :id => @workorder.id,:order_no => @workorder.order_no,:date => @workorder.date } }
     #@qr = RQRCode::QRCode.new(@workorder.order_no, size: 4)
     respond_to do |format|
       format.html
-      format.json { render json: @workorder }
+      
       format.pdf do
         render pdf: "payment.pdf.erb"    # Excluding ".pdf" extension.
       end
