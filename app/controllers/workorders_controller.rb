@@ -96,10 +96,7 @@ end
   # GET /workorders/1.json
   def show
 
-    render :status => 200,
-           :json => { :success => true,
-                      :info => "Workorder",
-                      :data => { :id => @workorder.id,:order_no => @workorder.order_no,:date => @workorder.date } }
+    
     #@qr = RQRCode::QRCode.new(@workorder.order_no, size: 4)
     respond_to do |format|
       format.html
