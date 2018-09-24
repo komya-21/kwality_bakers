@@ -1,3 +1,4 @@
+
 <section id="main-content" class="animated fadeInUp">
   <div class="row">
     <div class="col-md-12">
@@ -71,6 +72,20 @@
     {prompt: "Select Dark Shade"},class: "form-control",id: :light_id %>
 
   </div>
+   <div class="form-group">
+          <!-- <label class="col-sm-2 control-label">G Section</label>  -->
+          <div class="col-md-2">
+           <%= form.select :g_section, options_for_select(["AF","CP","CP Brush"]),{prompt: "G Section"},class: "form-control" %>
+         </div>
+   
+          <!-- <label class="col-sm-2 control-label">G Section(with end cap)</label>  -->
+             <div class="col-md-2">
+            <%= form.select :g_section_with_end_cap, options_for_select(["AF","CP","CP Brush"]),{prompt: "G Section(with end cap)"},class: "form-control" %>
+            </div>
+    </div>
+        
+     <hr>    
+     
         <%= form.fields_for :fproducts do |w| %>
 
        <!--  <label class="col-sm-1 control-label">Light Shades</label>  -->
@@ -421,6 +436,7 @@ $(document).on('nested:fieldAdded', function(event){
 }); 
 </script>
    <script type="text/javascript">
+    
     var ftype;
   $(document).on("change", ".product", function () {
 

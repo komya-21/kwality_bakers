@@ -7,7 +7,7 @@ class Api::V1::SessionsController < Devise::SessionsController
  
 
   def create
-   
+   byebug
     warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
     render :status => 200,
            :json => { :success => true,

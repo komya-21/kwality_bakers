@@ -240,6 +240,24 @@ end
   def update
     respond_to do |format|
     if @workorder.update(workorder_params)
+      @workorder.fproducts.each do |f|
+        f.measurements.each do |m|
+          if !m.rate.present?
+          
+            if m.ftype == "Carcass Box"
+              @rate1 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"Back" ])
+            @rate2 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"TB/LR" ])
+            m.update(back_rate: @rate1.price)
+            m.update(rate: @rate2.price)
+          else
+            @rate1 = Rate.find_by(["product = ? and ptype = ?",f.product,m.ftype])
+            m.update(rate: @rate1.price)
+          end
+        end
+      end
+    end
+
+
       format.html { redirect_to @workorder, notice: 'Workorder was successfully updated.' }
       format.json { render :show, status: :ok, location: @workorder }
     else

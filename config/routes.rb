@@ -140,9 +140,13 @@ end
   resources :employees do
     collection do
       post :in_time
+      post :create_empwork
       post :out_time
       get :empwork
       get :report
+    end
+    member do 
+      patch :update_empwork
     end
   end
   resources :products do
