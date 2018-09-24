@@ -171,7 +171,7 @@
         <%= m.check_box :handle_groove, {}, "Yes", "No"%>Handle Groove<br>
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
-        <%= m.check_box :handle, {}, "Yes", "No" %>G Handle</td>
+        <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle</td>
         <% else %>
         <td class="choose" hidden="true"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
         
@@ -179,7 +179,7 @@
         <%= m.check_box :handle_groove, {}, "Yes", "No"%>Handle Groove<br>
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
-        <%= m.check_box :handle, {}, "Yes", "No" %>G Handle</td>
+        <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle</td>
         <% end %>
         <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %></td>
         <% if m.object.ftype == "Carcass Box" %>
@@ -729,6 +729,35 @@ $('#workorder_name1').hide();
     }
   });
 });
+</script>
+<script type="text/javascript">
+    $(document).on("change", ".handle", function () {
+      elem = jQuery(this);
+    container = elem.parents("tr.fields");
+     var check = $(this).val();
+     var checked = $(this).is(':checked');
+     if (checked == true){
+
+       
+      
+     var height = container.find("#work_order_height").val();
+
+     var new_height = height - 35 ;
+     container.find("#work_order_height").val(new_height);
+    }
+    else{
+      var height = +container.find("#work_order_height").val();
+
+     var new_height = height + 35 ;
+     container.find("#work_order_height").val(new_height);
+
+    }
+    /*var checked = $(this).is(':checked');
+    $(".chb").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }*/
+  });
 </script>
  
 <% end %>

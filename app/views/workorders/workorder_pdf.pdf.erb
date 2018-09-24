@@ -212,19 +212,35 @@ table, th, td {
    <td>
    <% if c.right == "Yes" %>
    <% @r_sqft = ((c.height * c.depth)/92903)*c.quantity %>
-   Right,
+   <% if c.right_dark == "Yes" %>
+   Right(D),
+   <% elsif c.right_light == "Yes" %>
+   Right(L),
+   <% end %>
    <% end %>
    <% if c.left == "Yes" %>
    <% @l_sqft = ((c.height * c.depth)/92903)*c.quantity %>
-   Left,
+   <% if c.left_dark == "Yes" %>
+   Left(D),
+   <% elsif c.left_light == "Yes" %>
+   Left(L),
+   <% end %>
    <% end %>
    <% if c.top == "Yes" %>
    <% @t_sqft = ((c.width * c.depth)/92903)*c.quantity %>
-   Top,
+   <% if c.top_dark == "Yes" %>
+   Top(D),
+   <% elsif c.top_light == "Yes" %>
+   Top(L),
+   <% end %>
    <% end %>
    <% if c.bottom == "Yes" %>
    <% @b_sqft = ((c.width * c.depth)/92903)*c.quantity %>
-   Bottom
+  <% if c.bottom_dark == "Yes" %>
+   Bottom(D),
+   <% elsif c.bottom_light == "Yes" %>
+   Bottom(L),
+   <% end %>  
    <% end %>
 </td>
    <td><%= c.quantity %></td>

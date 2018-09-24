@@ -153,7 +153,7 @@
         <%= m.check_box :handle_groove, {}, "Yes", "No" %>Handle Groove<br>
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
-        <%= m.check_box :handle, {}, "Yes", "No" %>G Handle
+        <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle
       </td>
 
 
@@ -510,6 +510,13 @@ $(document).on('nested:fieldAdded', function(event){
 
   var selectField1 = field.find('#work_order_width');
   var selectField2 = field.find('.select');
+ 
+ /* var selected = $(".select").val();
+  alert(selected);
+ 
+$(".select").val(selected);
+  */
+
   var selectField3 = field.find('.product');
   
  
@@ -517,9 +524,11 @@ $(document).on('nested:fieldAdded', function(event){
   selectField2.select2();
   selectField3.addClass("form-control");
   selectField3.select2();
-  
 
+  
 }); 
+
+
 </script>
 
  
@@ -603,6 +612,7 @@ $('#workorder_name1').hide();
   });
 </script>
 
+
 <script type="text/javascript">
   $("#workorder_location_id").addClass('form-control');
   $("#workorder_vendor_id").addClass('form-control');
@@ -632,11 +642,10 @@ $('#workorder_name1').hide();
   });
 });
 </script>
+
+
 <script type="text/javascript">
-
-  
-
-  $(".chb").change(function() {
+    $(".chb").change(function() {
     var checked = $(this).is(':checked');
     $(".chb").prop('checked',false);
     if(checked) {
@@ -669,6 +678,34 @@ $('#workorder_name1').hide();
   });
   
 
+</script>
+<script type="text/javascript">
+    $(document).on("change", ".handle", function () {
+      elem = jQuery(this);
+    container = elem.parents("tr.fields");
+    
+     var checked = $(this).is(':checked');
+     if (checked == true){
+      var height = container.find("#work_order_height").val();
+     
+
+
+     var new_height = height - 35 ;
+     container.find("#work_order_height").val(new_height);
+    }
+    else{
+      var height = +container.find("#work_order_height").val();
+
+     var new_height = height + 35 ;
+     container.find("#work_order_height").val(new_height);
+
+    }
+    /*var checked = $(this).is(':checked');
+    $(".chb").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }*/
+  });
 </script>
  
 <% end %>
