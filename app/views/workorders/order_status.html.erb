@@ -57,9 +57,9 @@
         <td></td>
         <% else %>
         <% @emp = @employee_workorders.find_by(workorder_id: w.id) %>
-        <% @st = @emp.status %>
+        <% @st = @emp.status if @emp.present? %>
         <td><%= @st %></td>
-        <td><%= @emp.employee.employee_type %></td>
+        <td><%= @emp.employee.employee_type if @emp.present? %></td>
         <% end %>
         <!-- <td><%#= w.employee.name %></td>
         <td><%#= w.starttime %></td>

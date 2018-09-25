@@ -49,6 +49,7 @@ end
      
     end
     collection do
+      get :workorder_info
       post :order_report
       get :addition
       get :order_status
