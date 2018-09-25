@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+
+  devise_for :users
   namespace :api do
   namespace :v1 do
     devise_scope :user do
@@ -8,12 +10,17 @@ Rails.application.routes.draw do
     end
   end
 end
-  resources :suppliers
+  resources :suppliers do 
+    collection do
+       post :create_supplier
+     end
+   end
   resources :payslips do 
     collection do
       get :employees
       get :employee_payslip
       get :select_emp
+
     end
     member do 
       get :monthly_payslip
@@ -59,6 +66,7 @@ end
 
     end
   end
+  
   resources :furnitures
   resources :work_orders do 
     collection do
@@ -132,9 +140,13 @@ end
   resources :employees do
     collection do
       post :in_time
+      post :create_empwork
       post :out_time
       get :empwork
       get :report
+    end
+    member do 
+      patch :update_empwork
     end
   end
   resources :products do
@@ -144,7 +156,6 @@ end
   resources :companies
   get 'home/dashboard'
 
-  devise_for :users
   root 'home#dashboard'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

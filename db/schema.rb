@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180917124104) do
+ActiveRecord::Schema.define(version: 20180925080545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(version: 20180917124104) do
     t.string "category"
     t.bigint "color_id"
     t.string "unit"
+    t.float "price"
     t.index ["color_id"], name: "index_inward_products_on_color_id"
     t.index ["inward_id"], name: "index_inward_products_on_inward_id"
     t.index ["product_id"], name: "index_inward_products_on_product_id"
@@ -345,7 +346,6 @@ ActiveRecord::Schema.define(version: 20180917124104) do
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "role"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -354,17 +354,14 @@ ActiveRecord::Schema.define(version: 20180917124104) do
     t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "authentication_token"
-    t.datetime "authentication_token_created_at"
+    t.bigint "employee_id"
     t.bigint "vendor_id"
     t.bigint "location_id"
-    t.bigint "employee_id"
+    t.text "authentication_token"
+    t.datetime "authentication_token_created_at"
+    t.string "role"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["employee_id"], name: "index_users_on_employee_id"
@@ -388,6 +385,7 @@ ActiveRecord::Schema.define(version: 20180917124104) do
     t.string "email"
     t.string "password"
     t.bigint "location_id"
+    t.string "opening_balance"
     t.index ["location_id"], name: "index_vendors_on_location_id"
   end
 
@@ -458,6 +456,9 @@ ActiveRecord::Schema.define(version: 20180917124104) do
     t.string "dark_color"
     t.string "light_color"
     t.boolean "delivered"
+    t.string "g_section"
+    t.string "g_section_with_end_cap"
+    t.string "site_name"
     t.index ["color_id"], name: "index_workorders_on_color_id"
     t.index ["employee_id"], name: "index_workorders_on_employee_id"
     t.index ["location_id"], name: "index_workorders_on_location_id"

@@ -141,6 +141,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def inward_params
-      params.require(:inward).permit(:date, :inward_no ,:total_to_pay,:add_price,:rem_price,:supplier_id,inward_products_attributes: [:id, :updated_quantity ,:product_id, :quantity, :inward_id,:total_quantity ,:width,:height,:category,:color_id,:unit, :_destroy])
+      params.require(:inward).permit(:date, :inward_no ,:total_to_pay,:add_price,:rem_price,:supplier_id,inward_products_attributes: [:id, :updated_quantity ,:product_id, :quantity, :inward_id,:total_quantity ,:width,:height,:category,:color_id,:unit, :price,:_destroy])
     end
 end

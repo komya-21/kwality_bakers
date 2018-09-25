@@ -17,7 +17,7 @@ class Workorder < ApplicationRecord
 	belongs_to :location , optional: :true
 	has_and_belongs_to_many :employees
 	has_many :fproducts ,inverse_of: :workorder,dependent: :destroy
-	accepts_nested_attributes_for :fproducts
+	accepts_nested_attributes_for :fproducts, :allow_destroy => true
 
 
 	has_attached_file :photo1,:url => "/assets/workorders/:id/:style/:basename.:extension",

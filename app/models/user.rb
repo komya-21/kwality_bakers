@@ -1,13 +1,16 @@
 class User < ApplicationRecord
-belongs_to :vendor , optional: :true
-belongs_to :employee , optional: :true
-belongs_to :location , optional: :true
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+
+  belongs_to :location,optional: :true
+  belongs_to :employee,optional: :true
+  belongs_to :vendor,optional: :true
+
+devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable
 
 before_save :ensure_authentication_token
+
 def skip_confirmation!
   self.confirmed_at = Time.now
 end

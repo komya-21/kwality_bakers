@@ -50,7 +50,7 @@
         
         <td><%= link_to w.order_no , workorder_status_workorder_path(w.id),class: "btn btn-link",style: "color: #007694;" %></td>
        
-        <td><%= w.vendor.name %></td>
+        <td><%= w.vendor.name if w.vendor.present? %></td>
         <td><%= w.date %></td>
         <% if w.approve == false %>
         <td><font color="red">Not Approved</font></td>

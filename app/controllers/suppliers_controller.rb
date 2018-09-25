@@ -37,6 +37,22 @@ class SuppliersController < ApplicationController
     end
   end
 
+  def create_supplier
+    @supplier = Supplier.new(supplier_params)
+
+    respond_to do |format|
+      if @supplier.save
+
+       
+        format.html { redirect_to new_inward_path, notice: 'Supplier was successfully created.' }
+        format.json { render :show, status: :created, location: @supplier }
+      else
+        format.html { render :new }
+        format.json { render json: @supplier.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PATCH/PUT /suppliers/1
   # PATCH/PUT /suppliers/1.json
   def update

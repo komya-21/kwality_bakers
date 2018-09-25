@@ -1,5 +1,6 @@
 var app = function() {
 
+
     $(function() {
         toggleSettings();
         switchTheme();
@@ -92,6 +93,7 @@ var app = function() {
 
     var navToggleLeft = function() {
         $('#toggle-left').on('click', function() {
+
             var bodyEl = $('#main-wrapper');
             ($(window).width() > 767) ? $(bodyEl).toggleClass('sidebar-mini'): $(bodyEl).toggleClass('sidebar-opened');
            
@@ -405,12 +407,14 @@ var app = function() {
     };
 
 
+
     var fullscreenMode = function() {
        $('#toggle-fullscreen.expand').on('click',function(){
         $(document).toggleFullScreen()
         $('#toggle-fullscreen .fa').toggleClass('fa-expand fa-compress');  
        });
     };
+
 
 
 

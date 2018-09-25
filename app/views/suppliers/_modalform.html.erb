@@ -1,0 +1,66 @@
+<% modal ||= false %>
+
+<% remote = modal ? true : false %>
+<div class="modal-dialog">    
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Supplier</h4>
+        </div>
+        <div class="modal-body">
+
+
+<%= form_for @supplier, url: {action: "create_supplier", controller: 'suppliers'} ,:html => { :class => "form-horizontal vendor" } do |form| %>
+
+  
+
+  <div class="form-group">
+    <%= form.label :name, :class => 'control-label col-lg-2'  %>
+     <div class="col-lg-10">
+    <%= form.text_field :name, id: :supplier_name,class: "form-control" %>
+  </div>
+</div>
+
+   
+
+  <div class="form-group">
+    <%= form.label :address, :class => 'control-label col-lg-2'  %>
+     <div class="col-lg-10">
+    <%= form.text_field :address, id: :supplier_address,class: "form-control" %>
+  </div>
+</div>
+
+  <div class="form-group">
+    <%= form.label :contact, :class => 'control-label col-lg-2'  %>
+     <div class="col-lg-10">
+    <%= form.text_field :contact, id: :supplier_contact,class: "form-control"  %>
+  </div>
+</div>
+
+  <div class="form-group">
+    <%= form.label :email, :class => 'control-label col-lg-2'  %>
+     <div class="col-lg-10">
+    <%= form.text_field :email, id: :supplier_email,class: "form-control" %>
+  </div>
+</div>
+
+<div align="center">
+  <div class="form-group">
+    <%= form.submit "Submit",class: "btn btn-success" %>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+  </div>
+</div>
+<% end %>
+
+</div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+        </div> -->
+      </div>
+    </div>
+      
+
+

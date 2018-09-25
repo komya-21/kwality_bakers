@@ -12,7 +12,7 @@
        </div>
        <div class="panel-body">
         <div class="form-horizontal form-border">
-        <%= nested_form_for @workorder do |form| %>
+        <%= nested_form_for @workorder ,:html => { :id => "new_form" } do |form| %>
         
 
        <div class="form-group">
@@ -56,20 +56,54 @@
     <%#= form.date_field :date, value: Date.today, :class => 'form-control' %>
          <% @darks = Color.where(dark: "Dark") %>
          <% @lights = Color.where(light: "Light") %>
-         <label class="col-sm-1 control-label">Light Shades</label> 
+        
     <div class="col-md-2">
       
     <%= form.select :dark_color, @lights.all.collect{|v| [v.code,v.id]},
-    {prompt:true},class: "form-control",id: :diff_id %>
+    {prompt: "Light Shades"},class: "form-control",id: :diff_id %>
 
   </div>
-  <label class="col-sm-1 control-label">Dark Shades</label> 
+  <!-- <label class="col-sm-1 control-label">Dark Shades</label>  -->
     <div class="col-md-2">
       
     <%= form.select :light_color, @darks.all.collect{|v| [v.code,v.id]},
-    {prompt:true},class: "form-control",id: :light_id %>
+    {prompt: "Dark Shades"},class: "form-control",id: :light_id %>
 
   </div>
+
+
+    <div class="form-group">
+
+      <div class="col-md-2">
+           <%= select_tag "handle_type", options_for_select(["G Section","G Section with end cap"]),{prompt: "Select Handle Type",class: "form-control",id: "handle_type"} %>
+
+         </div>
+          <!-- <label class="col-sm-2 control-label">G Section</label>  -->
+          <div class="g_section" hidden="true">
+          <div class="col-md-2">
+           <%= form.select :g_section, options_for_select(["AF","CP","CP Brush"]),{prompt: "G Section"},class: "form-control" %>
+
+         </div>
+       </div>
+   
+          <!-- <label class="col-sm-2 control-label">G Section(with end cap)</label>  -->
+            
+            <div class="g_section_cap"  hidden="true">
+             <div class="col-md-2">
+
+            <%= form.select :g_section_with_end_cap, options_for_select(["AF","CP","CP Brush"]),{prompt: "G Section(with end cap)"},class: "form-control" %>
+            </div>
+          </div>
+    </div>
+
+    <div class="form-group">
+
+      <div class="col-md-2">
+        <%= form.text_field :site_name,class: "form-control" ,placeholder: "Site Name"%>
+      </div>
+    </div>
+        
+     <hr>    
 
         <%= form.fields_for :fproducts,@workorder.fproducts.build do |w| %>
         
@@ -81,11 +115,11 @@
          <label class="col-sm-1 control-label">Product</label> 
          <div class="col-md-3">
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
-          <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "product" %>
+          <%= w.select :product, options_for_select(['Platform' , 'Crockery','Tall Unit','Loft','Wardrobe']),{prompt:true},class: "product",required: true %>
           <%#= w.select :product, options_for_select(['Carcass Box' , 'Shutters','White BSL Shelf','Hinges Patti']),{prompt:true},class: "form-control"%>
         </div>
-        
-         
+
+
         
           
           <%#= w.select :product , options_for_select(['Platform' , 'Crockery','Loft','Tall Unit','Wardrobe']),{prompt:true} , class: "form-control"%>
@@ -138,7 +172,7 @@
         <%= m.check_box :handle_groove, {}, "Yes", "No" %>Handle Groove<br>
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
-        <%= m.check_box :handle, {}, "Yes", "No" %>G Handle
+        <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle
       </td>
 
 
@@ -407,7 +441,8 @@ if(type == "White BSL Shelf"){
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
-      $('.height').insertAfter('.depth');
+      container.find('.height').insertAfter(container.find('.depth'));
+      
 
     }
 
@@ -425,7 +460,8 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
-      $('.height').insertAfter('.depth');
+      container.find('.height').insertAfter(container.find('.depth'));
+      
 
 
 
@@ -445,7 +481,8 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
-      $('.height').insertAfter('.depth');
+      container.find('.height').insertAfter(container.find('.depth'));
+      
 
     }
 
@@ -461,28 +498,14 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').hide();
-      $('.depth').insertAfter('.height');
+      container.find('.depth').insertAfter(container.find('.height'));
       
 /*      container.find('#work_order_depth')[0].placeholder='Height(mm)';
 */      /*container.find('#work_order_height')[0].placeholder='Depth(mm)';*/
 
 
     }
-    if(type == "Carcass Box"){
-      
-      container.find('.choose').hide();
-/*      container.find('.skirting').show();
-*/     
-      container.find('.bsl').hide();
-      container.find('.width').show();
-      container.find('.height').show();
-      container.find('.wh').hide();
-      container.find('.add_color').show();
-      $('.height').insertAfter('.depth');
-
-
-
-    }
+   
     
     
 
@@ -506,6 +529,13 @@ $(document).on('nested:fieldAdded', function(event){
 
   var selectField1 = field.find('#work_order_width');
   var selectField2 = field.find('.select');
+ 
+ /* var selected = $(".select").val();
+  alert(selected);
+ 
+$(".select").val(selected);
+  */
+
   var selectField3 = field.find('.product');
   
  
@@ -513,9 +543,11 @@ $(document).on('nested:fieldAdded', function(event){
   selectField2.select2();
   selectField3.addClass("form-control");
   selectField3.select2();
-  
 
+  
 }); 
+
+
 </script>
 
  
@@ -599,6 +631,7 @@ $('#workorder_name1').hide();
   });
 </script>
 
+
 <script type="text/javascript">
   $("#workorder_location_id").addClass('form-control');
   $("#workorder_vendor_id").addClass('form-control');
@@ -628,11 +661,10 @@ $('#workorder_name1').hide();
   });
 });
 </script>
+
+
 <script type="text/javascript">
-
-  
-
-  $(".chb").change(function() {
+    $(".chb").change(function() {
     var checked = $(this).is(':checked');
     $(".chb").prop('checked',false);
     if(checked) {
@@ -665,6 +697,73 @@ $('#workorder_name1').hide();
   });
   
 
+</script>
+<script type="text/javascript">
+    $(document).on("change", ".handle", function () {
+      elem = jQuery(this);
+    container = elem.parents("tr.fields");
+    
+     var checked = $(this).is(':checked');
+     if (checked == true){
+      var height = container.find("#work_order_height").val();
+     
+
+
+     var new_height = height - 35 ;
+     container.find("#work_order_height").val(new_height);
+    }
+    else{
+      var height = +container.find("#work_order_height").val();
+
+     var new_height = height + 35 ;
+     container.find("#work_order_height").val(new_height);
+
+    }
+    /*var checked = $(this).is(':checked');
+    $(".chb").prop('checked',false);
+    if(checked) {
+        $(this).prop('checked',true);
+    }*/
+  });
+</script>
+
+
+
+<script type="text/javascript">
+  
+  $("#new_form").submit(function() {
+   
+        var retVal = confirm("Do yo want to submit the workorder?");
+       
+        
+               if( retVal == true ){
+                  
+                  return true;
+               }
+               else{
+                  
+                  return false;
+               }
+   
+});
+</script>
+
+<script type="text/javascript">
+ $(document).on("change", "#handle_type", function () {
+    
+   
+        var handle_type = $(this).val();
+        if (handle_type == "G Section"){
+          $(".g_section").show();
+           $(".g_section_cap").hide();
+        }
+        else if(handle_type == "G Section with end cap"){
+
+          $(".g_section_cap").show();
+          $(".g_section").hide();
+        }
+   
+});
 </script>
  
 <% end %>

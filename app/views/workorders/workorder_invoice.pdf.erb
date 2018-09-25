@@ -194,22 +194,22 @@ table, th, td {
    <% @v_area = 0 %>
    <% @h_area = 0 %>
     <% if c.skirting != nil %>
-   <% @s_width = c.width - 36 %>
+   <% @s_width = c.width %>
    <% @skirting_sqft = ((@s_width*c.skirting)/92903)*c.quantity %>
    <% end %>
    <!-- end of calculation of skirting -->
    <% if c.vertical != nil %>
    <% if c.skirting != nil %>
-    <% @v_height = c.height-c.skirting-36 %>
+    <% @v_height = c.height%>
     <% else %>
-    <% @v_height = c.height-36 %>
+    <% @v_height = c.height %>
      <% end %>
      <% @v_area = ((@v_height * c.depth)/92903)*c.quantity %>
 
    <% end %>
 
    <% if c.horizontal != nil %>
-   <% @h_width = c.width - 36 %>
+   <% @h_width = c.width %>
    <% @h_area =  ((@h_width*c.depth)/92903)*c.quantity %>
    <% end %>
     
@@ -295,7 +295,7 @@ table, th, td {
    <%# if u == "Shutters" || u == "White BSL Shelf" %>
    <% if u == "Shutters" %>
    <tr>
-    <th>No</th>
+    <th colspan="2">No</th>
     <th>Quantity</th>
     <th>Sq.ft</th>
     <th>Glass Shutter</th>
@@ -331,7 +331,7 @@ table, th, td {
     <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
     <% @tot_sqrft += @sqrft %>
 
-    <% @t_amt = ((@sqrft.round(2)+@g_area.round(2))*c.rate.round(2))+@h_rate+@hg_rate+@hf_rate %>
+    <% @t_amt = (@sqrft.round(2)*c.rate.round(2))+(@g_area.round(2))*(c.rate.round(2)+20)+@h_rate+@hg_rate+@hf_rate %>
 
    <% @full_amt += @t_amt %>
    
@@ -339,7 +339,7 @@ table, th, td {
    <% @i += 1 %>
    
    <tr>
-   <td><%= @i %></td>
+   <td colspan="2"><%= @i %></td>
    <td><%= @tot_num %></td>
    
    
@@ -354,7 +354,7 @@ table, th, td {
    <td><%= c.rate if c.rate.present? %></td>
    
 
-   <td><%= @full_amt.round(2) %></td>
+   <td><%= @t_amt %></td>
    
    
   
@@ -394,12 +394,12 @@ table, th, td {
    
    
   
-   <td><%= @tot_sqrft.round(2) %></td>
+   <td><%= @sqrft.round(2) %></td>
    
    <td><%= c.rate if c.rate.present? %></td>
    
 
-   <td><%= @full_amt.round(2) %></td>
+   <td><%= @t_amt %></td>
 
 
    

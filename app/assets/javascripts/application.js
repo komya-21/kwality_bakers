@@ -7,7 +7,6 @@
 //= require select2-full
 //= require bootstrap/bootstrap-tooltip
 //= require bootstrap-select.min
-//= require src/app
 //= require nested_form
 //= require dataTables/js/jquery.dataTables
 //= require dataTables/js/dataTables.bootstrap

@@ -1,5 +1,6 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token,  :if => Proc.new { |c| c.request.format == 'application/json' }
 
   # GET /employees
   # GET /employees.json
@@ -17,7 +18,39 @@ class EmployeesController < ApplicationController
   def show
   end
 
+  def update_empwork
+
+    @empwork = EmpWork.find(params[:id])
+    @in_time = EmpWork.find_by(employee_id: @empwork.employee_id,date: @empwork.date).in_time
+    start_time = @in_time
+    
+
+    if @empwork.update(empwork_params)
+      @out_time = @empwork.out_time
+      end_time = @out_time
+      @wt = TimeDifference.between(start_time, end_time).in_hours
+      EmpWork.find_by(employee_id: @empwork.employee_id,date: @empwork.date).update(work_hours: @wt)
+      render json: @empwork, status: :updated
+    else
+      render json: @empwork.errors, status: :unprocessable_entity
+    end
+
+  end
+def create_empwork
+  @empwork = EmpWork.new(empwork_params)
+   if @empwork.save
+    render json: @empwork, status: :created
+   else
+    render json: @empwork.errors, status: :unprocessable_entity
+   end
+end
+
   def in_time
+   
+    
+ 
+ 
+
     @in_time = params[:in_time]
     @date = params[:date]
     @emp_id = params[:employee_id]
@@ -30,9 +63,9 @@ class EmployeesController < ApplicationController
     @emp_id = params[:employee_id]
     @in_time = EmpWork.find_by(employee_id: @emp_id,date: @date).in_time
     start_time = @in_time
-end_time = @out_time
+    end_time = @out_time
 
-@wt = TimeDifference.between(start_time, end_time).in_hours
+    @wt = TimeDifference.between(start_time, end_time).in_hours
 
     #@wt = params[:work_hours]
     @emp = EmpWork.find_by(date: @date)
@@ -51,6 +84,10 @@ end_time = @out_time
 
   def empwork
     @emp_works = EmpWork.all
+    respond_to do |format|
+      format.html
+      format.json { render json: @emp_works}
+    end
   end
 
   # GET /employees/1/edit
@@ -110,5 +147,8 @@ end_time = @out_time
     # Never trust parameters from the scary internet, only allow the white list through.
     def employee_params
       params.require(:employee).permit(:name, :contact_no, :email, :address, :employee_no,:employee_type,:location_id)
+    end
+    def empwork_params
+      params.require(:emp_work).permit(:in_time,:out_time,:date,:employee_id)
     end
 end
