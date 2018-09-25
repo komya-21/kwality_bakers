@@ -4,6 +4,22 @@ class EmployeesController < ApplicationController
 
   # GET /employees
   # GET /employees.json
+
+#method for api
+  def employee_details
+  if current_user.role == "SuperAdmin"
+    @employees = Employee.all
+    
+      render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => {:employees => @employees} }
+    end
+ 
+end
+
+
+
   def index
     if current_user.role == "SuperAdmin"
     @employees = Employee.all

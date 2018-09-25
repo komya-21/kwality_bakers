@@ -50,6 +50,7 @@ end
     end
     collection do
       get :workorder_info
+      get :employee_work
       post :order_report
       get :addition
       get :order_status
@@ -141,6 +142,7 @@ end
   resources :employees do
     collection do
       post :in_time
+      get :employee_details
       post :create_empwork
       post :out_time
       get :empwork

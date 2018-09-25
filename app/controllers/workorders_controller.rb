@@ -74,29 +74,6 @@ def workorder_info
     @emp_edges = Employee.where(employee_type: "Edge Binding")
     @emp_packs = Employee.where(employee_type: "Packing & Quality")
     
-   #if current_user.present?
-    #if current_user.role == "SuperAdmin"
-     #@workorders = Workorder.order(created_at: :desc)
-     
-
-     #if params[:param1].present? && params[:param1] == 'false'
-
-      #workorder = Workorder.list(params[:id])
-      #@emp = @emps.find_by(location_id: workorder.location_id)
-      #workorder.update!(approve: true)
-
-      #@employee_workorder = EmployeesWorkorder.create(employee_id: @emp.id,workorder_id: workorder.id ,status: "Pending")
-
-
-    #elsif params[:param1].present? && params[:param1] == 'true'
-
-      #workorder = Workorder.list(params[:id])
-
-      #workorder.update!(approve: false) 
-
-      
-    #end 
-  #end
 
   if current_user.role == "Employee"
     if current_user.employee.employee_type == "Pasting"
@@ -114,15 +91,7 @@ def workorder_info
       @workorders = Employee.find(@emp_pack.id).workorders
     end
 end
-  #elsif current_user.role == "Vendor"
-   
-
-    #@workorders = Workorder.where(["vendor_id = ? and location_id = ?", current_user.vendor_id,current_user.vendor.location_id])
-  #elsif current_user.role == "Center"
-   # @workorders = Workorder.where(location_id: current_user.location_id)
-  #end
-
-   #end 
+ 
    @completed = 0
    @pending = 0
    @hold = 0
@@ -149,8 +118,67 @@ end
                       :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
   end
 
-  #end
+ 
 
+def employee_work
+if current_user.role == "SuperAdmin"
+#employee id got in params
+ @emp_id =  params[:employee_id]
+
+ #Types of Employees
+  @emps = Employee.where(employee_type: "Pasting")
+  @emp_cuts = Employee.where(employee_type: "Cutting")
+  @emp_edges = Employee.where(employee_type: "Edge Binding")
+  @emp_packs = Employee.where(employee_type: "Packing & Quality")
+
+#employee details of the id got in params
+  @emp_type = Employee.find(@emp_id)
+
+#testing of employee by passing various conditions  
+    if @emp_type.employee_type == "Pasting"
+       @emp = @emps.find_by(location_id: @emp_type.location_id)
+      @workorders = Employee.find(@emp.id).workorders
+    elsif @emp_type.employee_type == "Cutting"
+    @emp_cut = @emp_cuts.find_by(location_id: @emp_type.location_id)
+
+      @workorders = Employee.find(@emp_cut.id).workorders
+    elsif @emp_type.employee_type == "Edge Binding"
+       @emp_edge = @emp_edges.find_by(location_id: @emp_type.location_id)
+      @workorders = Employee.find(@emp_edge.id).workorders
+    elsif @emp_type.employee_type == "Packing & Quality"
+       @emp_pack = @emp_packs.find_by(location_id: @emp_type.location_id)
+      @workorders = Employee.find(@emp_pack.id).workorders
+    end
+
+#initializing variables
+   @completed = 0
+   @pending = 0
+   @hold = 0
+   @working = 0  
+
+
+ @workorders.each do |w|
+  @works = EmployeesWorkorder.where(["employee_id = ? and workorder_id = ?",@emp_type.id,w.id])
+  @works.each do |wr|
+    if wr.status == "Completed"
+      @completed += 1
+    elsif wr.status == "Pending"
+      @pending += 1
+    elsif wr.status == "Hold"
+      @hold += 1
+    elsif wr.status == "Working"
+      @working += 1
+    end
+        
+  end
+ end
+
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
+  end
+end
 
 
 def invoice
