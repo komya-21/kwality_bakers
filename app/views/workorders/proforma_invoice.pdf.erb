@@ -408,6 +408,7 @@ table, th, td {
    <% if u == "Shutters" %>
    <% if c.glass_shutter == "Yes" %>
    <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
+   <% @glass_shutter_rate = Rate.find_by(product: "Glass Shutter").price %>
    <% end %> 
    <% if c.handle == "Yes" %>
    <% @g_handle_sqft = (c.width/305)*c.quantity %>
@@ -458,7 +459,11 @@ table, th, td {
 
    
    <td><%= c.rate if c.rate.present? %></td>
-   <% @t_amt = (@sqrft.round(4)*c.rate.round(4))+(@g_area.round(4))*(c.rate.round(4)+20)+@h_rate+@hg_rate+@hf_rate %>
+   <% if c.glass_shutter == "Yes" %>
+   <% @t_amt = @sqrft.round(4)*(c.rate + @glass_shutter_rate)+@h_rate+@hg_rate+@hf_rate %>
+   <% else %>
+    <% @t_amt = @sqrft.round(4)*c.rate+@h_rate+@hg_rate+@hf_rate %>
+    <% end %>
 
    <% @full_amt += @t_amt %>
 
