@@ -457,8 +457,11 @@ table, th, td {
    <td><%= c.handle_fitting %></td>
    <% end %>
 
-   
+   <% if c.glass_shutter == "Yes" %>
+   <td><%= (c.rate + @glass_shutter_rate) if c.rate.present? %></td>
+   <% else %>
    <td><%= c.rate if c.rate.present? %></td>
+   <% end %>
    <% if c.glass_shutter == "Yes" %>
    <% @t_amt = @sqrft.round(4)*(c.rate + @glass_shutter_rate)+@h_rate+@hg_rate+@hf_rate %>
    <% else %>
