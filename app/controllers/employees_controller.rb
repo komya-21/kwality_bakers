@@ -14,6 +14,11 @@ class EmployeesController < ApplicationController
            :json => { :success => true,
                       
                       :data => {:employees => @employees} }
+                    else
+                      render :status => 201,
+           :json => { :success => false,
+                      
+                      :data => {:error => "You dont have authority!" }}
     end
  
 end
