@@ -145,7 +145,7 @@ end
 
   render :status => 200,
            :json => { :success => true,
-                      :info => "Logged in",
+                      
                       :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
   end
 
