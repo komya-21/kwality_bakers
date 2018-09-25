@@ -289,7 +289,7 @@ table, th, td {
   
   </tr>
   <tr>
-  <th colspan="13">Total AMOUNT:</th>
+  <th colspan="13">Total Estimated Amount:</th>
   <td><b><%= @total_amount.round(4) %></b></td>
   
   </tr>
@@ -348,7 +348,7 @@ table, th, td {
   
   </tr>
   <tr>
-  <th colspan="7">Total AMOUNT:</th>
+  <th colspan="7">Total Estimated Amount:</th>
   <td><b><%= @total_amount.round(4) %></b></td>
   
   </tr>
@@ -364,6 +364,7 @@ table, th, td {
     <th>Sq.ft</th>
     <th>Glass Shutter</th>
     <th>Handle</th>
+    <th>Handle sqft</th>
     <th>Handle Groove</th>
     <th>Handle Fitting</th>
     <th>rate</th>
@@ -409,10 +410,11 @@ table, th, td {
    <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
    <% end %> 
    <% if c.handle == "Yes" %>
-   <% @h_rate = ((c.width/305)*c.quantity)*20 %>
+   <% @g_handle_sqft = (c.width/305)*c.quantity %>
+   <% @h_rate = @g_handle_sqft*20 %>
 
    <% if @workorder.g_section.present? %>
-   <% byebug %>
+   
    <% @h_rate += 75 %>
    <% elsif @workorder.g_section_with_end_cap.present? %>
     <% @h_rate += 85 %>
@@ -449,6 +451,7 @@ table, th, td {
    <% if u == "Shutters" %>
    <td><%= c.glass_shutter %></td>
    <td><%= c.handle %></td>
+    <td><%= @g_handle_sqft %></td>
    <td><%= c.handle_groove %></td>
    <td><%= c.handle_fitting %></td>
    <% end %>
@@ -484,7 +487,7 @@ table, th, td {
 
   </tr>
   <tr>
-  <th colspan="9">Total AMOUNT:</th>
+  <th colspan="9">Total Estimated Amount:</th>
   <td><b><%= @full_amt.round(4) %></b></td>
  
 

@@ -5,9 +5,11 @@
         <div class="panel-body">
           <div align="right">
             <!-- Links to download pdfs -->
+            <% if current_user.role == "SuperAdmin" %>
             <%= link_to 'Download Pro-forma Invoice ',proforma_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>|
             <%= link_to 'Download Workorder PDF ',workorder_pdf_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-warning"%>
             <%= link_to 'Edit Invoice',invoice_workorder_path(@workorder),class: "btn btn-danger" %>
+            <% end %>
             <!-- End of links -->
           </div><br>
   <p>

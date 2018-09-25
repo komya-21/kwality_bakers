@@ -366,6 +366,7 @@ table, th, td {
     <th>Sq.ft</th>
     <th>Glass Shutter</th>
     <th>Handle</th>
+    <th>Handle Sqft</th>
     <th>Handle Groove</th>
     <th>Handle Fitting</th>
     
@@ -405,11 +406,14 @@ table, th, td {
 
    <% @shutter_measurements.each do |c| %>
    <% if u == "Shutters" %>
+
    <% if c.glass_shutter == "Yes" %>
    <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
    <% end %> 
+
    <% if c.handle == "Yes" %>
-   <% @h_rate = ((c.width/305)*c.quantity)*20 %>
+   <% @g_handle_sqft = (c.width/305)*c.quantity %>
+   <% @h_rate = @g_handle_sqft*20 %>
    
    <% end %> 
    <% if c.handle_groove == "Yes" %>
@@ -442,6 +446,7 @@ table, th, td {
    <% if u == "Shutters" %>
    <td><%= c.glass_shutter %></td>
    <td><%= c.handle %></td>
+   <td><%= @g_handle_sqft %></td>
    <td><%= c.handle_groove %></td>
    <td><%= c.handle_fitting %></td>
    <% end %>

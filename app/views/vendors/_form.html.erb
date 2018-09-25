@@ -113,6 +113,12 @@
     <%= f.select :location_id, Location.all.collect{|p| [p.name,p.id]},{prompt:true} ,class: "form-control",required: true%>
 
   </div>
+   
+
+  </div>
+  <label class="col-lg-1 control-label">Opening Balance</label> 
+    <div class="col-md-4">
+    <%= f.text_field :opening_balance, class: "form-control",placeholder: "optional"%>
 </div>
 <% end %>
   

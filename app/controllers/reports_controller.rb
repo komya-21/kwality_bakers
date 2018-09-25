@@ -21,7 +21,7 @@ class ReportsController < ApplicationController
 		@products = Product.all
 		@start_date = params[:report][:start_date].to_date
 	    @end_date = params[:report][:end_date].to_date
-		@workorders = Workorder.where(date: @start_date.to_date..@end_date.to_date)
+		@workorders = Workorder.where(date: @start_date.to_date..@end_date.to_date).order(date: :desc)
 		@return_modules = Return.where(date_of_return: @start_date.to_date..@end_date.to_date)
 
 		@delivery_inwards = DeliveryInward.all
