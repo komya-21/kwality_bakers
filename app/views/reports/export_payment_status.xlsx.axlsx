@@ -1,0 +1,62 @@
+wb = xlsx_package.workbook
+
+
+if @payment_status.present?
+
+
+wb.add_worksheet(name: "Status Wise Payments") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Order\ no Date Vendor Payment\ Status Total Paid Pending\ Amount )
+  @returns.each_with_index do |r, i|
+  if r.payment_status == true
+  @status = "Paid"
+       
+   else 
+        @status = "Pending"
+   end 
+
+    if r.rem_price == nil
+       @paid = 0 
+    else 
+       @paid = r.total_to_pay.to_f.ceil-r.rem_price.to_f.ceil 
+      	
+    end
+         
+        @pending = r.total_to_pay.to_f.ceil - @paid
+         @i = i += 1
+  sheet.add_row ["#{r.order_no}","#{r.date}","#{r.vendor.name}","#{@status}","#{r.total_to_pay.to_f.ceil}","#{@paid}","#{@pending}"]
+          end
+          end
+
+else
+wb.add_worksheet(name: "Vendor Wise Payments") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Order\ no Date Vendor Payment\ Status Total Paid Pending\ Amount )
+  @workorders.each_with_index do |r, i|
+  if r.payment_status == true
+  @status = "Paid"
+       
+   else 
+        @status = "Pending"
+   end 
+
+    if r.rem_price == nil
+       @paid = 0 
+    else 
+       @paid = r.total_to_pay.to_f.ceil-r.rem_price.to_f.ceil 
+      	
+    end
+         
+        @pending = r.total_to_pay.to_f.ceil - @paid
+         @i = i += 1
+  sheet.add_row ["#{r.order_no}","#{r.date}","#{r.vendor.name}","#{@status}","#{r.total_to_pay}","#{@paid}","#{@pending}"]
+          end
+          end
+
+end
+
+
+
+
+
+

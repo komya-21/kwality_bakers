@@ -44,6 +44,7 @@
     <% end %>
   </tbody>
 </table>
+<%= link_to "Excel", export_payment_status_reports_path(payment_status: @payment_status,format: "xlsx"), class: 'btn btn-success' %>
 <% else %>
 <table id="vendor_table" class="table table-striped table-bordered" cellspacing="0" width="100%">
   <thead>
@@ -85,9 +86,11 @@
   </tbody>
 </table>
 
+<%= link_to "Excel", export_payment_status_reports_path(vendor_id: @vendor_id,format: "xlsx"), class: 'btn btn-success' %>
+
+
 <% end %>
 
-<%#= link_to "Excel", export_payment_deliveries_path(payment_status: @payment_status,format: "xlsx"), class: 'btn btn-success' %>
 
 
 </div>

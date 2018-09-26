@@ -4,6 +4,7 @@ class WorkordersController < ApplicationController
   # GET /workorders
   # GET /workorders.json
   def index
+
     @emps = Employee.where(employee_type: "Pasting")
 
     @emp_cuts = Employee.where(employee_type: "Cutting")
@@ -63,6 +64,123 @@ class WorkordersController < ApplicationController
 
 
 end
+
+#forapi
+def workorder_info
+ 
+  @emps = Employee.where(employee_type: "Pasting")
+
+    @emp_cuts = Employee.where(employee_type: "Cutting")
+    @emp_edges = Employee.where(employee_type: "Edge Binding")
+    @emp_packs = Employee.where(employee_type: "Packing & Quality")
+    
+
+  if current_user.role == "Employee"
+    if current_user.employee.employee_type == "Pasting"
+       @emp = @emps.find_by(location_id: current_user.employee.location_id)
+      @workorders = Employee.find(@emp.id).workorders
+    elsif current_user.employee.employee_type == "Cutting"
+    @emp_cut = @emp_cuts.find_by(location_id: current_user.employee.location_id)
+
+      @workorders = Employee.find(@emp_cut.id).workorders
+    elsif current_user.employee.employee_type == "Edge Binding"
+       @emp_edge = @emp_edges.find_by(location_id: current_user.employee.location_id)
+      @workorders = Employee.find(@emp_edge.id).workorders
+    elsif current_user.employee.employee_type == "Packing & Quality"
+       @emp_pack = @emp_packs.find_by(location_id: current_user.employee.location_id)
+      @workorders = Employee.find(@emp_pack.id).workorders
+    end
+end
+ 
+   @completed = 0
+   @pending = 0
+   @hold = 0
+   @working = 0  
+ @workorders.each do |w|
+  @works = EmployeesWorkorder.where(["employee_id = ? and workorder_id = ?",current_user.employee_id,w.id])
+  @works.each do |wr|
+    if wr.status == "Completed"
+      @completed += 1
+    elsif wr.status == "Pending"
+      @pending += 1
+    elsif wr.status == "Hold"
+      @hold += 1
+    elsif wr.status == "Working"
+      @working += 1
+    end
+        
+  end
+ end
+
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
+  end
+
+ 
+
+def employee_work
+if current_user.role == "SuperAdmin"
+#employee id got in params
+ @emp_id =  params[:employee_id]
+
+ #Types of Employees
+  @emps = Employee.where(employee_type: "Pasting")
+  @emp_cuts = Employee.where(employee_type: "Cutting")
+  @emp_edges = Employee.where(employee_type: "Edge Binding")
+  @emp_packs = Employee.where(employee_type: "Packing & Quality")
+
+#employee details of the id got in params
+  @emp_type = Employee.find(@emp_id)
+
+#testing of employee by passing various conditions  
+    if @emp_type.employee_type == "Pasting"
+       @emp = @emps.find_by(location_id: @emp_type.location_id)
+      @workorders = Employee.find(@emp.id).workorders
+    elsif @emp_type.employee_type == "Cutting"
+    @emp_cut = @emp_cuts.find_by(location_id: @emp_type.location_id)
+
+      @workorders = Employee.find(@emp_cut.id).workorders
+    elsif @emp_type.employee_type == "Edge Binding"
+       @emp_edge = @emp_edges.find_by(location_id: @emp_type.location_id)
+      @workorders = Employee.find(@emp_edge.id).workorders
+    elsif @emp_type.employee_type == "Packing & Quality"
+       @emp_pack = @emp_packs.find_by(location_id: @emp_type.location_id)
+      @workorders = Employee.find(@emp_pack.id).workorders
+    end
+
+#initializing variables
+   @completed = 0
+   @pending = 0
+   @hold = 0
+   @working = 0  
+
+
+ @workorders.each do |w|
+  @works = EmployeesWorkorder.where(["employee_id = ? and workorder_id = ?",@emp_type.id,w.id])
+  @works.each do |wr|
+    if wr.status == "Completed"
+      @completed += 1
+    elsif wr.status == "Pending"
+      @pending += 1
+    elsif wr.status == "Hold"
+      @hold += 1
+    elsif wr.status == "Working"
+      @working += 1
+    end
+        
+  end
+ end
+
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
+  end
+end
+
+
 def invoice
   @workorder = Workorder.find(params[:id])
     @rates = Rate.all
@@ -90,6 +208,18 @@ end
     
     
 
+end
+
+#Excel report of vendorwise workorders
+def export_vendorwise_workorder
+  @vendor_id = params[:vendor_id]
+  @vendor = Vendor.find(@vendor_id)
+  @workorders = @vendor.workorders
+  respond_to do |format|
+    format.xlsx {
+      response.headers['Content-Disposition'] = 'attachment;' "filename= Workorders\"#{Date.today}\".xlsx"
+}
+end
 end
 
   # GET /workorders/1

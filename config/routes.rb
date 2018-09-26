@@ -39,6 +39,7 @@ end
   resources :workorders do 
     member do
       get :record_payment_workorder
+
       get :workorder_pdf
       get :workorder_status
       get :workorder_invoice
@@ -49,6 +50,9 @@ end
      
     end
     collection do
+      get :workorder_info
+      get :export_vendorwise_workorder
+      get :employee_work
       post :order_report
       get :addition
       get :order_status
@@ -130,16 +134,20 @@ end
   resources :reports do 
     collection do
       get :export
-      get :export_return
+      get :export_workorder
+      get :export_workorder_status
+      get :export_locations_report
       get :export_delivery
       get :export_custom
       get :export_regular
       get :export_all_vendor
+      get :export_payment_status
     end
   end
   resources :employees do
     collection do
       post :in_time
+      get :employee_details
       post :create_empwork
       post :out_time
       get :empwork

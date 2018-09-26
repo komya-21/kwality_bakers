@@ -1,0 +1,30 @@
+wb = xlsx_package.workbook
+
+
+
+
+wb.add_worksheet(name: "Status Wise Workorders") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Order\ no Date Vendor Status )
+  @workorders.each_with_index do |r, i|
+  if @status == "Not Approved"
+  	@state = "Not Approved"
+         
+  sheet.add_row ["#{r.order_no}","#{r.date}","#{r.vendor.name}","#{@state}"]
+  elsif @status == "All"
+  		if r.approve == false
+  		@state = "Not Approved"
+  		else
+  		@state = "Approved"
+  		end
+  	sheet.add_row ["#{r.order_no}","#{r.date}","#{r.vendor.name}","#{@state}"]
+  else
+  	sheet.add_row ["#{r.workorder.order_no}","#{r.workorder.date}","#{r.workorder.vendor.name}","#{r.status}"]
+
+          end
+          end
+end
+
+
+
+

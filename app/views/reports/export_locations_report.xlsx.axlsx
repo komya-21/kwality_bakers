@@ -1,0 +1,64 @@
+wb = xlsx_package.workbook
+
+
+if @report_type == "Workorders"
+
+
+wb.add_worksheet(name: "Workorders") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Date Order\ no Vendor Invoice\ no )
+  @workorders.each_with_index do |r, i|
+         @i = i += 1
+  sheet.add_row ["#{r.date}","#{r.order_no}","#{r.vendor.name}","#{r.invoice_no}"]
+          end
+          end
+
+elsif @report_type == "Employees"
+
+wb.add_worksheet(name: "Employees") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Name Contact\ No Email Address Employee\ Type Location)
+  @employees.each_with_index do |r, i|
+         @i = i += 1
+  sheet.add_row ["#{r.name}","#{r.contact_no}","#{r.email}","#{r.address}","#{r.employee_type}","#{r.location.name}"]
+          end
+          end
+
+ elsif @report_type == "Vendors"
+
+ wb.add_worksheet(name: "Vendors") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Name Contact\ No Email Address Comission Location)
+  @vendors.each_with_index do |r, i|
+         @i = i += 1
+  sheet.add_row ["#{r.name}","#{r.contact}","#{r.email}","#{r.address}","#{r.comission}","#{r.location.name}"]
+          end
+          end
+
+  else
+
+  wb.add_worksheet(name: "Vendors") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Order\ No Vendor\ Name Date Status)
+ 
+@workorders.each do |w|
+@works = EmployeesWorkorder.where(workorder_id: w.id)
+end
+
+@works.each do |r|
+
+  sheet.add_row ["#{r.workorder.order_no}","#{r.workorder.vendor.name}","#{r.workorder.date}","#{r.status}"]
+         
+  end
+end
+end
+
+
+
+
+
+
+
+  
+
+

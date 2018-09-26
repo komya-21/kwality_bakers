@@ -1,0 +1,79 @@
+wb = xlsx_package.workbook
+
+
+if @type == "Workorder"
+
+
+wb.add_worksheet(name: "Returns") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Date Order\ no Vendor Invoice\ no )
+  @workorders.each_with_index do |r, i|
+         @i = i += 1
+  sheet.add_row ["#{r.date}","#{r.order_no}","#{r.vendor.name}","#{r.invoice_no}"]
+          end
+          end
+
+end
+
+if @type == "Payment"
+
+wb.add_worksheet(name: "Returns") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Date Order\ no Vendor Invoice\ no Payment\ Status Total\ Amount Amount\ Paid Pending\ Amount )
+  @workorders.each_with_index do |r, i|
+  if r.payment_status == true
+  @status = "Paid"
+       
+   else 
+        @status = "Pending"
+   end 
+
+    if r.rem_price == nil
+       @paid = 0 
+    else 
+       @paid = r.total_to_pay.to_f.ceil-r.rem_price.to_f.ceil 
+      	
+    end
+         
+        @pending = r.total_to_pay.to_f.ceil - @paid
+        
+       
+         @i = i += 1
+  sheet.add_row ["#{r.date}","#{r.order_no}","#{r.vendor.name}","#{r.invoice_no}","#{@status}","#{r.total_to_pay}","#{@paid}","#{@pending}"]
+          end
+          end
+
+end
+
+if @type == "Inward"
+wb.add_worksheet(name: "Returns") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Date Inward\ no Supplier Product Quantity )
+  @inwards.each do |r|
+    r.inward_products.each_with_index do |inward_module, i|
+         @i = i += 1
+         if inward_module.product.unit.present?
+         @unit = inward_module.product.unit
+         @quantity = "#{inward_module.quantity}#{@unit}"
+         else
+         @quantity = inward_module.quantity
+         end
+  sheet.add_row ["#{inward_module.inward.date}","#{inward_module.inward.inward_no}","#{inward_module.inward.supplier.name}","#{inward_module.product.name}","#{@quantity}"]
+          end
+          end
+
+end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+         

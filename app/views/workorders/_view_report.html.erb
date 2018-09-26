@@ -92,5 +92,5 @@
 </table>
 <% end %>
 
-
+<%= link_to "Excel", export_locations_report_reports_path(location: @location,report_type: @report_type,format: "xlsx"), class: 'btn btn-success' %>
 

@@ -9,11 +9,18 @@ class Api::V1::SessionsController < Devise::SessionsController
   def create
    
     warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
+    if current_user.role == "Employee"
     render :status => 200,
            :json => { :success => true,
                       :info => "Logged in",
                       :data => { :auth_token => current_user.authentication_token,:email => current_user.email,:id => current_user.id,:employee_type => current_user.employee.employee_type } }
+                    else
+                      render :status => 200,
+           :json => { :success => true,
+                      :info => "Logged in",
+                      :data => { :auth_token => current_user.authentication_token,:email => current_user.email,:id => current_user.id} }
   end
+end
 
   def destroy
     warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
