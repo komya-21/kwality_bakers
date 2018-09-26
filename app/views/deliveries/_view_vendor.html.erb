@@ -1,18 +1,17 @@
 
 
 
-<font color="green">Total Count : <%=@total%> </font>
+<font color="green">Total Count : <%= @total%> </font>
 
 
- <div class="table-responsive">
-          <table class="table table-striped table-bordered" >
+<div class="table-responsive">
+<table class="table table-striped table-bordered" >
   <thead>
     <tr>
       <th>Invoice no</th>
       <th>Workorder No</th>
       <th>Date</th>
       <th>Vendor Name</th>
-      
       <th>Total Amount</th>
       <th>Amount Paid</th>
       <th>Pending Amount</th>
@@ -40,6 +39,9 @@
   </tbody>
 </table>
 
+
+
+<%= link_to "Excel",export_vendorwise_workorder_workorders_path(vendor_id: @vendor.id,format: "xlsx"), class: 'btn btn-success' %>
 <br>
 
 

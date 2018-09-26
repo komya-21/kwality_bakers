@@ -1,0 +1,64 @@
+ 
+
+wb = xlsx_package.workbook
+
+
+wb.add_worksheet(name: "Workorders") do |sheet|
+  # this is the head row of your spreadsheet
+  sheet.add_row %w(Invoice\ no Workorder\ no Date Vendor\ Name Total\ Amount Amount\ Paid Pending)
+  @workorders.each_with_index do |r, i|
+         @i = i += 1
+         @total = r.total_to_pay.to_f.ceil
+         if r.rem_price == nil
+       @paid = 0 
+    else 
+       @paid = r.total_to_pay.to_f.ceil-r.rem_price.to_f.ceil 
+        
+    end
+
+         if r.rem_price == nil
+         @price = r.total_to_pay.to_f.ceil
+         else
+         @price = r.rem_price
+         end
+
+        
+         
+  sheet.add_row ["#{r.invoice_no}","#{r.order_no}","#{r.date}","#{r.vendor.name}","#{@total}","#{@paid}","#{@price}"]
+          end
+          end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

@@ -14,8 +14,8 @@
 <%if @type == 'Workorder'%>
 <font color="green"> <b>Total Workorders</b></font
   > <%=@workorders.count%> 
-    <%#= link_to "Excel", deliveries_path(format: "xls"), class: 'btn btn-success' %>
- 
+   <%= link_to "Excel", export_workorder_reports_path(start_date: @start_date,end_date: @end_date ,return_type: @type,format: "xlsx"), class: 'btn btn-success' %> 
+
  <div class="table-responsive">
          <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 
@@ -54,8 +54,7 @@
     <%if @type == 'Payment'%>
 <font color="green"> <b>Total Workorders</b></font
   > <%=@workorders.count%> 
-    <%#= link_to "Excel", deliveries_path(format: "xls"), class: 'btn btn-success' %>
- 
+<%= link_to "Excel", export_workorder_reports_path(start_date: @start_date,end_date: @end_date ,return_type: @type,format: "xlsx"), class: 'btn btn-success' %> 
  <div class="table-responsive">
          <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 
@@ -171,7 +170,7 @@
     <%if @type == 'Inward'%>
     <font color="green"> <b>Total Inwards</b></font> 
     <%=@total_inwards.count%> 
-    <%#= link_to "Excel", export_reports_path(start_date: @start_date ,end_date: @end_date ,format: "xlsx"), class: 'btn btn-success' %>
+    <%= link_to "Excel", export_workorder_reports_path(start_date: @start_date,end_date: @end_date ,return_type: @type,format: "xlsx"), class: 'btn btn-success' %> 
 
 <div class="table-responsive">
           <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">

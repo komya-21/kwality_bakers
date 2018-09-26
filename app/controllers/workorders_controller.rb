@@ -210,6 +210,18 @@ end
 
 end
 
+#Excel report of vendorwise workorders
+def export_vendorwise_workorder
+  @vendor_id = params[:vendor_id]
+  @vendor = Vendor.find(@vendor_id)
+  @workorders = @vendor.workorders
+  respond_to do |format|
+    format.xlsx {
+      response.headers['Content-Disposition'] = 'attachment;' "filename= Workorders\"#{Date.today}\".xlsx"
+}
+end
+end
+
   # GET /workorders/1
   # GET /workorders/1.json
   def show
