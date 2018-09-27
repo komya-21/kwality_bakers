@@ -446,7 +446,7 @@ table, th, td {
    <td><%= c.glass_shutter %></td>
    <td><%= c.handle %></td>
    
-   <td><%= @g_handle_sqft.round(4) %></td>
+   <td><%= @g_handle_sqft.round(4) if @g_handle_sqft.present?  %></td>
    <td><%= c.handle_groove %></td>
    <td><%= c.handle_fitting %></td>
    <% end %>

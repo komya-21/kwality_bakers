@@ -541,6 +541,34 @@ def update_additional
   
 end
 
+def delete_all
+ @workorders = params[:workorders]
+ @workorders.each do |w|
+  @work = Workorder.find(w)
+  @work.destroy
+end
+    respond_to do |format|
+      format.html { redirect_to workorders_url, notice: 'Workorder was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+
+  end
+
+  def approve_all
+  @workorders = params[:workorders]
+ @workorders.each do |w|
+  
+  @work = Workorder.find(w)
+  if @work.approve == false
+  @work.update(approve: true)
+end
+end
+    respond_to do |format|
+      format.html { redirect_to workorders_url, notice: 'Workorder was successfully approved.' }
+      format.json { head :no_content }
+    end
+  end
+
   def order_status
     @employee_workorders = EmployeesWorkorder.all
     @workorders = Workorder.all

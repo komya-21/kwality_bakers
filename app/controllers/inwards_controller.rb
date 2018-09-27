@@ -129,7 +129,7 @@ end
   end
 
   def inward_transaction_detail
-    @inward_transaction_detail = TransactionDetail.find_by(inward_id: params[:inward_id])
+  @inward_transaction_detail = TransactionDetail.find_by(inward_id: params[:inward_id])
 
   end
 

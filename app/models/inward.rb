@@ -3,6 +3,7 @@ class Inward < ApplicationRecord
   accepts_nested_attributes_for :inward_products, reject_if: :all_blank, allow_destroy: true, :update_only => true
   validates :inward_products, presence:true
   belongs_to :supplier,optional: true
+  has_many :transaction_details,dependent: :destroy
   
   def self.inward_no
     date = Date.today.strftime('%Y%m%d')
