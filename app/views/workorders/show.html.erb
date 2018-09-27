@@ -180,19 +180,18 @@
 </div>
 </section>
 
+
+<!-- Calculations of sqrft -->
+
 <% @final_amount = 0 %>
 <% @total_amount1 = 0 %>
 <% @amt1 = 0 %> 
 <% @amt2 = 0 %> 
 <% @amt3 = 0 %>
-<% @amt4 = 0 %> 
+<% @amt4 = 0 %>
+
+
 <% @workorder.fproducts.each do |f| %>
-
-
-
-
-   
-
   <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
   
 
@@ -209,38 +208,75 @@
     
    <% @carcass_measurements.each do |c| %>
 
+   <!-- Color Side Sqft calculations -->
+   <% @r_sqft = 0 %>
+   <% @l_sqft = 0 %>
+   <% @t_sqft = 0 %>
+   <% @b_sqft = 0 %>
+
+  <% if c.right == "Yes" %>
+  <% @r_sqft = ((c.height * c.depth)/92903)*c.quantity %>
+  <% end %>
+
+   <% if c.left == "Yes" %>
+   <% @l_sqft = ((c.height * c.depth)/92903)*c.quantity %>
+   <% end %>
+
+   <% if c.top == "Yes" %>
+  <% @t_sqft = ((c.width * c.depth)/92903)*c.quantity %>
+   <% end %>
+   <% if c.bottom == "Yes" %>
+   <% @b_sqft = ((c.width * c.depth)/92903)*c.quantity %>
+   
+   <% end %>
+   <% @color_side_sqft = @r_sqft + @l_sqft + @t_sqft + @b_sqft %> 
+   <% c.update(color_sqft: @color_side_sqft) %>
+   <!-- End of color side calculation -->
+
    
    <% @total_no += c.quantity %>
    <% @sq = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
    <% @skirting_sqft = 0 %>
    <% @v_area = 0 %>
    <% @h_area = 0 %>
+
+   <!-- Calculation of skirting sqft -->
     <% if c.skirting != nil %>
-   <% @s_width = c.width - 36 %>
+   <% @s_width = c.width%>
    <% @skirting_sqft = ((@s_width*c.skirting)/92903)*c.quantity %>
    <% end %>
    <!-- end of calculation of skirting -->
+
+  <!--  Calculation of verical and horizontal area -->
    <% if c.vertical != nil %>
    <% if c.skirting != nil %>
-    <% @v_height = c.height-c.skirting-36 %>
+    <% @v_height = c.height %>
     <% else %>
-    <% @v_height = c.height-36 %>
+    <% @v_height = c.height %>
      <% end %>
      <% @v_area = ((@v_height * c.depth)/92903)*c.quantity %>
 
    <% end %>
 
    <% if c.horizontal != nil %>
-   <% @h_width = c.width - 36 %>
+   <% @h_width = c.width %>
    <% @h_area =  ((@h_width*c.depth)/92903)*c.quantity %>
    <% end %>
+   <!-- End of calculation of vertical and horizontal area -->
     
+    <!-- This is the sqft of 18mm -->
 <% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
-    <% @total_sqft += @sqft %>
-   <% @total_sqft += @sqft %>
+<% c.update(sqft: @sqft) %>
+
+<% @total_sqft += @sqft %>
+  
+  <!-- This is the sqft of 8mm -->
    <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
+   <% c.update(sqft_back: @sqft_back) %>
+
    <% @total_sqft_back += @sqft_back %>
-   <% @tot_amt = (@sqft.round(2)*c.rate)+(@sqft_back.round(2)*c.back_rate) %>
+
+   <% @tot_amt = (@sqft*c.rate)+(@sqft_back*c.back_rate) %>
    <% @total_amount += @tot_amt %>
    <% @amt1 += @tot_amt %>
    
@@ -264,8 +300,7 @@
   
   <% end %>
 
-<% @i = 0 %>
-<% @j = 0 %>
+
 <% @drawer_amount = 0 %>
    <% if u == "Drawer" %>
    
@@ -277,12 +312,12 @@
     
    
     <% @drawer_measurements.each do |c| %>
-   <% @i += 1 %>
-   <% @j += 1 %>
+   
    <% @total_no += c.quantity %>
    <tr class="fields1">
    
    <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
+   <% c.update(sqft: @sqft) %>
    <% @total_sqft += @sqft %>
   
   
@@ -299,7 +334,7 @@
 
 
 
-   <% if u == "Shutters"%>
+  <% if u == "Shutters" %>
    
  
   <% @g_area = 0 %>
@@ -319,31 +354,28 @@
    <% @glass_shutter_rate = Rate.find_by(product: "Glass Shutter").price %>
    <% end %> 
    <% if c.handle == "Yes" %>
-   <% @h_rate = ((c.width/305)*c.quantity)*20 %>
+   <% if @workorder.g_section.present? %>
+
+   <% @h_rate = ((c.width/305)*c.quantity)*75 %>
+   <% elsif @workorder.g_section_with_end_cap.present? %>
+    <% @h_rate = ((c.width/305)*c.quantity)*85 %>
+    <% end %>
    
    <% end %> 
    <% if c.handle_groove == "Yes" %>
-   <% @hg_rate = c.quantity * 20 %>
+   <% @hg_rate = c.quantity * 25 %>
    <% end %> 
    <% if c.handle_fitting == "Yes" %>
-   <% @hf_rate = c.quantity * 20 %>
-   <% end %> 
-   
-  
-   <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
-   
-   
-   <% @tot_sqrft += @sqrft.round(2) %>
-   
-   
-  
 
-   
-  
-    <% if c.glass_shutter == "Yes" %>
-   <% @t_amt = @sqrft.round(4)*(c.rate + @glass_shutter_rate)+@h_rate+@hg_rate+@hf_rate %>
+   <% @hf_rate = c.quantity * 25 %>
+   <% end %> 
+   <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
+   <% c.update(sqft: @sqrft) %>
+   <% @tot_sqrft += @sqrft.round(2) %>
+   <% if c.glass_shutter == "Yes" %>
+   <% @t_amt = @sqrft*(c.rate + @glass_shutter_rate)+@h_rate+@hg_rate+@hf_rate %>
    <% else %>
-    <% @t_amt = @sqrft.round(4)*c.rate+@h_rate+@hg_rate+@hf_rate %>
+    <% @t_amt = @sqrft*c.rate+@h_rate+@hg_rate+@hf_rate %>
     <% end %>
 
    <% @full_amt += @t_amt %>
@@ -368,6 +400,7 @@
   <% @bsl_measurements.each do |c| %>
   <% @tot_num += c.quantity %>
   <% @sqrft = ((c.wh.to_f*c.depth)/92903)*c.quantity %>
+  <% c.update(sqft: @sqrft) %>
   <% @tot_sqrft += @sqrft %>
   <% @t_amt = @sqrft.round(2) * c.rate %>
 
@@ -400,10 +433,13 @@
 
 <% @amt = @amt1 + @amt2 + @amt3 + @amt4%>
 
+
 <% @final_amount += @amt %>
 <% @cgst = (@final_amount *9)/100 %>
 <% @sgst = (@final_amount *9)/100 %>
-<% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
+
+<% @pay = @final_amount+@cgst+@sgst%>
+
 <% @total_to_pay = @pay.round(2) %>
 
 <% @workorder.update(total_to_pay: @total_to_pay) %>

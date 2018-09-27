@@ -343,6 +343,12 @@ table, th, td {
    <% @shutter_measurements.each do |c| %>
    <% @j += 1 %>
   <% @tot_num += c.quantity %>
+  <% if u == "Shutters" %>
+   <% if c.glass_shutter == "Yes" %>
+   <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
+   <% @glass_shutter_rate = Rate.find_by(product: "Glass Shutter").price %>
+   <% end %> 
+  <% end %>
   <% if u == "White BSL Shelf" %>
 
   <% @sqrft = ((c.wh.to_f * c.depth)/92903)*c.quantity %>
@@ -368,7 +374,17 @@ table, th, td {
    
   
    <td><%= text_field_tag :"sqft#{@j}" ,@tot_sqrft.round(2),disabled: true %></td>
+   <% if u == "Shutters" %>
+   <% if c.glass_shutter == "Yes" %>
+   <% @rate = c.rate + @glass_shutter_rate %>
+   <td ><%= text_field_tag :"rate" ,@rate, style: "background-color:skyblue;" %></td>
+   <% else %>
    <td ><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
+   <% end %>
+   <% else %>
+   <td ><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
+   <% end %>
+
    
 
    
@@ -406,12 +422,17 @@ table, th, td {
 <% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
 <% @total_to_pay = @pay.round(2) %>
 
+<%# if @workorder.rem_price != 0 %>
 <%# @workorder.update(total_to_pay: @total_to_pay) %>
-
+<%# end %>
 
 </table>
+<br>
+<span class="label label-success">Total To Pay:Rs. <%= @workorder.total_to_pay.to_f.ceil %></span>
 
 <br><br>
+
+<b><%= link_to "Refresh",invoice_workorder_path(@workorder),style: "color: skyblue;" %></b>&nbsp;(before record payment if rates are edited!!)<br><br>
  <%#= link_to 'Generate Invoice ',workorder_invoice_workorder_path(@workorder, format: 'pdf'),target: '_blank', class: "btn btn-success"%>
  
  <% if current_user.role == "Vendor" %>
@@ -428,7 +449,7 @@ table, th, td {
  <% else %>
  <%= link_to "Record Payment",record_payment_workorder_workorder_path(@workorder),class: 'btn btn-danger'%>
  <% end %>
- <b><%= link_to "refresh",invoice_workorder_path(@workorder),style: "color: skyblue;" %></b>
+ 
 
 <br><br>
 
