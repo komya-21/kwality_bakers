@@ -408,6 +408,7 @@ var app = function() {
 
 
 
+
     var fullscreenMode = function() {
        $('#toggle-fullscreen.expand').on('click',function(){
         $(document).toggleFullScreen()
