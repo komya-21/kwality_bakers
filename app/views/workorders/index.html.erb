@@ -14,7 +14,16 @@
 <% if current_user.role == "SuperAdmin" || current_user.role == "Vendor" %>
  <%= link_to 'New Work Order', new_workorder_path  ,class: "btn btn-warning" %>
  <% end %>
+ <% @array = @workorders.all.map{|i| i.id}.to_a %>
 
+<% if @workorders.present? %>
+<% if current_user.role == "SuperAdmin" %>
+<div align="right">
+<%= link_to "Delete All",delete_all_workorders_path(workorders: @array),class: "btn btn-info btn-sm" %>
+<%#= link_to "Approve All",approve_all_workorders_path(workorders: @array),class: "btn btn-success btn-sm" %>
+</div>
+<% end %>
+<% end %>
        
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 

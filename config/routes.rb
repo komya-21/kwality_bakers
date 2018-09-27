@@ -55,6 +55,8 @@ end
       get :employee_work
       post :order_report
       get :addition
+      get :delete_all
+      get :approve_all
       get :order_status
       get :location_report
       post :end_time
