@@ -50,6 +50,7 @@ end
      
     end
     collection do
+      get :workorder_measurements
       get :workorder_info
       get :export_vendorwise_workorder
       get :employee_work
@@ -165,6 +166,7 @@ end
   end
   resources :companies
   get 'home/dashboard'
+  get 'home/menu'
 
   root 'home#dashboard'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

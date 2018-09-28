@@ -44,6 +44,7 @@
   <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
       <tr>
+        
         <th>Type</th>
         <th>Width</th>
         <th>Height</th>
@@ -56,14 +57,17 @@
         <th>Handle</th>
         <th>Handle Groove</th>
         <th>Handle Fitting</th>
+        <th>Color Code</th>
         <th>BSL type</th>
         <th>Additional</th>
       </tr>
     </thead>
     <tbody>
-       <% f.measurements.each do |m| %>
+       <% f.measurements.each_with_index do |m,i| %>
+       <% i += 1 %>
       <tr class="data">
         <%= hidden_field_tag :m_id , m.id  %>
+        
         <td><%= m.ftype %></td>
         <% if m.ftype == "White BSL Shelf" %>
         <td><%= m.wh %></td>
@@ -91,7 +95,9 @@
         <td><%= m.handle %></td>
         <td><%= m.handle_groove %></td>
         <td><%= m.handle_fitting %></td>
+        <td><%= m.color.code if m.color_id.present? %></td>
         <% else %>
+        <td>NA</td>
         <td>NA</td>
         <td>NA</td>
         <td>NA</td>
@@ -225,6 +231,7 @@
    <% if c.top == "Yes" %>
   <% @t_sqft = ((c.width * c.depth)/92903)*c.quantity %>
    <% end %>
+
    <% if c.bottom == "Yes" %>
    <% @b_sqft = ((c.width * c.depth)/92903)*c.quantity %>
    
@@ -503,6 +510,13 @@
 
 
   <% content_for :javascript do %>
+  <!-- <script>
+                    $(document).ready(function() {
+
+                         $('#example').dataTable();
+                         
+                    });
+                    </script> -->
   <!-- <script src="/assets/easytimer.js"></script> -->
 
   <script type="text/javascript">

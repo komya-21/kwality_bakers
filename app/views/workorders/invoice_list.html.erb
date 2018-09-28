@@ -23,6 +23,7 @@
   <tr>
     <th>Invoice No</th>
     <th>Vendor Name</th>
+    <th>Site Name</th>
     <th>Date</th>
     <th>Total</th>
     <th>Amount Due</th>
@@ -48,6 +49,7 @@
     <td><%= w.vendor.name if w.vendor.present?%>
       
     </td>
+    <td><%= w.site_name if w.site_name.present? %></td>
   
     <td><%= w.date %></td>
     <td>Rs.<%= w.total_to_pay.to_f.ceil %></td>

@@ -112,10 +112,19 @@ end
   end
  end
 
+  if @workorders.present?
   render :status => 200,
            :json => { :success => true,
                       
                       :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
+  
+else
+  render :status => 401,
+           :json => { :success => false,
+                      :info => "No data",
+                      :data => {} }
+  
+end
   end
 
  
@@ -172,12 +181,20 @@ if current_user.role == "SuperAdmin"
         
   end
  end
-
+if @workorders.present?
   render :status => 200,
            :json => { :success => true,
                       
                       :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
-  end
+  
+else
+  render :status => 401,
+           :json => { :success => false,
+                      :info => "No data",
+                      :data => {} }
+  
+end
+end
 end
 
 
@@ -579,6 +596,24 @@ end
     @workorder = Workorder.find(params[:id])
     @employee_workorder = EmployeesWorkorder.find_by(workorder_id: params[:id])
   end
+
+  def workorder_measurements
+   
+    if current_user.role == "Employee"
+      @emp_id = current_user.employee.id
+      
+     
+      @workorders = Employee.find(@emp_id).workorders
+
+      render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @workorders } }
+                    end
+   
+  end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

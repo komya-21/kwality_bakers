@@ -215,7 +215,7 @@
        <td class="hor"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)",class: "form-control" %></td>
       
        <!-- <td> <%#= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td> -->
-        <td class="side" hidden="true"><%= m.select :side,options_for_select(["Yes","No"]),{prompt:true},id: :side_id,class: "form-control" %></td>
+       
         <td class="bsl" hidden="true"><%= m.select :bsl_type,options_for_select(["Shelf","Vertical","Framing Patti","Other"]),{prompt: "BSL type"},id: :bsl_type_id,class: "form-control" %></td>
         <% if m.object.ftype == "Shutters" %>
         <td class="choose"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
@@ -225,6 +225,7 @@
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
         <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle</td>
+         <td class="addcolor"><%= m.select :color_id,Color.all.collect{|c|[c.code,c.id]},{prompt: "Select Color"},id: :color_id %></td>
         <% else %>
         <td class="choose" hidden="true"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
         
@@ -233,8 +234,9 @@
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
         <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle</td>
+         <td class="addcolor" hidden="true"><%= m.select :color_id,Color.all.collect{|c|[c.code,c.id]},{prompt: "Select Color"},id: :color_id %></td>
         <% end %>
-        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty" %></td>
+        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty", required: true%></td>
         <% if m.object.ftype == "Carcass Box" %>
         <td class="add_color">
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -457,6 +459,8 @@
 
 <% content_for :javascript do %>
 <script type="text/javascript">
+   $('#color_id').addClass("form-control");
+      $('#color_id').select2();
   
   $( document ).ready(function() {
     $("#workorder_location_id").select2();
@@ -545,8 +549,11 @@ $(document).on('nested:fieldAdded', function(event){
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
-      container.find('.side').hide();
+      
       container.find('.add_color').hide();
+      container.find('#color_id').addClass("form-control");
+      container.find('#color_id').select2();
+      container.find('.addcolor').show();
       
 
     }
@@ -556,34 +563,60 @@ if(type == "White BSL Shelf"){
       container.find('.skirting').hide();
       container.find('.vert').hide();
       container.find('.hor').hide();
-      container.find('.side').hide();
+      
       container.find('.bsl').show();
       container.find('.wh').show();
       container.find('.width').hide();
       container.find('.height').hide();
       container.find('.add_color').hide();
+      container.find('.addcolor').hide();
 
 
 
     }
 
+if(type == "Carcass Box"){
+
 if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box")){
+
      container.find('.vert').show();
       container.find('.hor').show();
       container.find('#work_order_vertical').addClass('form-control');
       container.find('#work_order_horizontal').addClass('form-control');
       container.find('.choose').hide();
       container.find('.skirting').show();
-      container.find('.side').show();
+     
       container.find('.bsl').hide();
       container.find('.width').show();
       container.find('.height').show();
-      container.find('.depth').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
+      container.find('.height').insertAfter(container.find('.depth'));
+      container.find('.addcolor').hide();
+
 
 
     }
+    else
+    {
+       container.find('.vert').show();
+      container.find('.hor').show();
+      container.find('#work_order_vertical').addClass('form-control');
+      container.find('#work_order_horizontal').addClass('form-control');
+      container.find('.choose').hide();
+      container.find('.skirting').show();
+     
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+      container.find('.add_color').show();
+      container.find('.height').insertAfter(container.find('.depth'));
+      container.find('.addcolor').hide();
+
+    }
+  }
+    
      if(ftype == "Loft" && type == "Carcass Box"){
 
 
@@ -599,6 +632,7 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
+      container.find('.addcolor').hide();
 
     }
     if(ftype == "Crockery" && type == "Carcass Box"){
@@ -615,6 +649,7 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
+      container.find('.addcolor').hide();
 
     }
 
@@ -624,30 +659,32 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.choose').hide();
       container.find('.skirting').hide();
       container.find('.depth').show();
-      container.find('.side').hide();
+      
       container.find('.bsl').hide();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').hide();
+      container.find('.addcolor').hide();
 
 
     }
 
-    if(type == "Carcass Box"){
+    /*if(type == "Carcass Box"){
       
       container.find('.choose').hide();
       container.find('.skirting').show();
 /*      container.find('.side').show();
-*/      container.find('.bsl').hide();
+*/      /*container.find('.bsl').hide();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
+      container.find('.addcolor').hide();
 
 
 
-    }
+    }*/
     
 
     
