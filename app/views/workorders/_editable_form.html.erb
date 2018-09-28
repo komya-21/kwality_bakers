@@ -248,23 +248,23 @@
             <tr>
               <%#= nested_form_for @workorder do |form| %>
               <%#= form_for :measurement do |form| %>
-<td>R<%= m.check_box :right , {},"Yes" , "No" %></td>
+<td>R<%= m.check_box :right , {:id => "additional_right"},"Yes" , "No" %></td>
 
 <td><%= m.check_box :right_dark, {:class => "chb"},"Yes" , "No" %></td>
 <td><%= m.check_box :right_light, {:class => "chb"},"Yes" , "No" %></td>
 </tr>
 <tr>
-<td>L<%= m.check_box :left , {},"Yes" , "No" %></td>
+<td>L<%= m.check_box :left , {:id => "additional_left"},"Yes" , "No" %></td>
 <td><%= m.check_box :left_dark, {:class => "chb1"},"Yes" , "No" %></td>
 <td><%= m.check_box :left_light, {:class => "chb1"},"Yes" , "No" %></td>
 </tr>
 <tr>
-<td>T<%= m.check_box :top , {},"Yes" , "No" %></td> 
+<td>T<%= m.check_box :top , {:id => "additional_top"},"Yes" , "No" %></td> 
 <td><%= m.check_box :top_dark, {:class => "chb2"},"Yes" , "No" %></td>
 <td><%= m.check_box :top_light, {:class => "chb2"},"Yes" , "No" %></td>
 </tr>
 <tr>
-<td>B<%= m.check_box :bottom , {},"Yes" , "No" %></td>
+<td>B<%= m.check_box :bottom , {:id => "additional_bottom"},"Yes" , "No" %></td>
 
 <td><%= m.check_box :bottom_dark, {:class => "chb3"},"Yes" , "No" %></td>
 <td><%= m.check_box :bottom_light, {:class => "chb3"},"Yes" , "No" %></td>
@@ -886,6 +886,131 @@ $('#workorder_name1').hide();
    
 });
 </script>
+
+
+
+<script type="text/javascript">
+
+   
+      $(document).on("click" ,"#additional_right" , function(){
+
+        if($("#additional_right").prop('checked') == false ){
+
+          $('.chb').prop('checked',false);
+
+        }
+
+           if($("#additional_right").prop('checked') == true ){
+
+            if($(".chb").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+
+      $(document).on("click" ,"#additional_left" , function(){
+
+         if($("#additional_left").prop('checked') == false ){
+
+          $('.chb1').prop('checked',false);
+
+        }
+
+           if($("#additional_left").prop('checked') == true ){
+
+            if($(".chb1").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+      $(document).on("click" ,"#additional_top" , function(){
+
+
+         if($("#additional_top").prop('checked') == false ){
+
+          $('.chb2').prop('checked',false);
+
+        }
+
+           if($("#additional_top").prop('checked') == true ){
+
+            if($(".chb2").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+      $(document).on("click" ,"#additional_bottom" , function(){
+         if($("#additional_bottom").prop('checked') == false ){
+
+          $('.chb3').prop('checked',false);
+
+        }
+
+           if($("#additional_bottom").prop('checked') == true ){
+
+            if($(".chb3").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+
+
+      $(document).on("click" ,".chb" , function(){
+
+           if($("#additional_right").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb1" , function(){
+
+           if($("#additional_left").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb2" , function(){
+
+           if($("#additional_top").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb3" , function(){
+
+
+          if($(".chb3").prop('checked') == true ){
+           if($("#additional_bottom").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+}
+
+    });
+  </script>
+
  
 <% end %>
 

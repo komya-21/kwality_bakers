@@ -31,7 +31,7 @@
     <label class="col-sm-1 control-label">Location</label> 
    <!--  <span class="required">*</span> -->
     <div class="col-md-2">
-    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true}%>
+    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true},required: true%>
 
   </div>
     <label class="col-sm-1 control-label">Vendor</label> 
@@ -157,13 +157,13 @@
       <td class="wh" hidden="true">  <%= m.text_field :wh, id: :work_order_wh ,class: "form-control" , placeholder: "Width/Height(mm)"%></td>
        
        
-       <!-- <td style="display: inline-block;"><%#= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)" , required: true%><%#= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td> -->
+       
        <td class="depth"><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
        <td class="height"><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%></td>
        <td class="skirting" hidden="true"> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(Height)"%></td>
        <td class="vert" hidden="true"> <%= m.text_field :vertical, id: :work_order_vertical ,placeholder: "V(qty)" %></td>
        <td class="hor" hidden="true"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)" %></td>
-       <!-- <td> <%#= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td> -->
+       
         
         <td class="bsl" hidden="true"><%= m.select :bsl_type,options_for_select(["Shelf","Vertical","Framing Patti","Other"]),{prompt: "BSL type"},id: :bsl_type_id,class: "form-control" %></td>
 
@@ -186,8 +186,7 @@
     <th>L</th>
   </tr>
             <tr>
-              <%#= nested_form_for @workorder do |form| %>
-              <%#= form_for :measurement do |form| %>
+              
 <td>R<%= m.check_box :right , {:id => "additional_right"},"Yes" , "No" %></td>
 
 <td><%= m.check_box :right_dark, {:class => "chb"},"Yes" , "No" %></td>
@@ -211,7 +210,7 @@
 </tr>
 </table>
 
-<%# end %>
+
 
 
 
@@ -242,10 +241,7 @@
 </div>
 <% end %>
 <p><%= form.link_to_add "Add Work Orders", :fproducts ,class: "btn btn-warning"%></p>
-<!-- <button name="subject" type="submit" value="HTML" class="btn btn-danger" id="imagesAdd">Upload Images</button> -->
 
-<%#= form.label :name1 %>
-<%#= "Upload Images",id: :imagesAdd ,class: "btn btn-danger" %>
 
 <a id="imagesAdd" class="btn btn-danger">Upload Images</a>
 <a id="imagesRm" class="btn btn-primary">Cancel</a>
@@ -793,7 +789,7 @@ $('#workorder_name1').hide();
 });
 </script>
  
-<script type="text/javascript">
+<!-- <script type="text/javascript">
  $(document).on("click" ,"#submit" , function(){
      
       
@@ -935,6 +931,128 @@ $('#workorder_name1').hide();
 
 
 
+  </script> -->
+
+  <script type="text/javascript">
+
+   
+      $(document).on("click" ,"#additional_right" , function(){
+
+        if($("#additional_right").prop('checked') == false ){
+
+          $('.chb').prop('checked',false);
+
+        }
+
+           if($("#additional_right").prop('checked') == true ){
+
+            if($(".chb").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+
+      $(document).on("click" ,"#additional_left" , function(){
+
+         if($("#additional_left").prop('checked') == false ){
+
+          $('.chb1').prop('checked',false);
+
+        }
+
+           if($("#additional_left").prop('checked') == true ){
+
+            if($(".chb1").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+      $(document).on("click" ,"#additional_top" , function(){
+
+
+         if($("#additional_top").prop('checked') == false ){
+
+          $('.chb2').prop('checked',false);
+
+        }
+
+           if($("#additional_top").prop('checked') == true ){
+
+            if($(".chb2").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+      $(document).on("click" ,"#additional_bottom" , function(){
+         if($("#additional_bottom").prop('checked') == false ){
+
+          $('.chb3').prop('checked',false);
+
+        }
+
+           if($("#additional_bottom").prop('checked') == true ){
+
+            if($(".chb3").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+
+
+      $(document).on("click" ,".chb" , function(){
+
+           if($("#additional_right").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb1" , function(){
+
+           if($("#additional_left").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb2" , function(){
+
+           if($("#additional_top").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb3" , function(){
+
+
+          if($(".chb3").prop('checked') == true ){
+           if($("#additional_bottom").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+}
+
+    });
   </script>
 
 <% end %>
