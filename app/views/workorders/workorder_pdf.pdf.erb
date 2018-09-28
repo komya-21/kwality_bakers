@@ -368,6 +368,7 @@ table, th, td {
     <th>Handle Sqft</th>
     <th>Handle Groove</th>
     <th>Handle Fitting</th>
+    <th>Shutter Shade</th>
     
    </tr>
   <% else %>
@@ -449,6 +450,7 @@ table, th, td {
    <td><%= @g_handle_sqft.round(4) if @g_handle_sqft.present?  %></td>
    <td><%= c.handle_groove %></td>
    <td><%= c.handle_fitting %></td>
+   <td><%= c.shutter_shade if c.shutter_shade.present? %></td>
    <% end %>
 
    
