@@ -225,7 +225,7 @@
         
         <%= m.check_box :handle_fitting, {}, "Yes", "No"%>Handle Fitting<br>
         <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle</td>
-         <td class="addcolor"><%= m.select :color_id,Color.all.collect{|c|[c.code,c.id]},{prompt: "Select Color"},id: :color_id %></td>
+         <td class="addcolor"><%= m.select :shutter_shade,options_for_select(["Dark","Light"]),{prompt: "Select shade"},id: :color_id %></td>
         <% else %>
         <td class="choose" hidden="true"><%= m.check_box :glass_shutter, {}, "Yes", "No" %>Glass Shutter<br>
         

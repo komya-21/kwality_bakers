@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180927052333) do
+ActiveRecord::Schema.define(version: 20180928141903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -269,6 +269,7 @@ ActiveRecord::Schema.define(version: 20180927052333) do
     t.float "sqft"
     t.float "sqft_back"
     t.float "color_sqft"
+    t.string "shutter_shade"
     t.index ["color_id"], name: "index_measurements_on_color_id"
     t.index ["fproduct_id"], name: "index_measurements_on_fproduct_id"
     t.index ["rate_id"], name: "index_measurements_on_rate_id"

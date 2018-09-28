@@ -57,7 +57,7 @@
         <th>Handle</th>
         <th>Handle Groove</th>
         <th>Handle Fitting</th>
-        <th>Color Code</th>
+        <th>Shade</th>
         <th>BSL type</th>
         <th>Additional</th>
       </tr>
@@ -95,7 +95,7 @@
         <td><%= m.handle %></td>
         <td><%= m.handle_groove %></td>
         <td><%= m.handle_fitting %></td>
-        <td><%= m.color.code if m.color_id.present? %></td>
+        <td><%= m.shutter_shade if m.shutter_shade.present? %></td>
         <% else %>
         <td>NA</td>
         <td>NA</td>

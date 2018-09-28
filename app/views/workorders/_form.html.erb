@@ -31,7 +31,7 @@
     <label class="col-sm-1 control-label">Location</label> 
    <!--  <span class="required">*</span> -->
     <div class="col-md-2">
-    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true},required: true%>
+    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true},required: true %>
 
   </div>
     <label class="col-sm-1 control-label">Vendor</label> 
@@ -176,7 +176,7 @@
         <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle
       </td>
 
-        <td class="addcolor" hidden="true"><%= m.select :color_id,Color.all.collect{|c|[c.code,c.id]},{prompt: "Select Color"},id: :color_id %></td>
+        <td class="addcolor" hidden="true"><%= m.select :shutter_shade,options_for_select(["Dark","Light"]),{prompt: "Select shade"},id: :color_id %></td>
         <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty",required: true%></td>
         <td class="add_color" hidden="true">
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
