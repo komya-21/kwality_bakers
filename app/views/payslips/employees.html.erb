@@ -1,7 +1,7 @@
 <section id="main-content" class="animated fadeInUp">
                       <div class="row">
                     <div class="col-md-12">
-                        <div class=" panel panel-info">
+                        <div class=" panel panel-warning">
                           <div class="panel-heading">
                             <h3 class="panel-title">Select Employee To Create Payslip</h3>
                             <div class="actions pull-right">
@@ -24,7 +24,7 @@
   <tbody>
     <% @employees.each do |e| %>
     <tr>
-      <td><%= link_to e.name ,new_payslip_path(employee_id: e.id) %>
+      <td><%= link_to e.name ,new_payslip_path(employee_id: e.id), style: "color: #007694;"%>
       </td>
     </tr>
     <% end %>
@@ -35,3 +35,14 @@
 </div>
 </div>
 </section>
+
+<% content_for :javascript do %>
+                   <!--Load these page level functions-->
+                    <script>
+                    $(document).ready(function() {
+
+                         $('#example').dataTable();
+                         
+                    });
+                    </script>
+<% end %>

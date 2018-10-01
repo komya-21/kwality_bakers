@@ -1,6 +1,6 @@
 class WorkordersController < ApplicationController
   before_action :set_workorder, only: [:show, :edit, :update, :destroy]
-
+  skip_before_action :authenticate_user!
   # GET /workorders
   # GET /workorders.json
   def index

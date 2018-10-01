@@ -554,6 +554,9 @@ $(document).on('nested:fieldAdded', function(event){
       container.find('#color_id').addClass("form-control");
       container.find('#color_id').select2();
       container.find('.addcolor').show();
+      container.find('#work_order_width').attr("required", "true");
+     
+      container.find('#work_order_height').attr("required", "true");
       
 
     }
@@ -570,7 +573,9 @@ if(type == "White BSL Shelf"){
       container.find('.height').hide();
       container.find('.add_color').hide();
       container.find('.addcolor').hide();
-
+      container.find('#work_order_wh').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+     
 
 
     }
@@ -593,7 +598,9 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.add_color').show();
       container.find('.height').insertAfter(container.find('.depth'));
       container.find('.addcolor').hide();
-
+      container.find('#work_order_width').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+      container.find('#work_order_height').attr("required", "true");
 
 
     }
@@ -625,14 +632,17 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('#work_order_vertical').addClass('form-control');
       container.find('#work_order_horizontal').addClass('form-control');
       container.find('.choose').hide();
-    container.find('.skirting').hide();
-     container.find('.side').show();
+      container.find('.skirting').hide();
+      container.find('.side').show();
       container.find('.bsl').hide();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
       container.find('.add_color').show();
       container.find('.addcolor').hide();
+      container.find('#work_order_width').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+      container.find('#work_order_height').attr("required", "true");
 
     }
     if(ftype == "Crockery" && type == "Carcass Box"){
@@ -650,6 +660,9 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.wh').hide();
       container.find('.add_color').show();
       container.find('.addcolor').hide();
+      container.find('#work_order_width').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+      container.find('#work_order_height').attr("required", "true");
 
     }
 
@@ -666,6 +679,9 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.wh').hide();
       container.find('.add_color').hide();
       container.find('.addcolor').hide();
+      container.find('#work_order_width').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+      container.find('#work_order_height').attr("required", "true");
 
 
     }
