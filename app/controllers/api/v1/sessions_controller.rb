@@ -13,7 +13,7 @@ class Api::V1::SessionsController < Devise::SessionsController
     render :status => 200,
            :json => { :success => true,
                       :info => "Logged in",
-                      :data => { :auth_token => current_user.authentication_token,:email => current_user.email,:id => current_user.id,:employee_type => current_user.employee.employee_type } }
+                      :data => { :auth_token => current_user.authentication_token,:email => current_user.email,:id => current_user.id,:employee_type => current_user.employee.employee_type,:employee_id => current_user.employee.id } }
                     else
                       render :status => 200,
            :json => { :success => true,

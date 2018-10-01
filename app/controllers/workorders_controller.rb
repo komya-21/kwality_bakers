@@ -130,7 +130,7 @@ end
  
 
 def employee_work
-if current_user.role == "SuperAdmin"
+
 #employee id got in params
  @emp_id =  params[:employee_id]
 
@@ -195,7 +195,7 @@ else
   
 end
 end
-end
+
 
 
 def invoice

@@ -389,10 +389,9 @@ selectField1.select2();
   container3 = elem.parents("th.choose");
   container1 = elem.parents("th.fields");
   container.find("#work_order_width").focus();
+
   if(type == "Shutters")
     {
-
-
       container.find('.choose').show();
       container.find('.depth').hide();
       container.find('.skirting').hide();
@@ -402,16 +401,16 @@ selectField1.select2();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
-      
       container.find('.add_color').hide();
-       container.find('#color_id').addClass("form-control");
-       container.find('#color_id').select2();
+      container.find('#color_id').addClass("form-control");
+      container.find('#color_id').select2();
       container.find('.addcolor').show();
 
 
       
 
     }
+    
 if(type == "White BSL Shelf"){
   container.find('.choose').hide();
       container.find('.depth').show();
@@ -471,13 +470,12 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
     }
     else
     {
-       container.find('.vert').show();
+      container.find('.vert').show();
       container.find('.hor').show();
       container.find('#work_order_vertical').addClass('form-control');
       container.find('#work_order_horizontal').addClass('form-control');
       container.find('.choose').hide();
       container.find('.skirting').show();
-     
       container.find('.bsl').hide();
       container.find('.width').show();
       container.find('.height').show();
@@ -688,6 +686,12 @@ $('#workorder_name1').hide();
 <script type="text/javascript">
     $(".chb").change(function() {
     var checked = $(this).is(':checked');
+
+    if($("#additional_right").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
     $(".chb").prop('checked',false);
     if(checked) {
         $(this).prop('checked',true);
@@ -697,6 +701,11 @@ $('#workorder_name1').hide();
   $(".chb1").change(function() {
     var checked = $(this).is(':checked');
     $(".chb1").prop('checked',false);
+    if($("#additional_left").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
     if(checked) {
         $(this).prop('checked',true);
     }
@@ -705,6 +714,11 @@ $('#workorder_name1').hide();
   $(".chb2").change(function() {
     var checked = $(this).is(':checked');
     $(".chb2").prop('checked',false);
+    if($("#additional_top").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
     if(checked) {
         $(this).prop('checked',true);
     }
@@ -713,6 +727,11 @@ $('#workorder_name1').hide();
   $(".chb3").change(function() {
     var checked = $(this).is(':checked');
     $(".chb3").prop('checked',false);
+    if($("#additional_bottom").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
     if(checked) {
         $(this).prop('checked',true);
     }
@@ -954,7 +973,8 @@ $('#workorder_name1').hide();
 
 
     });
-
+  </script>
+<script type="text/javascript">
       $(document).on("click" ,"#additional_left" , function(){
 
          if($("#additional_left").prop('checked') == false ){
@@ -973,6 +993,8 @@ $('#workorder_name1').hide();
 
 
     });
+  </script>
+  <script type="text/javascript">
       $(document).on("click" ,"#additional_top" , function(){
 
 
@@ -992,6 +1014,8 @@ $('#workorder_name1').hide();
 
 
     });
+  </script>
+  <script type="text/javascript">
       $(document).on("click" ,"#additional_bottom" , function(){
          if($("#additional_bottom").prop('checked') == false ){
 
@@ -1009,9 +1033,9 @@ $('#workorder_name1').hide();
 
 
     });
+</script>
 
-
-      $(document).on("click" ,".chb" , function(){
+      <!-- $(document).on("click" ,".chb" , function(){
 
            if($("#additional_right").prop('checked') == false ){
 
@@ -1053,7 +1077,7 @@ $('#workorder_name1').hide();
 }
 
     });
-  </script>
+  </script> -->
 
 <% end %>
 
