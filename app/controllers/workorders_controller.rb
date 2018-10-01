@@ -307,6 +307,7 @@ end
         @workorder.update(approve: false)
         @workorder.fproducts.each do |f| 
         f.measurements.each do |m|
+          m.update(workorder_id: @workorder.id)
           if m.ftype == "Carcass Box"
             @rate1 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"Back" ])
             @rate2 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"TB/LR" ])
@@ -597,21 +598,120 @@ end
     @employee_workorder = EmployeesWorkorder.find_by(workorder_id: params[:id])
   end
 
-  def workorder_measurements
+  def assigned_workorders
    
-    if current_user.role == "Employee"
-      @emp_id = current_user.employee.id
+    
+      @emp_id = params[:employee_id]
       
-     
+    
       @workorders = Employee.find(@emp_id).workorders
-
+if @workorders.present?
       render :status => 200,
            :json => { :success => true,
                       
                       :data => { :workorders => @workorders } }
+                    else
+
+                      render :status => 200,
+           :json => { :success => false,
+                      :info => "No data",
+                      :data => { } }
                     end
+
+                   
    
   end
+
+def workorder_measurement
+  @work_id = params[:work_id]
+
+  @products = Workorder.find(@work_id)
+  @measurements = @products.measurements
+    
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :measurements => @measurements} }
+end
+
+
+#apis for workorder status
+#1
+
+def pending_workorders
+  @emp_id = params[:employee_id]
+
+  @emp_work = EmployeesWorkorder.where(["employee_id = ? and status = ?",@emp_id,"Pending"])
+  @w = @emp_work.all.map{|e| e.workorder_id}
+   if @emp_work.present?
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @emp_work} } else
+                      render :status => 201,
+           :json => { :success => false,
+                      :info => "No Data",
+                      :data => {} }
+                    end
+end
+
+def completed_workorders
+  @emp_id = params[:employee_id]
+
+  @emp_work = EmployeesWorkorder.where(["employee_id = ? and status = ?",@emp_id,"Completed"])
+  @w = @emp_work.all.map{|e| e.workorder_id}
+  if @emp_work.present?
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @emp_work} }
+
+                    else
+                      render :status => 201,
+           :json => { :success => false,
+                      :info => "No Data",
+                      :data => {} }
+                    end
+end
+
+def hold_workorders
+  @emp_id = params[:employee_id]
+
+  @emp_work = EmployeesWorkorder.where(["employee_id = ? and status = ?",@emp_id,"Hold"])
+  @w = @emp_work.all.map{|e| e.workorder_id}
+  if @emp_work.present?
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @emp_work} }
+                      else
+                      render :status => 201,
+           :json => { :success => false,
+                      :info => "No Data",
+                      :data => {} }
+                    end
+end
+
+def working_workorders
+  @emp_id = params[:employee_id]
+
+  @emp_work = EmployeesWorkorder.where(["employee_id = ? and status = ?",@emp_id,"Working"])
+  @w = @emp_work.all.map{|e| e.workorder_id}
+   if @emp_work.present?
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @emp_work} }
+                       else
+                      render :status => 201,
+           :json => { :success => false,
+                      :info => "No Data",
+                      :data => {} }
+                    end
+end
+
+
+
 
 
 

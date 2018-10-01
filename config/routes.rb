@@ -50,7 +50,12 @@ end
      
     end
     collection do
-      get :workorder_measurements
+      get :assigned_workorders
+      get :workorder_measurement
+      get :pending_workorders
+      get :completed_workorders
+      get :hold_workorders
+      get :working_workorders
       get :workorder_info
       get :export_vendorwise_workorder
       get :employee_work

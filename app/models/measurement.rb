@@ -3,6 +3,6 @@ class Measurement < ApplicationRecord
   belongs_to :fproduct
  
 
-  
+  belongs_to :workorder,optional: :true
   
 end
