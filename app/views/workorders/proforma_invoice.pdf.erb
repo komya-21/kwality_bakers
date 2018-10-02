@@ -134,20 +134,21 @@ table, th, td {
 </head>
 <body>
 <% k = 0 %>
-<% @workorder.fproducts.each do |f| %>
+<% @workorder_fproducts = @workorder.fproducts.order(id: :asc) %>
+<% @workorder_fproducts.each do |f| %>
 <% k += 1 %>
 
 <table style="width:100%">
   
 
   <% @letters = ('A'..'Z').to_a %>
-
-  <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
+<% @measurements = f.measurements.order(id: :asc) %>
+  <% @uniq_ftypes = @measurements.all.map{|m| m.ftype}.uniq %>
   <% @m = 0 %>
   <% @uniq_ftypes.each do |u| %>
   <% @m += 1 %>
   <tr>
-    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="15"><center><% if @m == 1 %><%= f.product %><br><% end %>(<%= @letters.shift %>)<%= u %></center></th>
+    <th style="font-size: 16px; background-color: #ccc; width: 75px;" colspan="16"><center><% if @m == 1 %><%= f.product %><br><% end %>(<%= @letters.shift %>)<%= u %></center></th>
   </tr>
   <% @i = 0 %>
    <% if u == "Carcass Box" %>
@@ -361,6 +362,7 @@ table, th, td {
     <th>Handle sqft</th>
     <th>Handle Groove</th>
     <th>Handle Fitting</th>
+    <th>Shutter Shade</th>
     <th>rate</th>
     <th>AMT</th>
    </tr>
@@ -445,6 +447,7 @@ table, th, td {
     <td><%= @g_handle_sqft.round(4) if @g_handle_sqft.present? %></td>
    <td><%= c.handle_groove %></td>
    <td><%= c.handle_fitting %></td>
+   <td><%= c.shutter_shade if c.shutter_shade.present? %></td>
    <% end %>
 
    <% if c.glass_shutter == "Yes" %>

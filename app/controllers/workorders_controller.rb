@@ -712,7 +712,40 @@ end
 
 
 
+def update_empwork
+  byebug
+  @emp_id = params[:employee_id]
+  @work_id = params[:work_id]
+  @start_time = params[:starttime]
+  @end_time = params[:endtime]
 
+  @emp_work = EmployeesWorkorder.find_by(employee_id: @emp_id ,workorder_id: @work_id)
+  
+  if @start_time.present? and !@end_time.present?
+    @status = "Working"
+  elsif @end_time.present?
+    @status = "Completed"
+  end
+
+
+if @start_time.present?
+  @u = @emp_work.update(starttime: @start_time,status: @status)
+elsif @end_time.present?
+  @u = @emp_work.update(endtime: @end_time,status: @status)
+end
+
+if @u == true
+  render :status => 200,
+           :json => { :success => true,
+                      :info => "Updated Successfully",
+                      :data => {start_time: @emp_work.starttime,end_time: @emp_work.endtime,status: @emp_work.status}}
+  else
+    render :status => 201,
+           :json => { :success => false,
+                      :data => {}}
+  end
+
+end
 
 
   private

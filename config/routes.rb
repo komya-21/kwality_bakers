@@ -70,6 +70,7 @@ end
       post :edit_rate
        post :add
        patch :update_additional
+       patch :update_empwork
        get :invoice_list
        get :payment_status_report
        get :workorder_status_report

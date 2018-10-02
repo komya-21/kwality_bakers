@@ -37,8 +37,8 @@
   <% end %>
 </p>
 
-          
-  <% @workorder.fproducts.each do |f| %>
+<% @workorder_fproducts =  @workorder.fproducts.order(id: :asc) %> 
+  <% @workorder_fproducts.each do |f| %>
   <b><u><%= f.product %></u></b>
   <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
@@ -62,8 +62,9 @@
       </tr>
     </thead>
     <tbody>
-       <% f.measurements.each_with_index do |m,i| %>
-       <% i += 1 %>
+      <% @measurements = f.measurements.order(id: :asc) %>
+       <% @measurements.each do |m| %>
+      
       <tr class="data">
         <%= hidden_field_tag :m_id , m.id  %>
         

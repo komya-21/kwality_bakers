@@ -148,7 +148,8 @@ table, th, td {
 </head>
 <body>
 <% k = 0 %>
-<% @workorder.fproducts.each do |f| %>
+<% @workorder_fproducts = @workorder.fproducts.order(id: :asc) %>
+<% @workorder_fproducts.each do |f| %>
 
 <% k += 1 %>
 
@@ -156,8 +157,8 @@ table, th, td {
   
 
   <% @letters = ('A'..'Z').to_a %>
-
-  <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
+  <% @measurements = f.measurements.order(id: :asc) %>
+  <% @uniq_ftypes = @measurements.all.map{|m| m.ftype}.uniq %>
   <% @m = 0 %>
   <% @uniq_ftypes.each do |u| %>
   <% @m += 1 %>

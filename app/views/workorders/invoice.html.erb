@@ -138,27 +138,27 @@ table, th, td {
 <body>
 <% k = 0 %>
 <% @final_amount = 0 %>
-<% @total_amount1 = 0 %>
+<% @total_amount = 0 %>
+
 <% @amt1 = 0 %> 
 <% @amt2 = 0 %> 
-<% @amt3 = 0 %> 
+<% @amt3 = 0 %>
+<% @amt4 = 0 %>
+
 <% @j = 0%>
-<% @workorder.fproducts.each do |f| %>
+<% @workorder_fproducts = @workorder.fproducts.order(id: :asc) %>
+<% @workorder_fproducts.each do |f| %>
 
-<% k += 1 %>
-<% if k != 1 %>
 
-<% @amt1 = @total_amount %>
-<% @amt2 = @full_amt %>
 
-<% @amt3 = @drawer_amount %>
-<% end %>
+
 
 <table id="example" style="width:100%">
    <% @letters = ('A'..'Z').to_a %>
    
+   <% @measurements = f.measurements.order(id: :asc) %>
+  <% @uniq_ftypes = @measurements.all.map{|m| m.ftype}.uniq %>
 
-  <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
   <% @m = 0 %>
 
   <% @uniq_ftypes.each do |u| %>
@@ -176,7 +176,10 @@ table, th, td {
   <% @i = 0 %>
 
    <% if u == "Carcass Box" %>
-
+    <% @total_amount = 0 %>
+    <% @total_no = 0 %>
+    <% @total_sqft = 0 %>
+    <% @total_sqft_back = 0 %>
   
    <tr>
     <th>No</th>
@@ -204,38 +207,38 @@ table, th, td {
    <% @j+=1 %>
    <% @i += 1 %>
    <% @total_no += c.quantity %>
-   <% @sq = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
-   <% @skirting_sqft = 0 %>
-   <% @v_area = 0 %>
-   <% @h_area = 0 %>
-    <% if c.skirting != nil %>
-   <% @s_width = c.width - 36 %>
-   <% @skirting_sqft = ((@s_width*c.skirting)/92903)*c.quantity %>
-   <% end %>
+   <%# @sq = ((((c.width*c.depth)/92903)*2)*c.quantity)+((((c.height*c.depth)/92903)*2)*c.quantity) %>
+   <%# @skirting_sqft = 0 %>
+   <%# @v_area = 0 %>
+   <%# @h_area = 0 %>
+    <%# if c.skirting != nil %>
+   <%# @s_width = c.width - 36 %>
+   <%# @skirting_sqft = ((@s_width*c.skirting)/92903)*c.quantity %>
+   <%# end %>
    <!-- end of calculation of skirting -->
-   <% if c.vertical != nil %>
-   <% if c.skirting != nil %>
-    <% @v_height = c.height-c.skirting-36 %>
-    <% else %>
-    <% @v_height = c.height-36 %>
-     <% end %>
-     <% @v_area = ((@v_height * c.depth)/92903)*c.quantity %>
+   <%# if c.vertical != nil %>
+   <%# if c.skirting != nil %>
+    <%# @v_height = c.height-c.skirting-36 %>
+    <%# else %>
+    <%# @v_height = c.height-36 %>
+     <%# end %>
+     <%# @v_area = ((@v_height * c.depth)/92903)*c.quantity %>
 
-   <% end %>
+   <%# end %>
 
-   <% if c.horizontal != nil %>
-   <% @h_width = c.width - 36 %>
-   <% @h_area =  ((@h_width*c.depth)/92903)*c.quantity %>
-   <% end %>
+   <%# if c.horizontal != nil %>
+   <%# @h_width = c.width - 36 %>
+   <%# @h_area =  ((@h_width*c.depth)/92903)*c.quantity %>
+   <%# end %>
     
-<% @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
-    <% @total_sqft += @sqft %>
-   <% @total_sqft += @sqft %>
-   <% @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
-   <% @total_sqft_back += @sqft_back %>
-   <% @tot_amt = (@sqft.round(2)*c.rate)+(@sqft_back.round(2)*c.back_rate) %>
+<%# @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
+    <% @total_sqft += c.sqft %>
+  
+   <%# @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
+   <% @total_sqft_back += c.sqft_back %>
+   <% @tot_amt = (c.sqft*c.rate)+(c.sqft_back*c.back_rate) %>
    <% @total_amount += @tot_amt %>
-   <% @amt1 += @total_amount %>
+   <% @amt1 += @tot_amt %>
    <tr class="fields">
    <td><%= @i %></td>
    <%= hidden_field_tag :id , c.id ,class: "hidden"%>
@@ -250,10 +253,10 @@ table, th, td {
    <td><%= c.vertical %></td>
    <td><%= c.horizontal %></td>
    
-   <td><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true,class: "a1" %></td>
+   <td><%= text_field_tag :"sqft#{@j}" ,c.sqft.round(4),disabled: true,class: "a1" %></td>
    <td><%= text_field_tag :"rate" , c.rate, style: "background-color:skyblue;" %></td>
    
-   <td ><%= text_field_tag :"sqft_back#{@j}",@sqft_back.round(2),disabled: true, class: "a3" %></td>
+   <td ><%= text_field_tag :"sqft_back#{@j}",c.sqft_back.round(4),disabled: true, class: "a3" %></td>
    <td><%= text_field_tag :back_rate , c.back_rate,style: "background-color:skyblue;" %></td>
    
    <!-- <td><%#= text_field_tag :"amount#{@j}" ,@tot_amt.round(2) ,disabled: true , class: "a5"%></td> -->
@@ -265,6 +268,7 @@ table, th, td {
   
   
   <% end %>
+<% @drawer_amount = 0 %>
 
    <% if u == "Drawer" %>
    
@@ -295,14 +299,14 @@ table, th, td {
    <td><%= c.depth %></td>
    <td><%= c.height %></td>
    <td><%= c.quantity %></td>
-   <% @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
-   <% @total_sqft += @sqft %>
-   <td class="b1"><%= text_field_tag :"sqft#{@j}" ,@sqft.round(2),disabled: true %></td>
+   <%# @sqft = ((((c.height*c.depth)/92903)*2)*c.quantity)+((((c.height*c.width)/92903)*2)*c.quantity)+(((c.width*c.depth)/92903)*c.quantity) %>
+   <% @total_sqft += c.sqft %>
+   <td class="b1"><%= text_field_tag :"sqft#{@j}" ,c.sqft.round(4),disabled: true %></td>
    <td class="b2"><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
   
-   <% @d_tot_amt = (@sqft.round(2)*c.rate) %>
+   <% @d_tot_amt = (c.sqft*c.rate) %>
    <% @drawer_amount += @d_tot_amt %>
-   <% @amt3 += @drawer_amount %>
+   <% @amt2 += @d_tot_amt %>
    <!-- <td class="b3"><%#= text_field_tag :"amount#{@j}" ,  @d_tot_amt.round(2),disabled: true %></td> -->
  </tr>
 
@@ -313,7 +317,7 @@ table, th, td {
 
 
 
-   <% if u == "Shutters" || u == "White BSL Shelf" %>
+   <% if u == "Shutters" %>
    <tr>
     <th>No</th>
     
@@ -343,27 +347,27 @@ table, th, td {
    <% @shutter_measurements.each do |c| %>
    <% @j += 1 %>
   <% @tot_num += c.quantity %>
-  <% if u == "Shutters" %>
+  <%# if u == "Shutters" %>
    <% if c.glass_shutter == "Yes" %>
    <% @g_area = ((c.width * c.height)/92903)*c.quantity %>
    <% @glass_shutter_rate = Rate.find_by(product: "Glass Shutter").price %>
    <% end %> 
-  <% end %>
-  <% if u == "White BSL Shelf" %>
+  <%# end %>
+  <%# if u == "White BSL Shelf" %>
 
-  <% @sqrft = ((c.wh.to_f * c.depth)/92903)*c.quantity %>
-  <% else %>
+  <%# @sqrft = ((c.wh.to_f * c.depth)/92903)*c.quantity %>
+  <%# else %>
 
-   <% @sqrft = ((c.width*c.height)/92903)*c.quantity %>
-   <% end %>
+   <%# @sqrft = ((c.width*c.height)/92903)*c.quantity %>
+   <%# end %>
    
-   <% @tot_sqrft += @sqrft %>
-   <% @t_amt = (@sqrft * c.rate).round(2) %>
+   <% @tot_sqrft += c.sqft %>
+   <% @t_amt = (c.sqft * c.rate) %>
 
    <% @full_amt += @t_amt %>
-   <% if k != 1 %>
-   <% @amt2 += @full_amt %>
-   <% end %>
+   
+   <% @amt3 += @t_amt %>
+  
    <% @i += 1 %>
    
    <tr class="fields2">
@@ -373,17 +377,17 @@ table, th, td {
    
    
   
-   <td><%= text_field_tag :"sqft#{@j}" ,@tot_sqrft.round(2),disabled: true %></td>
-   <% if u == "Shutters" %>
+   <td><%= text_field_tag :"sqft#{@j}" ,c.sqft.round(4),disabled: true %></td>
+   <%# if u == "Shutters" %>
    <% if c.glass_shutter == "Yes" %>
    <% @rate = c.rate + @glass_shutter_rate %>
-   <td ><%= text_field_tag :"rate" ,@rate, style: "background-color:skyblue;" %></td>
+   <td><%= text_field_tag :"rate" ,@rate, style: "background-color:skyblue;" %></td>
    <% else %>
-   <td ><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
+   <td><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
    <% end %>
-   <% else %>
-   <td ><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
-   <% end %>
+   <%# else %>
+   <!-- <td ><%#= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td> -->
+   <%# end %>
 
    
 
@@ -398,13 +402,40 @@ table, th, td {
   <% end %>
   
   
- 
+ <% if u == "White BSL Shelf" %>
+  <tr>
+    <th>No</th>
+    
+    <th>Quantity</th>
+    <th>Sq.ft</th>
+    <th>rate</th>
+   
+    
+  </tr>
 
- 
+  <% @shutter_measurements = f.measurements.where(ftype: u ) %>
+  <% @tot_sqrft = 0 %>
+  <% @tot_num = 0 %>
+
+   <% @shutter_measurements.each do |c| %>
+   <% @j += 1 %>
+  <% @tot_num += c.quantity %>
+ <% @tot_sqrft += c.sqft %>
+   <% @t_amt = (c.sqft * c.rate) %>
+ <% @full_amt += @t_amt %>
+   
+   <% @amt4 += @t_amt %>
   
- 
+   <% @i += 1 %>
+   <tr class="fields2">
+   <td><%= @i %></td>
+   <%= hidden_field_tag :id , c.id ,class: "hidden"%>
+   <td><%= @tot_num %></td>
+  <td><%= text_field_tag :"sqft#{@j}" ,c.sqft.round(4),disabled: true %></td>
+ <td ><%= text_field_tag :"rate" ,c.rate, style: "background-color:skyblue;" %></td>
   
-  
+  <% end %>
+  <% end %>
 
   
   
@@ -415,16 +446,17 @@ table, th, td {
 <% end %>
 
 
-<% @amt = @amt1 + @amt2 + @amt3 %>
+<% @amt = @amt1 + @amt2 + @amt3 + @amt4 %>
 <% @final_amount += @amt %>
 <% @cgst = (@final_amount *9)/100 %>
 <% @sgst = (@final_amount *9)/100 %>
 <% @pay = @final_amount.round(2)+@cgst.round(2)+@sgst.round(2)%>
 <% @total_to_pay = @pay.round(2) %>
 
-<%# if @workorder.rem_price != 0 %>
-<%# @workorder.update(total_to_pay: @total_to_pay) %>
-<%# end %>
+
+
+<% @workorder.update(total_to_pay: @total_to_pay) %>
+
 
 </table>
 <br>

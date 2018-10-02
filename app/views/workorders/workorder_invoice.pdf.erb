@@ -137,16 +137,16 @@ table, th, td {
 <% @amt2 = 0 %> 
 <% @amt3 = 0 %> 
 <% @amt4 = 0 %>
-
-<% @workorder.fproducts.each do |f| %>
+<% @workorder_fproducts = @workorder.fproducts.order(id: :asc) %>
+<% @workorder_fproducts.each do |f| %>
 <% k += 1 %>
 
 
 
 <table style="width:100%">
   <% @letters = ('A'..'Z').to_a %>
-
-  <% @uniq_ftypes = f.measurements.all.map{|m| m.ftype}.uniq %>
+  <% @measurements = f.measurements.order(id: :asc) %>
+  <% @uniq_ftypes = @measurements.all.map{|m| m.ftype}.uniq %>
   <% @m = 0 %>
 
   <% @uniq_ftypes.each do |u| %>
@@ -166,17 +166,20 @@ table, th, td {
   <% if u == "Carcass Box" %>
   <tr>
     <th>No</th>
-    <th>Quantity</th>
     <th>Skirting</th>
     <th>Vertical</th>
     <th>Horizontal</th>
+    <th>Qty</th>
     <th>Sq.ft 18mm</th>
     <th>rate</th>
     <th>Sq.ft8mm(back)</th>
     <th>rate</th>
     <th>AMT</th>
   </tr>
+
+
   <% @carcass_measurements = f.measurements.where(ftype: u) %>
+
   <% @total_no = 0 %>
   <% @total_sqft = 0 %>
   <% @total_sqft_back = 0 %>
@@ -213,7 +216,7 @@ table, th, td {
    <%# end %>
     
     <%# @sqft = @sq + @skirting_sqft  + @v_area + @h_area %>
-    <% @total_sqft += c.sqft %>
+  <% @total_sqft += c.sqft %>
   
    <%# @sqft_back = ((c.width*c.height)/92903)*c.quantity %>
    <% @total_sqft_back += c.sqft_back %>
@@ -225,7 +228,7 @@ table, th, td {
    <td><%= @i %></td>
   
    
-   <td><%= c.quantity %></td>
+   
    <% if c.skirting != nil %>
    <td>Yes</td>
    <% else %>
@@ -233,6 +236,7 @@ table, th, td {
    <% end %>
    <td><%= c.vertical %></td>
    <td><%= c.horizontal %></td>
+   <td><%= c.quantity %></td>
    
    <td><%= c.sqft.round(4) %></td>
    <td><%= c.rate if c.rate.present? %></td>
@@ -252,7 +256,7 @@ table, th, td {
     <th>W</th>
     <th>D</th>
     <th>H</th>
-    <th>Nos</th>
+    <th>Qty</th>
     <th>Sq.ft</th>
     <th>rate</th>
     <th>AMT</th>
@@ -295,12 +299,13 @@ table, th, td {
    <% if u == "Shutters" %>
    <tr>
     <th colspan="2">No</th>
-    <th>Quantity</th>
+   
     <th>Sq.ft</th>
     <th>Glass Shutter</th>
     <th>Handle</th>
     <th>Handle Groove</th>
     <th>Handle Fitting</th>
+     <th>Quantity</th>
     <th>rate</th>
     <th>AMT</th>
    </tr>
@@ -350,8 +355,7 @@ table, th, td {
    
    <tr>
    <td colspan="2"><%= @i %></td>
-   <td><%= @tot_num %></td>
-   
+  
    
   
    <td><%= @tot_sqrft.round(4) %></td>
@@ -360,6 +364,8 @@ table, th, td {
    <td><%= c.handle %></td>
    <td><%= c.handle_groove %></td>
    <td><%= c.handle_fitting %></td>
+    <td><%= c.quantity %></td>
+   
   
   <% if c.glass_shutter == "Yes" %>
    <td><%= (c.rate + @glass_shutter_rate) if c.rate.present? %></td>
@@ -382,8 +388,9 @@ table, th, td {
    <tr>
     <th>No</th>
     
-    <th>Quantity</th>
+    
     <th>Sq.ft</th>
+    <th>Qty</th>
     <th>rate</th>
     <th>AMT</th>
     
@@ -404,11 +411,12 @@ table, th, td {
    
    <tr>
    <td><%= @i %></td>
-   <td><%= @tot_num %></td>
+  
    
    
   
    <td><%= c.sqft.round(4) %></td>
+    <td><%= c.quantity %></td>
    
    <td><%= c.rate if c.rate.present? %></td>
    
