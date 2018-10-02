@@ -1,6 +1,6 @@
 class WorkordersController < ApplicationController
   before_action :set_workorder, only: [:show, :edit, :update, :destroy]
-
+  skip_before_action :authenticate_user!
   # GET /workorders
   # GET /workorders.json
   def index
@@ -112,16 +112,25 @@ end
   end
  end
 
+  if @workorders.present?
   render :status => 200,
            :json => { :success => true,
                       
                       :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
+  
+else
+  render :status => 401,
+           :json => { :success => false,
+                      :info => "No data",
+                      :data => {} }
+  
+end
   end
 
  
 
 def employee_work
-if current_user.role == "SuperAdmin"
+
 #employee id got in params
  @emp_id =  params[:employee_id]
 
@@ -172,13 +181,21 @@ if current_user.role == "SuperAdmin"
         
   end
  end
-
+if @workorders.present?
   render :status => 200,
            :json => { :success => true,
                       
                       :data => { :workorders => @workorders.count ,:completed_workorders => @completed,:pending_workorders => @pending ,:working => @working,:hold => @hold} }
-  end
+  
+else
+  render :status => 401,
+           :json => { :success => false,
+                      :info => "No data",
+                      :data => {} }
+  
 end
+end
+
 
 
 def invoice
@@ -290,6 +307,7 @@ end
         @workorder.update(approve: false)
         @workorder.fproducts.each do |f| 
         f.measurements.each do |m|
+          m.update(workorder_id: @workorder.id)
           if m.ftype == "Carcass Box"
             @rate1 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"Back" ])
             @rate2 = Rate.find_by(["product = ? and ptype = ? and ctype = ?",f.product,m.ftype,"TB/LR" ])
@@ -580,6 +598,156 @@ end
     @employee_workorder = EmployeesWorkorder.find_by(workorder_id: params[:id])
   end
 
+  def assigned_workorders
+   
+    
+      @emp_id = params[:employee_id]
+      
+    
+      @workorders = Employee.find(@emp_id).workorders
+if @workorders.present?
+      render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @workorders } }
+                    else
+
+                      render :status => 200,
+           :json => { :success => false,
+                      :info => "No data",
+                      :data => { } }
+                    end
+
+                   
+   
+  end
+
+def workorder_measurement
+  @work_id = params[:work_id]
+
+  @products = Workorder.find(@work_id)
+  @measurements = @products.measurements
+    
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :measurements => @measurements} }
+end
+
+
+#apis for workorder status
+#1
+
+def pending_workorders
+  @emp_id = params[:employee_id]
+
+  @emp_work = EmployeesWorkorder.where(["employee_id = ? and status = ?",@emp_id,"Pending"])
+  @w = @emp_work.all.map{|e| e.workorder_id}
+   if @emp_work.present?
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @emp_work} } else
+                      render :status => 201,
+           :json => { :success => false,
+                      :info => "No Data",
+                      :data => {} }
+                    end
+end
+
+def completed_workorders
+  @emp_id = params[:employee_id]
+
+  @emp_work = EmployeesWorkorder.where(["employee_id = ? and status = ?",@emp_id,"Completed"])
+  @w = @emp_work.all.map{|e| e.workorder_id}
+  if @emp_work.present?
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @emp_work} }
+
+                    else
+                      render :status => 201,
+           :json => { :success => false,
+                      :info => "No Data",
+                      :data => {} }
+                    end
+end
+
+def hold_workorders
+  @emp_id = params[:employee_id]
+
+  @emp_work = EmployeesWorkorder.where(["employee_id = ? and status = ?",@emp_id,"Hold"])
+  @w = @emp_work.all.map{|e| e.workorder_id}
+  if @emp_work.present?
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @emp_work} }
+                      else
+                      render :status => 201,
+           :json => { :success => false,
+                      :info => "No Data",
+                      :data => {} }
+                    end
+end
+
+def working_workorders
+  @emp_id = params[:employee_id]
+
+  @emp_work = EmployeesWorkorder.where(["employee_id = ? and status = ?",@emp_id,"Working"])
+  @w = @emp_work.all.map{|e| e.workorder_id}
+   if @emp_work.present?
+  render :status => 200,
+           :json => { :success => true,
+                      
+                      :data => { :workorders => @emp_work} }
+                       else
+                      render :status => 201,
+           :json => { :success => false,
+                      :info => "No Data",
+                      :data => {} }
+                    end
+end
+
+
+
+def update_empwork
+  byebug
+  @emp_id = params[:employee_id]
+  @work_id = params[:work_id]
+  @start_time = params[:starttime]
+  @end_time = params[:endtime]
+
+  @emp_work = EmployeesWorkorder.find_by(employee_id: @emp_id ,workorder_id: @work_id)
+  
+  if @start_time.present? and !@end_time.present?
+    @status = "Working"
+  elsif @end_time.present?
+    @status = "Completed"
+  end
+
+
+if @start_time.present?
+  @u = @emp_work.update(starttime: @start_time,status: @status)
+elsif @end_time.present?
+  @u = @emp_work.update(endtime: @end_time,status: @status)
+end
+
+if @u == true
+  render :status => 200,
+           :json => { :success => true,
+                      :info => "Updated Successfully",
+                      :data => {start_time: @emp_work.starttime,end_time: @emp_work.endtime,status: @emp_work.status}}
+  else
+    render :status => 201,
+           :json => { :success => false,
+                      :data => {}}
+  end
+
+end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_workorder
@@ -588,7 +756,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workorder_params
-     params.require(:workorder).permit(:site_name,:total_to_pay,:g_section,:g_section_with_end_cap,:dark_color,:light_color,:delivered,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:wh,:sqft,:sqft_back,:color_sqft,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:right,:right_dark,:right_light,:left,:left_dark,:left_light,:top,:top_dark,:top_light,:bottom,:bottom_dark,:bottom_light,:_destroy]])
+     params.require(:workorder).permit(:site_name,:total_to_pay,:g_section,:g_section_with_end_cap,:dark_color,:light_color,:delivered,:add_price,:rem_price,:order_no,:invoice_no,:color_id ,:date,:location_id , :employee_id,:remove_photo1,:remove_photo2,:remove_photo3,:remove_photo4,:remove_photo5 ,:vendor_id,:name1,:photo1,:name2,:photo2,:name3,:photo3,:name4,:photo4,:name5,:photo5,fproducts_attributes: [:id ,:product,:workorder_id,:_destroy ,measurements_attributes: [:id,:shutter_shade,:wh,:sqft,:sqft_back,:color_sqft,:bsl_type,:ftype,:width,:height,:rate,:depth,:color_id,:side,:skirting,:horizontal,:vertical,:center,:total,:fproduct_id, :quantity,:glass_shutter,:handle,:handle_groove,:handle_fitting,:right,:right_dark,:right_light,:left,:left_dark,:left_light,:top,:top_dark,:top_light,:bottom,:bottom_dark,:bottom_light,:_destroy]])
 
    end
    def additional_params

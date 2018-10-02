@@ -50,6 +50,12 @@ end
      
     end
     collection do
+      get :assigned_workorders
+      get :workorder_measurement
+      get :pending_workorders
+      get :completed_workorders
+      get :hold_workorders
+      get :working_workorders
       get :workorder_info
       get :export_vendorwise_workorder
       get :employee_work
@@ -64,6 +70,7 @@ end
       post :edit_rate
        post :add
        patch :update_additional
+       patch :update_empwork
        get :invoice_list
        get :payment_status_report
        get :workorder_status_report
@@ -165,6 +172,7 @@ end
   end
   resources :companies
   get 'home/dashboard'
+  get 'home/menu'
 
   root 'home#dashboard'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -2,7 +2,6 @@
 // listed below.
 
 //= require src/app
-//= require jquery
 //= require jquery_ujs
 //= require select2-full
 //= require bootstrap/bootstrap-tooltip

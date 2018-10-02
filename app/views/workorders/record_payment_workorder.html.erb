@@ -43,7 +43,7 @@ Remaining <%=text_field_tag :rem_price,"",value: @workorder.rem_price,id: :rem_p
 Add Amount To Pay<%= text_field_tag :add_price,"",id: :add_price, class: 'form-control'%>
 </div><br><br>
 <button onclick="myFunction()", class="btn btn-success">Pay</button>
-<%= link_to "Back" , invoice_workorder_path(@workorder),class: "btn btn-danger" %>
+<%= link_to "Back" , invoice_list_workorders_path,class: "btn btn-danger" %>
 
   </tbody>
 </table>

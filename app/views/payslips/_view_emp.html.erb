@@ -9,7 +9,7 @@
                     <div class="col-md-12">
                         <div class=" panel panel-danger">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><b><%= @payslip_emp.employee.name %></b>-Payslip generated on <%= @payslip_emp.date %></h3>
+                                <h3 class="panel-title"><b><%= @payslip_emp.employee.name %></b>-Payslip generated on <%= @payslip_emp.date.strftime("%d/%m/%Y") %></h3>
                                 <div class="actions pull-right">
                                  <i class="fa fa-expand"></i>
                                     <i class="fa fa-chevron-down"></i>

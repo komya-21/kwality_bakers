@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180927052333) do
+ActiveRecord::Schema.define(version: 20181001125256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -269,9 +269,12 @@ ActiveRecord::Schema.define(version: 20180927052333) do
     t.float "sqft"
     t.float "sqft_back"
     t.float "color_sqft"
+    t.string "shutter_shade"
+    t.bigint "workorder_id"
     t.index ["color_id"], name: "index_measurements_on_color_id"
     t.index ["fproduct_id"], name: "index_measurements_on_fproduct_id"
     t.index ["rate_id"], name: "index_measurements_on_rate_id"
+    t.index ["workorder_id"], name: "index_measurements_on_workorder_id"
   end
 
   create_table "payslips", force: :cascade do |t|
@@ -492,6 +495,7 @@ ActiveRecord::Schema.define(version: 20180927052333) do
   add_foreign_key "measurements", "colors"
   add_foreign_key "measurements", "fproducts"
   add_foreign_key "measurements", "rates"
+  add_foreign_key "measurements", "workorders"
   add_foreign_key "payslips", "deductions"
   add_foreign_key "payslips", "earnings"
   add_foreign_key "payslips", "employees"

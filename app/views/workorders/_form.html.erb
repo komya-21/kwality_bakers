@@ -31,7 +31,7 @@
     <label class="col-sm-1 control-label">Location</label> 
    <!--  <span class="required">*</span> -->
     <div class="col-md-2">
-    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true}%>
+    <%= form.collection_select :location_id, Location.order(:name),:id,:name,{prompt:true},required: true %>
 
   </div>
     <label class="col-sm-1 control-label">Vendor</label> 
@@ -157,13 +157,13 @@
       <td class="wh" hidden="true">  <%= m.text_field :wh, id: :work_order_wh ,class: "form-control" , placeholder: "Width/Height(mm)"%></td>
        
        
-       <!-- <td style="display: inline-block;"><%#= m.text_field :width, id: :work_order_width ,class: "form-control" , placeholder: "Width(mm)" , required: true%><%#= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)",required: true%></td> -->
+       
        <td class="depth"><%= m.text_field :depth, id: :work_order_depth ,class: "form-control",placeholder: "Depth(mm)" %></td>
        <td class="height"><%= m.text_field :height, id: :work_order_height,class: "form-control" ,placeholder: "Height(mm)"%></td>
        <td class="skirting" hidden="true"> <%= m.text_field :skirting, id: :work_order_skirting ,class: "form-control",placeholder: "Skirting(Height)"%></td>
        <td class="vert" hidden="true"> <%= m.text_field :vertical, id: :work_order_vertical ,placeholder: "V(qty)" %></td>
        <td class="hor" hidden="true"> <%= m.text_field :horizontal, id: :work_order_horizontal,placeholder: "H(qty)" %></td>
-       <!-- <td> <%#= m.select :color_id,Color.all.collect {|v| [v.code, v.id]}, {prompt:true},id: :color_id ,class: "form-control" %></td> -->
+       
         
         <td class="bsl" hidden="true"><%= m.select :bsl_type,options_for_select(["Shelf","Vertical","Framing Patti","Other"]),{prompt: "BSL type"},id: :bsl_type_id,class: "form-control" %></td>
 
@@ -176,8 +176,8 @@
         <%= m.check_box :handle, {:class => "handle"}, "Yes", "No" %>G Handle
       </td>
 
-
-        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty"%></td>
+        <td class="addcolor" hidden="true"><%= m.select :shutter_shade,options_for_select(["Dark","Light"]),{prompt: "Select shade"},id: :color_id %></td>
+        <td><%= m.text_field :quantity, id: :work_order_quantity,class: "form-control",placeholder: "Qty",required: true%></td>
         <td class="add_color" hidden="true">
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
   <tr style="background-color: burlywood;">
@@ -186,32 +186,31 @@
     <th>L</th>
   </tr>
             <tr>
-              <%#= nested_form_for @workorder do |form| %>
-              <%#= form_for :measurement do |form| %>
-<td>R<%= m.check_box :right , {},"Yes" , "No" %></td>
+              
+<td>R<%= m.check_box :right , {:id => "additional_right"},"Yes" , "No" %></td>
 
 <td><%= m.check_box :right_dark, {:class => "chb"},"Yes" , "No" %></td>
 <td><%= m.check_box :right_light, {:class => "chb"},"Yes" , "No" %></td>
 </tr>
 <tr>
-<td>L<%= m.check_box :left , {},"Yes" , "No" %></td>
+<td>L<%= m.check_box :left , {:id => "additional_left"},"Yes" , "No" %></td>
 <td><%= m.check_box :left_dark, {:class => "chb1"},"Yes" , "No" %></td>
 <td><%= m.check_box :left_light, {:class => "chb1"},"Yes" , "No" %></td>
 </tr>
 <tr>
-<td>T<%= m.check_box :top , {},"Yes" , "No" %></td> 
+<td>T<%= m.check_box :top , {:id => "additional_top"},"Yes" , "No" %></td> 
 <td><%= m.check_box :top_dark, {:class => "chb2"},"Yes" , "No" %></td>
 <td><%= m.check_box :top_light, {:class => "chb2"},"Yes" , "No" %></td>
 </tr>
 <tr>
-<td>B<%= m.check_box :bottom , {},"Yes" , "No" %></td>
+<td>B<%= m.check_box :bottom , {:id => "additional_bottom"},"Yes" , "No" %></td>
 
 <td><%= m.check_box :bottom_dark, {:class => "chb3"},"Yes" , "No" %></td>
 <td><%= m.check_box :bottom_light, {:class => "chb3"},"Yes" , "No" %></td>
 </tr>
 </table>
 
-<%# end %>
+
 
 
 
@@ -242,10 +241,7 @@
 </div>
 <% end %>
 <p><%= form.link_to_add "Add Work Orders", :fproducts ,class: "btn btn-warning"%></p>
-<!-- <button name="subject" type="submit" value="HTML" class="btn btn-danger" id="imagesAdd">Upload Images</button> -->
 
-<%#= form.label :name1 %>
-<%#= "Upload Images",id: :imagesAdd ,class: "btn btn-danger" %>
 
 <a id="imagesAdd" class="btn btn-danger">Upload Images</a>
 <a id="imagesRm" class="btn btn-primary">Cancel</a>
@@ -300,7 +296,7 @@
 </div>
 </div>
 <div align="center">
-  <%= form.submit 'Submit' , class: "btn btn-warning" %>
+  <%= form.submit 'Submit' , class: "btn btn-warning",id: "submit" %>
   <%= link_to 'Back', workorders_path,class: "btn btn-warning" %>
 
 </div>
@@ -393,10 +389,9 @@ selectField1.select2();
   container3 = elem.parents("th.choose");
   container1 = elem.parents("th.fields");
   container.find("#work_order_width").focus();
+
   if(type == "Shutters")
     {
-
-
       container.find('.choose').show();
       container.find('.depth').hide();
       container.find('.skirting').hide();
@@ -406,11 +401,19 @@ selectField1.select2();
       container.find('.width').show();
       container.find('.height').show();
       container.find('.wh').hide();
-      
       container.find('.add_color').hide();
+      container.find('#color_id').addClass("form-control");
+      container.find('#color_id').select2();
+      container.find('.addcolor').show();
+      container.find('#work_order_width').attr("required", "true");
+      
+      container.find('#work_order_height').attr("required", "true");
+
+
       
 
     }
+
 if(type == "White BSL Shelf"){
   container.find('.choose').hide();
       container.find('.depth').show();
@@ -423,7 +426,10 @@ if(type == "White BSL Shelf"){
       container.find('.width').hide();
       container.find('.height').hide();
       container.find('.add_color').hide();
-
+      container.find('.addcolor').hide();
+      container.find('#work_order_wh').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+     
 
 
     }
@@ -443,9 +449,13 @@ if(type == "White BSL Shelf"){
       container.find('.wh').hide();
       container.find('.add_color').show();
       container.find('.height').insertAfter(container.find('.depth'));
-      
+      container.find('.addcolor').hide();
+      container.find('#work_order_width').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+      container.find('#work_order_height').attr("required", "true");
 
     }
+if(type == "Carcass Box"){
 
 if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && type == "Carcass Box") || (ftype == "Wardrobe" && type == "Carcass Box")){
 
@@ -462,11 +472,32 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.wh').hide();
       container.find('.add_color').show();
       container.find('.height').insertAfter(container.find('.depth'));
-      
-
+      container.find('.addcolor').hide();
+      container.find('#work_order_width').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+      container.find('#work_order_height').attr("required", "true");
 
 
     }
+    else
+    {
+      
+      container.find('.vert').show();
+      container.find('.hor').show();
+      container.find('#work_order_vertical').addClass('form-control');
+      container.find('#work_order_horizontal').addClass('form-control');
+      container.find('.choose').hide();
+      container.find('.skirting').show();
+      container.find('.bsl').hide();
+      container.find('.width').show();
+      container.find('.height').show();
+      container.find('.wh').hide();
+      container.find('.add_color').show();
+      container.find('.height').insertAfter(container.find('.depth'));
+      container.find('.addcolor').hide();
+      container.find('#work_order_width').attr("required", "true");
+    }
+  }
     
     if(ftype == "Crockery" && type == "Carcass Box"){
 
@@ -483,7 +514,10 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.wh').hide();
       container.find('.add_color').show();
       container.find('.height').insertAfter(container.find('.depth'));
-      
+      container.find('.addcolor').hide();
+      container.find('#work_order_width').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+      container.find('#work_order_height').attr("required", "true");
 
     }
 
@@ -500,7 +534,10 @@ if((ftype == "Platform" && type == "Carcass Box") || (ftype == "Tall Unit" && ty
       container.find('.wh').hide();
       container.find('.add_color').hide();
       container.find('.depth').insertAfter(container.find('.height'));
-      
+      container.find('.addcolor').hide();
+      container.find('#work_order_width').attr("required", "true");
+      container.find('#work_order_depth').attr("required", "true");
+      container.find('#work_order_height').attr("required", "true");
 /*      container.find('#work_order_depth')[0].placeholder='Height(mm)';
 */      /*container.find('#work_order_height')[0].placeholder='Depth(mm)';*/
 
@@ -667,6 +704,12 @@ $('#workorder_name1').hide();
 <script type="text/javascript">
     $(".chb").change(function() {
     var checked = $(this).is(':checked');
+
+    if($("#additional_right").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
     $(".chb").prop('checked',false);
     if(checked) {
         $(this).prop('checked',true);
@@ -676,6 +719,11 @@ $('#workorder_name1').hide();
   $(".chb1").change(function() {
     var checked = $(this).is(':checked');
     $(".chb1").prop('checked',false);
+    if($("#additional_left").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
     if(checked) {
         $(this).prop('checked',true);
     }
@@ -684,6 +732,11 @@ $('#workorder_name1').hide();
   $(".chb2").change(function() {
     var checked = $(this).is(':checked');
     $(".chb2").prop('checked',false);
+    if($("#additional_top").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
     if(checked) {
         $(this).prop('checked',true);
     }
@@ -692,6 +745,11 @@ $('#workorder_name1').hide();
   $(".chb3").change(function() {
     var checked = $(this).is(':checked');
     $(".chb3").prop('checked',false);
+    if($("#additional_bottom").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
     if(checked) {
         $(this).prop('checked',true);
     }
@@ -699,6 +757,7 @@ $('#workorder_name1').hide();
   
 
 </script>
+
 <script type="text/javascript">
     $(document).on("change", ".handle", function () {
       elem = jQuery(this);
@@ -767,6 +826,277 @@ $('#workorder_name1').hide();
 });
 </script>
  
+<!-- <script type="text/javascript">
+ $(document).on("click" ,"#submit" , function(){
+     
+      
+
+      
+      if($("#additional_right").prop('checked') == false && ($("#additional_right_dark").prop('checked') == true || $("#additional_right_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_left").prop('checked') == false && ($("#additional_left_dark").prop('checked') == true || $("#additional_left_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_top").prop('checked') == false && ($("#additional_top_dark").prop('checked') == true || $("#additional_top_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+      if($("#additional_bottom").prop('checked') == false && ($("#additional_bottom_dark").prop('checked') == true || $("#additional_bottom_light").prop('checked') == true)){
+        alert("Please select side");
+          return false;
+
+      }
+
+
+      if($("#additional_right").prop('checked') == true){
+        var right = $("#additional_right").val();
+        var right_color = $("#additional_right_color").val();
+
+       
+          
+
+        if ($("#additional_right_dark").prop('checked') == false && $("#additional_right_light").prop('checked') == false){
+          
+
+          
+          alert("Please select color shade");
+          return false;
+          
+        }
+
+
+
+
+      if($("#additional_right_dark").prop('checked') == true){
+          var right_dark = $("#additional_right_dark").val();
+        }
+        else if($("#additional_right_light").prop('checked') == true){
+          var right_light = $("#additional_right_light").val();
+        }
+     }
+      if($("#additional_left").prop('checked') == true){
+        var left = $("#additional_left").val();
+        var left_color = $("#additional_left_color").val();
+        if ($("#additional_left_dark").prop('checked') == false && $("#additional_left_light").prop('checked') == false){
+          
+          
+          
+          alert("Please select color shade");
+          return false;
+          
+        }
+
+        if($("#additional_left_dark").prop('checked') == true){
+          var left_dark = $("#additional_left_dark").val();
+        }
+        else if($("#additional_left_light").prop('checked') == true){
+          var left_light = $("#additional_left_light").val();
+
+
+
+        }
+
+
+
+
+      }
+      if($("#additional_top").prop('checked') == true){
+        var top = $("#additional_top").val();
+        var top_color = $("#additional_top_color").val();
+        if ($("#additional_top_dark").prop('checked') == false && $("#additional_top_light").prop('checked') == false){
+          
+          
+          
+          alert("Please select color shade");
+          return false;
+          
+        }
+
+
+        if($("#additional_top_dark").prop('checked') == true){
+          var top_dark = $("#additional_top_dark").val();
+        }
+        else if($("#additional_top_light").prop('checked') == true){
+          var top_light = $("#additional_top_light").val();
+
+
+
+        }
+
+
+
+
+      }
+      if($("#additional_bottom").prop('checked') == true){
+        var bottom = $("#additional_bottom").val();
+        var bottom_color = $("#additional_bottom_color").val();
+        if ($("#additional_bottom_dark").prop('checked') == false && $("#additional_bottom_light").prop('checked') == false){
+          
+          
+          
+          alert("Please select color shade");
+          return false;
+          
+        }
+
+        if($("#additional_bottom_dark").prop('checked') == true){
+          var bottom_dark = $("#additional_bottom_dark").val();
+        }
+        else if($("#additional_bottom_light").prop('checked') == true){
+          var bottom_light = $("#additional_bottom_light").val();
+
+
+
+        }
+
+
+
+
+      }
+
+
+     
+
+
+    });
+
+
+
+  </script> -->
+
+  <script type="text/javascript">
+
+   
+      $(document).on("click" ,"#additional_right" , function(){
+
+        if($("#additional_right").prop('checked') == false ){
+
+          $('.chb').prop('checked',false);
+
+        }
+
+           if($("#additional_right").prop('checked') == true ){
+
+            if($(".chb").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+  </script>
+<script type="text/javascript">
+      $(document).on("click" ,"#additional_left" , function(){
+
+         if($("#additional_left").prop('checked') == false ){
+
+          $('.chb1').prop('checked',false);
+
+        }
+
+           if($("#additional_left").prop('checked') == true ){
+
+            if($(".chb1").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+  </script>
+  <script type="text/javascript">
+      $(document).on("click" ,"#additional_top" , function(){
+
+
+         if($("#additional_top").prop('checked') == false ){
+
+          $('.chb2').prop('checked',false);
+
+        }
+
+           if($("#additional_top").prop('checked') == true ){
+
+            if($(".chb2").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+  </script>
+  <script type="text/javascript">
+      $(document).on("click" ,"#additional_bottom" , function(){
+         if($("#additional_bottom").prop('checked') == false ){
+
+          $('.chb3').prop('checked',false);
+
+        }
+
+           if($("#additional_bottom").prop('checked') == true ){
+
+            if($(".chb3").prop('checked') == false ){
+            alert("Dont forget to select shade!!!");
+          }
+           }
+
+
+
+    });
+</script>
+
+      <!-- $(document).on("click" ,".chb" , function(){
+
+           if($("#additional_right").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb1" , function(){
+
+           if($("#additional_left").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb2" , function(){
+
+           if($("#additional_top").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+
+
+    });
+      $(document).on("click" ,".chb3" , function(){
+
+
+          if($(".chb3").prop('checked') == true ){
+           if($("#additional_bottom").prop('checked') == false ){
+
+            alert("Oops!!! You haven't select side");
+           }
+
+}
+
+    });
+  </script> -->
+
 <% end %>
 
 
